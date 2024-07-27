@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\58472\Desktop\就職\就職作品\2024_Project_DirectX11\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\就職\就職作品\2024_Project_DirectX11\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UliObj.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\就職\就職作品\2024_Project_DirectX11\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_UliObj.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
