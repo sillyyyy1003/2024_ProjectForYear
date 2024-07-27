@@ -16,6 +16,8 @@
 #include <vector>
 #include <string>
 #include "D3DApp.h"
+#include <memory>
+
 
 //
 // 宏相关

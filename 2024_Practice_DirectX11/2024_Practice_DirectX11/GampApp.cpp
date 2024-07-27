@@ -3,6 +3,7 @@
 
 #include "d3dUtil.h"
 #include "DXTrace.h"
+#include "KInput.h"
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -34,16 +35,13 @@ void GameApp::OnResize()
 	D3DApp::OnResize();
 }
 
-void GameApp::UpdateScene(float dt)
+void GameApp::UpdateScene(float deltaTime)
 {
-    static float phi = 0.0f, theta = 0.0f;
-    phi += 0.3f * dt, theta += 0.37f * dt;
+    static float phi = 0.0f, theta = 0.0f;//phi：angleY theta：angleX
+    phi += 0.3f * deltaTime, theta += 0.37f * deltaTime;
+
     cb.world = XMMatrixTranspose(XMMatrixRotationX(phi) * XMMatrixRotationY(theta));
-    // 更新常量缓冲区，让立方体转起来
-   /* D3D11_MAPPED_SUBRESOURCE mappedData;
-    HR(m_pd3dImmediateContext->Map(m_pConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
-    memcpy_s(mappedData.pData, sizeof(m_CBuffer), &m_CBuffer, sizeof(m_CBuffer));
-    m_pd3dImmediateContext->Unmap(m_pConstantBuffer.Get(), 0);*/
+ 
 }
 
 void GameApp::DrawScene()
@@ -111,7 +109,7 @@ bool GameApp::InitResource()
     vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbd.CPUAccessFlags = 0;
     
-    DWORD indices[] = {
+    WORD indices[] = {
         // 正面
         0, 1, 2,
         2, 0, 3,
@@ -141,7 +139,7 @@ bool GameApp::InitResource()
     data.vertexCount = _countof(vertices);
 
 	data.pIndex = indices;
-    data.indexSize = sizeof(DWORD);
+    data.indexSize = sizeof(WORD);
     data.indexCount =_countof(indices);
 
 

@@ -47,7 +47,7 @@ public:
 
     /// @brief
     /// @param dt 
-    void UpdateScene(float dt);
+    void UpdateScene(float tick);
 
     /// @brief 
     void DrawScene();

@@ -169,12 +169,11 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 	識別子が登録済→再利用、なければ新規作成
 	https://blog.techlab-xe.net/dxc-shader-reflection/
 	*/
-	/*
-	ID3D11ShaderReflection* pReflection;
+
+	ID3D11ShaderReflection* pReflection = {};
 	D3D11_SHADER_DESC shaderDesc;
-	D3D11_INPUT_ELEMENT_DESC* pInputDesc;
-	D3D11_SIGNATURE_PARAMETER_DESC sigDesc;
-	//データフォーマットを作成
+	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutDesc;
+
 	DXGI_FORMAT formats[][4] =
 	{
 		{
@@ -195,49 +194,6 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 		},
 	};
 
-	hr = D3DReflect(pData, size, IID_PPV_ARGS(&pReflection));
-	if (FAILED(hr)) { return hr; }
-
-	pReflection->GetDesc(&shaderDesc);
-	pInputDesc = new D3D11_INPUT_ELEMENT_DESC[shaderDesc.InputParameters];
-	for (UINT i = 0; i < shaderDesc.InputParameters; ++i)
-	{
-		pReflection->GetInputParameterDesc(i, &sigDesc);
-		pInputDesc[i].SemanticName = sigDesc.SemanticName;
-		pInputDesc[i].SemanticIndex = sigDesc.SemanticIndex;
-
-		// http://marupeke296.com/TIPS_No17_Bit.html
-		BYTE elementCount = sigDesc.Mask;
-		elementCount = (elementCount & 0x05) + ((elementCount >> 1) & 0x05);
-		elementCount = (elementCount & 0x03) + ((elementCount >> 2) & 0x03);
-
-
-		switch (sigDesc.ComponentType)
-		{
-		case D3D_REGISTER_COMPONENT_UINT32:
-			pInputDesc[i].Format = formats[0][elementCount - 1];
-			break;
-		case D3D_REGISTER_COMPONENT_SINT32:
-			pInputDesc[i].Format = formats[1][elementCount - 1];
-			break;
-		case D3D_REGISTER_COMPONENT_FLOAT32:
-			pInputDesc[i].Format = formats[2][elementCount - 1];
-			break;
-		default:;
-		}
-		pInputDesc[i].InputSlot = 0;
-		pInputDesc[i].AlignedByteOffset = i == 0 ? 0 : D3D11_APPEND_ALIGNED_ELEMENT;
-		pInputDesc[i].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		pInputDesc[i].InstanceDataStepRate = 0;
-	}
-	*/
-
-	//
-	ID3D11ShaderReflection* pReflection = {};
-	D3D11_SHADER_DESC shaderDesc;
-	D3D11_INPUT_ELEMENT_DESC* pInputDesc;
-	D3D11_SIGNATURE_PARAMETER_DESC sigDesc;
-	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutDesc;
 
 	hr = D3DReflect(pData, size, IID_PPV_ARGS(&pReflection));
 	if (FAILED(hr)) { return hr; }
@@ -256,12 +212,26 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 		elementDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		elementDesc.InstanceDataStepRate = 0;
 
+		/*switch(paramDesc.ComponentType)
+		{
+		case D3D_REGISTER_COMPONENT_UINT32:
+			elementDesc.Format = DXGI_FORMAT_R32_UINT;
+			break;
+		case D3D_REGISTER_COMPONENT_SINT32:
+			elementDesc.Format = DXGI_FORMAT_R32_SINT;
+			break;
+		case D3D_REGISTER_COMPONENT_FLOAT32:
+			elementDesc.Format = DXGI_FORMAT_R32_FLOAT;
+			break;
+		}*/
+
+		/*
 		// Set Format
 		if (paramDesc.Mask == 1)
 		{
-			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32_UINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32_SINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32_FLOAT;
+			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32G32_UINT;
+			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32_SINT;
+			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
 		}
 		else if (paramDesc.Mask <= 3)
 		{
@@ -281,7 +251,32 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32B32A32_SINT;
 			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		}
+		*/
+		int formatIndex = 0;
+		switch(paramDesc.ComponentType)
+		{
+		case D3D_REGISTER_COMPONENT_UINT32:formatIndex = 0; break;
+		case D3D_REGISTER_COMPONENT_SINT32:formatIndex = 1; break;
+		case D3D_REGISTER_COMPONENT_FLOAT32:formatIndex = 2; break;
+		}
 
+		// Determine the mask index
+		int maskIndex = 0;
+		if (paramDesc.Mask == 1) {
+			maskIndex = 0;
+		}
+		else if (paramDesc.Mask <= 3) {
+			maskIndex = 1;
+		}
+		else if (paramDesc.Mask <= 7) {
+			maskIndex = 2;
+		}
+		else if (paramDesc.Mask <= 15) {
+			maskIndex = 3;
+		}
+
+		// Set the format using the calculated indices
+		elementDesc.Format = formats[formatIndex][maskIndex];
 		inputLayoutDesc.push_back(elementDesc);
 	}
 

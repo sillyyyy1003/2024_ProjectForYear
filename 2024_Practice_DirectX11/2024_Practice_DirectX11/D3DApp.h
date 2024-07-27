@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include <d3d11.h>
-#include <wrl/client.h>
 #include <string>
+#include "D3DUtil.h"
 #include "Timer.h"
+#include <wrl/client.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")

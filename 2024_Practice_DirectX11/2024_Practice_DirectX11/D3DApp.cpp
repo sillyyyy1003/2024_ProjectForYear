@@ -3,6 +3,8 @@
 #include "DXTrace.h"
 #include <sstream>
 
+#include "KInput.h"
+
 #pragma warning(disable: 6031)
 
 D3DApp* gD3D = nullptr;
@@ -58,11 +60,8 @@ float D3DApp::AspectRatio()const
 int D3DApp::Run()
 {
     MSG msg = {};
-
     mTimer.Reset();
-
     timeBeginPeriod(1);
-
 
     while (msg.message != WM_QUIT)
     {
@@ -87,6 +86,7 @@ int D3DApp::Run()
                     mTimer.mOldTime = mTimer.mNewTime;
                 }*/
                 //todo:How to Set FrameRate?
+                KInput::UpdateInput();//入力
                 CalculateFrameStats();
                 UpdateScene(mTimer.DeltaTime());
                 DrawScene();
@@ -107,6 +107,9 @@ bool D3DApp::Init()
         return false;
 
     if (!InitDirect3D())
+        return false;
+
+    if (FAILED(KInput::InitInput()))
         return false;
 
     return true;
@@ -142,7 +145,7 @@ void D3DApp::OnResize()
     backBuffer.Reset();
 
 
-    D3D11_TEXTURE2D_DESC depthStencilDesc;
+    D3D11_TEXTURE2D_DESC depthStencilDesc = {};
 
     depthStencilDesc.Width = mClientWidth;
     depthStencilDesc.Height = mClientHeight;

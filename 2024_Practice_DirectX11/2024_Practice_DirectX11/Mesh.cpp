@@ -101,7 +101,7 @@ HRESULT Mesh::Write(void* pVertex) const
 	hr = pContext->Map(pVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
 	if (SUCCEEDED(hr))
 	{
-		rsize_t size = mData.vertexCount * mData.vertexSize;
+		rsize_t size = static_cast<size_t>(mData.vertexCount) * mData.vertexSize;
 		memcpy_s(mapResource.pData, size, pVertex, size);
 		pContext->Unmap(pVertexBuffer.Get(), 0);
 	}
@@ -128,7 +128,7 @@ void Mesh::Draw(int count)
 	// •`‰æ
 	if (mData.indexCount > 0)
 	{
-		DXGI_FORMAT format;
+		DXGI_FORMAT format = {};
 		switch (mData.indexSize)
 		{
 		case 4: format = DXGI_FORMAT_R32_UINT; break;
