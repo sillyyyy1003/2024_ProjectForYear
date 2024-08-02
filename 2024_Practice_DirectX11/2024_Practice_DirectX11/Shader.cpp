@@ -10,6 +10,10 @@ Shader::Shader(ShaderEnum::ShaderKind _shader) :mShader(_shader)
 {
 }
 
+Shader::~Shader()
+{
+}
+
 
 HRESULT Shader::CompileShader(const char* pCode)
 {
@@ -87,7 +91,7 @@ void Shader::SetTexture(UINT slot, Texture* _texture)
 	mTextures[slot] = pTex;
 	switch (mShader)
 	{
-	case ShaderEnum::ShaderKind::Vertex:
+	case ShaderEnum::ShaderKind::VtxPosColorNormal:
 		D3D::Get()->GetContext()->VSSetShaderResources(slot, 1, &pTex);
 		break;
 	case ShaderEnum::ShaderKind::Pixel:
@@ -150,6 +154,10 @@ VertexShader::VertexShader(ShaderEnum::ShaderKind _shader) :
 {
 
 
+}
+
+VertexShader::~VertexShader()
+{
 }
 
 HRESULT VertexShader::CreateShader(void* pData, UINT size)
@@ -308,6 +316,10 @@ void VertexShader::SetShader()
 
 PixelShader::PixelShader(ShaderEnum::ShaderKind _shader) :Shader(ShaderEnum::ShaderKind::Pixel),
 mPixelShader(nullptr)
+{
+}
+
+PixelShader::~PixelShader()
 {
 }
 

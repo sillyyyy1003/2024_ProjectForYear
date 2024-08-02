@@ -1,6 +1,9 @@
 #include "KInput.h"
 
 
+KInput::~KInput()
+{
+}
 
 HRESULT KInput::InitInput()
 {

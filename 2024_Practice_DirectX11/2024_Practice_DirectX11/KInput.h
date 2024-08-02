@@ -14,12 +14,12 @@ private:
 	KInput() {};
 	KInput(const KInput&) = delete;
 	KInput& operator=(const KInput&) = delete; 
-	~KInput() = default;
+	~KInput();
 
 	/// @brief Get the Singleton Instance
 	/// @return 
 	static KInput* Get() { static KInput instance; return &instance; };
-
+	
 public:
 	static HRESULT InitInput();
 

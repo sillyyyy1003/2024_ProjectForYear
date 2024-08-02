@@ -25,6 +25,8 @@ namespace
 //}
 */
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -59,6 +61,11 @@ float D3DApp::AspectRatio()const
 
 int D3DApp::Run()
 {
+	// コンソール生成
+    AllocConsole();
+    FILE* fp;
+    // 標準出力の割り当て
+    freopen_s(&fp, "CON", "w", stdout);
     MSG msg = {};
     mTimer.Reset();
     timeBeginPeriod(1);
@@ -86,8 +93,11 @@ int D3DApp::Run()
                     mTimer.mOldTime = mTimer.mNewTime;
                 }*/
                 //todo:How to Set FrameRate?
-                KInput::UpdateInput();//入力
                 CalculateFrameStats();
+               /* ImGui_ImplDX11_NewFrame();
+                ImGui_ImplWin32_NewFrame();
+                ImGui::NewFrame();*/
+                KInput::UpdateInput();//入力
                 UpdateScene(mTimer.DeltaTime());
                 DrawScene();
             }
@@ -97,6 +107,7 @@ int D3DApp::Run()
             }
         }
     }
+    fclose(fp);
 
     return (int)msg.wParam;
 }
@@ -112,6 +123,9 @@ bool D3DApp::Init()
     if (FAILED(KInput::InitInput()))
         return false;
 
+    if (!InitImGui())
+        return false;
+
     return true;
 }
 
@@ -120,13 +134,6 @@ void D3DApp::OnResize()
     assert(mContext);
     assert(mDevice);
     assert(mSwapChain);
-
- /*   if (mDevice1 != nullptr)
-    {
-        assert(mContext1);
-        assert(md3dDevice1);
-        assert(mSwapChain1);
-    }*/
 
     //RESET RESOURCE
     mRenderTargetView.Reset();
@@ -144,9 +151,7 @@ void D3DApp::OnResize()
 
     backBuffer.Reset();
 
-
     D3D11_TEXTURE2D_DESC depthStencilDesc = {};
-
     depthStencilDesc.Width = mClientWidth;
     depthStencilDesc.Height = mClientHeight;
     depthStencilDesc.MipLevels = 1;
@@ -199,6 +204,9 @@ void D3DApp::DrawScene()
 
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    if (ImGui_ImplWin32_WndProcHandler(mhMainWnd, msg, wParam, lParam))
+        return true;
+
     switch (msg)
     {
         // WmACTIVATE is sent when the window is activated or deactivated.  
@@ -483,6 +491,24 @@ bool D3DApp::InitDirect3D()
     // 每当窗口被重新调整大小的时候，都需要调用这个OnResize函数。现在调用
     // 以避免代码重复
     OnResize();
+
+    return true;
+}
+
+bool D3DApp::InitImGui()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // 允许键盘控制
+    io.ConfigWindowsMoveFromTitleBarOnly = true;              // 仅允许标题拖动
+
+    // SET Dear ImGui Style
+    ImGui::StyleColorsDark();
+
+    // Set Platform/Render back End
+    ImGui_ImplWin32_Init(mhMainWnd);
+    ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 
     return true;
 }

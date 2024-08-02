@@ -1,10 +1,8 @@
 ﻿#include "GampApp.h"
 #include <cassert>
-
 #include "d3dUtil.h"
-#include "DXTrace.h"
 #include "KInput.h"
-#include "SimpleMath.h"
+
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
@@ -14,18 +12,20 @@ GameApp::GameApp(HINSTANCE hInstance, const std::wstring& windowName, int initWi
 
 GameApp::~GameApp()
 {
+    Geometry::UnInit();
 }
 
 bool GameApp::Init()
 {
 	if (!D3DApp::Init())
 		return false;
-	
-    if (!InitEffect())
-        return false;
+
+    Geometry::Init();
 
     if (!InitResource())
         return false;
+
+
 
 	return true;
 }
@@ -37,11 +37,15 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float deltaTime)
 {
-    static float phi = 0.0f, theta = 0.0f;//phi：angleY theta：angleX
-    phi += 0.3f * deltaTime, theta += 0.37f * deltaTime;
+    static float phi = 0.0f, theta = 0.0f;
+    phi += 0.1f, theta += 0.1f;
 
-    cb.world = XMMatrixTranspose(XMMatrixRotationX(phi) * XMMatrixRotationY(theta));
- 
+	box.mTransform.mRotation.x = phi;
+	box.mTransform.mRotation.y = theta;
+
+	
+	//ImGui::End();
+	//ImGui::Render();
 }
 
 void GameApp::DrawScene()
@@ -51,110 +55,29 @@ void GameApp::DrawScene()
 	static float blue[4] = { 0.2f, 0.3f, 0.4f, 1.0f };  // RGBA = (0,0,255,255)
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), blue);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	
+	box.Draw();
 
-   
-	mVertexShader->SetShader();
-    mVertexShader->WriteShader(0, &cb);
-    mPixelShader->SetShader();
-
-    mesh->Draw();
-
+	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	mSwapChain->Present(0, 0);
 
 }
 
-bool GameApp::InitEffect()
-{
-    mVertexShader = std::make_shared<VertexShader>(ShaderEnum::Vertex);
-    mPixelShader = std::make_shared<PixelShader>(ShaderEnum::Pixel);
-
-
-    //Create VertexShader
-    HR(mVertexShader->LoadShaderFile("Assets/Shader/VS_UliObj.cso"));
-
-	//Create Pixel Shader
-    HR(mPixelShader->LoadShaderFile("Assets/Shader/PS_UliObj.cso"));
-
-    return true;
-}
-
 bool GameApp::InitResource()
 {
-    // ******************
-    // 设置立方体顶点
-    //    5________ 6
-    //    /|      /|
-    //   /_|_____/ |
-    //  1|4|_ _ 2|_|7
-    //   | /     | /
-    //   |/______|/
-    //  0       3
+	//Init Obj
+	box.InitResource();
+	
+	// ******************
+	// Init Rasterize state
+	// ******************
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
+	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+	rasterizerDesc.CullMode = D3D11_CULL_NONE;
+	rasterizerDesc.FrontCounterClockwise = false;
+	rasterizerDesc.DepthClipEnable = true;
+	HR(mDevice->CreateRasterizerState(&rasterizerDesc, mRSWireframe.GetAddressOf()));
 
-    Vertex vertices[] =
-    {
-	    { XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-        { XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-        { XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-        { XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-        { XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-        { XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-        { XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-        { XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
-    };
-
-    D3D11_BUFFER_DESC vbd;
-    ZeroMemory(&vbd, sizeof(vbd));
-    vbd.Usage = D3D11_USAGE_IMMUTABLE;
-    vbd.ByteWidth = sizeof vertices;
-    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vbd.CPUAccessFlags = 0;
-    
-    WORD indices[] = {
-        // 正面
-        0, 1, 2,
-        2, 0, 3,
-        // 左面
-        4, 5, 1,
-        1, 4, 0,
-        // 顶面
-        1, 5, 6,
-        6, 1, 2,
-        // 背面
-        7, 6, 5,
-        5, 7, 4,
-        // 右面
-        3, 2, 6,
-        6, 3, 7,
-        // 底面
-        4, 0, 3,
-        3, 4, 7
-    };
-
-    D3D11_BUFFER_DESC ibd;
-    ZeroMemory(&ibd, sizeof(ibd));
-
-    Mesh::MeshData data={};
-    data.pVertex = vertices;
-    data.vertexSize = sizeof(Vertex);
-    data.vertexCount = _countof(vertices);
-
-	data.pIndex = indices;
-    data.indexSize = sizeof(WORD);
-    data.indexCount =_countof(indices);
-
-
-    data.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
-    mesh= std::make_unique<Mesh>(data);
-
-
-    cb.world = XMMatrixIdentity();	// 单位矩阵的转置是它本身
-    cb.view = XMMatrixTranspose(XMMatrixLookAtLH(
-        XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
-        XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-        XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-    ));
-    cb.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, AspectRatio(), 1.0f, 1000.0f));
-
-   
-    return true;
+	return true;
 }

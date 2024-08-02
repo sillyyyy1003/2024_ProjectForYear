@@ -1,58 +1,43 @@
-#pragma once
+﻿#pragma once
 #include <DirectXMath.h>
 #include <memory>
+#include "Box3D.h"
 #include "d3dApp.h"
+#include "Geometry.h"
 #include "Mesh.h"
 #include "Shader.h"
 
+class Box3D;
 class GameApp : public D3DApp
 {
 private:
+	/// @brief For Rasterizer State(光栅化)
+	ComPtr<ID3D11RasterizerState> mRSWireframe;
+    bool isWireframeMode;							
 
-
-    std::shared_ptr<VertexShader> mVertexShader;
-    std::shared_ptr<PixelShader> mPixelShader;
-
-    ComPtr<ID3D11Buffer> mVertexBuffer;
-    std::unique_ptr<Mesh> mesh;
 
 public:
-    struct Vertex
-    {
-        DirectX::XMFLOAT3 pos;
-        DirectX::XMFLOAT4 color;
-       
-    };
-
-    struct ConstantBuffer
-    {
-        DirectX::XMMATRIX world;
-        DirectX::XMMATRIX view;
-        DirectX::XMMATRIX proj;
-    };
-
-    ConstantBuffer cb = {};
-
+    Box3D box;
 public:
 
     GameApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
-    ~GameApp();
+    ~GameApp() override;
 
     /// @brief 
     /// @return 
-    bool Init();
+    bool Init() override;
 
     /// @brief 
-    void OnResize();
+    void OnResize() override;
 
     /// @brief
-    /// @param dt 
-    void UpdateScene(float tick);
+    /// @param deltaTime tick
+    void UpdateScene(float deltaTime) override;
 
     /// @brief 
-    void DrawScene();
+    void DrawScene() override;
 
 private:
-    bool InitEffect();
+
     bool InitResource();
 };

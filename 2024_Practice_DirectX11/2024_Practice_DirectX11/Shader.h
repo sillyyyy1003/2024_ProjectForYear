@@ -18,7 +18,7 @@ class Shader
 {
 public:
 	Shader(ShaderEnum::ShaderKind _shader);
-	virtual ~Shader() = default;
+	virtual ~Shader();
 
 protected:
 
@@ -76,7 +76,7 @@ private:
 public:
 
 	VertexShader(ShaderEnum::ShaderKind _shader);
-	~VertexShader() override = default;
+	~VertexShader();
 
 	/// @brief VertexShaderì¬
 	/// @param pData “Ç‚İ‚ñ‚½data
@@ -84,7 +84,7 @@ public:
 	/// @return 
 	HRESULT CreateShader(void* pData, UINT size) override;
 
-	/// @brief Set Constant Buffer to Vertex Shader
+	/// @brief Set Constant Buffer to VtxPosColorNormal Shader
 	void SetShader() override;
 	ComPtr<ID3D11InputLayout> GetInputLayOut() { return mInputLayout; };
 };
@@ -97,7 +97,7 @@ private:
 
 public:
 	PixelShader(ShaderEnum::ShaderKind _shader);
-	~PixelShader() override = default;
+	~PixelShader() override;
 
 	/// @brief Pixel Shaderì¬
 	/// @param pData “Ç‚İ‚ñ‚½data

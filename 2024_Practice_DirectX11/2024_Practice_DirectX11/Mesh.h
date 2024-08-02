@@ -1,10 +1,12 @@
 #pragma once
 #include "D3DApp.h"
+#include <wrl/client.h>
 
 /// @brief 基底 
 class Mesh
 {
 public:
+
 	struct MeshData
 	{
 		const void* pVertex; //頂点　異なる型のデータを処理する際に汎用的なポインタ
@@ -20,12 +22,12 @@ public:
 
 	MeshData mData = {};
 
-	ComPtr<ID3D11Buffer> pVertexBuffer;
-	ComPtr<ID3D11Buffer> pIndexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
 
 public:
 	Mesh(const MeshData& _data);
-	~Mesh() = default;
+	~Mesh();
 
 	ID3D11Buffer* GetVertexBuffer() const { return pVertexBuffer.Get(); };
 	ID3D11Buffer* GetIndexBuffer() const { return pIndexBuffer.Get(); };
@@ -37,7 +39,7 @@ public:
 	void Draw(int count = 0);
 private:
 
-	/// @brief Create Vertex Buffer
+	/// @brief Create VtxPosColorNormal Buffer
 	HRESULT CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCount);
 
 	/// @brief  Create Index Buffer

@@ -1,13 +1,11 @@
 ﻿#pragma once
-#include <string>
+
 #include "D3DUtil.h"
 #include "Timer.h"
 #include <wrl/client.h>
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "D3DCompiler.lib")
-#pragma comment(lib, "winmm.lib")
-#pragma comment(lib, "dxgi.lib")
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
 
 
 using namespace Microsoft::WRL;
@@ -37,9 +35,7 @@ protected:
     ComPtr<ID3D11DeviceContext> mContext = nullptr;
     ComPtr<IDXGISwapChain> mSwapChain = nullptr;
 
-
-
-    // 常用资源
+    //Use in HIGH LEVEL RENDERING
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;
     ComPtr<ID3D11RenderTargetView> mRenderTargetView = nullptr;
     ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
@@ -91,6 +87,10 @@ protected:
     /// @brief Init D3D
     /// @return 
     bool InitDirect3D();
+
+    /// @brief Init imGui
+    /// @return 
+    bool InitImGui();            
 
     /// @brief フレーム数を計算＆表示
     void CalculateFrameStats();  

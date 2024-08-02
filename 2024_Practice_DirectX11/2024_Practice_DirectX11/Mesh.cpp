@@ -27,6 +27,10 @@ Mesh::Mesh(const MeshData& _data)
     mData.pIndex = pIndex;
 }
 
+Mesh::~Mesh()
+{
+}
+
 HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCount)
 {
 	//--- 作成するバッファの情報

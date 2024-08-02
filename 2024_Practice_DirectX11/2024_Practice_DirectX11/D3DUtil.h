@@ -1,23 +1,26 @@
 ﻿//***************************************************************************************
-// d3dUtil.h by X_Jun(MKXJun) (C) 2018-2022 All Rights Reserved.
-// Licensed under the MIT License.
-//
-// D3D实用工具集
-// Direct3D utility tools.
+//D3D Tool
 //***************************************************************************************
 
 #pragma once
 
-#include <d3d11_1.h>            // 已包含Windows.h
-#include <DirectXCollision.h>   // 已包含DirectXMath.h
+#include <d3d11.h>            // include Windows.h
+#include <DirectXCollision.h>   // include DirectXMath.h
 #include <DirectXPackedVector.h>
 #include <DirectXColors.h>
 #include <d3dcompiler.h>
 #include <vector>
 #include <string>
-#include "D3DApp.h"
 #include <memory>
+#include <SimpleMath.h>
+#include "DXTrace.h"
+#include "Mesh.h"
 
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "D3DCompiler.lib")
+#pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "imgui.lib")
 
 //
 // 宏相关
@@ -164,3 +167,115 @@ inline void DXGISetDebugObjectName(_In_ IDXGIObject* object, _In_ std::nullptr_t
 #endif
 }
 
+namespace Vertex
+{
+	struct VtxPosColorNormal
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT3 normal;
+
+	};
+
+	struct VtxPosColor
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT4 color;
+	};
+
+
+	struct VtxPosNormalTexColor
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT2 tex;
+	};
+
+	struct VxPosNormalTangentColor
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 tangent;
+		DirectX::XMFLOAT4 color;
+	};
+
+	struct Vtx
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 tangent;
+		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT2 tex;	//Texture coordination;
+	};
+
+	enum PrintMode
+	{
+		Wireframe,//Modelのラインを表示
+		Solid,//Modelの面を表示
+	};
+
+	//描画方法のリスト
+	static std::unordered_map<PrintMode, D3D11_PRIMITIVE_TOPOLOGY> TopologyList = {
+		{Wireframe, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST},
+		{Solid,D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST},
+	};
+
+}
+
+
+//todo
+struct Material
+{
+	DirectX::XMFLOAT4 ambient;	// 環境光 ka
+	DirectX::XMFLOAT4 diffuse;	// 拡散反射 kd
+	DirectX::XMFLOAT4 specular; // 鏡面反射 ks 
+	//specular={ specPower スペキュラの絞り,metallic メタリック,smooth スムース,blank}
+	DirectX::XMFLOAT4 emission; // 反射 ke
+	
+};
+
+struct DirectionLight
+{
+	DirectX::XMFLOAT4 ambient;	// 環境光 
+	DirectX::XMFLOAT4 diffuse;	// 拡散反射
+	DirectX::XMFLOAT4 specular; // 鏡面反射 
+	DirectX::XMFLOAT3 direction;
+	float isEnable;//起動するかどうか
+
+
+	
+	
+};
+
+struct PointLight
+{
+	DirectX::XMFLOAT4 ambient;	// 環境光 
+	DirectX::XMFLOAT4 diffuse;	// 拡散反射
+	DirectX::XMFLOAT4 specular; // 鏡面反射 
+	DirectX::XMFLOAT3 position;
+	float range;
+
+	DirectX::XMFLOAT3  attenuation;//減衰
+	float isEnable;//起動するかどうか
+
+	
+};
+
+struct Spotlight
+{
+	
+	DirectX::XMFLOAT4 ambient;	// 環境光 
+	DirectX::XMFLOAT4 diffuse;	// 拡散反射 
+	DirectX::XMFLOAT4 specular; // 鏡面反射
+
+	DirectX::XMFLOAT3 position;
+	float range;
+
+	DirectX::XMFLOAT3 direction; //向かうどころ
+	float Spot;	//焦点值，较高的值表示更聚焦的光束，较低的值表示更扩散的光束
+
+
+	DirectX::XMFLOAT3  attenuation;//減衰
+	float isEnable;//起動するかどうか
+};
