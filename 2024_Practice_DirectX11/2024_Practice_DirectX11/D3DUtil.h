@@ -15,12 +15,14 @@
 #include <SimpleMath.h>
 #include "DXTrace.h"
 #include "Mesh.h"
+#include "DirectXTex.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "imgui.lib")
+#pragma comment(lib, "DirectXTex.lib")
 
 //
 // 宏相关
@@ -32,6 +34,8 @@
 #endif
 
 #define SAFE_RELEASE(p) { if ((p)) { (p)->Release(); (p) = nullptr; } }
+#define WIN_WIDTH	(1280.0f)
+#define WIN_HEIGHT	(720.0f)
 
 //
 // 辅助调试相关函数
@@ -167,6 +171,25 @@ inline void DXGISetDebugObjectName(_In_ IDXGIObject* object, _In_ std::nullptr_t
 #endif
 }
 
+inline void Error(const char* format, ...)
+{
+	va_list arg;
+	va_start(arg, format);
+	static char buf[1024];
+	vsprintf_s(buf, sizeof(buf), format, arg);
+	va_end(arg);
+	MessageBoxA(NULL, buf, "Error", MB_OK);
+}
+
+
+/// @brief テクスチャを読み込み
+/// @param pDevice d3d->device
+/// @param pszFileName texture filename
+/// @param ppTexture texture pointer
+/// @return 
+HRESULT LoadTextureFromFile(ID3D11Device* pDevice,const char* pszFileName, ID3D11ShaderResourceView** ppTexture);
+
+
 namespace Vertex
 {
 	struct VtxPosColorNormal
@@ -181,6 +204,13 @@ namespace Vertex
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT4 color;
+	};
+
+	struct VtxPosNormalTex
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 texCoord;
 	};
 
 
@@ -232,7 +262,8 @@ struct Material
 	DirectX::XMFLOAT4 specular; // 鏡面反射 ks 
 	//specular={ specPower スペキュラの絞り,metallic メタリック,smooth スムース,blank}
 	DirectX::XMFLOAT4 emission; // 反射 ke
-	
+	BOOL isTexEnable = true;
+	float dummy[2] = {};
 };
 
 struct DirectionLight
@@ -242,9 +273,6 @@ struct DirectionLight
 	DirectX::XMFLOAT4 specular; // 鏡面反射 
 	DirectX::XMFLOAT3 direction;
 	float isEnable;//起動するかどうか
-
-
-	
 	
 };
 
@@ -274,7 +302,6 @@ struct Spotlight
 
 	DirectX::XMFLOAT3 direction; //向かうどころ
 	float Spot;	//焦点值，较高的值表示更聚焦的光束，较低的值表示更扩散的光束
-
 
 	DirectX::XMFLOAT3  attenuation;//減衰
 	float isEnable;//起動するかどうか

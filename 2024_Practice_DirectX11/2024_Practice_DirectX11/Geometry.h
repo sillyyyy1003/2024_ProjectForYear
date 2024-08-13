@@ -25,7 +25,7 @@ private:
 		std::shared_ptr<Mesh> mConeMesh;//円錐
 		std::shared_ptr<Mesh> mCylinderMesh;//円柱
 		std::shared_ptr<Mesh> mCylinderNoCapMesh;//Cylinder Without caps
-		std::shared_ptr<Mesh> mPlaneMesh;//平面
+		std::shared_ptr<Mesh> mPlane3DMesh;//平面
 		std::shared_ptr<Mesh> mCapsuleMesh;//Capsule
  	};
 
@@ -39,7 +39,7 @@ public:
 	static void DrawCylinder();
 	static void DrawCylinderNoCap();
 	static void DrawCone();
-	static void DrawPlane();
+	static void DrawPlane3D();
 	static void DrawCapsule();
 
 
@@ -85,7 +85,7 @@ private:
 	static void CreateCone(UINT slices);
 
 	/// @brief 平面作成（裏表二面）
-	static void CreatePlane();
+	static void CreatePlane3D();
 
 	/// @brief Capsule作成
 	static void CreateCapsule(UINT levels, UINT slices, UINT stacks);

@@ -83,25 +83,25 @@ void Shader::WriteShader(UINT slot, void* pData)
 	}
 }
 
-/*
+
 void Shader::SetTexture(UINT slot, Texture* _texture)
 {
 	if (slot >= mTextures.size()) { return; }
-	ID3D11ShaderResourceView* pTex = _texture ? _texture->GetSRV() : nullptr;
+	ID3D11ShaderResourceView* pTex = _texture ? _texture->GetResource() : nullptr;
 	mTextures[slot] = pTex;
 	switch (mShader)
 	{
-	case ShaderEnum::ShaderKind::VtxPosColorNormal:
-		D3D::Get()->GetContext()->VSSetShaderResources(slot, 1, &pTex);
+	case ShaderEnum::ShaderKind::Vertex:
+		gD3D->GetContext()->VSSetShaderResources(slot, 1, &pTex);
 		break;
 	case ShaderEnum::ShaderKind::Pixel:
-		D3D::Get()->GetContext()->PSSetShaderResources(slot, 1, &pTex);
+		gD3D->GetContext()->PSSetShaderResources(slot, 1, &pTex);
 		break;
 		//case Hull:		GetContext()->HSSetShaderResources(slot, 1, &pTex); break;
 		//case Domain:	GetContext()->DSSetShaderResources(slot, 1, &pTex); break;
 	}
 }
-*/
+
 
 HRESULT Shader::Create(void* pData, UINT size)
 {
@@ -220,46 +220,6 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 		elementDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		elementDesc.InstanceDataStepRate = 0;
 
-		/*switch(paramDesc.ComponentType)
-		{
-		case D3D_REGISTER_COMPONENT_UINT32:
-			elementDesc.Format = DXGI_FORMAT_R32_UINT;
-			break;
-		case D3D_REGISTER_COMPONENT_SINT32:
-			elementDesc.Format = DXGI_FORMAT_R32_SINT;
-			break;
-		case D3D_REGISTER_COMPONENT_FLOAT32:
-			elementDesc.Format = DXGI_FORMAT_R32_FLOAT;
-			break;
-		}*/
-
-		/*
-		// Set Format
-		if (paramDesc.Mask == 1)
-		{
-			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32G32_UINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32_SINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (paramDesc.Mask <= 3)
-		{
-			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32G32_UINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32_SINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
-		}
-		else if (paramDesc.Mask <= 7)
-		{
-			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32G32B32_UINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32B32_SINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		}
-		else if (paramDesc.Mask <= 15)
-		{
-			if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) elementDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) elementDesc.Format = DXGI_FORMAT_R32G32B32A32_SINT;
-			else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) elementDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		}
-		*/
 		int formatIndex = 0;
 		switch(paramDesc.ComponentType)
 		{
@@ -314,8 +274,7 @@ void VertexShader::SetShader()
 
 }
 
-PixelShader::PixelShader(ShaderEnum::ShaderKind _shader) :Shader(ShaderEnum::ShaderKind::Pixel),
-mPixelShader(nullptr)
+PixelShader::PixelShader(ShaderEnum::ShaderKind _shader) :Shader(ShaderEnum::ShaderKind::Pixel),mPixelShader(nullptr)
 {
 }
 
@@ -337,5 +296,6 @@ void PixelShader::SetShader()
 	for (int i = 0; i < mTextures.size(); ++i)
 		pContext->PSSetShaderResources(i, 1, mTextures[i].GetAddressOf());
 }
+
 
 

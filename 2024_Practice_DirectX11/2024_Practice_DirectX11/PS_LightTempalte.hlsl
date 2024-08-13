@@ -31,7 +31,7 @@ float4 main(PS_IN pin) : SV_TARGET
     pin.normal = normalize(pin.normal);
 
     // To Camera
-    float3 toEyeW = normalize(eyePos - pin.worldPos);
+    float3 toEyeW = normalize(eyePos.xyz - pin.worldPos.xyz);
 
     float4 ambient, diffuse, spec;
     float4 A, D, S;
@@ -42,12 +42,12 @@ float4 main(PS_IN pin) : SV_TARGET
     diffuse += D;
     spec += S;
 
-    ComputePointLight(material, pointLight, pin.worldPos, pin.normal, toEyeW, A, D, S);
+    ComputePointLight(material, pointLight, pin.worldPos.xyz, pin.normal, toEyeW, A, D, S);
     ambient += A;
     diffuse += D;
     spec += S;
 
-    ComputeSpotLight(material, spotLight, pin.worldPos, pin.normal, toEyeW, A, D, S);
+    ComputeSpotLight(material, spotLight, pin.worldPos.xyz, pin.normal, toEyeW, A, D, S);
     ambient += A;
     diffuse += D;
     spec += S;

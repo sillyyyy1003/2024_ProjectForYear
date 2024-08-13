@@ -46,6 +46,8 @@ struct Material
     float4 diffuse;
     float4 specular; // w = SpecPower
     float4 emission;
+    bool isTexEnable;
+    float Dummy[2];
 };
 
 /// @brief •ûŒüŒõ‚ÌŒvZ

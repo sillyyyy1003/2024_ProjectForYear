@@ -3,6 +3,7 @@
 #include "DXTrace.h"
 #include <sstream>
 
+#include "DebugLog.h"
 #include "KInput.h"
 
 #pragma warning(disable: 6031)
@@ -61,11 +62,7 @@ float D3DApp::AspectRatio()const
 
 int D3DApp::Run()
 {
-	// コンソール生成
-    AllocConsole();
-    FILE* fp;
-    // 標準出力の割り当て
-    freopen_s(&fp, "CON", "w", stdout);
+
     MSG msg = {};
     mTimer.Reset();
     timeBeginPeriod(1);
@@ -94,9 +91,9 @@ int D3DApp::Run()
                 }*/
                 //todo:How to Set FrameRate?
                 CalculateFrameStats();
-               /* ImGui_ImplDX11_NewFrame();
+                ImGui_ImplDX11_NewFrame();
                 ImGui_ImplWin32_NewFrame();
-                ImGui::NewFrame();*/
+                ImGui::NewFrame();
                 KInput::UpdateInput();//入力
                 UpdateScene(mTimer.DeltaTime());
                 DrawScene();
@@ -108,7 +105,6 @@ int D3DApp::Run()
         }
     }
     fclose(fp);
-
     return (int)msg.wParam;
 }
 
@@ -123,9 +119,15 @@ bool D3DApp::Init()
     if (FAILED(KInput::InitInput()))
         return false;
 
-    if (!InitImGui())
+	if (!InitImGui())
         return false;
 
+    // コンソール生成
+    AllocConsole();
+    // 標準出力の割り当て
+    freopen_s(&fp, "CON", "w", stdout);
+
+    DebugLog::Log("Game Init Completed");
     return true;
 }
 
@@ -146,11 +148,11 @@ void D3DApp::OnResize()
     HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
     HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
-    // 设置调试对象名
+    // Set Debug Name
     D3D11SetDebugObjectName(backBuffer.Get(), "BackBuffer[0]");
-
     backBuffer.Reset();
 
+    //Set Depth Stencil
     D3D11_TEXTURE2D_DESC depthStencilDesc = {};
     depthStencilDesc.Width = mClientWidth;
     depthStencilDesc.Height = mClientHeight;
@@ -175,7 +177,7 @@ void D3DApp::OnResize()
     depthStencilDesc.CPUAccessFlags = 0;
     depthStencilDesc.MiscFlags = 0;
 
-    // Create depthstencilview &depth stencil buffer
+    // Create DepthStencilView &depth stencil buffer
     HR(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, mDepthStencilBuffer.GetAddressOf()));
     HR(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf()));
 
@@ -183,7 +185,7 @@ void D3DApp::OnResize()
     //Set To Render Target
     mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
-    // 设置视口变换
+    // Set Viewport
     mViewport.TopLeftX = 0;
     mViewport.TopLeftY = 0;
     mViewport.Width = static_cast<float>(mClientWidth);
@@ -333,7 +335,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 bool D3DApp::InitMainWindow()
 {
-    WNDCLASS wc;
+    WNDCLASS wc = {};
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = MainWndProc;
     wc.cbClsExtra = 0;
@@ -375,12 +377,14 @@ bool D3DApp::InitDirect3D()
 {
     HRESULT hr = S_OK;
 
-    // 创建D3D设备 和 D3D设备上下文
+	//******************************************
+	// Create D3D device& D3D context
+	//******************************************
     UINT createDeviceFlags = 0;
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-    // 驱动类型数组
+    // drive type
     D3D_DRIVER_TYPE driverTypes[] =
     {
         D3D_DRIVER_TYPE_HARDWARE,
@@ -389,7 +393,7 @@ bool D3DApp::InitDirect3D()
     };
     UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-    // 特性等级数组
+    // feature level
     D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
@@ -407,7 +411,6 @@ bool D3DApp::InitDirect3D()
 
         if (hr == E_INVALIDARG)
         {
-            // Direct3D 11.0 的API不承认D3D_FEATURE_LEVEL_11_1，所以我们需要尝试特性等级11.0以及以下的版本
             hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
                 D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mContext.GetAddressOf());
         }
@@ -422,37 +425,32 @@ bool D3DApp::InitDirect3D()
         return false;
     }
 
-    // 检测是否支持特性等级11.0或11.1
+    // Check if support 11.0/11.1
     if (featureLevel != D3D_FEATURE_LEVEL_11_0 && featureLevel != D3D_FEATURE_LEVEL_11_1)
     {
         MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
         return false;
     }
 
-    // Check msaa level
+	//******************************************
+	// Check msaa level
+	//******************************************
     mDevice->CheckMultisampleQualityLevels(
         DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality);
     assert(m4xMsaaQuality > 0);
    
 
-
-
     ComPtr<IDXGIDevice> dxgiDevice = nullptr;
     ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
     ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;   // D3D11.0(包含DXGI1.1)的接口类
-    ComPtr<IDXGIFactory2> dxgiFactory2 = nullptr;   // D3D11.1(包含DXGI1.2)特有的接口类
 
-    // 为了正确创建 DXGI交换链，首先我们需要获取创建 D3D设备 的 DXGI工厂，否则会引发报错：
-    // "IDXGIFactory::CreateSwapChain: This function is being called with a device from a different IDXGIFactory."
     HR(mDevice.As(&dxgiDevice));
     HR(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
     HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
 
-    //check if contained IDXGIFactory2
-    hr = dxgiFactory1.As(&dxgiFactory2);
-
-
+    //******************************************
     // Create swap chain
+	//******************************************
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferDesc.Width = mClientWidth;
@@ -462,7 +460,7 @@ bool D3DApp::InitDirect3D()
     sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    // 是否开启4倍多重采样？
+    // Check use 4x MSAA
     if (isEnable4xMsaa)
     {
         sd.SampleDesc.Count = 4;
@@ -481,15 +479,66 @@ bool D3DApp::InitDirect3D()
     sd.Flags = 0;
     HR(dxgiFactory1->CreateSwapChain(mDevice.Get(), &sd, mSwapChain.GetAddressOf()));
 
-	// 可以禁止alt+enter全屏
     dxgiFactory1->MakeWindowAssociation(mhMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
-    // 设置调试对象名
+    // Set Dubug Obj
     D3D11SetDebugObjectName(mContext.Get(), "ImmediateContext");
     DXGISetDebugObjectName(mSwapChain.Get(), "SwapChain");
 
-    // 每当窗口被重新调整大小的时候，都需要调用这个OnResize函数。现在调用
-    // 以避免代码重复
+	//******************************************
+    // Create Sampler
+	//******************************************
+    D3D11_SAMPLER_DESC samplerDesc = {};
+    D3D11_FILTER filter[] = {
+        D3D11_FILTER_MIN_MAG_MIP_LINEAR,
+        D3D11_FILTER_MIN_MAG_MIP_POINT,
+    };
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    for (int i = 0; i < D3D::SAMPLER_MAX; ++i)
+    {
+        samplerDesc.Filter = filter[i];
+        HR(mDevice->CreateSamplerState(&samplerDesc, &mSamplerState[i]));
+    }
+    SetSamplerState(D3D::SAMPLER_LINEAR);
+
+    //******************************************
+	// Blend State
+	//******************************************
+    D3D11_BLEND_DESC blendDesc = {};
+    blendDesc.AlphaToCoverageEnable = FALSE;
+    blendDesc.IndependentBlendEnable = FALSE;
+    blendDesc.RenderTarget[0].BlendEnable = TRUE;
+    blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    D3D11_BLEND blend[D3D::BLEND_MAX][2] =
+    {
+        {D3D11_BLEND_ONE,D3D11_BLEND_ZERO},//NONE
+        {D3D11_BLEND_SRC_ALPHA,D3D11_BLEND_INV_SRC_ALPHA}, // BLEND_ALPHA,
+        {D3D11_BLEND_ONE, D3D11_BLEND_ONE},  // BLEND_ADD,
+        {D3D11_BLEND_SRC_ALPHA,D3D11_BLEND_ONE},// BLEND_ADDALPHA,
+        {D3D11_BLEND_ZERO,D3D11_BLEND_INV_SRC_COLOR},// BLEND_SUB,
+        {D3D11_BLEND_INV_DEST_COLOR,D3D11_BLEND_ONE},// BLEND_SCREEN,
+        {D3D11_BLEND_DEST_COLOR,D3D11_BLEND_ZERO},// BLEND_MULTI,//正片叠底
+
+    };
+
+	for (int i = 0; i < D3D::BLEND_MAX; i++)
+    {
+        blendDesc.RenderTarget[0].SrcBlend = blend[i][0];
+        blendDesc.RenderTarget[0].DestBlend = blend[i][1];
+        HR(mDevice->CreateBlendState(&blendDesc, mBlendStates[i].GetAddressOf()));
+    }
+
+    SetBlendState(D3D::BLEND_ALPHA);
+
+
+    //Init Resize Tool
     OnResize();
 
     return true;
@@ -536,5 +585,22 @@ void D3DApp::CalculateFrameStats()
         // Reset for next average.
         frameCnt = 0;
         timeElapsed += 1.0f;
+    }
+}
+
+void D3DApp::SetSamplerState(D3D::SamplerState _state)
+{
+    if (_state < 0 || _state >= D3D::SAMPLER_MAX) return;
+    mContext->VSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
+    mContext->PSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
+    mContext->HSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
+    mContext->DSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
+}
+
+void D3DApp::SetBlendState(D3D::BlendState _state)
+{
+    if (_state < D3D::BLEND_MAX && _state >= 0)//overflow Check
+    {
+        mContext->OMSetBlendState(mBlendStates[_state].Get(), NULL, 0xffffffff);
     }
 }

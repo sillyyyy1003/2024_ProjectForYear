@@ -71,9 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\Bin\Debug;C:\Assimp\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\DirectXTex;$(ProjectDir);C:\Assimp\include\assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTex\Bin\Release;C:\Assimp\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -107,13 +111,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ObjectFileOutput>$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
@@ -125,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -133,35 +142,56 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Box3D.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraBase.cpp" />
+    <ClCompile Include="CameraDCC.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="D3DUtil.cpp" />
     <ClCompile Include="DebugLog.cpp" />
     <ClCompile Include="DXTrace.cpp" />
+    <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="GampApp.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Plane3D.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StartUp.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="ThirdPersonCamera.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box3D.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraBase.h" />
+    <ClInclude Include="CameraDCC.h" />
     <ClInclude Include="D3DApp.h" />
     <ClInclude Include="D3DUtil.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DXTrace.h" />
+    <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="GampApp.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Plane3D.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StartUp.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="ThirdPersonCamera.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

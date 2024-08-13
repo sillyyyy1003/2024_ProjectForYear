@@ -1,21 +1,26 @@
 struct VS_IN
 {
     float3 pos : POSITION0;
-    float4 color : COLOR;
     float3 normal : NORMAL;
+    float2 tex : TEXCOORD;
 };
 
 struct VS_OUT
 {
     float4 pos : SV_POSITION0;
-    float4 color : COLOR;
+    //float4 color : COLOR;
     float3 normal : NORMAL;
+    float2 tex : TEXCOORD;
     float4 worldPos : POSITION0;
 };
 
 cbuffer WVP : register(b0)
 {
     float4x4 world;
+}
+
+cbuffer Camera:register(b1)
+{
     float4x4 view;
     float4x4 proj;
 }
@@ -33,7 +38,6 @@ VS_OUT main (VS_IN vin)
     vOut.pos = mul(vOut.pos, proj);
 
     vOut.normal = mul(vin.normal, (float3x3) world);
-    vOut.color = float4(1.f, 1.f, 1.f, 1.f);
-
+    vOut.tex = vin.tex;
     return vOut;
 }

@@ -28,7 +28,7 @@ void Geometry::Init()
 	CreateCylinder(20, 1);
 	CreateCylinderNoCap(20, 20);
 	CreateCone(20);
-	CreatePlane();
+	CreatePlane3D();
 	CreateCapsule(20,20,1);
 }
 
@@ -77,13 +77,13 @@ void Geometry::DrawCone()
 	mData.mConeMesh->Draw();
 }
 
-void Geometry::DrawPlane()
+void Geometry::DrawPlane3D()
 {
 	mData.mVS->WriteShader(0, mData.matrix);
 	mData.mVS->WriteShader(1, mData.param);
 	mData.mVS->SetShader();
 	mData.mPS->SetShader();
-	mData.mPlaneMesh->Draw();
+	mData.mPlane3DMesh->Draw();
 }
 
 void Geometry::DrawCapsule()
@@ -112,7 +112,7 @@ void Geometry::UnInit()
 	mData.mConeMesh.reset();//円錐
 	mData.mCylinderMesh.reset();//円柱
 	mData.mCylinderNoCapMesh.reset();//Cylinder Without caps
-	mData.mPlaneMesh.reset();//平面
+	mData.mPlane3DMesh.reset();//平面
 	mData.mCapsuleMesh.reset();
 
 	mData.mVS.reset();
@@ -534,12 +534,10 @@ void Geometry::CreateCone(UINT slices)
 	mData.mConeMesh = std::make_shared<Mesh>(desc);
 }
 
-void Geometry::CreatePlane()
+void Geometry::CreatePlane3D()
 {
 	const float d = 0.5f;
 	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
-
-	
 
 	DirectX::XMFLOAT3 pos[] = {
 		
@@ -586,8 +584,7 @@ void Geometry::CreatePlane()
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mData.mPlaneMesh = std::make_shared<Mesh>(desc);
-
+	mData.mPlane3DMesh = std::make_shared<Mesh>(desc);
 
 }
 

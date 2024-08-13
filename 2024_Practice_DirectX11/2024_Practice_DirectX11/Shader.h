@@ -2,6 +2,7 @@
 #include <wrl/client.h>
 #include <vector>
 #include "D3DApp.h" 
+#include "Texture.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -44,7 +45,8 @@ public:
 	/// @param pData 更新するデータのポインター
 	void WriteShader(UINT slot, void* pData);
 
-	//void SetTexture(UINT slot, Texture* _texture);
+	void SetTexture(UINT slot, Texture* _texture);
+
 	std::vector<ComPtr<ID3D11Buffer>> GetBuffers() { return mBuffers; };
 
 protected:
@@ -108,5 +110,7 @@ public:
 	/// @brief Set Constant Buffer to Pixel Shader
 	void SetShader() override;
 
+	/// @brief テクスチャの設定
+	//void SetTexture(UINT slot, Texture* tex);
 
 };
