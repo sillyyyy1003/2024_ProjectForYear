@@ -7,6 +7,7 @@
 #include "KInput.h"
 
 #pragma warning(disable: 6031)
+#pragma warning(disable: 4099)
 
 D3DApp* gD3D = nullptr;
 
@@ -49,7 +50,11 @@ D3DApp::D3DApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidt
 
 D3DApp::~D3DApp()
 {
-    // 恢复所有默认设定
+
+}
+
+void D3DApp::UnInit()
+{
     if (mContext)
         mContext->ClearState();
 }
@@ -57,7 +62,7 @@ D3DApp::~D3DApp()
 
 float D3DApp::AspectRatio()const
 {
-    return static_cast<float>(mClientWidth)/mClientHeight;
+    return static_cast<float>(mClientWidth) / mClientHeight;
 }
 
 int D3DApp::Run()
@@ -104,6 +109,8 @@ int D3DApp::Run()
             }
         }
     }
+
+    UnInit();
     fclose(fp);
     return (int)msg.wParam;
 }
@@ -111,6 +118,9 @@ int D3DApp::Run()
 bool D3DApp::Init()
 {
     if (!InitMainWindow())
+        return false;
+
+    if (!InitDirect2D())
         return false;
 
     if (!InitDirect3D())
@@ -144,7 +154,7 @@ void D3DApp::OnResize()
 
     // Reset SwapChain & rendertarget
     ComPtr<ID3D11Texture2D> backBuffer;
-    HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
+    HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0));
     HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
     HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
@@ -373,6 +383,15 @@ bool D3DApp::InitMainWindow()
     return true;
 }
 
+bool D3DApp::InitDirect2D()
+{
+    HR(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mpD2DFactory.GetAddressOf()));
+    HR(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
+        reinterpret_cast<IUnknown**>(mpDWriteFactory.GetAddressOf())));
+
+    return true;
+}
+
 bool D3DApp::InitDirect3D()
 {
     HRESULT hr = S_OK;
@@ -380,7 +399,7 @@ bool D3DApp::InitDirect3D()
 	//******************************************
 	// Create D3D device& D3D context
 	//******************************************
-    UINT createDeviceFlags = 0;
+    UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;	// Direct2D需要支持BGRA格式
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
@@ -436,21 +455,22 @@ bool D3DApp::InitDirect3D()
 	// Check msaa level
 	//******************************************
     mDevice->CheckMultisampleQualityLevels(
-        DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality);
+        DXGI_FORMAT_B8G8R8A8_UNORM, 4, &m4xMsaaQuality); 
     assert(m4xMsaaQuality > 0);
-   
 
     ComPtr<IDXGIDevice> dxgiDevice = nullptr;
     ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
-    ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;   // D3D11.0(包含DXGI1.1)的接口类
+    ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;	
 
     HR(mDevice.As(&dxgiDevice));
     HR(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
     HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
 
+
     //******************************************
     // Create swap chain
 	//******************************************
+    
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferDesc.Width = mClientWidth;
@@ -484,6 +504,7 @@ bool D3DApp::InitDirect3D()
     // Set Dubug Obj
     D3D11SetDebugObjectName(mContext.Get(), "ImmediateContext");
     DXGISetDebugObjectName(mSwapChain.Get(), "SwapChain");
+
 
 	//******************************************
     // Create Sampler

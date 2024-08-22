@@ -4,6 +4,7 @@
 #include "d3dUtil.h"
 #include "GUI.h"
 #include "KInput.h"
+#include "SceneManager.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -14,7 +15,7 @@ GameApp::GameApp(HINSTANCE hInstance, const std::wstring& windowName, int initWi
 
 GameApp::~GameApp()
 {
-    Geometry::UnInit();
+
 }
 
 bool GameApp::Init()
@@ -30,26 +31,56 @@ bool GameApp::Init()
 
 void GameApp::OnResize()
 {
+	
+	assert(mpD2DFactory);
+	assert(mpDWriteFactory);
+
+	// リリースD2D
+	mpColorBrush.Reset();
+	mpD2DRenderTarget.Reset();
+
 	D3DApp::OnResize();
+
+	ComPtr<IDXGISurface> surface;
+	HR(mSwapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void**>(surface.GetAddressOf())));
+	D2D1_RENDER_TARGET_PROPERTIES props = D2D1::RenderTargetProperties(
+		D2D1_RENDER_TARGET_TYPE_DEFAULT,
+		D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
+	HRESULT hr = mpD2DFactory->CreateDxgiSurfaceRenderTarget(surface.Get(), &props, mpD2DRenderTarget.GetAddressOf());
+	surface.Reset();
+
+	 if (hr == S_OK)
+	{
+		// CreateBrush
+		HR(mpD2DRenderTarget->CreateSolidColorBrush(
+			D2D1::ColorF(D2D1::ColorF::White),
+			mpColorBrush.GetAddressOf()));
+		HR(mpDWriteFactory->CreateTextFormat(
+			L"Meiryo",      // Font family name
+			nullptr,        // Font collection (nullptr for system default)
+			DWRITE_FONT_WEIGHT_NORMAL,	// Font weight (e.g., Normal, Bold)
+			DWRITE_FONT_STYLE_NORMAL,   // Font style (e.g., Normal, Italic)
+			DWRITE_FONT_STRETCH_NORMAL, // Font stretch (e.g., Normal, Condensed)
+			20,                         // Font size
+			L"ja-JP",                   // Locale (e.g., en-us for English, zh-cn for Simplified Chinese)
+			mpTextFormat.GetAddressOf()// Address of the text format pointer
+		));
+	}
+	else
+	{
+		assert(mpD2DRenderTarget);
+	}
+
 }
 
 void GameApp::UpdateScene(float deltaTime)
 {
 
-	
-	if (ImGui::Begin("WindowsName"))
-	{
-		//ImGui::Checkbox("RotateSet", &isRotate);
-	
-	}
-
-	
-
+	mSceneManager->_update(deltaTime);
 	ImGui::End();
 	ImGui::Render();
 
-	box->Update();
-	firstCamera->Update(deltaTime);
+	
 }
 
 void GameApp::DrawScene()
@@ -60,94 +91,45 @@ void GameApp::DrawScene()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), blue);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	Material material = box->GetMaterial()[0];
+	mSceneManager->_draw();
 
-	XMFLOAT4X4 worldMat = model->mTransform.GetMatrix();
-	VS->WriteShader(0, &worldMat);
-
-	//Set Camera matrix
-	XMFLOAT4X4 cameraMat[2];
-	cameraMat[0] = firstCamera->GetViewXMF();
-	cameraMat[1] = firstCamera->GetProjXMF();
-	VS->WriteShader(1, cameraMat);
-
-	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
-	struct Light
+	//D2D描画
+	if (mpD2DRenderTarget != nullptr)
 	{
-		DirectX::XMFLOAT4 lightAmbient;
-		DirectX::XMFLOAT4 lightDiffuse;
-		DirectX::XMFLOAT4 lightDir;
-	};
-	Light light = {
-		Color{0.5f,0.5f,0.5f,1.0f},
-		Color{0.2f,0.4f,0.6f,1.0f},
-		Vector4{0.5,0.5,-5.0f,1.0f},
-	};
-
-	PS->WriteShader(1, &eyePos);
-	PS->WriteShader(2, &light);
-	model->SetPixelShader(PS);
-	model->SetVertexShader(VS);
-	model->Draw();
-
-
-	for (int i = 0; i < 3; i++)
-	{
-		XMFLOAT4X4 bgMat = bg[i]->mTransform.GetMatrix();
-		VS->WriteShader(0, &bgMat);
-		VS->WriteShader(1, cameraMat);
-		PS->WriteShader(0, &material);
-		PS->WriteShader(1, &eyePos);
-		PS->WriteShader(2, &light);
-		bg[i]->SetPixelShader(PS);
-		bg[i]->SetVertexShader(VS);
-		bg[i]->Draw();
-
+		mpD2DRenderTarget->BeginDraw();
+		std::wstring textStr = L"日本語対応\n"
+			L"これはひらかなです\n"
+			L"コレハカタカナデス";
+		if (isWireframeMode)
+			textStr += L"线框模式";
+		else
+			textStr += L"面模式";
+		mpD2DRenderTarget->DrawTextW(textStr.c_str(), (UINT32)textStr.size(), mpTextFormat.Get(),
+			D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, mpColorBrush.Get());
+		HR(mpD2DRenderTarget->EndDraw());
 	}
-
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	mSwapChain->Present(0, 0);
 
 }
 
+void GameApp::UnInit()
+{
+	//Geometry Release
+	Geometry::UnInit();
+
+	//Scene Release
+	mSceneManager->UnInit();
+
+	D3DApp::UnInit();
+}
+
 bool GameApp::InitResource()
 {
-	//Init Obj
-	box = std::make_unique<Box3D>();
-	box->InitResource("Assets/Texture/field003.jpg");
-	box->mTransform.SetScale(1, 1, 1);
+	mSceneManager = std::make_shared<SceneManager>();
+	mSceneManager->Init();
 
-	for (int i = 0; i < 3; i++)
-	{
-		bg[i] = std::make_shared<Plane3D>();
-		bg[i]->InitResource("Assets/Texture/wall000.jpg");
-		bg[i]->mTransform.SetScale(1, 1.0, 1);
-
-	}
-
-	bg[0]->mTransform.SetPosition(-2, 0, 0);
-	bg[0]->mTransform.SetRotationInDegree(-90, 0, 0);
-
-	bg[1]->mTransform.SetPosition(0, -1, 0);
-
-	bg[2]->mTransform.SetPosition(2, -2, 1);
-	bg[2]->mTransform.SetRotationInDegree(0, 0, -90);
-
-
-	model = std::make_shared<Model>();
-	model->Load("Assets/Model/Player.obj");
-	model->mTransform.SetPosition(1.0f, 1.0f, 0.0f);
-
-	VS = std::make_shared<VertexShader>(ShaderEnum::Vertex);
-	HR(VS->LoadShaderFile("Assets/Shader/VS_Box.cso"));
-
-	PS = std::make_shared<PixelShader>(ShaderEnum::Pixel);
-	HR(PS->LoadShaderFile("Assets/Shader/PS_Box.cso"));
-
-	firstCamera = std::make_unique<FirstPersonCamera>();
-	firstCamera->SetPosition(0.0f, 1.0f, -5.0f);
-	
 	// ******************
 	// Init Rasterize state
 	// ******************

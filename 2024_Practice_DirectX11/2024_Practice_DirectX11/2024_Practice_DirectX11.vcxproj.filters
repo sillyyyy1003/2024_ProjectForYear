@@ -37,14 +37,35 @@
     <Filter Include="ヘッダー ファイル\Input">
       <UniqueIdentifier>{13fddc8b-9c68-44e3-8ab0-8eb16b9813fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\BasicModel">
-      <UniqueIdentifier>{edf8cd8f-0b58-491c-9380-a57b5116cf5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\BasicModel">
-      <UniqueIdentifier>{bd85fa06-bfe5-4cf5-97f3-413894a73fdf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\GameApp">
       <UniqueIdentifier>{e0d050f3-4a78-44a2-bc50-20c4737ec473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{50232feb-ff0a-4e10-9830-2c15ae2f7c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\SubScene">
+      <UniqueIdentifier>{b6ad6e7f-fc2d-4be0-9f91-03741d0268b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseModel">
+      <UniqueIdentifier>{edf8cd8f-0b58-491c-9380-a57b5116cf5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\BaseModel">
+      <UniqueIdentifier>{bd85fa06-bfe5-4cf5-97f3-413894a73fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameApp">
+      <UniqueIdentifier>{85ae8828-3391-4700-8fce-6c59c47bef45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Light">
+      <UniqueIdentifier>{e3593418-d5e2-4cfd-9e71-221c7fdd30b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Light">
+      <UniqueIdentifier>{f10147f6-ae69-40ee-93c8-0ff4382a2262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{539b138f-c584-4346-b32a-2cfae44accb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene\SubScene">
+      <UniqueIdentifier>{35724322-8fbe-4f3e-9d39-f64153a444b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,10 +109,10 @@
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
     <ClCompile Include="Box3D.cpp">
-      <Filter>ソース ファイル\BasicModel</Filter>
+      <Filter>ソース ファイル\BaseModel</Filter>
     </ClCompile>
     <ClCompile Include="Plane3D.cpp">
-      <Filter>ソース ファイル\BasicModel</Filter>
+      <Filter>ソース ファイル\BaseModel</Filter>
     </ClCompile>
     <ClCompile Include="ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
@@ -114,18 +135,30 @@
     <ClCompile Include="Model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CanvasUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBase.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LightBase.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="DirLight.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBlank.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StartUp.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DebugLog.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GampApp.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="D3DApp.h">
@@ -165,10 +198,10 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Box3D.h">
-      <Filter>ヘッダー ファイル\BasicModel</Filter>
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="Plane3D.h">
-      <Filter>ヘッダー ファイル\BasicModel</Filter>
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
@@ -184,6 +217,30 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="GampApp.h">
+      <Filter>ヘッダー ファイル\GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightBase.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBlank.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

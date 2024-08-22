@@ -123,14 +123,14 @@ void Geometry::UnInit()
 
 void Geometry::CreateVS()
 {
-	mData.mVS = std::make_shared<VertexShader>(ShaderEnum::Vertex);
+	mData.mVS = std::make_shared<VertexShader>();
 	HR(mData.mVS->LoadShaderFile("Assets/Shader/VS_Geometry.cso"));
 
 }
 
 void Geometry::CreatePS()
 {
-	mData.mPS = std::make_shared<PixelShader>(ShaderEnum::Pixel);
+	mData.mPS = std::make_shared<PixelShader>();
 	HR(mData.mPS->LoadShaderFile("Assets/Shader/PS_Geometry.cso"));
 }
 

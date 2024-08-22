@@ -6,8 +6,9 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-Shader::Shader(ShaderEnum::ShaderKind _shader) :mShader(_shader)
+Shader::Shader(ShaderKind kind) :mShader(kind)
 {
+	
 }
 
 Shader::~Shader()
@@ -91,10 +92,10 @@ void Shader::SetTexture(UINT slot, Texture* _texture)
 	mTextures[slot] = pTex;
 	switch (mShader)
 	{
-	case ShaderEnum::ShaderKind::Vertex:
+	case ShaderKind::Vertex:
 		gD3D->GetContext()->VSSetShaderResources(slot, 1, &pTex);
 		break;
-	case ShaderEnum::ShaderKind::Pixel:
+	case ShaderKind::Pixel:
 		gD3D->GetContext()->PSSetShaderResources(slot, 1, &pTex);
 		break;
 		//case Hull:		GetContext()->HSSetShaderResources(slot, 1, &pTex); break;
@@ -147,12 +148,11 @@ HRESULT Shader::Create(void* pData, UINT size)
 
 }
 
-VertexShader::VertexShader(ShaderEnum::ShaderKind _shader) :
-	Shader(ShaderEnum::ShaderKind::Vertex),
-	mVertexShader(nullptr),
-	mInputLayout(nullptr)
+VertexShader::VertexShader():
+Shader(ShaderKind::Vertex),
+mVertexShader(nullptr),
+mInputLayout(nullptr)
 {
-
 
 }
 
@@ -274,8 +274,11 @@ void VertexShader::SetShader()
 
 }
 
-PixelShader::PixelShader(ShaderEnum::ShaderKind _shader) :Shader(ShaderEnum::ShaderKind::Pixel),mPixelShader(nullptr)
+PixelShader::PixelShader() :
+Shader(ShaderKind::Pixel),
+mPixelShader(nullptr)
 {
+
 }
 
 PixelShader::~PixelShader()

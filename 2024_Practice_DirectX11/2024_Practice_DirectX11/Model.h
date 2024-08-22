@@ -14,7 +14,9 @@ class Texture;
 class Model
 {
 public:
+
 	Transform mTransform = {};
+
 private:
 
 	struct VertexWithBone
@@ -64,7 +66,6 @@ private:
 	Materials mMaterials;
 	std::shared_ptr<VertexShader> mVS = nullptr;
 	std::shared_ptr<PixelShader> mPS = nullptr;
-
 
 
 };

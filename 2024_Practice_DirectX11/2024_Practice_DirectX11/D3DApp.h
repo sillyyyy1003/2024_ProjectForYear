@@ -3,9 +3,8 @@
 #include "D3DUtil.h"
 #include "Timer.h"
 #include <wrl/client.h>
-#include <imgui.h>
-#include <imgui_impl_dx11.h>
-#include <imgui_impl_win32.h>
+#include <d2d1.h>
+#include <dwrite.h>
 
 
 using namespace Microsoft::WRL;
@@ -52,6 +51,11 @@ protected:
     UINT      m4xMsaaQuality = 0;       //  Multiple Anti Aliasing
     
 
+    // Direct2D
+    ComPtr<ID2D1Factory> mpD2DFactory;			    // D2DFactory
+    ComPtr<ID2D1RenderTarget> mpD2DRenderTarget;    // D2DRenderTarget
+    ComPtr<IDWriteFactory> mpDWriteFactory;			// DWrite Factory
+
     // Direct3D 11
     ComPtr<ID3D11Device> mDevice = nullptr;
     ComPtr<ID3D11DeviceContext> mContext = nullptr;
@@ -66,8 +70,6 @@ protected:
     ComPtr<ID3D11SamplerState> mSamplerState[D3D::SAMPLER_MAX] = {};
     ComPtr<ID3D11BlendState> mBlendStates[D3D::BLEND_MAX] = {};
 
-
-
     std::wstring mWndTitle; //Window Name                 
     int mClientWidth = 0;       //Client Width
     int mClientHeight = 0;      //Client Height
@@ -76,9 +78,10 @@ protected:
     FILE* fp;
 
 public:
+
     D3DApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
     virtual ~D3DApp();
-
+    virtual void UnInit();
 
     ID3D11Device* GetDevice() const { return mDevice.Get(); };
     ID3D11DeviceContext* GetContext() const { return mContext.Get(); };
@@ -110,15 +113,19 @@ public:
 
 protected:
     /// @brief Init Main Window
-    /// @return 
+    /// @return succeed or not
     bool InitMainWindow();
 
+    /// @brief Init D2D
+    /// @return succeed or not
+    bool InitDirect2D();
+
     /// @brief Init D3D
-    /// @return 
+    /// @return succeed or not
     bool InitDirect3D();
 
     /// @brief Init imGui
-    /// @return 
+    /// @return succeed or not
     bool InitImGui();            
 
     /// @brief フレーム数を計算＆表示

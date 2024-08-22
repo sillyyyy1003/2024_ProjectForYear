@@ -12,10 +12,7 @@
 
 Model::Model()
 {
-	mVS = std::make_shared<VertexShader>(ShaderEnum::Vertex);
-	mPS = std::make_shared<PixelShader>(ShaderEnum::Pixel);
 	importer = std::make_shared<Assimp::Importer>();
-	
 }
 
 Model::~Model()
@@ -201,8 +198,10 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 void Model::Draw(int texSlot)
 {
 	auto it = mMeshes.begin();
-	// 20230909-02 レジスタ５にセット
+
+	//Set Bone Animation
 	//GetContext()->VSSetConstantBuffers(5, 1, &m_BoneCombMtxCBuffer);
+
 	while (it != mMeshes.end())
 	{
 		mPS->WriteShader(0, &mMaterials[it->materialID]);
@@ -211,6 +210,7 @@ void Model::Draw(int texSlot)
 
 		if (texSlot >= 0)
 			mPS->SetTexture(texSlot, mMaterials[it->materialID].tex.get());
+
 		it->mesh->Draw();
 		++it;
 	}

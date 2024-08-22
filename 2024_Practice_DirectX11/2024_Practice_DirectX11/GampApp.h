@@ -5,31 +5,26 @@
 #include "d3dApp.h"
 #include "FirstPersonCamera.h"
 #include "Geometry.h"
-#include "Mesh.h"
 #include "Plane3D.h"
 #include "Shader.h"
 
 class Model;
 class Box3D;
+class SceneManager;
 class GameApp : public D3DApp
 {
 private:
-	/// @brief For Rasterizer State(光栅化)
+	/// @brief For Rasterizer State
 	ComPtr<ID3D11RasterizerState> mRSWireframe;
     bool isWireframeMode = false;
 
+    ComPtr<ID2D1SolidColorBrush> mpColorBrush;  // Brush
+    ComPtr<IDWriteFont> mpFont;					// Font
+    ComPtr<IDWriteTextFormat> mpTextFormat;		// Text Format
 
 public:
+    std::shared_ptr<SceneManager> mSceneManager;
 
-    std::unique_ptr<Box3D> box;
-    std::shared_ptr<Plane3D> bg[3];
-    std::shared_ptr<Model> model;
-
-    std::unique_ptr<FirstPersonCamera> firstCamera;
-
-    std::shared_ptr<VertexShader> VS;
-    std::shared_ptr<PixelShader> PS;
- 
 public:
 
     GameApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
@@ -48,6 +43,8 @@ public:
 
     /// @brief 
     void DrawScene() override;
+
+    void UnInit() override;
 
 private:
 

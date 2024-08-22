@@ -6,8 +6,8 @@
 class FirstPersonCamera : public CameraBase
 {
 private:
-    //Transform mTransform = {};
-    float mMoveSpeed = 3.0f;
+ 
+    float mMoveSpeed = 5.0f;
 
     int mState = 0;
     POINT mOldPos = { 0,0 };

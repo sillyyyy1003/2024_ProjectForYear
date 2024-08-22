@@ -6,24 +6,21 @@
 
 using Microsoft::WRL::ComPtr;
 
-namespace ShaderEnum
+
+class Shader
 {
+protected:
 	enum  ShaderKind {
 		Vertex = 0,
 		Pixel = 1,
 	};
-
-}
-
-class Shader
-{
 public:
-	Shader(ShaderEnum::ShaderKind _shader);
+	Shader(ShaderKind kind);
 	virtual ~Shader();
 
 protected:
 
-	ShaderEnum::ShaderKind mShader;
+	ShaderKind mShader;
 	std::vector<ComPtr<ID3D11Buffer>> mBuffers;
 	std::vector<ComPtr<ID3D11ShaderResourceView>> mTextures;
 
@@ -77,7 +74,7 @@ private:
 
 public:
 
-	VertexShader(ShaderEnum::ShaderKind _shader);
+	VertexShader();
 	~VertexShader();
 
 	/// @brief VertexShaderì¬
@@ -98,7 +95,7 @@ private:
 	ComPtr<ID3D11PixelShader> mPixelShader;
 
 public:
-	PixelShader(ShaderEnum::ShaderKind _shader);
+	PixelShader();
 	~PixelShader() override;
 
 	/// @brief Pixel Shaderì¬

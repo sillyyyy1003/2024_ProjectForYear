@@ -1,21 +1,2 @@
-﻿  Box3D.cpp
-  Camera.cpp
-  CameraBase.cpp
-  CameraDCC.cpp
-  D3DApp.cpp
-  D3DUtil.cpp
-  FirstPersonCamera.cpp
-  GUI.cpp
-  GampApp.cpp
-  Geometry.cpp
-  Mesh.cpp
-  Model.cpp
-  Plane3D.cpp
-  Shader.cpp
-  StartUp.cpp
-  Texture.cpp
-  ThirdPersonCamera.cpp
-  Timer.cpp
-  Transform.cpp
-  コードを生成中...
+﻿  CanvasUI.cpp
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

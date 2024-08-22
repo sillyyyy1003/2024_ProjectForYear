@@ -9,8 +9,6 @@ using namespace DirectX::SimpleMath;
 
 void Box3D::InitResource(const char* fileName)
 {
-	CreatePS();
-	CreateVS();
 	CreateMeshes();
 	CreateTexture(fileName);
 	CreateMaterial();
@@ -41,12 +39,12 @@ void Box3D::Update()
 
 }
 
-const void Box3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
+void Box3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
 {
 	mPS = ps;
 }
 
-const void Box3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
+void Box3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
 {
 	mVS = vs;
 }
@@ -58,8 +56,8 @@ void Box3D::CreateMaterial(int matNum)
 	for (int i = 0; i < mMaterials.size(); i++)
 	{
 		mMaterials[i] = {
-			Color(0.2f, 0.2f, 0.2f, 1.0f),		// 弱い環境光
-			Color(0.7f, 0.3f, 0.5f, 1.0f),		// 表面色
+			Color(1.0f, 1.0f, 1.0, 1.0f),		// 環境光
+			Color(1.0f, 1.0f, 1.0, 1.0f),		// 表面色
 			Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
 			Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
 		};
@@ -166,16 +164,3 @@ void Box3D::CreateMeshes()
 		mMeshes[i].materialID = i;
 	}
 }
-
-void Box3D::CreateVS()
-{
-	mVS = std::make_shared<VertexShader>(ShaderEnum::Vertex);
-	//HR(mVS->LoadShaderFile("Assets/Shader/VS_Box.cso"));
-}
-
-void Box3D::CreatePS()
-{
-	mPS = std::make_shared<PixelShader>(ShaderEnum::Pixel);
-	//HR(mPS->LoadShaderFile("Assets/Shader/PS_Box.cso"));
-}
-

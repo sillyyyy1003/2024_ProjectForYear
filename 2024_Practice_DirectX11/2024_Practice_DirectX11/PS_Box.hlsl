@@ -22,7 +22,7 @@ cbuffer Camera : register(b1)
 cbuffer Light: register(b2){
     float4 lightAmbient;
 	float4 lightDiffuse;
-    float4 lightDir;
+    float4 lightPos;
 }
 
 Texture2D myTex : register(t0);
@@ -31,6 +31,7 @@ SamplerState mySampler : register(s0);
 float4 main (PS_IN pin) : SV_TARGET
 {
     float4 color = float4(0, 0, 0, 0);
+
     if(material.isTexEnable)
     {
         color = myTex.Sample(mySampler, pin.tex);
@@ -41,14 +42,14 @@ float4 main (PS_IN pin) : SV_TARGET
 
 
     float3 normal = normalize(pin.normal);
-    float3 toEye = normalize(-eyePos);
+    float3 toEye = normalize(-eyePos.xyz);
 
 	//ŠÂ‹«ŒõŒvŽZ
     float4 ambient = material.ambient * lightAmbient;
-    float3 lightVec = normalize(lightDir);
+    float3 lightVec = normalize(lightPos.xyz);
     //Lambert DiffuseŒvŽZ
     float diffuseFactor = saturate(dot(lightVec, normal));
-    float4 diffuse = diffuseFactor * lightDiffuse;
+    float4 diffuse = diffuseFactor * lightDiffuse / PI;
     // specular ŒvŽZ
     float3 v = normalize(eyePos.xyz - pin.worldPos.xyz);
     float specFactor = pow(max(dot(v, toEye), 0.0f), material.specular.w);

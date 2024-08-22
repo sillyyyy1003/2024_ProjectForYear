@@ -13,9 +13,6 @@ void Plane3D::InitResource(const char* _fileName)
 	CreateMaterial();
 	CreateTexture(_fileName);
 
-	CreatePS();
-	CreateVS();
-
 }
 
 void Plane3D::Update(float dt)
@@ -36,12 +33,12 @@ void Plane3D::Draw(int texSlot)
 	}
 }
 
-const void Plane3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
+void Plane3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
 {
 	mPS = ps;
 }
 
-const void Plane3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
+void Plane3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
 {
 	mVS = vs;
 }
@@ -51,17 +48,6 @@ const void Plane3D::SetSize(float width, float height)
 	mTransform.SetScale(width, 1.0f, height);
 }
 
-
-const void Plane3D::CreatePS()
-{
-	mPS = std::make_shared<PixelShader>(ShaderEnum::Pixel);
-}
-
-const void Plane3D::CreateVS()
-{
-	mVS = std::make_shared<VertexShader>(ShaderEnum::Vertex);
-
-}
 
 const void Plane3D::CreateMeshes()
 {

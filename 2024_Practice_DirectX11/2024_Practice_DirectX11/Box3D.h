@@ -31,8 +31,6 @@ private:
 	Meshes mMeshes; //描画
 	std::shared_ptr<VertexShader> mVS = nullptr;
 	std::shared_ptr<PixelShader> mPS = nullptr;
-	//std::unique_ptr<VertexShader> mVS = nullptr;
-	//std::unique_ptr<PixelShader> mPS = nullptr;
 
 	//Material　
 	Materials mMaterials = {};  //todo Material先设置为一种
@@ -62,8 +60,8 @@ public:
 
 	void Update();
 
-	const void SetPixelShader(std::shared_ptr<PixelShader> ps);
-	const void SetVertexShader(std::shared_ptr<VertexShader> vs);
+	void SetPixelShader(std::shared_ptr<PixelShader> ps);
+	void SetVertexShader(std::shared_ptr<VertexShader> vs);
 
 
 	Materials& GetMaterial() { return mMaterials; };
@@ -71,14 +69,6 @@ public:
 private:
 	/// @brief MeshData(頂点)作成
 	void CreateMeshes();
-
-	/// @brief Vertex Shader作成
-	/// @return 
-	void CreateVS();
-
-	/// @brief Pixel Shader作成
-	/// @return 
-	void CreatePS();
 
 	/// @brief Materialを作る
 	/// @param matNum materialの数

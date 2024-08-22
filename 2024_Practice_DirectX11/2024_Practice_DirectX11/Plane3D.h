@@ -37,16 +37,15 @@ public:
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	const void SetPixelShader(std::shared_ptr<PixelShader> ps);
-	const void SetVertexShader(std::shared_ptr<VertexShader> vs);
+	void SetPixelShader(std::shared_ptr<PixelShader> ps);
+	void SetVertexShader(std::shared_ptr<VertexShader> vs);
 
 	/// @brief ïΩñ ÇÃÉTÉCÉYÇê›íËÇ∑ÇÈ
 	/// @param width 
 	/// @param height 
 	const void SetSize(float width, float height);
 private:
-	const void CreatePS();
-	const void CreateVS();
+
 	const void CreateMeshes();
 	const void CreateMaterial(int matNum = 2);
 	const void CreateTexture(const char* _fileName);
