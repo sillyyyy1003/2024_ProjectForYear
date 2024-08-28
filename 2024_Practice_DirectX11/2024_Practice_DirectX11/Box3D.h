@@ -14,7 +14,7 @@ private:
 	//描画関連
 	struct MeshData
 	{
-		std::shared_ptr<Mesh> mesh;
+		std::unique_ptr<Mesh> mesh;
 		unsigned int materialID = 0;
 	};
 
@@ -29,14 +29,15 @@ private:
 	std::vector<DWORD> mIdxData;
 
 	Meshes mMeshes; //描画
-	std::shared_ptr<VertexShader> mVS = nullptr;
-	std::shared_ptr<PixelShader> mPS = nullptr;
+	/*裸指针方便复制粘贴*/
+	VertexShader* mVS = nullptr;
+	PixelShader* mPS = nullptr;
 
 	//Material　
 	Materials mMaterials = {};  //todo Material先设置为一种
 
 	//Texture
-	std::shared_ptr<Texture> mTex = nullptr;
+	std::unique_ptr<Texture> mTex = nullptr;
 
 	
 public:
@@ -60,8 +61,8 @@ public:
 
 	void Update();
 
-	void SetPixelShader(std::shared_ptr<PixelShader> ps);
-	void SetVertexShader(std::shared_ptr<VertexShader> vs);
+	void SetPixelShader(PixelShader* ps);
+	void SetVertexShader(VertexShader* vs);
 
 
 	Materials& GetMaterial() { return mMaterials; };

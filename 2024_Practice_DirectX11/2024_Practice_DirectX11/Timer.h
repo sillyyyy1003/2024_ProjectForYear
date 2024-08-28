@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 
 
 class Timer
@@ -14,6 +15,18 @@ private:
     __int64 mStopTime = 0;
     __int64 mPrevTime = 0;
     __int64 mCurrTime = 0;
+
+    // Game time related variables
+    int gameMinutesPerSecond = 10;  // 1 second in real-time equals 10 minutes in-game
+    int gameHoursPerDay = 24;
+    int gameMinutesPerHour = 60;
+
+
+    int gameDay = 1;
+    int gameHour = 0;
+    int gameMinute = 0;
+
+    double accumulatedRealTime = 0.0;  // Accumulated real-time since last update
 
 public:
     __int64 mOldTime = 0;
@@ -46,13 +59,14 @@ public:
     /// @return 
     bool IsStopped() const { return isStopped; };
 
-
-
     void SetPrevTime()  { mPrevTime = mCurrTime; };
 
-    void SetCurrTime();
+    /// @brief System time related methods
+    void UpdateSystemTime();
 
-    bool isSet();
+    /// @brief 今のシステム時間出力
+    /// @return システム時間（std::string）
+    std::string GetSystemTime() const ;
 };
 
 

@@ -13,6 +13,7 @@ Shader::Shader(ShaderKind kind) :mShader(kind)
 
 Shader::~Shader()
 {
+
 }
 
 
@@ -68,6 +69,7 @@ HRESULT Shader::LoadShaderFile(const char* _fileName)
 
 	//pData->Shader字节码
 	hr = Create(pData, fileSize);
+	delete pData;
 	return hr;
 }
 
@@ -158,6 +160,7 @@ mInputLayout(nullptr)
 
 VertexShader::~VertexShader()
 {
+
 }
 
 HRESULT VertexShader::CreateShader(void* pData, UINT size)
@@ -212,7 +215,7 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 		D3D11_SIGNATURE_PARAMETER_DESC paramDesc;
 		pReflection->GetInputParameterDesc(i, &paramDesc);
 
-		D3D11_INPUT_ELEMENT_DESC elementDesc;
+		D3D11_INPUT_ELEMENT_DESC elementDesc = {};
 		elementDesc.SemanticName = paramDesc.SemanticName;
 		elementDesc.SemanticIndex = paramDesc.SemanticIndex;
 		elementDesc.InputSlot = 0;

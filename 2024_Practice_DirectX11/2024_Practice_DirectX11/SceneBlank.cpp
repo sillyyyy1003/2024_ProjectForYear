@@ -1,6 +1,8 @@
 #include "SceneBlank.h"
+#include <memory>
 #include "Model.h"
 #include "Box3D.h"
+#include "CanvasUI.h"
 #include "DirLight.h"
 #include "Plane3D.h"
 #include "FirstPersonCamera.h"
@@ -13,20 +15,16 @@ using namespace DirectX;
 void SceneBlank::Init()
 {
 	
-	VertexShader* vs = CreateObj<VertexShader>("vs").get();
+	VertexShader* vs = CreateObj<VertexShader>("vs");
 	HR(vs->LoadShaderFile("Assets/Shader/VS_Box.cso"));
 	
-	PixelShader* ps = CreateObj<PixelShader>("ps").get();
+	PixelShader* ps = CreateObj<PixelShader>("ps");
 	HR(ps->LoadShaderFile("Assets/Shader/PS_Box.cso"));
-	/*
-	Box3D* box = CreateObj<Box3D>("box");
-	box->InitResource("Assets/Texture/field003.jpg");
-	box->mTransform.SetScale(1, 1, 1);
-	*/
+
 
 	for (int i = 0; i < 3; i++)
 	{
-		bg[i] = std::make_shared<Plane3D>();
+		bg[i] = std::make_unique<Plane3D>();
 		bg[i]->InitResource("Assets/Texture/wall000.jpg");
 		bg[i]->mTransform.SetScale(1, 1.0, 1);
 
@@ -41,9 +39,13 @@ void SceneBlank::Init()
 	bg[2]->mTransform.SetRotationInDegree(0, 0, -90);
 
 
-	model = std::make_shared<Model>();
+	model = std::make_unique<Model>();
 	model->Load("Assets/Model/Player.obj");
 	model->mTransform.SetPosition(1.0f, 1.0f, 0.0f);
+
+	ui = std::make_unique<CanvasUI>();
+	ui->InitCanvas("Assets/Texture/wall000.jpg");
+	
 }
 
 void SceneBlank::UnInit()
@@ -56,20 +58,20 @@ void SceneBlank::Update(float dt)
 	r += 1.f * dt ;
 	
 	//Box3D* box = GetObj<Box3D>("box");
-	model->mTransform.RotateAround(Vector3(0, 0, 0), Vector3(0, 0, 1), r);
+	//model->mTransform.RotateAround(Vector3(0, 0, 0), Vector3(0, 0, 1), r);
 
-	if(ImGui::Begin("LightColor")){}
+	ui->Update(dt);
 
 }
 
 void SceneBlank::Draw()
 {
 	
-	std::shared_ptr<FirstPersonCamera> firstCamera = GetObj<FirstPersonCamera>("Camera");
-	std::shared_ptr<VertexShader>vs = GetObj<VertexShader>("vs");
-	std::shared_ptr<PixelShader>ps = GetObj<PixelShader>("ps");
+	FirstPersonCamera* firstCamera = GetObj<FirstPersonCamera>("Camera");
+	VertexShader* vs = GetObj<VertexShader>("vs");
+	PixelShader* ps = GetObj<PixelShader>("ps");
 
-	Box3D* box = GetObj<Box3D>("box").get();
+	Box3D* box = GetObj<Box3D>("box");
 	Material material = {
 		Color(0.4f, 0.4f, 0.4f, 1.0f),		// ŠÂ‹«Œõ
 		Color(0.7f, 0.3f, 0.5f, 1.0f),		// •\–ÊF
@@ -78,11 +80,11 @@ void SceneBlank::Draw()
 	};
 	//box->Draw();
 
-	Model* model = GetObj<Model>("Model").get();
-	XMFLOAT4X4 worldMat = model->mTransform.GetMatrix();
+	Model* model = GetObj<Model>("Model");
+	XMFLOAT4X4 worldMat = model->mTransform.GetMatrixFX4();
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	XMFLOAT4X4 cameraMat[2];
+	XMFLOAT4X4 cameraMat[2]={};
 	cameraMat[0] = firstCamera->GetViewXMF();
 	cameraMat[1] = firstCamera->GetProjXMF();
 	
@@ -93,7 +95,7 @@ void SceneBlank::Draw()
 		DirectX::XMFLOAT4 lightDiffuse;
 		DirectX::XMFLOAT4 lightDir;
 	};
-	DirLight* dirLight = GetObj<DirLight>("Light").get();
+	DirLight* dirLight = GetObj<DirLight>("Light");
 
 	Light light = {
 		dirLight->GetAmbient(),
@@ -112,7 +114,7 @@ void SceneBlank::Draw()
 
 	for (int i = 0; i < 3; i++)
 	{
-		XMFLOAT4X4 bgMat = bg[i]->mTransform.GetMatrix();
+		XMFLOAT4X4 bgMat = bg[i]->mTransform.GetMatrixFX4();
 		vs->WriteShader(0, &bgMat);
 		vs->WriteShader(1, cameraMat);
 		ps->WriteShader(0, &material);
@@ -122,5 +124,6 @@ void SceneBlank::Draw()
 		bg[i]->SetVertexShader(vs);
 		bg[i]->Draw();
 	}
-
+	
+	ui->Draw();
 }

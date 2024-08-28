@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "DebugLog.h"
 #include "DXTrace.h"
+#include "GampApp.h"
 
 Mesh::Mesh(const MeshData& _data)
 {
@@ -25,10 +26,14 @@ Mesh::Mesh(const MeshData& _data)
     void* pIndex = new char[indexTotalSize];
     memcpy_s(pIndex, indexTotalSize, _data.pIndex, indexTotalSize);
     mData.pIndex = pIndex;
+
+	delete pVertex;
+	delete pIndex;
 }
 
 Mesh::~Mesh()
 {
+
 }
 
 HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCount)
@@ -50,7 +55,7 @@ HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCoun
 
 	//--- 頂点バッファの作成
 	HRESULT hr;
-	ID3D11Device* pDevice = gD3D->GetDevice();
+	ID3D11Device* pDevice = GameApp::Get()->GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, pVertexBuffer.GetAddressOf());
 
 	if (FAILED(hr))
@@ -82,7 +87,7 @@ HRESULT Mesh::CreateIndexBuffer(const void* pIndex, UINT size, UINT indexCount)
 	subResource.pSysMem = pIndex;
 
 	// インデックスバッファ生成
-	ID3D11Device* pDevice = gD3D->GetDevice();
+	ID3D11Device* pDevice = GameApp::Get()->GetDevice();
 	HRESULT hr;
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, pIndexBuffer.GetAddressOf());
 	if (FAILED(hr))
@@ -97,7 +102,7 @@ HRESULT Mesh::Write(void* pVertex) const
 	//if (!mData.isWrite) { return E_FAIL; }
 
 	HRESULT hr;
-	ID3D11Device* pDevice = gD3D->GetDevice();
+	ID3D11Device* pDevice = GameApp::Get()->GetDevice();
 	ID3D11DeviceContext* pContext = gD3D->GetContext();
 	D3D11_MAPPED_SUBRESOURCE mapResource;
 

@@ -39,12 +39,13 @@ void Box3D::Update()
 
 }
 
-void Box3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
+void Box3D::SetPixelShader(PixelShader* ps)
 {
 	mPS = ps;
+
 }
 
-void Box3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
+void Box3D::SetVertexShader(VertexShader* vs)
 {
 	mVS = vs;
 }
@@ -66,7 +67,7 @@ void Box3D::CreateMaterial(int matNum)
 
 void Box3D::CreateTexture(const char* fileName)
 {
-	mTex = std::make_shared<Texture>();
+	mTex = std::make_unique<Texture>();
 	mTex->Create(fileName);
 }
 
@@ -160,7 +161,7 @@ void Box3D::CreateMeshes()
 		desc.indexSize = sizeof(DWORD);
 		desc.indexCount = static_cast<UINT>(indexData.size());
 		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		mMeshes[i].mesh = std::make_shared<Mesh>(desc);
+		mMeshes[i].mesh = std::make_unique<Mesh>(desc);
 		mMeshes[i].materialID = i;
 	}
 }

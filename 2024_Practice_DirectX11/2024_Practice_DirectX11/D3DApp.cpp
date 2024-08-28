@@ -2,8 +2,9 @@
 #include "d3dUtil.h"
 #include "DXTrace.h"
 #include <sstream>
-
+#include <dxgi.h>
 #include "DebugLog.h"
+#include "GampApp.h"
 #include "KInput.h"
 
 #pragma warning(disable: 6031)
@@ -17,15 +18,14 @@ extern "C"
     __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
     __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 0x00000001;
 }
-/*
+
 namespace
-//{
+{
     // This is just used to forward Windows messages from a global window
     // procedure to our member function window procedure because we cannot
     // assign a member function to WNDCLASS::lpfnWndProc.
-    D3DApp* gD3D=nullptr;
-//}
-*/
+    //D3DApp* gD3D = nullptr;
+}
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -34,29 +34,33 @@ MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     // Forward hwnd on because we can get messages (e.g., WmCREATE)
     // before CreateWindow returns, and thus before mhMainWnd is valid.
-    return gD3D->MsgProc(hwnd, msg, wParam, lParam);
-}
-
-D3DApp::D3DApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
-    : mhAppInst(hInstance),
-    mWndTitle(windowName),
-    mClientWidth(initWidth),
-    mClientHeight(initHeight)
-{
-    ZeroMemory(&mViewport, sizeof(D3D11_VIEWPORT));
-
-    gD3D = this;
+    return GameApp::Get()->MsgProc(hwnd, msg, wParam, lParam);
 }
 
 D3DApp::~D3DApp()
 {
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+}
 
+void D3DApp::InitDX(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
+{
+    mhAppInst = hInstance;
+    mWndTitle = windowName;
+    mClientWidth = initWidth;
+    mClientHeight = initHeight;
+    ZeroMemory(&mViewport, sizeof(D3D11_VIEWPORT));
+	gD3D = this;
 }
 
 void D3DApp::UnInit()
 {
     if (mContext)
+    {
         mContext->ClearState();
+    }
+
 }
 
 
@@ -110,7 +114,7 @@ int D3DApp::Run()
         }
     }
 
-    UnInit();
+    //UnInit();
     fclose(fp);
     return (int)msg.wParam;
 }
@@ -314,7 +318,6 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
-
         // The WmMENUCHAR message is sent when a menu is active and the user presses 
         // a key that does not correspond to any mnemonic or accelerator key. 
     case WM_MENUCHAR:
@@ -385,6 +388,7 @@ bool D3DApp::InitMainWindow()
 
 bool D3DApp::InitDirect2D()
 {
+
     HR(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mpD2DFactory.GetAddressOf()));
     HR(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
         reinterpret_cast<IUnknown**>(mpDWriteFactory.GetAddressOf())));

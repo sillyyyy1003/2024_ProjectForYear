@@ -9,17 +9,17 @@ class Plane3D
 private:
 	struct MeshData
 	{
-		std::shared_ptr<Mesh> mesh = nullptr;
+		std::unique_ptr<Mesh> mesh = nullptr;
 		unsigned int materialID = 0;
 	};
 	using Meshes = std::vector<MeshData>;
 	using Materials = std::vector<Material>;
 
-	std::shared_ptr<VertexShader> mVS = nullptr;
-	std::shared_ptr<PixelShader> mPS = nullptr;
+	VertexShader* mVS = nullptr;
+	PixelShader* mPS = nullptr;
 
 	Meshes mMeshes;//描画用メッシュ
-	std::shared_ptr<Texture> mTex = nullptr;//テクスチャ
+	std::unique_ptr<Texture> mTex = nullptr;//テクスチャ
 	Materials mMaterials = {};
 
 	//WVP matrices
@@ -37,8 +37,8 @@ public:
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	void SetPixelShader(std::shared_ptr<PixelShader> ps);
-	void SetVertexShader(std::shared_ptr<VertexShader> vs);
+	void SetPixelShader(PixelShader* ps);
+	void SetVertexShader(VertexShader* vs);
 
 	/// @brief 平面のサイズを設定する
 	/// @param width 

@@ -123,14 +123,14 @@ void Geometry::UnInit()
 
 void Geometry::CreateVS()
 {
-	mData.mVS = std::make_shared<VertexShader>();
+	mData.mVS = std::make_unique<VertexShader>();
 	HR(mData.mVS->LoadShaderFile("Assets/Shader/VS_Geometry.cso"));
 
 }
 
 void Geometry::CreatePS()
 {
-	mData.mPS = std::make_shared<PixelShader>();
+	mData.mPS = std::make_unique<PixelShader>();
 	HR(mData.mPS->LoadShaderFile("Assets/Shader/PS_Geometry.cso"));
 }
 
@@ -182,7 +182,7 @@ void Geometry::CreateSphereMesh(UINT levels, UINT slices)
 	desc.indexSize = sizeof(idx[0]);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mData.mSphereMesh = std::make_shared<Mesh>(desc);
+	mData.mSphereMesh = std::make_unique<Mesh>(desc);
 
 
 }
@@ -285,7 +285,7 @@ void Geometry::CreateBoxMesh()
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mData.mBoxMesh = std::make_shared<Mesh>(desc);
+	mData.mBoxMesh = std::make_unique<Mesh>(desc);
 }
 
 void Geometry::CreateCylinder(UINT slices, UINT stacks)
@@ -404,7 +404,7 @@ void Geometry::CreateCylinder(UINT slices, UINT stacks)
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
-	mData.mCylinderMesh = std::make_shared<Mesh>(desc);
+	mData.mCylinderMesh = std::make_unique<Mesh>(desc);
 
 }
 
@@ -462,7 +462,7 @@ void Geometry::CreateCylinderNoCap(UINT slices, UINT stacks)
 	desc.indexSize = sizeof(idx[0]);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mData.mCylinderNoCapMesh = std::make_shared<Mesh>(desc);
+	mData.mCylinderNoCapMesh = std::make_unique<Mesh>(desc);
 }
 
 void Geometry::CreateCone(UINT slices)
@@ -531,7 +531,7 @@ void Geometry::CreateCone(UINT slices)
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;//LINELIST;//TRIANGLELIST;
-	mData.mConeMesh = std::make_shared<Mesh>(desc);
+	mData.mConeMesh = std::make_unique<Mesh>(desc);
 }
 
 void Geometry::CreatePlane3D()
@@ -584,7 +584,7 @@ void Geometry::CreatePlane3D()
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mData.mPlane3DMesh = std::make_shared<Mesh>(desc);
+	mData.mPlane3DMesh = std::make_unique<Mesh>(desc);
 
 }
 
@@ -720,7 +720,7 @@ void Geometry::CreateCapsule(UINT levels,UINT slices, UINT stacks)
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	mData.mCapsuleMesh = std::make_shared<Mesh>(desc);
+	mData.mCapsuleMesh = std::make_unique<Mesh>(desc);
 }
 
 

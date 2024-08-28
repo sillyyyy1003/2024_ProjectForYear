@@ -12,19 +12,19 @@
 
 Model::Model()
 {
-	importer = std::make_shared<Assimp::Importer>();
+	importer = std::make_unique<Assimp::Importer>();
 }
 
 Model::~Model()
 {
 }
 
-void Model::SetVertexShader(std::shared_ptr<VertexShader> vs)
+void Model::SetVertexShader(VertexShader* vs)
 {
 	mVS = vs;
 }
 
-void Model::SetPixelShader(std::shared_ptr<PixelShader> ps)
+void Model::SetPixelShader(PixelShader* ps)
 {
 	mPS = ps;
 }

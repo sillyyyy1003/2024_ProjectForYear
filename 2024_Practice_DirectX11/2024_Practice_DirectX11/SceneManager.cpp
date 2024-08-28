@@ -16,16 +16,16 @@ enum SceneName
 void SceneManager::Init()
 {
 	//ƒJƒƒ‰ì¬
-	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("Camera");
+	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
 	camera->SetPosition(0.0f, 0.0f, -5.0f);
 
 	//Šî’êƒ‰ƒCƒgì¬
-	std::shared_ptr<DirLight> light = CreateObj<DirLight>("Light");
+	DirLight* light = CreateObj<DirLight>("Light");
 	light->SetAmbient(Vector4(0.7f,0.7f,0.7f,1.0f));
 	light->SetPos(Vector3(0,0,-5.0f));
 	light->SetDir(Vector3(0,0,1.f));
 
-	std::shared_ptr<Model> model = CreateObj<Model>("Model");
+	Model* model = CreateObj<Model>("Model");
 	GetObj<Model>("Model")->Load("Assets/Model/Player.obj");
 	GetObj<Model>("Model")->mTransform.SetPosition(1.0f, 1.0f, 0.0f);
 
@@ -36,12 +36,13 @@ void SceneManager::UnInit()
 {
 	//Save data here
 
+
 }
 
 void SceneManager::Update(float dt)
 {
-	std::shared_ptr<FirstPersonCamera> camera = GetObj<FirstPersonCamera>("Camera");
-	std::shared_ptr<DirLight> light = GetObj<DirLight>("Light");
+	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
+	DirLight* light = GetObj<DirLight>("Light");
 
 	camera->Update(dt);
 	light->Update(dt);

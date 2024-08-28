@@ -1,16 +1,14 @@
 #pragma once
 #include "D3DUtil.h"
 #include "Transform.h"
-
+#include "Texture.h"
+#include "Shader.h"
+#include "Mesh.h"
 #include "assimp/Importer.hpp"
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/matrix4x4.h"
 
-
-class PixelShader;
-class VertexShader;
-class Texture;
 class Model
 {
 public:
@@ -31,15 +29,15 @@ private:
 
 	struct MaterialData
 	{
-		Material material;
-		std::shared_ptr<Texture> tex;
+		Material material = {};
+		std::shared_ptr<Texture> tex = nullptr;
 	};
 
 	using Materials = std::vector<MaterialData>;
 
 	struct MeshBuffer
 	{
-		std::shared_ptr<Mesh> mesh;
+		std::shared_ptr<Mesh> mesh = nullptr;
 		unsigned int materialID;
 	};
 	using Meshes = std::vector<MeshBuffer>;
@@ -49,23 +47,23 @@ public:
 	Model();
 	~Model();
 
-	void SetVertexShader(std::shared_ptr<VertexShader> vs);
-	void SetPixelShader(std::shared_ptr<PixelShader> ps);
+	void SetVertexShader(VertexShader* vs);
+	void SetPixelShader(PixelShader* ps);
 
 	bool Load(const char* file, bool flip = false, bool simpleMode = false);
 	void Draw(int texSlot = 0);
 
 private:
 
-	std::shared_ptr<Assimp::Importer> importer = nullptr;
+	std::unique_ptr<Assimp::Importer> importer = nullptr;
 	const aiScene* mScene = nullptr;
 
 private:
 
-	Meshes mMeshes;
-	Materials mMaterials;
-	std::shared_ptr<VertexShader> mVS = nullptr;
-	std::shared_ptr<PixelShader> mPS = nullptr;
+	Meshes mMeshes={};
+	Materials mMaterials={};
+	VertexShader* mVS = nullptr;
+	PixelShader* mPS = nullptr;
 
 
 };

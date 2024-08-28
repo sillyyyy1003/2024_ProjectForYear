@@ -16,6 +16,9 @@
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Geometry.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UI.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UliObj.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -26,6 +29,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Geometry.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_UI.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_UliObj.cso</FullPath>

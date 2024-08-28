@@ -1,4 +1,4 @@
-#include "SceneBase.h"
+ï»¿#include "SceneBase.h"
 
 SceneBase::Objects SceneBase::mObjects;
 
@@ -9,10 +9,10 @@ SceneBase::SceneBase()
 
 SceneBase::~SceneBase()
 {
-	// ƒTƒuƒV[ƒ“‚ðíœ
+	// ã‚µãƒ–ã‚·ãƒ¼ãƒ³ã‚’å‰Šé™¤
 	RemoveSubScene();
 
-	// íœ
+	// å‰Šé™¤
 	Items::iterator it = mItems.begin();
 
 	while (it != mItems.end())
@@ -22,7 +22,7 @@ SceneBase::~SceneBase()
 	}
 	mItems.clear();
 
-	// e‚ÌŽQÆ‚ðíœ
+	// è¦ªã®å‚ç…§ã‚’å‰Šé™¤
 	if (mpParentScene)
 		mpParentScene->mpSubScene = nullptr;
 }
@@ -44,14 +44,17 @@ void SceneBase::_draw()
 
 void SceneBase::RemoveSubScene() const
 {
-	// íœ‚·‚éƒTƒuƒV[ƒ“‚ª‘¶Ý‚·‚é‚©
+	// å‰Šé™¤ã™ã‚‹ã‚µãƒ–ã‚·ãƒ¼ãƒ³ãŒå­˜åœ¨ã™ã‚‹ã‹
 	if (!mpSubScene) return;
 
-	// ŠK‘w“à‚ÌƒTƒuƒV[ƒ“‚ð—Dæ‚µ‚Äíœ
+	// éšŽå±¤å†…ã®ã‚µãƒ–ã‚·ãƒ¼ãƒ³ã‚’å„ªå…ˆã—ã¦å‰Šé™¤
 	mpSubScene->RemoveSubScene();
 
-	// ’¼‰º‚ÌƒTƒuƒV[ƒ“‚ðíœ
+	// ç›´ä¸‹ã®ã‚µãƒ–ã‚·ãƒ¼ãƒ³ã‚’å‰Šé™¤
 	mpSubScene->UnInit();
+
+	// é‡Šæ”¾å†…å­˜å¹¶å°†æŒ‡é’ˆç½®ç©º
+	delete mpSubScene;
 }
 
 void SceneBase::DestroyObj(const char* name)

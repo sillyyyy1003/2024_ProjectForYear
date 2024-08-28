@@ -21,16 +21,20 @@ public:
 
 	/// @brief データを行列に変換
 	/// @return 行列を返す
-	const DirectX::XMFLOAT4X4 GetMatrix();
+	const DirectX::XMFLOAT4X4 GetMatrixFX4();
+	const DirectX::XMMATRIX GetMatrix();
 
 	/// @brief Scale
 	DirectX::XMFLOAT3 GetScale() const { return mScale; }
 	DirectX::XMVECTOR GetScaleXM() const { return DirectX::XMLoadFloat3(&mScale); }
 	
 	
-	/// @brief Angle in Degree
-	/// @return 
+	/// @brief Angle in Radian
+	/// @return Radian
 	DirectX::XMFLOAT3 GetRotation() const;
+
+	/// @brief 回転の四元数を返す
+	/// @return 四元数　Pitch:x  Yaw:y  Roll:z
 	DirectX::XMFLOAT4 GetRotationQuat() const { return mRotation; }
 	DirectX::XMVECTOR GetRotationQuatXM() const { return XMLoadFloat4(&mRotation); }
 
@@ -80,6 +84,7 @@ public:
 
     void SetPosition(const DirectX::XMFLOAT3& position);
     void SetPosition(float x, float y, float z);
+	void SetPosition(float* pos);
 
 	/// @brief Rotate given the degree
 	/// @param eulerAnglesInDegree 回転角度

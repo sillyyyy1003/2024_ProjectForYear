@@ -7,8 +7,10 @@ class SceneManager :public SceneBase
 private:
 
 	int mIndex = 0;//Scene Index 
+	//Try to make this Singleton;
 
 public:
+
 	/// @brief 共通オブジェクトの読み込み・作成
 	void Init();
 

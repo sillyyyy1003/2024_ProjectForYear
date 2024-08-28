@@ -1,6 +1,8 @@
 #include "Camera.h"
 
-Camera::Camera():mFovY(DirectX::XMConvertToRadians(60.0f)), mAspect(gD3D->AspectRatio()), mNearZ(0.2f), mFarZ(1000.0f)
+#include "GampApp.h"
+
+Camera::Camera():mFovY(DirectX::XMConvertToRadians(60.0f)), mAspect(GameApp::Get()->AspectRatio()), mNearZ(0.2f), mFarZ(1000.0f)
 {
 }
 

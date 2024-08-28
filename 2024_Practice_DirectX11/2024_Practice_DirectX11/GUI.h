@@ -1,6 +1,7 @@
 #pragma once
 #include "D3DApp.h"
 
+
 class GUI
 {
 private:
@@ -12,6 +13,7 @@ public:
 	/// @brief ‰Šú‰»
 	static void Init();
 
+	
 	/// @brief F•\¦
 	static void ShowColor(const DirectX::XMFLOAT4& _color);
 

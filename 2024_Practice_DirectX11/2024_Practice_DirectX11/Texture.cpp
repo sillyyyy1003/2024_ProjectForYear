@@ -1,5 +1,12 @@
 #include "Texture.h"
 
+#include "GampApp.h"
+
+Texture::~Texture()
+{
+
+}
+
 HRESULT Texture::Create(const char* fileName)
 {
 	HRESULT hr = S_OK;
@@ -82,6 +89,11 @@ HRESULT Texture::CreateResource(D3D11_TEXTURE2D_DESC& desc, const void* pData)
 /// レンダーターゲット
 /// </summary>
 
+RenderTarget::~RenderTarget()
+{
+	
+}
+
 void RenderTarget::Clear()
 {
 	static float color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -103,7 +115,7 @@ HRESULT RenderTarget::CreateFromScreen()
 
 	// バックバッファのポインタを取得
 	ID3D11Texture2D* pBackBuffer = NULL;
-	hr = gD3D->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&mTex);
+	hr = GameApp::Get()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&mTex);
 	if (FAILED(hr)) { return hr; }
 
 	// バックバッファへのポインタを指定してレンダーターゲットビューを作成
@@ -134,7 +146,12 @@ HRESULT RenderTarget::CreateResource(D3D11_TEXTURE2D_DESC& desc, const void* pDa
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 
 	// 生成
-	return 	gD3D->GetDevice()->CreateRenderTargetView(mTex.Get(), &rtvDesc, mRTV.GetAddressOf());
+	return gD3D->GetDevice()->CreateRenderTargetView(mTex.Get(), &rtvDesc, mRTV.GetAddressOf());
+}
+
+DepthStencil::~DepthStencil()
+{
+	
 }
 
 /// <summary>
@@ -168,5 +185,5 @@ HRESULT DepthStencil::CreateResource(D3D11_TEXTURE2D_DESC& desc, const void* pDa
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
 	// 生成
-	return 	gD3D->GetDevice()->CreateDepthStencilView(mTex.Get(), &dsvDesc, mDSV.GetAddressOf());
+	return gD3D->GetDevice()->CreateDepthStencilView(mTex.Get(), &dsvDesc, mDSV.GetAddressOf());
 }

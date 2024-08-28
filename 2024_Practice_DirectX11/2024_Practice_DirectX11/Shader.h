@@ -42,6 +42,9 @@ public:
 	/// @param pData 更新するデータのポインター
 	void WriteShader(UINT slot, void* pData);
 
+	/// @brief テクスチャをつける
+	/// @param slot 
+	/// @param _texture 
 	void SetTexture(UINT slot, Texture* _texture);
 
 	std::vector<ComPtr<ID3D11Buffer>> GetBuffers() { return mBuffers; };
@@ -75,7 +78,7 @@ private:
 public:
 
 	VertexShader();
-	~VertexShader();
+	~VertexShader() override;
 
 	/// @brief VertexShader作成
 	/// @param pData 読み込んたdata
@@ -107,7 +110,6 @@ public:
 	/// @brief Set Constant Buffer to Pixel Shader
 	void SetShader() override;
 
-	/// @brief テクスチャの設定
-	//void SetTexture(UINT slot, Texture* tex);
+
 
 };

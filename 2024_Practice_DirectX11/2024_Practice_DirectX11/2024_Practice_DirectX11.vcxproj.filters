@@ -67,12 +67,27 @@
     <Filter Include="ヘッダー ファイル\Scene\SubScene">
       <UniqueIdentifier>{35724322-8fbe-4f3e-9d39-f64153a444b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{0fc653e1-25d7-4e91-81d4-26a2a1901b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\UI\3D">
+      <UniqueIdentifier>{e6987715-b3cf-4820-a3c7-44a5f1b7ca0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI">
+      <UniqueIdentifier>{9a62864d-621e-4d91-bcb4-8e184a8e8115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI\3D">
+      <UniqueIdentifier>{7d82cd8c-4ffb-4e3d-8088-f660e66ba965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Debug">
+      <UniqueIdentifier>{729e3c1d-1a6f-4154-b85a-789de9ae0de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Debug">
+      <UniqueIdentifier>{8b56a2ca-ca1c-4b93-9df5-aa4ae808879a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartUp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugLog.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -87,9 +102,6 @@
     <ClCompile Include="DXTrace.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
@@ -101,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="FirstPersonCamera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraDCC.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="KInput.cpp">
       <Filter>ソース ファイル\Input</Filter>
@@ -135,9 +144,6 @@
     <ClCompile Include="Model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CanvasUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -153,12 +159,27 @@
     <ClCompile Include="SceneBlank.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
+    <ClCompile Include="CameraDCC.cpp">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasUI.cpp">
+      <Filter>ソース ファイル\UI\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugLog.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DBrush.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI2D.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StartUp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugLog.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="D3DApp.h">
@@ -172,9 +193,6 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
@@ -215,12 +233,6 @@
     <ClInclude Include="Transform.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasUI.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
@@ -241,6 +253,24 @@
     </ClInclude>
     <ClInclude Include="SceneBlank.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasUI.h">
+      <Filter>ヘッダー ファイル\UI\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugLog.h">
+      <Filter>ヘッダー ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DBrush.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI2D.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +296,12 @@
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="VS_Box.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_UI.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_UI.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
   </ItemGroup>

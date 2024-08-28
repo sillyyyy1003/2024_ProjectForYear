@@ -13,20 +13,19 @@ private:
 
 	struct Data
 	{
-		std::shared_ptr<VertexShader> mVS;
-		std::shared_ptr<PixelShader> mPS;
+		std::unique_ptr<VertexShader> mVS;
+		std::unique_ptr<PixelShader> mPS;
 
 		DirectX::XMFLOAT4X4 matrix[3]={};
 		DirectX::XMFLOAT4 param[2]={};//param[0] lightColor param[1]->lightDir & lightswitch
 
-		//std::shared_ptr<Mesh> mLineMesh;
-		std::shared_ptr<Mesh> mSphereMesh;//球体
-		std::shared_ptr<Mesh> mBoxMesh;//ボックス
-		std::shared_ptr<Mesh> mConeMesh;//円錐
-		std::shared_ptr<Mesh> mCylinderMesh;//円柱
-		std::shared_ptr<Mesh> mCylinderNoCapMesh;//Cylinder Without caps
-		std::shared_ptr<Mesh> mPlane3DMesh;//平面
-		std::shared_ptr<Mesh> mCapsuleMesh;//Capsule
+		std::unique_ptr<Mesh> mSphereMesh;//球体
+		std::unique_ptr<Mesh> mBoxMesh;//ボックス
+		std::unique_ptr<Mesh> mConeMesh;//円錐
+		std::unique_ptr<Mesh> mCylinderMesh;//円柱
+		std::unique_ptr<Mesh> mCylinderNoCapMesh;//Cylinder Without caps
+		std::unique_ptr<Mesh> mPlane3DMesh;//平面
+		std::unique_ptr<Mesh> mCapsuleMesh;//Capsule
  	};
 
 	static Data mData;
@@ -42,9 +41,6 @@ public:
 	static void DrawPlane3D();
 	static void DrawCapsule();
 
-
-	static void SetVS(VertexShader* _vs) { mData.mVS = std::shared_ptr<VertexShader>(_vs); };
-	static void SetPS(PixelShader* _ps) { mData.mPS = std::shared_ptr<PixelShader>(_ps); };
 
 	static void SetWorldMatrix(const DirectX::XMFLOAT4X4& _world) { mData.matrix[0] = _world; }
 	static void SetViewMatrix(const DirectX::XMFLOAT4X4& _view) { mData.matrix[1] = _view; }

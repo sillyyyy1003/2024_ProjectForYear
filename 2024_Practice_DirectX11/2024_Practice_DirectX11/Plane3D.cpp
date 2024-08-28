@@ -33,12 +33,12 @@ void Plane3D::Draw(int texSlot)
 	}
 }
 
-void Plane3D::SetPixelShader(std::shared_ptr<PixelShader> ps)
+void Plane3D::SetPixelShader(PixelShader* ps)
 {
 	mPS = ps;
 }
 
-void Plane3D::SetVertexShader(std::shared_ptr<VertexShader> vs)
+void Plane3D::SetVertexShader(VertexShader* vs)
 {
 	mVS = vs;
 }
@@ -113,7 +113,7 @@ const void Plane3D::CreateMeshes()
 		desc.indexSize = sizeof(DWORD);
 		desc.indexCount = static_cast<UINT>(indexData.size());
 		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		mMeshes[i].mesh = std::make_shared<Mesh>(desc);
+		mMeshes[i].mesh = std::make_unique<Mesh>(desc);
 	}
 	
 }
@@ -136,7 +136,7 @@ const void Plane3D::CreateMaterial(int matNum)
 
 const void Plane3D::CreateTexture(const char* _fileName)
 {
-	mTex = std::make_shared<Texture>();
+	mTex = std::make_unique<Texture>();
 	mTex->Create(_fileName);
 	
 }

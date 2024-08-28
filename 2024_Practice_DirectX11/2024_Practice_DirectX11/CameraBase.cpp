@@ -1,10 +1,11 @@
 #include "CameraBase.h"
+
+#include "GampApp.h"
 using namespace DirectX;
 
-CameraBase::CameraBase():mFovY(DirectX::XM_PIDIV2), mAspect(gD3D->AspectRatio()), mNearZ(0.2f), mFarZ(1000.0f)
+CameraBase::CameraBase():mFovY(DirectX::XM_PIDIV2), mAspect(GameApp::Get()->AspectRatio()), mNearZ(0.2f), mFarZ(1000.0f)
 {
 }
-
 
 DirectX::XMMATRIX CameraBase::GetViewXM() const
 {
@@ -16,12 +17,12 @@ DirectX::XMMATRIX CameraBase::GetProjXM(bool isReversed) const
 	if (isReversed)
 	{
 		return XMMatrixPerspectiveFovLH(mFovY, mAspect, mFarZ, mNearZ);
+	
 	}
 	else{
 		return XMMatrixPerspectiveFovLH(mFovY, mAspect, mNearZ, mFarZ);
 	}
 }
-
 
 DirectX::XMFLOAT4X4 CameraBase::GetViewXMF(bool isTranspose) const
 {
@@ -42,6 +43,7 @@ DirectX::XMFLOAT4X4 CameraBase::GetProjXMF(bool isTranspose) const
 	DirectX::XMStoreFloat4x4(&fMat, mat);
 	return fMat;
 }
+
 
 void CameraBase::ResetCamera()
 {

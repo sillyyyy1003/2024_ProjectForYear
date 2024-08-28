@@ -1,4 +1,6 @@
 ﻿#include "Timer.h"
+#include <iomanip>
+#include <sstream>
 #include "D3DApp.h"
 
 Timer::Timer()
@@ -113,7 +115,46 @@ void Timer::Tick()
         mDeltaTime = 0.0;
     }
 
+    // Update system time based on delta time
+    if(!isStopped)
+    {
+        accumulatedRealTime += mDeltaTime;
+        UpdateSystemTime();
+    }
+  
+}
 
+void Timer::UpdateSystemTime()
+{
+    int realSecondsElapsed = static_cast<int>(accumulatedRealTime);
+
+    if (realSecondsElapsed >= 1)  // Update game time every real-time second
+    {
+        gameMinute += realSecondsElapsed * gameMinutesPerSecond;
+        accumulatedRealTime -= realSecondsElapsed; // Subtract the converted time
+
+        if (gameMinute >= gameMinutesPerHour)
+        {
+            gameHour += gameMinute / gameMinutesPerHour;
+            gameMinute %= gameMinutesPerHour;
+
+            if (gameHour >= gameHoursPerDay)
+            {
+                gameDay += gameHour / gameHoursPerDay;
+                gameHour %= gameHoursPerDay;
+            }
+        }
+    }
+}
+
+std::string Timer::GetSystemTime() const
+{
+    std::ostringstream oss;
+    oss << "Day: " << gameDay
+        << ", Time: " << std::setw(2) << std::setfill('0') << gameHour
+        << ":" << std::setw(2) << std::setfill('0') << gameMinute;
+    return oss.str();
+ 
 }
 
 

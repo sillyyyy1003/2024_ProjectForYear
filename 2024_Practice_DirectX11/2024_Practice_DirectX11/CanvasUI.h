@@ -4,7 +4,10 @@
 class PixelShader;
 class VertexShader;
 class Texture;
-/// @brief ボタンなどに使われる
+
+/// <summary>
+/// Using D3D Render 
+/// </summary>
 class CanvasUI
 {
 public:
@@ -16,12 +19,12 @@ private:
 	struct MaterialData
 	{
 		Material material;
-		std::shared_ptr<Texture> tex;
+		std::unique_ptr<Texture> tex;
 	};
 
 	struct MeshBuffer
 	{
-		std::shared_ptr<Mesh> mesh;
+		std::unique_ptr<Mesh> mesh;
 		unsigned int materialID;
 	};
 	
@@ -30,11 +33,11 @@ private:
 	MaterialData mMaterial = {};
 
 	//Mesh
-	MeshBuffer mMeshes = {};
+	MeshBuffer mMesh = {};
 
 	//VertexShader & PixelShader
-	std::shared_ptr<VertexShader> mVS = nullptr;
-	std::shared_ptr<PixelShader> mPS = nullptr;
+	std::unique_ptr<VertexShader> mVS = nullptr;
+	std::unique_ptr<PixelShader> mPS = nullptr;
 
 
 public:
@@ -45,7 +48,9 @@ public:
 	/// @param _fileName テクスチャファイル名
 	void InitCanvas(const char* _fileName);
 
+	void Update(float dt);
 
+	void Draw();
 
 private:
 	/// @brief メッシュ作成
@@ -58,8 +63,5 @@ private:
 	/// @brief マテリアル作成
 	/// @param _fileName テクスチャファイル名
 	void CreateMaterial(const char* _fileName);
-
-
-
 };
 

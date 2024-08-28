@@ -26,6 +26,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
 
 public:
+
 	Mesh(const MeshData& _data);
 	~Mesh();
 

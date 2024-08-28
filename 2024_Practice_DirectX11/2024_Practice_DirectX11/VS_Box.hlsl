@@ -37,6 +37,7 @@ VS_OUT main (VS_IN vin)
     vOut.pos = mul(vOut.pos, view);
     vOut.pos = mul(vOut.pos, proj);
 
+
     vOut.normal = mul(vin.normal, (float3x3) world);
     vOut.tex = vin.tex;
     return vOut;

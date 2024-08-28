@@ -9,7 +9,7 @@ Transform::Transform(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT4& _ro
 	mScale = _scale;
 }
 
-const DirectX::XMFLOAT4X4 Transform::GetMatrix()
+const DirectX::XMFLOAT4X4 Transform::GetMatrixFX4()
 {
 	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
 	DirectX::XMVECTOR quateration = XMLoadFloat4(&mRotation);
@@ -19,6 +19,16 @@ const DirectX::XMFLOAT4X4 Transform::GetMatrix()
 	DirectX::XMFLOAT4X4 fMat;
 	DirectX::XMStoreFloat4x4(&fMat, World);
 	return fMat;
+}
+
+const DirectX::XMMATRIX Transform::GetMatrix()
+{
+	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
+	DirectX::XMVECTOR quateration = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quateration, positionVec);
+	World = XMMatrixTranspose(World);
+	return World;
 }
 
 DirectX::XMFLOAT3 Transform::GetRotation() const
@@ -163,6 +173,11 @@ void Transform::SetPosition(const DirectX::XMFLOAT3& position)
 void Transform::SetPosition(float x, float y, float z)
 {
 	mPos = Vector3(x, y, z);
+}
+
+void Transform::SetPosition(float* pos)
+{
+	mPos = Vector3(pos[0], pos[1], pos[2]);
 }
 
 void Transform::Rotate(const DirectX::XMFLOAT3& eulerAnglesInDegree)

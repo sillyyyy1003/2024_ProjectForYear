@@ -1,16 +1,10 @@
 ﻿#pragma once
-#include <DirectXMath.h>
 #include <memory>
-#include "Box3D.h"
 #include "d3dApp.h"
-#include "FirstPersonCamera.h"
 #include "Geometry.h"
-#include "Plane3D.h"
-#include "Shader.h"
+#include "SceneManager.h"
+#include "UI2D.h"
 
-class Model;
-class Box3D;
-class SceneManager;
 class GameApp : public D3DApp
 {
 private:
@@ -18,17 +12,21 @@ private:
 	ComPtr<ID3D11RasterizerState> mRSWireframe;
     bool isWireframeMode = false;
 
+public:
     ComPtr<ID2D1SolidColorBrush> mpColorBrush;  // Brush
-    ComPtr<IDWriteFont> mpFont;					// Font
     ComPtr<IDWriteTextFormat> mpTextFormat;		// Text Format
 
 public:
-    std::shared_ptr<SceneManager> mSceneManager;
+
+    std::unique_ptr<SceneManager> mSceneManager = nullptr;
+    std::unique_ptr<UI2D> ui = nullptr;
+private:
+    GameApp(){};
+    ~GameApp();
 
 public:
 
-    GameApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
-    ~GameApp() override;
+    static GameApp* Get(){ static GameApp instance; return &instance; }
 
     /// @brief 
     /// @return 

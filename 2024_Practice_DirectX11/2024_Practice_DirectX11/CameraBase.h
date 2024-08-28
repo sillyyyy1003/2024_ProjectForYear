@@ -49,7 +49,7 @@ public:
 	DirectX::XMFLOAT4X4 GetViewXMF(bool isTranspose = true) const;
 
 	/// @brief 投影行列を取得
-	/// @param transpose 行列の行と列を交換するか
+	/// @param isTranspose 行列の行と列を交換するか
 	/// @return 
 	DirectX::XMFLOAT4X4 GetProjXMF(bool isTranspose = true) const;
 

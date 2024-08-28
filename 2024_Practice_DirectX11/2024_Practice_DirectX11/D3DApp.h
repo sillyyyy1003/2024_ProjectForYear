@@ -38,10 +38,12 @@ namespace D3D
 
 class D3DApp
 {
+public:
+
 protected:
 
-    HINSTANCE mhAppInst;
-    HWND      mhMainWnd;
+    HINSTANCE mhAppInst={};
+    HWND      mhMainWnd={};
     bool      isAppPaused = false;       // Pause or not
     bool      isMinimized = false;
     bool      isMaximized = false;
@@ -51,7 +53,8 @@ protected:
     UINT      m4xMsaaQuality = 0;       //  Multiple Anti Aliasing
     
 
-    // Direct2D
+    
+    // Direct2D 
     ComPtr<ID2D1Factory> mpD2DFactory;			    // D2DFactory
     ComPtr<ID2D1RenderTarget> mpD2DRenderTarget;    // D2DRenderTarget
     ComPtr<IDWriteFactory> mpDWriteFactory;			// DWrite Factory
@@ -65,27 +68,34 @@ protected:
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;
     ComPtr<ID3D11RenderTargetView> mRenderTargetView = nullptr;
     ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
-    D3D11_VIEWPORT mViewport;
+    D3D11_VIEWPORT mViewport = {};
 
     ComPtr<ID3D11SamplerState> mSamplerState[D3D::SAMPLER_MAX] = {};
     ComPtr<ID3D11BlendState> mBlendStates[D3D::BLEND_MAX] = {};
 
-    std::wstring mWndTitle; //Window Name                 
+    std::wstring mWndTitle={}; //Window Name                 
     int mClientWidth = 0;       //Client Width
     int mClientHeight = 0;      //Client Height
 
     Timer mTimer;
-    FILE* fp;
-
+    FILE* fp = nullptr;
+   
 public:
 
-    D3DApp(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
+	D3DApp() {};
     virtual ~D3DApp();
-    virtual void UnInit();
+
+    void InitDX(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
+	virtual void UnInit();
+
 
     ID3D11Device* GetDevice() const { return mDevice.Get(); };
     ID3D11DeviceContext* GetContext() const { return mContext.Get(); };
     IDXGISwapChain* GetSwapChain() const { return mSwapChain.Get(); };
+
+    ID2D1RenderTarget* Get2DRenderTarget() const { return mpD2DRenderTarget.Get(); };
+    ID2D1Factory* GetD2DFactory()const { return mpD2DFactory.Get(); };
+    IDWriteFactory* GetWriteFactory()const { return mpDWriteFactory.Get(); };
 
     HINSTANCE AppInst()const { return mhAppInst; };   // èâä˙âª
     HWND      MainWnd()const { return mhMainWnd; };   // Get Main Wnd 
@@ -110,6 +120,8 @@ public:
     /// @brief Wnd Message
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+    int GetWinWidth() { return mClientWidth; };
+    int GetWinHeight() { return mClientHeight; };
 
 protected:
     /// @brief Init Main Window
