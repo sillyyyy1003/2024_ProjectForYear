@@ -8,7 +8,6 @@ struct VS_IN
 struct VS_OUT
 {
     float4 pos : SV_POSITION0;
-    //float4 color : COLOR;
     float3 normal : NORMAL;
     float2 tex : TEXCOORD;
     float4 worldPos : POSITION0;
@@ -36,7 +35,6 @@ VS_OUT main (VS_IN vin)
 
     vOut.pos = mul(vOut.pos, view);
     vOut.pos = mul(vOut.pos, proj);
-
 
     vOut.normal = mul(vin.normal, (float3x3) world);
     vOut.tex = vin.tex;

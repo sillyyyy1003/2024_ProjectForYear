@@ -8,18 +8,26 @@
 class GameApp : public D3DApp
 {
 private:
-	/// @brief For Rasterizer State
-	ComPtr<ID3D11RasterizerState> mRSWireframe;
-    bool isWireframeMode = false;
 
-public:
-    ComPtr<ID2D1SolidColorBrush> mpColorBrush;  // Brush
-    ComPtr<IDWriteTextFormat> mpTextFormat;		// Text Format
 
-public:
-
-    std::unique_ptr<SceneManager> mSceneManager = nullptr;
+    //========= ゲーム用オブジェクト ============
     std::unique_ptr<UI2D> ui = nullptr;
+    //========= ゲーム用オブジェクト ============
+
+
+
+
+
+	//========= ゲーム用変数 ============
+
+    //========= ゲーム用変数 ============
+
+public:
+
+ 
+   
+
+    
 private:
     GameApp(){};
     ~GameApp();
@@ -27,6 +35,9 @@ private:
 public:
 
     static GameApp* Get(){ static GameApp instance; return &instance; }
+
+	template<class T>
+    static T* GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
 
     /// @brief 
     /// @return 

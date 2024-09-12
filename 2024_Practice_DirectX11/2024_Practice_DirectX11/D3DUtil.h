@@ -30,6 +30,9 @@
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dxgi.lib")
 
+// 16バイトにアラインメントする。
+#define ALIGN16 _declspec(align(16))
+
 //
 // 宏相关
 //
@@ -41,6 +44,7 @@
 #define SAFE_RELEASE(p) { if ((p)) { (p)->Release(); (p) = nullptr; } }
 #define WIN_WIDTH	(1280.0f)
 #define WIN_HEIGHT	(720.0f)
+#define ASPECT_RATIO	(16.0f/9);
 
 //
 // 辅助调试相关函数
@@ -186,6 +190,42 @@ inline void Error(const char* format, ...)
 	MessageBoxA(NULL, buf, "Error", MB_OK);
 }
 
+/// @brief 逆行列を求める
+///	@param ansmtx 求める逆行列
+///	@param mtx 元の行列
+inline void MtxInverse(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& mtx)
+{
+	ALIGN16 DirectX::XMMATRIX mat, matans;
+	mat = XMLoadFloat4x4(&mtx);
+	matans = DirectX::XMMatrixInverse(nullptr, mat);
+	XMStoreFloat4x4(&ansmtx, matans);
+}
+
+/// @brief 単位行列を求める
+/// @param mat 変換したい行列
+inline void MtxIdentity(DirectX::XMFLOAT4X4& mat)
+{
+	ALIGN16 DirectX::XMMATRIX mtx;
+	mtx = DirectX::XMMatrixIdentity();
+	XMStoreFloat4x4(&mat, mtx);
+}
+
+/// @brief 行列の掛け算をする
+/// @param ansmtx 結果
+/// @param p1mtx 掛け算用行列1
+/// @param p2mtx 掛け算用行列2
+inline void MtxMultiply(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& p1mtx, const DirectX::XMFLOAT4X4& p2mtx)
+{
+	ALIGN16 DirectX::XMMATRIX mat1, mat2, matans;
+
+	mat1 = XMLoadFloat4x4(&p1mtx);
+	mat2 = XMLoadFloat4x4(&p2mtx);
+
+	matans = XMMatrixMultiply(mat1, mat2);
+
+	XMStoreFloat4x4(&ansmtx, matans);
+}
+
 
 /// @brief テクスチャを読み込み
 /// @param pDevice d3d->device
@@ -250,12 +290,6 @@ namespace Vertex
 		Solid,//Modelの面を表示
 	};
 
-	//描画方法のリスト
-	static std::unordered_map<PrintMode, D3D11_PRIMITIVE_TOPOLOGY> TopologyList = {
-		{Wireframe, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST},
-		{Solid,D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST},
-	};
-
 }
 
 
@@ -271,6 +305,9 @@ struct Material
 	float dummy[2] = {};
 };
 
+
+
+/// @brief  方向光
 struct DirectionLight
 {
 	DirectX::XMFLOAT4 ambient;	// 環境光 
@@ -281,6 +318,7 @@ struct DirectionLight
 	
 };
 
+/// @brief 点光源
 struct PointLight
 {
 	DirectX::XMFLOAT4 ambient;	// 環境光 
@@ -295,6 +333,7 @@ struct PointLight
 	
 };
 
+/// @brief スポットライト
 struct Spotlight
 {
 	
@@ -310,4 +349,28 @@ struct Spotlight
 
 	DirectX::XMFLOAT3  attenuation;//減衰
 	float isEnable;//起動するかどうか
+};
+
+/// @brief 射線当たり判定用
+struct Ray
+{
+	DirectX::XMFLOAT3 startPos;
+	DirectX::XMFLOAT3 direction;
+
+	/// @brief 射線始点の四元数を求める
+	/// @return XMVector
+	DirectX::XMVECTOR GetStartVector()
+	{
+		DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&startPos);
+		return vec;
+	}
+
+	/// @brief 射線終点の四元数を求める
+	/// @return XMVector
+	DirectX::XMVECTOR GetDirVector()
+	{
+		DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&direction);
+		return vec;
+	}
+
 };

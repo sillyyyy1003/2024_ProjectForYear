@@ -7,9 +7,14 @@ class SceneManager :public SceneBase
 private:
 
 	int mIndex = 0;//Scene Index 
-	//Try to make this Singleton;
+
+private:
+	SceneManager(){};
+	~SceneManager() = default;
+
 
 public:
+	static SceneManager* Get() { static SceneManager instance; return &instance; };
 
 	/// @brief 共通オブジェクトの読み込み・作成
 	void Init();

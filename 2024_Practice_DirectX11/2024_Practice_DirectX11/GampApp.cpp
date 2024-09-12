@@ -9,9 +9,9 @@
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
+
 GameApp::~GameApp()
 {
-
 }
 
 bool GameApp::Init()
@@ -31,12 +31,11 @@ void GameApp::OnResize()
 	assert(mpD2DFactory);
 	assert(mpDWriteFactory);
 
-	// リリースD2D
-	mpColorBrush.Reset();
+	//ResetD2D RenderTarget
 	mpD2DRenderTarget.Reset();
 
+	// リリースD2
 	D3DApp::OnResize();
-
 	ComPtr<IDXGISurface> surface;
 	HR(mSwapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void**>(surface.GetAddressOf())));
 	D2D1_RENDER_TARGET_PROPERTIES props = D2D1::RenderTargetProperties(
@@ -44,17 +43,26 @@ void GameApp::OnResize()
 		D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
 	HR(mpD2DFactory->CreateDxgiSurfaceRenderTarget(surface.Get(), &props, mpD2DRenderTarget.GetAddressOf()));
 	surface.Reset();
+
+	//UIの変更を指示する
+	isResized = true;
+
 }
 
 void GameApp::UpdateScene(float deltaTime)
 {
-	if(ImGui::Begin("Test Text")){}
+	mTimer.GameTick();
 
-	mSceneManager->_update(deltaTime);
-	ImGui::End();
+	//Game update
+	SceneManager::Get()->_update(deltaTime);
+
+	//すべてのUI変更終わったあと　Switch Off
+	if (isResized)
+	{
+		isResized = false;
+	}
+
 	ImGui::Render();
-
-	
 }
 
 void GameApp::DrawScene()
@@ -65,14 +73,15 @@ void GameApp::DrawScene()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), blue);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	//D3D描画
-	mSceneManager->_draw();
+	//Game描画
+	SceneManager::Get()->_draw();
 
-	//D2D描画
+	//ui3d描画
+	//todo:ここで描画
+
+	//ui2d描画
 	std::string str = mTimer.GetSystemTime();
 	ui->DrawTextStr(str, SOLID);
-
-	
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	mSwapChain->Present(0, 0);
@@ -85,30 +94,19 @@ void GameApp::UnInit()
 	Geometry::UnInit();
 
 	//Scene Release
-	mSceneManager->UnInit();
+	SceneManager::Get()->UnInit();
 
 	D3DApp::UnInit();
 }
 
 bool GameApp::InitResource()
 {
-	mSceneManager = std::make_unique<SceneManager>();
-	mSceneManager->Init();
+	SceneManager::Get()->Init();
 
 	ui = std::make_unique<UI2D>();
 	ui->InitUI2D();
-
-	// ******************
-	// Init Rasterize state
-	// ******************
-	D3D11_RASTERIZER_DESC rasterizerDesc;
-	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
-	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;
-	rasterizerDesc.FrontCounterClockwise = false;
-	rasterizerDesc.DepthClipEnable = true;
-	HR(mDevice->CreateRasterizerState(&rasterizerDesc, mRSWireframe.GetAddressOf()));
-
 	return true;
 }
+
+
 

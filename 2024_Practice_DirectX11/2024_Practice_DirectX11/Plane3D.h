@@ -1,53 +1,42 @@
 #pragma once
+#include "Primitive.h"
 #include "Shader.h"
 #include "Transform.h"
 
-class CameraDCC;
 /// @brief 地面・平面・床などに使われる
-class Plane3D
+class Plane3D :public Primitive
 {
 private:
-	struct MeshData
-	{
-		std::unique_ptr<Mesh> mesh = nullptr;
-		unsigned int materialID = 0;
-	};
-	using Meshes = std::vector<MeshData>;
-	using Materials = std::vector<Material>;
 
-	VertexShader* mVS = nullptr;
-	PixelShader* mPS = nullptr;
-
-	Meshes mMeshes;//描画用メッシュ
-	std::unique_ptr<Texture> mTex = nullptr;//テクスチャ
-	Materials mMaterials = {};
-
-	//WVP matrices
+	std::unique_ptr<Mesh> mMesh = nullptr;
+	DirectX::XMFLOAT2 mTexUV = { 1,1 };
 
 public:
 
-	Transform mTransform = {};
-
-public:
-
-	Plane3D() = default;
+	Plane3D();
 	~Plane3D() = default;
-	
-	void InitResource(const char* _fileName);
+
+	void Init(const char* _fileName);
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	void SetPixelShader(PixelShader* ps);
-	void SetVertexShader(VertexShader* vs);
+	/// @brief Set Diffuse Color
+	/// @param diffuse 
+	void SetTexUV(DirectX::XMFLOAT2 _texUV = { 1,1 }) override;
+	void SetScale(const DirectX::XMFLOAT2& scale) override;
 
-	/// @brief 平面のサイズを設定する
-	/// @param width 
-	/// @param height 
-	const void SetSize(float width, float height);
+
+
 private:
-
 	const void CreateMeshes();
-	const void CreateMaterial(int matNum = 2);
+	const void CreateMaterial();
 	const void CreateTexture(const char* _fileName);
+
+	/*DefShader
+	 * 使用方向光
+	 * 使用Default Camera
+	 */
+	/// @brief Default Shaderに使われるデータの書き込み
+	void WriteDefShader();
 };
 

@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <DirectXMath.h>
+#include "SceneBase.h"
 #include "Transform.h"
 
 namespace CameraSet
@@ -13,7 +14,7 @@ namespace CameraSet
 	};
 }
 
-class CameraBase
+class CameraBase :public Component
 {
 protected:
 	
@@ -21,42 +22,56 @@ protected:
 	float mNearZ = 0.1f;
 	float mFarZ = 0.0f;
 	float mAspect = 0.0f;
-	float mFovY = 0.0f;//Default:90��
+	float mFovY = 0.0f;//Default:90°
 
 public:
-	CameraSet::CameraMode mMode = CameraSet::CAM_NONE;
 
+	CameraSet::CameraMode mMode = CameraSet::CAM_NONE;
 	Transform mTransform = {};
 
 	CameraBase();
 	virtual ~CameraBase() = default;
 	virtual void Update(float dt) = 0;
 
-	/// @brief �ʒu�擾
-	const DirectX::XMFLOAT3 GetPos() { return mTransform.GetPosition(); };
-	/// @brief �ʒu�ݒ�
+	/// @brief 位置取得
+	DirectX::XMFLOAT3 GetPos() const { return mTransform.GetPosition(); };
+	/// @brief 位置設定
 	void SetPos(const DirectX::XMFLOAT3& pos) { mTransform.SetPosition(pos); };
 
-	/// @brief ������擾
-	const DirectX::XMFLOAT3 GetUpDir() { return mTransform.GetUpAxis(); };
+	/// @brief 上方向取得
+	DirectX::XMFLOAT3 GetUpDir() const { return mTransform.GetUpAxis(); };
 
 	DirectX::XMMATRIX GetViewXM() const;
 	DirectX::XMMATRIX GetProjXM(bool isReversed = false) const;
 
-	/// @brief �r���[�s����擾
-	/// @param transpose �s��̍s�Ɨ���������邩
+	/// @brief ビュー行列を取得
+	/// @param isTranspose 行列の行と列を交換するか
 	/// @return 
 	DirectX::XMFLOAT4X4 GetViewXMF(bool isTranspose = true) const;
 
-	/// @brief ���e�s����擾
-	/// @param isTranspose �s��̍s�Ɨ���������邩
+	/// @brief 投影行列を取得
+	/// @param isTranspose 行列の行と列を交換するか
 	/// @return 
 	DirectX::XMFLOAT4X4 GetProjXMF(bool isTranspose = true) const;
 
-	/// @brief �J�����̃p�^�[����ݒ�
+	/// @brief カメラのパターンを設定
 	/// @param _mode 
 	void SetCameraMode(CameraSet::CameraMode _mode) { mMode = _mode; }
 
 	void ResetCamera();
+
+
+
+	//todo:D3D有专用函数
+	/// @brief マウス座標をワールド座標に変換する
+	/// @param mousePos マウス座標
+	/// @return ワールド座標
+	//DirectX::XMFLOAT3 MousePosToWorld(POINT mousePos);
+	DirectX::XMVECTOR MousePosToWorld(POINT mousePos);
+
+	/// @brief カメラからマウス方向の射線をお求める
+	/// @param mousePos マウス座標
+	/// @return 射線ベクトル
+	DirectX::XMVECTOR ScreenPointToRay(POINT mousePos);
 
 };

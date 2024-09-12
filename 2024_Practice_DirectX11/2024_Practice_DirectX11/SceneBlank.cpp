@@ -1,129 +1,104 @@
 #include "SceneBlank.h"
 #include <memory>
-#include "Model.h"
-#include "Box3D.h"
-#include "CanvasUI.h"
-#include "DirLight.h"
-#include "Plane3D.h"
 #include "FirstPersonCamera.h"
-#include "GUI.h"
-#include "Shader.h"
+#include "GampApp.h"
+#include "Geometry.h"
+#include "Object.h"
+#include "Plane3D.h"
+#include "RenderState.h"
+
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
 void SceneBlank::Init()
 {
+	Object* obj = CreateObj<Object>("Object");
+	obj->Init(SPHERE,"Assets/Texture/uv-grid-tester_base1.png");
+
+
+	Material mat={
+	Color(0.5f, 0.5f, 0.5f, 1.0f),
+	Color(1.0f, 1.0f, 1.0f, 0.5f),
+	Color(0.8f, 0.8f, 0.8f, 32.0f),
+	Color(0.0f, 0.0f, 0.0f, 0.0f)
+	};
+	primitive = std::make_unique<Plane3D>();
+	primitive->SetTexUV({ 10,10 });
+	primitive->Init("Assets/Texture/water.png");
+	primitive->SetScale({ 10,10 });
+	primitive->SetMaterial(mat);
+
+	floor = std::make_unique<Plane3D>();
+	floor->SetTexUV({ 2,2 });
+	floor->Init("Assets/Texture/square_tiles_02_diff_1k.jpg");
+	floor->SetScale({ 10,10 });
+	floor->mTransform.SetPosition(0, -0.5f, 0);
+
+
+	uiBg = std::make_unique<CanvasUI>();
+	uiBg->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
+
+	uiStart = std::make_unique<CanvasUI>();
+	uiStart->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
 	
-	VertexShader* vs = CreateObj<VertexShader>("vs");
-	HR(vs->LoadShaderFile("Assets/Shader/VS_Box.cso"));
-	
-	PixelShader* ps = CreateObj<PixelShader>("ps");
-	HR(ps->LoadShaderFile("Assets/Shader/PS_Box.cso"));
 
+	uiOption = std::make_unique<CanvasUI>();
+	uiOption->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
 
-	for (int i = 0; i < 3; i++)
-	{
-		bg[i] = std::make_unique<Plane3D>();
-		bg[i]->InitResource("Assets/Texture/wall000.jpg");
-		bg[i]->mTransform.SetScale(1, 1.0, 1);
+	uiExit = std::make_unique<CanvasUI>();
+	uiExit->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
 
-	}
-
-	bg[0]->mTransform.SetPosition(-2, 0, 0);
-	bg[0]->mTransform.SetRotationInDegree(-90, 0, 0);
-
-	bg[1]->mTransform.SetPosition(0, -1, 0);
-
-	bg[2]->mTransform.SetPosition(2, -2, 1);
-	bg[2]->mTransform.SetRotationInDegree(0, 0, -90);
-
-
-	model = std::make_unique<Model>();
-	model->Load("Assets/Model/Player.obj");
-	model->mTransform.SetPosition(1.0f, 1.0f, 0.0f);
-
-	ui = std::make_unique<CanvasUI>();
-	ui->InitCanvas("Assets/Texture/wall000.jpg");
-	
 }
 
 void SceneBlank::UnInit()
 {
+	
 }
 
 void SceneBlank::Update(float dt)
 {
-	static float r = 0.0f;
-	r += 1.f * dt ;
+	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
+	Object* obj = GetObj<Object>("Object");
 	
-	//Box3D* box = GetObj<Box3D>("box");
-	//model->mTransform.RotateAround(Vector3(0, 0, 0), Vector3(0, 0, 1), r);
 
-	ui->Update(dt);
+	POINT mousePos;
+	GetCursorPos(&mousePos);
+	XMVECTOR vec = camera->ScreenPointToRay(mousePos);
 
+
+	if (ImGui::Begin("LockCamera"))
+	{
+		bool isLockCamera = camera->GetCameraLock();
+		ImGui::Checkbox("CameraLock", &isLockCamera);
+		camera->SetCameraLock(isLockCamera);
+	}
+
+	obj->Update(dt);
+
+	uiBg->Update(dt);
+	uiStart->Update(dt);
+	uiOption->Update(dt);
+	uiExit->Update(dt);
+
+
+	ImGui::End();
 }
 
 void SceneBlank::Draw()
 {
-	
-	FirstPersonCamera* firstCamera = GetObj<FirstPersonCamera>("Camera");
-	VertexShader* vs = GetObj<VertexShader>("vs");
-	PixelShader* ps = GetObj<PixelShader>("ps");
+	GameApp::SetBlendState(nullptr);
+	GameApp::SetCullingMode(nullptr);
+	Object* obj = GetObj<Object>("Object");
+	obj->Draw();
+	floor->Draw();
 
-	Box3D* box = GetObj<Box3D>("box");
-	Material material = {
-		Color(0.4f, 0.4f, 0.4f, 1.0f),		// ŠÂ‹«Œõ
-		Color(0.7f, 0.3f, 0.5f, 1.0f),		// •\–ÊF
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ‹¾–Ê”½ŽË: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// Ž©”­Œõ‚È‚µ};
-	};
-	//box->Draw();
+	GameApp::SetBlendState(RenderState::BSTransparent);
+	GameApp::SetCullingMode(RenderState::RSNoCull);
+	primitive->Draw();
 
-	Model* model = GetObj<Model>("Model");
-	XMFLOAT4X4 worldMat = model->mTransform.GetMatrixFX4();
-	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
-
-	XMFLOAT4X4 cameraMat[2]={};
-	cameraMat[0] = firstCamera->GetViewXMF();
-	cameraMat[1] = firstCamera->GetProjXMF();
-	
-
-	struct Light
-	{
-		DirectX::XMFLOAT4 lightAmbient;
-		DirectX::XMFLOAT4 lightDiffuse;
-		DirectX::XMFLOAT4 lightDir;
-	};
-	DirLight* dirLight = GetObj<DirLight>("Light");
-
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{0,0,-1,0},
-	};
-
-
-	vs->WriteShader(0, &worldMat);
-	vs->WriteShader(1, cameraMat);
-	ps->WriteShader(1, &eyePos);
-	ps->WriteShader(2, &light);
-	model->SetPixelShader(ps);
-	model->SetVertexShader(vs);
-	model->Draw();
-
-	for (int i = 0; i < 3; i++)
-	{
-		XMFLOAT4X4 bgMat = bg[i]->mTransform.GetMatrixFX4();
-		vs->WriteShader(0, &bgMat);
-		vs->WriteShader(1, cameraMat);
-		ps->WriteShader(0, &material);
-		ps->WriteShader(1, &eyePos);
-		ps->WriteShader(2, &light);
-		bg[i]->SetPixelShader(ps);
-		bg[i]->SetVertexShader(vs);
-		bg[i]->Draw();
-	}
-	
-	ui->Draw();
+	uiBg->Draw();
+	uiStart->Draw();
+	uiOption->Draw();
+	uiExit->Draw();
 }

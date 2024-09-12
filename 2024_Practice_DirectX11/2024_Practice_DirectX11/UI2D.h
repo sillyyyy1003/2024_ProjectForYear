@@ -15,13 +15,13 @@ class UI2D
 {
 private:
 	
-	std::unique_ptr<D2DBrush> mBrush = nullptr;			// Brush
 	ComPtr<IDWriteTextFormat> mTextFormat=nullptr;		// TextFormat
+	std::unique_ptr<D2DBrush> mBrush = nullptr;
 
 	//todo:追加Font读取功能
 	//ComPtr<IDWriteFont> mFont=nullptr;					// Font
 
-
+	D2D1_RECT_F mDrawArea = {};
 public:
 	UI2D();
 	~UI2D();
@@ -30,10 +30,6 @@ public:
 	/// UIの初期化
 	/// </summary>
 	void InitUI2D();
-
-
-
-	void Draw();
 
 	/// @brief 文字を表示する
 	/// @param str 文字内容 char*
@@ -49,6 +45,13 @@ public:
 	/// @param wstr 文字内容 std::wstring
 	/// @param brush 使うBrush
 	void DrawTextWStr(std::wstring wstr, BrushKind brush);
+
+	/// @brief 描画のエリアを設定
+	/// @param left 
+	/// @param top 
+	/// @param right 
+	/// @param bottom 
+	void SetRect(float left, float top, float right, float bottom);
 
 
 };

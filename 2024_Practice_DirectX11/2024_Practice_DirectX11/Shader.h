@@ -2,12 +2,13 @@
 #include <wrl/client.h>
 #include <vector>
 #include "D3DApp.h" 
+#include "SceneBase.h"
 #include "Texture.h"
 
 using Microsoft::WRL::ComPtr;
 
 
-class Shader
+class Shader :public Component
 {
 protected:
 	enum  ShaderKind {

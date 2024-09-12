@@ -115,17 +115,30 @@ void Timer::Tick()
         mDeltaTime = 0.0;
     }
 
-    // Update system time based on delta time
-    if(!isStopped)
+
+}
+
+void Timer::GameTick()
+{
+    if(!isPaused)
     {
         accumulatedRealTime += mDeltaTime;
         UpdateSystemTime();
     }
-  
 }
+
+
+
 
 void Timer::UpdateSystemTime()
 {
+
+    if(isSkippedToNextDay)
+    {
+        SkipTime();
+        return;
+    }
+
     int realSecondsElapsed = static_cast<int>(accumulatedRealTime);
 
     if (realSecondsElapsed >= 1)  // Update game time every real-time second
@@ -157,6 +170,26 @@ std::string Timer::GetSystemTime() const
  
 }
 
+void Timer::Pause()
+{
+    if(!isPaused)
+        isPaused = true;
+}
+
+void Timer::Resume()
+{
+    if (isPaused)
+		isPaused = false;
+}
+
+void Timer::SkipTime(int dayNum)
+{
+    gameMinute = 0;
+    gameHour = 0;
+    gameDay += dayNum;
+    isSkippedToNextDay = false; // Reset the flag after skipping
+    accumulatedRealTime = 0.0f;  // Reset accumulated real time
+}
 
 
 

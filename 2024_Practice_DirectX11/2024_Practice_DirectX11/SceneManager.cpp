@@ -17,13 +17,14 @@ void SceneManager::Init()
 {
 	//ƒJƒƒ‰ì¬
 	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
-	camera->SetPosition(0.0f, 0.0f, -5.0f);
+	camera->SetPosition(0.0f, 5.0f, -10.0f);
+	camera->LookAt({ 0.0f, 3.0f, -10.0f }, { 0,0,0 }, { 0,1,0 });
 
 	//Šî’êƒ‰ƒCƒgì¬
 	DirLight* light = CreateObj<DirLight>("Light");
 	light->SetAmbient(Vector4(0.7f,0.7f,0.7f,1.0f));
-	light->SetPos(Vector3(0,0,-5.0f));
-	light->SetDir(Vector3(0,0,1.f));
+	light->SetPos(Vector3(5.0f,5.0f,0.0f));
+	light->SetDir(Vector3(0.0f,0.0f,0.f));
 
 	Model* model = CreateObj<Model>("Model");
 	GetObj<Model>("Model")->Load("Assets/Model/Player.obj");

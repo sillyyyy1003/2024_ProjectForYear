@@ -27,8 +27,8 @@ Mesh::Mesh(const MeshData& _data)
     memcpy_s(pIndex, indexTotalSize, _data.pIndex, indexTotalSize);
     mData.pIndex = pIndex;
 
-	delete pVertex;
-	delete pIndex;
+	delete[] pVertex;
+	delete[] pIndex;
 }
 
 Mesh::~Mesh()

@@ -8,7 +8,7 @@
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-void CanvasUI::InitCanvas(const char* _fileName)
+void CanvasUI::Init(const char* _fileName)
 {
 	CreateMeshBuffer();
 	CreateMaterial(_fileName);
@@ -19,11 +19,14 @@ void CanvasUI::InitCanvas(const char* _fileName)
 	HR(mPS->LoadShaderFile("Assets/Shader/PS_UI.cso"));
 	HR(mVS->LoadShaderFile("Assets/Shader/VS_UI.cso"));
 
+	SetSize(mMaterial.tex->GetWidth(), mMaterial.tex->GetHeight());
+
 }
 
 void CanvasUI::Update(float dt)
 {
-
+	UpdateScale();
+	UpdatePos();
 }
 
 void CanvasUI::Draw()
@@ -32,20 +35,31 @@ void CanvasUI::Draw()
 	//============================================
 	//Generate Matrix
 	//============================================
+	
+	Vector2 viewSize = { static_cast<float>(gD3D->GetWinWidth()),static_cast<float>(gD3D->GetWinHeight()) };
+
 	XMMATRIX WVP[3]={};
 	WVP[0] = mTransform.GetMatrix();
 	WVP[1] = XMMatrixIdentity();
-	WVP[2] = XMMatrixOrthographicLH(16.0f, 9.0f, 0.0f, 3.0f);
+	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
 	WVP[2] = XMMatrixTranspose(WVP[2]);
 
+	//Write Shader
 	mVS->WriteShader(0, WVP);
 	mPS->WriteShader(0, &(mMaterial.material));
 
+	//Bind Shader
 	mVS->SetShader();
 	mPS->SetShader();
 	if(mMaterial.tex)
 		mPS->SetTexture(0, mMaterial.tex.get());
-	mMesh.mesh->Draw();
+	mMesh->Draw();
+}
+
+void CanvasUI::SetSize(float x, float y)
+{
+	mTransform.SetScale(x, y, 1.0f);
+	mOriginScale = { x,y };
 }
 
 void CanvasUI::CreateMeshBuffer()
@@ -86,12 +100,19 @@ void CanvasUI::CreateMeshBuffer()
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mMesh.mesh = std::make_unique<Mesh>(desc);
+	mMesh = std::make_unique<Mesh>(desc);
 
 }
 
 void CanvasUI::CreateTexture(const char* _fileName)
 {
+	if(!_fileName)
+	{
+		mMaterial.material.isTexEnable = false;
+		mMaterial.tex = nullptr;
+		return;
+	}
+
 	mMaterial.tex = std::make_unique<Texture>();
 	mMaterial.tex->Create(_fileName);
 }
@@ -100,11 +121,30 @@ void CanvasUI::CreateMaterial(const char* _fileName)
 {
 	mMaterial.material = {
 		Color(1.0f, 1.0f, 1.0f, 1.0f),		// 環境光
-		Color(0.2f, 0.2f, 0.2f, 1.0f),		// 表面色
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// 表面色
 		Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
 		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
 	};
 	CreateTexture(_fileName);
+
+}
+
+void CanvasUI::UpdateScale()
+{
+	
+	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
+	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
+
+	if(gD3D->GetResized())
+	{
+		Vector3 ratio = { viewWidth / mOriginScale.x ,viewHeight / mOriginScale.y ,1.0f };
+		Vector3 scale = { ratio.x * mOriginScale.x,ratio.y * mOriginScale.y,1.0f };
+		mTransform.SetScale(scale);
+	}
+}
+
+void CanvasUI::UpdatePos()
+{
 
 }
 

@@ -4,22 +4,22 @@ LightBase::LightBase()
 {
 }
 
-void LightBase::SetPos(DirectX::XMFLOAT3 _pos)
+void LightBase::SetPos(const DirectX::XMFLOAT3& _pos)
 {
 	mPos = _pos;
 }
 
-void LightBase::SetDir(DirectX::XMFLOAT3 _dir)
+void LightBase::SetDir(const DirectX::XMFLOAT3& _dir)
 {
 	mDir = _dir;
 }
 
-void LightBase::SetAmbient(DirectX::XMFLOAT4 _ambient)
+void LightBase::SetAmbient(const DirectX::XMFLOAT4& _ambient)
 {
 	mAmbient = _ambient;
 }
 
-void LightBase::SetDiffuse(DirectX::XMFLOAT4 _diffuse)
+void LightBase::SetDiffuse(const DirectX::XMFLOAT4& _diffuse)
 {
 	mDiffuse = _diffuse;
 }

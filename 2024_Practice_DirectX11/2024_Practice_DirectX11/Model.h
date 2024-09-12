@@ -4,12 +4,13 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "SceneBase.h"
 #include "assimp/Importer.hpp"
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/matrix4x4.h"
 
-class Model
+class Model :public Component
 {
 public:
 
@@ -52,6 +53,10 @@ public:
 
 	bool Load(const char* file, bool flip = false, bool simpleMode = false);
 	void Draw(int texSlot = 0);
+
+
+	/// @brief Default Shader‚ðŽg‚¤‚©‚Ç‚¤‚©H
+	//void SetDefShader(bool isDefShader) { this->isDefShader = isDefShader; };
 
 private:
 

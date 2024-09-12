@@ -19,12 +19,14 @@ void UI2D::InitUI2D()
 	ID2D1Factory* D2DFactory = gD3D->GetD2DFactory();
 	IDWriteFactory* writeFactory = gD3D->GetWriteFactory();
 
-
-	//Brush Init
 	mBrush = std::make_unique<D2DBrush>();
 	mBrush->InitBrush();
 
+	//Brush Init
+	mDrawArea = { 0,0,400.f,200.f };
+
 	//TextFormat Init
+	//todo:読み込みができるようにする
 	HR(writeFactory->CreateTextFormat(
 			L"HG創英角ﾎﾟｯﾌﾟ体",    // Font family name
 			nullptr,        // Font collection (nullptr for system default)
@@ -35,11 +37,6 @@ void UI2D::InitUI2D()
 			L"ja-JP",                   // Locale (e.g., en-us for English, zh-cn for Simplified Chinese)
 			mTextFormat.GetAddressOf()// Address of the text format pointer
 		));
-}
-
-void UI2D::Draw()
-{
-	
 }
 
 void UI2D::DrawTextC(const char* str, BrushKind brush)
@@ -67,20 +64,25 @@ void UI2D::DrawTextWStr(std::wstring wstr, BrushKind brush)
 	{
 	case SOLID:
 		renderTarget->DrawTextW(wstr.c_str(), (UINT32)wstr.size(), mTextFormat.Get(),
-			D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, mBrush->mSolidBrush.Get());
+			mDrawArea, mBrush->GetSolidBrush());
 		break;
 
 	case LINEAR:
 		renderTarget->DrawTextW(wstr.c_str(), (UINT32)wstr.size(), mTextFormat.Get(),
-			D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, mBrush->mLGBrush.Get());
+			mDrawArea, mBrush->GetLGBrush());
 		break;
 
 	case RADIAN:
 		renderTarget->DrawTextW(wstr.c_str(), (UINT32)wstr.size(), mTextFormat.Get(),
-			D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, mBrush->mRGBrush.Get());
+			mDrawArea, mBrush->GetRGBrush());
 		break;
 
 	}
 	renderTarget->EndDraw();
+}
+
+void UI2D::SetRect(float left, float top, float right, float bottom)
+{
+	mDrawArea = { left,top,right,bottom };
 }
 

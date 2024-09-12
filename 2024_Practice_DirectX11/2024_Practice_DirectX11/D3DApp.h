@@ -1,59 +1,34 @@
 #pragma once
-
 #include "D3DUtil.h"
 #include "Timer.h"
 #include <wrl/client.h>
 #include <d2d1.h>
 #include <dwrite.h>
 
-
 using namespace Microsoft::WRL;
 
-class Timer;
 class D3DApp;
-
 extern D3DApp* gD3D;
-namespace D3D
-{
-    enum SamplerState
-    {
-        SAMPLER_LINEAR,
-        SAMPLER_POINT,
-        SAMPLER_MAX
-    };
-
-    enum BlendState
-    {
-        BLEND_NONE,
-        BLEND_ALPHA,
-        BLEND_ADD,
-        BLEND_ADDALPHA,
-        BLEND_SUB,
-        BLEND_SCREEN,
-        BLEND_MULTI,
-        BLEND_MAX
-    };
-
-}
 
 class D3DApp
 {
-public:
 
+  
 protected:
 
-    HINSTANCE mhAppInst={};
-    HWND      mhMainWnd={};
+    HINSTANCE mhAppInst = {};
+    HWND      mhMainWnd = {};
     bool      isAppPaused = false;       // Pause or not
     bool      isMinimized = false;
     bool      isMaximized = false;
     bool      isResizing = false;        // Application Window change size or not
-    
+    bool      isResized = false;         // Trigger for UI to ChangeSize 
+
+
+
     bool      isEnable4xMsaa = true;    // is Use Multiple Anti Aliasing
     UINT      m4xMsaaQuality = 0;       //  Multiple Anti Aliasing
-    
 
-    
     // Direct2D 
     ComPtr<ID2D1Factory> mpD2DFactory;			    // D2DFactory
     ComPtr<ID2D1RenderTarget> mpD2DRenderTarget;    // D2DRenderTarget
@@ -70,10 +45,7 @@ protected:
     ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
     D3D11_VIEWPORT mViewport = {};
 
-    ComPtr<ID3D11SamplerState> mSamplerState[D3D::SAMPLER_MAX] = {};
-    ComPtr<ID3D11BlendState> mBlendStates[D3D::BLEND_MAX] = {};
-
-    std::wstring mWndTitle={}; //Window Name                 
+    std::wstring mWndTitle = {}; //Window Name                 
     int mClientWidth = 0;       //Client Width
     int mClientHeight = 0;      //Client Height
 
@@ -120,8 +92,25 @@ public:
     /// @brief Wnd Message
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-    int GetWinWidth() { return mClientWidth; };
+	int GetWinWidth() { return mClientWidth; };
     int GetWinHeight() { return mClientHeight; };
+
+    /// @brief サンプラーステート設定
+	/// @param _state 
+    static void SetSamplerState(ComPtr<ID3D11SamplerState> _state);
+
+    /// @brief ブレンドステートを設定
+    /// @param _state ブレンドステート名
+    static void SetBlendState(ComPtr<ID3D11BlendState> _state);
+
+    /// @brief Set Rasterizer State
+    /// @param _rsState 
+    static void SetCullingMode(ComPtr<ID3D11RasterizerState> _rsState);
+
+    static void SetDepthTest(ComPtr<ID3D11DepthStencilState> _state);
+
+    bool GetResized() { return isResized; };
+    
 
 protected:
     /// @brief Init Main Window
@@ -143,13 +132,6 @@ protected:
     /// @brief フレーム数を計算＆表示
     void CalculateFrameStats();
 
-    /// @brief サンプラーステート設定
-    /// @param _state 
-    void SetSamplerState(D3D::SamplerState _state);
-
-    /// @brief ブレンドステートを設定
-    /// @param _state ブレンドステート名
-    void SetBlendState(D3D::BlendState _state);
 
 };
 

@@ -83,7 +83,10 @@ private:
 	/// @brief 平面作成（裏表二面）
 	static void CreatePlane3D();
 
-	/// @brief Capsule作成
+	/// @brief カプセル作成
+	///	@param levels 球体垂直分割数
+	///	@param slices 球体・シリンダー水平分割数
+	/// @param stacks シリンダー垂直分割数
 	static void CreateCapsule(UINT levels, UINT slices, UINT stacks);
 };
 

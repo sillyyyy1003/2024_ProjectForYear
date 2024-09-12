@@ -5,6 +5,7 @@
 class Transform
 {
 protected:
+
 	DirectX::XMFLOAT3 mPos = {};
 	/// @brief Pitch:x  Yaw:y  Roll:z
 	DirectX::XMFLOAT4 mRotation = { 0.0f, 0.0f, 0.0f, 1.0f };

@@ -10,10 +10,10 @@
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Box.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_LightTempalte.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Geometry.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Geometry.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UI.cso</FullPath>
@@ -25,10 +25,10 @@
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Box.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_LightTempalte.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Geometry.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Geometry.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_UI.cso</FullPath>

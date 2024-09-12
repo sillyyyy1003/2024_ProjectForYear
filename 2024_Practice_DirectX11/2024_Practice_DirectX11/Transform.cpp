@@ -12,9 +12,9 @@ Transform::Transform(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT4& _ro
 const DirectX::XMFLOAT4X4 Transform::GetMatrixFX4()
 {
 	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
-	DirectX::XMVECTOR quateration = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
 	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
-	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quateration, positionVec);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
 	World = XMMatrixTranspose(World);
 	DirectX::XMFLOAT4X4 fMat;
 	DirectX::XMStoreFloat4x4(&fMat, World);
@@ -24,9 +24,9 @@ const DirectX::XMFLOAT4X4 Transform::GetMatrixFX4()
 const DirectX::XMMATRIX Transform::GetMatrix()
 {
 	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
-	DirectX::XMVECTOR quateration = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
 	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
-	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quateration, positionVec);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
 	World = XMMatrixTranspose(World);
 	return World;
 }
@@ -39,7 +39,7 @@ DirectX::XMFLOAT3 Transform::GetRotation() const
 	float sinZ_cosX = 2 * (mRotation.w * mRotation.z + mRotation.x * mRotation.y);
 	float cosZ_cosX = 1 - 2 * (mRotation.x * mRotation.x + mRotation.z * mRotation.z);
 
-	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 rotation={};
 	// gimbal lock
 	if (fabs(fabs(sinX) - 1.0f) < 1e-5f)
 	{

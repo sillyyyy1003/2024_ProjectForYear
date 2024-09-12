@@ -18,8 +18,9 @@ public:
 	static void ShowColor(const DirectX::XMFLOAT4& _color);
 
 	/// @brief ˆÊ’u•\Ž¦
-	static void ShowsFloat3(const DirectX::XMFLOAT3& _Pos);
+	static void ShowFloat3(const DirectX::XMFLOAT3& _Pos);
 
+	static void ShowFloat4(const DirectX::XMFLOAT4& _rot);
 
 
 };

@@ -2,7 +2,7 @@
 #include "Mesh.h"
 
 using namespace DirectX;
-using namespace DirectX::SimpleMath;
+using namespace  DirectX::SimpleMath;
 
 Geometry::Data Geometry::mData;
 
@@ -14,7 +14,7 @@ void Geometry::Init()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		DirectX::XMStoreFloat4x4(&mData.matrix[i], DirectX::XMMatrixIdentity());
+		XMStoreFloat4x4(&mData.matrix[i], XMMatrixIdentity());
 		
 	}
 
@@ -97,9 +97,9 @@ void Geometry::DrawCapsule()
 
 void Geometry::SetLightDir(DirectX::XMFLOAT3 _lightDir)
 {
-	DirectX::XMVECTOR vDir = DirectX::XMLoadFloat3(&_lightDir);
+	XMVECTOR vDir = XMLoadFloat3(&_lightDir);
 	//正規化
-	DirectX::XMStoreFloat3(&_lightDir, DirectX::XMVector3Normalize(vDir));
+	XMStoreFloat3(&_lightDir, XMVector3Normalize(vDir));
 	mData.param[1].x = _lightDir.x;
 	mData.param[1].y = _lightDir.y;
 	mData.param[1].z = _lightDir.z;
@@ -137,40 +137,87 @@ void Geometry::CreatePS()
 void Geometry::CreateSphereMesh(UINT levels, UINT slices)
 {
 	std::vector<Vertex::VtxPosColorNormal> vtx;
+	Color color = { 1.0f,1.0f,1.0f,1.0f };
+	float phi = 0.0f, theta = 0.0f;
+	float per_phi = XM_PI / levels;
+	float per_theta = XM_2PI / slices;
+	float x, y, z;
+	float radius = 0.5f;
 
 	// Generate vertices
-	for (UINT j = 0; j <= levels; ++j)
-	{
-		float theta = DirectX::XM_PI * j / levels; // latitude angle (0 to PI)
-		float y = cosf(theta); // y position
-		float sinTheta = sinf(theta);
 
-		for (UINT i = 0; i <= slices; ++i)
+	//上の頂点
+	vtx.push_back({
+		Vector3(0.0f, radius, 0.0f),
+		color,
+		Vector3(0.0f, 1.0f, 0.0f),
+		});
+	//他
+	for (UINT i = 1; i < levels; ++i)
+	{
+		phi = per_phi * i;
+
+		// slices+1->スタートとエンドは同じけど、uvは逆
+		for (UINT j = 0; j <= slices; ++j)
 		{
-			float phi = DirectX::XM_2PI * i / slices; // longitude angle (0 to 2*PI)
-			float x = sinTheta * cosf(phi); // x position
-			float z = sinTheta * sinf(phi); // z position
+			theta = per_theta * j;
+			x = radius * sinf(phi) * cosf(theta);
+			y = radius * cosf(phi);
+			z = radius * sinf(phi) * sinf(theta);
+			Vector3 pos = { x,y,z };
+			Vector3 normal;
+			XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&pos)));
 
 			vtx.push_back({
-				DirectX::XMFLOAT3(x * 0.5f, y * 0.5f, z * 0.5f),
-				DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-				DirectX::XMFLOAT3(x, y, z)
+				pos,
+				color,
+				normal,
 				});
 		}
 	}
-	std::vector<DWORD> idx;
-	// Generate indices
-	for (UINT j = 0; j < levels; ++j)
-	{
-		for (UINT i = 0; i < slices; ++i)
-		{
-			idx.push_back(j * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back(j * (slices + 1) + i + 1);
+	//下の頂点
+	vtx.push_back({
+	 Vector3(0.0f, -radius, 0.0f),
+		color,
+	 Vector3(0.0f, -1.0f, 0.0f),
 
-			idx.push_back(j * (slices + 1) + i + 1);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i + 1);
+		});
+
+
+
+	std::vector<DWORD> idx;
+
+	if (levels > 1)
+	{
+		for (UINT i = 1; i <= slices; ++i)
+		{
+			idx.push_back(0);
+			idx.push_back(i % (slices + 1) + 1);
+			idx.push_back(i);
+		}
+	}
+
+	for (UINT i = 1; i < levels - 1; ++i)
+	{
+		for (UINT j = 1; j <= slices; ++j)
+		{
+			idx.push_back((i - 1) * (slices + 1) + j);
+			idx.push_back((i - 1) * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i - 1) * (slices + 1) + j);
+		}
+	}
+
+	if (levels > 1)
+	{
+		for (UINT i = 1; i <= slices; ++i)
+		{
+			idx.push_back((levels - 2) * (slices + 1) + i);
+			idx.push_back((levels - 2) * (slices + 1) + i % (slices + 1) + 1);
+			idx.push_back((levels - 1) * (slices + 1) + 1);
 		}
 	}
 
@@ -190,48 +237,48 @@ void Geometry::CreateSphereMesh(UINT levels, UINT slices)
 void Geometry::CreateBoxMesh()
 {
 	const float d = 0.5f;
-	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
+	XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
 
-	DirectX::XMFLOAT3 normal[] = {
-		DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT3(-1.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f),
-		DirectX::XMFLOAT3(0.0f,-1.0f, 0.0f),
-		DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f),
-		DirectX::XMFLOAT3(0.0f, 0.0f,-1.0f),
+	Vector3 normal[] = {
+		Vector3(1.0f, 0.0f, 0.0f),
+		Vector3(-1.0f, 0.0f, 0.0f),
+		Vector3(0.0f, 1.0f, 0.0f),
+		Vector3(0.0f,-1.0f, 0.0f),
+		Vector3(0.0f, 0.0f, 1.0f),
+		Vector3(0.0f, 0.0f,-1.0f),
 	};
 
-	DirectX::XMFLOAT3 pos[] = {
+	Vector3 pos[] = {
 		//+X面
-		XMFLOAT3(d, -d, -d),
-		XMFLOAT3(d, d, -d),
-		XMFLOAT3(d, d, d),
-		XMFLOAT3(d, -d, d),
+		Vector3(d, -d, -d),
+		Vector3(d, d, -d),
+		Vector3(d, d, d),
+		Vector3(d, -d, d),
 		// -X面
-		XMFLOAT3(-d, -d, d),
-		XMFLOAT3(-d, d, d),
-		XMFLOAT3(-d, d, -d),
-		XMFLOAT3(-d, -d, -d),
+		Vector3(-d, -d, d),
+		Vector3(-d, d, d),
+		Vector3(-d, d, -d),
+		Vector3(-d, -d, -d),
 		// +Y面
-		XMFLOAT3(-d, d, -d),
-		XMFLOAT3(-d, d, d),
-		XMFLOAT3(d, d, d),
-		XMFLOAT3(d, d, -d),
+		Vector3(-d, d, -d),
+		Vector3(-d, d, d),
+		Vector3(d, d, d),
+		Vector3(d, d, -d),
 		// -Y面
-		XMFLOAT3(d, -d, -d),
-		XMFLOAT3(d, -d, d),
-		XMFLOAT3(-d, -d, d),
-		XMFLOAT3(-d, -d, -d),
+		Vector3(d, -d, -d),
+		Vector3(d, -d, d),
+		Vector3(-d, -d, d),
+		Vector3(-d, -d, -d),
 		// +Z面
-		XMFLOAT3(d, -d, d),
-		XMFLOAT3(d, d, d),
-		XMFLOAT3(-d, d, d),
-		XMFLOAT3(-d, -d, d),
+		Vector3(d, -d, d),
+		Vector3(d, d, d),
+		Vector3(-d, d, d),
+		Vector3(-d, -d, d),
 		// -Z面
-		XMFLOAT3(-d, -d, -d),
-		XMFLOAT3(-d, d, -d),
-		XMFLOAT3(d, d, -d),
-		XMFLOAT3(d, -d, -d),
+		Vector3(-d, -d, -d),
+		Vector3(-d, d, -d),
+		Vector3(d, d, -d),
+		Vector3(d, -d, -d),
 	};
 
 	//todo:if use tangent need to fix the vertex
@@ -248,22 +295,22 @@ void Geometry::CreateBoxMesh()
 	for (int i = 0; i < 4; ++i)
 	{
 		// 右面(+X面)
-		vtx[i].normal = XMFLOAT3(1.0f, 0.0f, 0.0f);
+		vtx[i].normal = Vector3(1.0f, 0.0f, 0.0f);
 
 		// 左面(-X面)
-		vtx[i + 4].normal = XMFLOAT3(-1.0f, 0.0f, 0.0f);
+		vtx[i + 4].normal = Vector3(-1.0f, 0.0f, 0.0f);
 
 		// 顶面(+Y面)
-		vtx[i + 8].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vtx[i + 8].normal = Vector3(0.0f, 1.0f, 0.0f);
 
 		// 底面(-Y面)
-		vtx[i + 12].normal = XMFLOAT3(0.0f, -1.0f, 0.0f);
+		vtx[i + 12].normal = Vector3(0.0f, -1.0f, 0.0f);
 
 		// 背面(+Z面)
-		vtx[i + 16].normal = XMFLOAT3(0.0f, 0.0f, 1.0f);
+		vtx[i + 16].normal = Vector3(0.0f, 0.0f, 1.0f);
 
 		// 正面(-Z面)
-		vtx[i + 20].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+		vtx[i + 20].normal = Vector3(0.0f, 0.0f, -1.0f);
 
 	}
 
@@ -290,110 +337,113 @@ void Geometry::CreateBoxMesh()
 
 void Geometry::CreateCylinder(UINT slices, UINT stacks)
 {
-	//todo:不加入texcoord
+
 	std::vector<Vertex::VtxPosColorNormal> vtx;
 	std::vector<DWORD> idx;
-
+	Color color = { 1.f,1.f,1.0f,1.0f };
 	float height = 1.f;
 	float radius = 0.5f;
 
-	float h2 = 1.f / 2.0f;
-	float per_theta = DirectX::XM_2PI / slices;
-	float per_stack = height / stacks;
-	Color color = Color(1.f, 1.f, 1.f, 1.f);
-	// Generate vertices
+	float h2 = height / 2;
+	float theta = 0.0f;
+	float per_theta = XM_2PI / slices;
+	float stackHeight = height / stacks;
 
-	// Cylinder body vertices
-	for (UINT j = 0; j <= stacks; ++j)
+	// Generate vertices
+	//body
+	for (UINT i = 0; i <= stacks; i++)
 	{
-		float y = h2 - j * per_stack;
-		for (UINT i = 0; i <= slices; ++i)
+		float y = -h2 + i * stackHeight;
+		for (UINT j = 0; j <= slices; j++)
 		{
-			float theta = i * per_theta;
+			theta = j * per_theta;
 			float x = radius * cosf(theta);
 			float z = radius * sinf(theta);
+
 			vtx.push_back({
-				DirectX::XMFLOAT3(x, y, z),
+				Vector3(x, y, z),
 				color,
-				DirectX::XMFLOAT3(x, 0.0f, z)
+				Vector3(cosf(theta), 0.0f, sinf(theta)),
+
 				});
 		}
 	}
-
-	// Top cap center vertex
+	//top center
 	vtx.push_back({
-		DirectX::XMFLOAT3(0.0f, h2, 0.0f),
+	Vector3(0.0f, h2, 0.0f),
 		color,
-		DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
+	Vector3(0.0f, 1.0f, 0.0f),
 		});
 
-	// Top cap vertices
-	for (UINT i = 0; i <= slices; ++i)
+	//top cap
+	for (UINT i = 0; i <= slices; i++)
 	{
-		float theta = i * per_theta;
+		theta = i * per_theta;
+		float u = cosf(theta) * radius / height + 0.5f;
+		float v = sinf(theta) * radius / height + 0.5f;
+
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 		vtx.push_back({
-			DirectX::XMFLOAT3(x, h2, z),
+			Vector3(x, h2, z),
 			color,
-			DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
+			Vector3(0.0f, 1.0f, 0.0f),
 			});
 	}
 
-	// Bottom cap center vertex
+	//bot center
 	vtx.push_back({
-		DirectX::XMFLOAT3(0.0f, -h2, 0.0f),
+		Vector3(0.0f, -h2, 0.0f),
 		color,
-		DirectX::XMFLOAT3(0.0f, -1.0f, 0.0f)
+		Vector3(0.0f, -1.0f, 0.0f),
+
 		});
 
-	// Bottom cap vertices
-	for (UINT i = 0; i <= slices; ++i)
+	//bot cap
+	for (UINT i = 0; i <= slices; i++)
 	{
-		float theta = i * per_theta;
+		theta = i * per_theta;
+		float u = cosf(theta) * radius / height + 0.5f;
+		float v = sinf(theta) * radius / height + 0.5f;
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 		vtx.push_back({
-			DirectX::XMFLOAT3(x, -h2, z),
+			Vector3(x, -h2, z),
 			color,
-			DirectX::XMFLOAT3(0.0f, -1.0f, 0.0f)
+			Vector3(0.0f, -1.0f, 0.0f),
 			});
 	}
 
-	// Generate indices
-	// Cylinder body indices
-	for (UINT j = 0; j < stacks; ++j)
+	for (UINT i = 0; i < stacks; i++)
 	{
-		for (UINT i = 0; i < slices; ++i)
+		for (UINT j = 0; j < slices; j++)
 		{
-			idx.push_back(j * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back(j * (slices + 1) + i + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
 
-			idx.push_back(j * (slices + 1) + i + 1);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
+			idx.push_back(i * (slices + 1) + j + 1);
 		}
 	}
 
 	// Top cap indices
 	UINT offset = (slices + 1) * (stacks + 1);
-	UINT centerIndex = offset;
-	for (UINT i = 1; i <= slices; ++i)
+	for (UINT i = 1; i <= slices; i++)
 	{
-		idx.push_back(centerIndex);
-		idx.push_back(centerIndex + i);
-		idx.push_back(centerIndex + i % (slices + 1) + 1);
+		idx.push_back(offset);
+		idx.push_back(offset + i % (slices + 1) + 1);
+		idx.push_back(offset + i);
 	}
 
 	// Bottom cap indices
 	offset += slices + 2;
-	centerIndex = offset;
-	for (UINT i = 1; i <= slices; ++i)
+	for (UINT i = 1; i <= slices; i++)
 	{
-		idx.push_back(centerIndex);
-		idx.push_back(centerIndex + i % (slices + 1) + 1);
-		idx.push_back(centerIndex + i);
+		idx.push_back(offset);
+		idx.push_back(offset + i);
+		idx.push_back(offset + i % (slices + 1) + 1);
 	}
 
 	Mesh::MeshData desc = {};
@@ -403,7 +453,7 @@ void Geometry::CreateCylinder(UINT slices, UINT stacks)
 	desc.pIndex = idx.data();
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(idx.size());
-	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
+	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mData.mCylinderMesh = std::make_unique<Mesh>(desc);
 
 }
@@ -417,40 +467,45 @@ void Geometry::CreateCylinderNoCap(UINT slices, UINT stacks)
 	float height = 1.0f;
 	Color color = Color(1.f, 1.f, 1.f, 1.f);
 	float h2 = height / 2.0f;
-	float per_theta = DirectX::XM_2PI / slices;
+	float per_theta = XM_2PI / slices;
 	float stackHeight = height / stacks;
+	float theta = 0.0f;
 
 	// Generate vertices
 	// Cylinder body vertices
-	for (UINT j = 0; j <= stacks; ++j)
+	for (UINT i = 0; i <= stacks; i++)
 	{
-		float y = h2 - j * stackHeight;
-		for (UINT i = 0; i <= slices; ++i)
+		float y = -h2 + i * stackHeight;
+		for (UINT j = 0; j <= slices; j++)
 		{
-			float theta = i * per_theta;
+			theta = j * per_theta;
 			float x = radius * cosf(theta);
 			float z = radius * sinf(theta);
+
+			float u = theta / XM_2PI;
+			float v = 1.0f - (float)i / stacks;
+
 			vtx.push_back({
-				DirectX::XMFLOAT3(x, y, z),
+				Vector3(x, y, z),
 				color,
-				DirectX::XMFLOAT3(x, 0.0f, z)
+				Vector3(cosf(theta), 0.0f, sinf(theta)),
+
 				});
 		}
 	}
-
 	// Generate indices
 	// Cylinder body indices
-	for (UINT j = 0; j < stacks; ++j)
+	for (UINT i = 0; i < stacks; i++)
 	{
-		for (UINT i = 0; i < slices; ++i)
+		for (UINT j = 0; j < slices; j++)
 		{
-			idx.push_back(j * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back(j * (slices + 1) + i + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
 
-			idx.push_back(j * (slices + 1) + i + 1);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
+			idx.push_back(i * (slices + 1) + j + 1);
 		}
 	}
 
@@ -473,7 +528,7 @@ void Geometry::CreateCone(UINT slices)
 	float radius = 0.5f;
 	float height = 1.0f;
 	float h2 = height / 2.0f;
-	float per_theta = DirectX::XM_2PI / slices;
+	float per_theta = XM_2PI / slices;
 	Color color = Color(1.f, 1.f, 1.f, 1.f);
 
 	// Generate vertices
@@ -484,24 +539,24 @@ void Geometry::CreateCone(UINT slices)
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 		vtx.push_back({
-			DirectX::XMFLOAT3(x, -h2, z),
+			Vector3(x, -h2, z),
 			color,
-			DirectX::XMFLOAT3(x, 0.0f, z)
+			Vector3(x, 0.0f, z)
 			});
 	}
 
 	// Cone apex vertex
 	vtx.push_back({
-		DirectX::XMFLOAT3(0.0f, h2, 0.0f),
+		Vector3(0.0f, h2, 0.0f),
 		color,
-		DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
+		Vector3(0.0f, 1.0f, 0.0f)
 		});
 
 	// Bottom cap center vertex
 	vtx.push_back({
-		DirectX::XMFLOAT3(0.0f, -h2, 0.0f),
+		Vector3(0.0f, -h2, 0.0f),
 		color,
-		DirectX::XMFLOAT3(0.0f, -1.0f, 0.0f)
+		Vector3(0.0f, -1.0f, 0.0f)
 		});
 
 	// Generate indices
@@ -537,19 +592,19 @@ void Geometry::CreateCone(UINT slices)
 void Geometry::CreatePlane3D()
 {
 	const float d = 0.5f;
-	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
+	XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
 
-	DirectX::XMFLOAT3 pos[] = {
+	Vector3 pos[] = {
 		
-		XMFLOAT3(-d, 0, -d),
-		XMFLOAT3(-d, 0, d),
-		XMFLOAT3(d, 0, d),
-		XMFLOAT3(d, 0, -d),
+		Vector3(-d, 0, -d),
+		Vector3(-d, 0, d),
+		Vector3(d, 0, d),
+		Vector3(d, 0, -d),
 
-		XMFLOAT3(d, 0, -d),
-		XMFLOAT3(d, 0, d),
-		XMFLOAT3(-d, 0, d),
-		XMFLOAT3(-d,0, -d),
+		Vector3(d, 0, -d),
+		Vector3(d, 0, d),
+		Vector3(-d, 0, d),
+		Vector3(-d,0, -d),
 		
 	};
 
@@ -562,11 +617,11 @@ void Geometry::CreatePlane3D()
 	{
 		vtx[i].pos = pos[i];
 		vtx[i].color = color;
-		vtx[i].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vtx[i].normal = Vector3(0.0f, 1.0f, 0.0f);
 
 		vtx[i + 4].pos = pos[i + 4];
 		vtx[i + 4].color = color;
-		vtx[i + 4].normal = XMFLOAT3(0.0f, -1.0f, 0.0f);
+		vtx[i + 4].normal = Vector3(0.0f, -1.0f, 0.0f);
 	}
 	
 
@@ -594,122 +649,167 @@ void Geometry::CreateCapsule(UINT levels,UINT slices, UINT stacks)
 	std::vector<DWORD> idx;
 
 	// Generate vertices
-
+	float phi = 0.0f, theta = 0.0f;
 	float radius = 0.5f;
 	float height = 1.0f;
-	Color color = Color(1.f, 1.f, 1.f, 1.f);
 	float h2 = height / 2.0f;
-	float per_theta = DirectX::XM_2PI / slices;
+	float per_phi = XM_PI / levels;
+	float per_theta = XM_2PI / slices;
 	float stackHeight = height / stacks;
+	Color color = { 1.0f,1.0f,1.0f,1.0f };
 
 	// Cylinder body vertices
-	for (UINT j = 0; j <= stacks; ++j)
+	for (UINT i = 0; i <= stacks; i++)
 	{
-		float y = h2 - j * stackHeight;
-		for (UINT i = 0; i <= slices; ++i)
+		float y = -h2 + i * stackHeight;
+		for (UINT j = 0; j <= slices; j++)
 		{
-			float theta = i * per_theta;
+			theta = j * per_theta;
 			float x = radius * cosf(theta);
 			float z = radius * sinf(theta);
+
 			vtx.push_back({
-				DirectX::XMFLOAT3(x, y, z),
+				Vector3(x, y, z),
 				color,
-				DirectX::XMFLOAT3(x, 0.0f, z)
+				Vector3(cosf(theta), 0.0f, sinf(theta)),
+			
 				});
 		}
 	}
 
-	// Up hemisphere vertices
-	for (UINT j = 0; j <= levels / 2; ++j)
-	{
-		float theta = DirectX::XM_PI * j / levels; // latitude angle (0 to PI/2 for hemisphere)
-		float y = cosf(theta); // y position
-		float sinTheta = sinf(theta);
+	//Top Semi_Sphere
+	vtx.push_back({
+		Vector3(0.0f, radius + h2, 0.0f),
+			color,
+		Vector3(0.0f, 1.0f, 0.0f),
 
-		for (UINT i = 0; i <= slices; ++i)
+
+		});
+
+	for (UINT i = 1; i < levels / 2; i++)
+	{
+		phi = per_phi * i;
+
+		// slices+1->スタートとエンドは同じけど、uvは逆
+		for (UINT j = 0; j <= slices; j++)
 		{
-			float phi = DirectX::XM_2PI * i / slices; // longitude angle (0 to 2*PI)
-			float x = sinTheta * cosf(phi); // x position
-			float z = sinTheta * sinf(phi); // z position
+			theta = per_theta * j;
+			float x = radius * sinf(phi) * cosf(theta);
+			float y = radius * cosf(phi) + h2;
+			float z = radius * sinf(phi) * sinf(theta);
+			Vector3 pos = { x,y,z };
+			Vector3 centerToVertex = { x, y - h2, z }; // Subtract h2 to move the vertex relative to the sphere's center
+			Vector3 normal;
+			XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&centerToVertex)));
 
 			vtx.push_back({
-				DirectX::XMFLOAT3(x * 0.5f, 0.5f + y * 0.5f, z * 0.5f),
-				DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-				DirectX::XMFLOAT3(x, y, z)
+				pos,
+				color,
+				normal,
 				});
 		}
 	}
 
-	// Lower hemisphere vertices
-	for (UINT j = levels / 2; j <= levels; ++j)
+	//Bot Hemisphere
+	for (UINT i = levels / 2; i <= levels; i++)
 	{
-		float theta = DirectX::XM_PI * j / levels; // latitude angle (PI/2 to PI)
-		float y = cosf(theta); // y position
-		float sinTheta = sinf(theta);
+		phi = per_phi * i;
 
-		for (UINT i = 0; i <= slices; ++i)
+		// slices+1->スタートとエンドは同じけど、uvは逆
+		for (UINT j = 0; j <= slices; j++)
 		{
-			float phi = DirectX::XM_2PI * i / slices; // longitude angle (0 to 2*PI)
-			float x = sinTheta * cosf(phi); // x position
-			float z = sinTheta * sinf(phi); // z position
+			theta = per_theta * j;
+			float x = radius * sinf(phi) * cosf(theta);
+			float y = -h2 + radius * cosf(phi);
+			float z = radius * sinf(phi) * sinf(theta);
+			Vector3 pos = { x,y,z };
+			Vector3 centerToVertex = { x, y + h2, z }; // Subtract h2 to move the vertex relative to the sphere's center
+			Vector3 normal;
+			XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&centerToVertex)));
 
 			vtx.push_back({
-				DirectX::XMFLOAT3(x * 0.5f, -0.5f + y * 0.5f, z * 0.5f),
-				DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-				DirectX::XMFLOAT3(x, y, z)
+				pos,
+				color,
+				normal,
 				});
 		}
 	}
 
-	// Cylinder body indices
-	for (UINT j = 0; j < stacks; ++j)
-	{
-		for (UINT i = 0; i < slices; ++i)
-		{
-			idx.push_back(j * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back(j * (slices + 1) + i + 1);
+	//Bot point
+	vtx.push_back({
+		Vector3(0.0f, -h2 - radius, 0.0f),
+			color,
+		Vector3(0.0f, 1.0f, 0.0f),
 
-			idx.push_back(j * (slices + 1) + i + 1);
-			idx.push_back((j + 1) * (slices + 1) + i);
-			idx.push_back((j + 1) * (slices + 1) + i + 1);
+		});
+
+	//Cylinder
+	for (UINT i = 0; i < stacks; i++)
+	{
+		for (UINT j = 0; j < slices; j++)
+		{
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
+
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i + 1) * (slices + 1) + j + 1);
+			idx.push_back(i * (slices + 1) + j + 1);
 		}
 	}
 
-	// Up hemisphere indices
+	// Offset to move to the top hemisphere vertices
 	UINT offset = (slices + 1) * (stacks + 1);
-	for (UINT j = 0; j < levels / 2; ++j)
-	{
-		for (UINT i = 0; i < slices; ++i)
-		{
-			idx.push_back(offset + j * (slices + 1) + i);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i);
-			idx.push_back(offset + j * (slices + 1) + i + 1);
 
-			idx.push_back(offset + j * (slices + 1) + i + 1);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i + 1);
+	// Top hemisphere indices
+	for (UINT i = 0; i < slices; i++)
+	{
+		// Top point of the hemisphere
+		idx.push_back(offset + 0);
+		idx.push_back(offset + i % (slices + 1) + 1);
+		idx.push_back(offset + i);
+	}
+
+	for (UINT i = 1; i < levels / 2; i++)
+	{
+		for (UINT j = 1; j <= slices; j++)
+		{
+			idx.push_back(offset + (i - 1) * (slices + 1) + j);
+			idx.push_back(offset + (i - 1) * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(offset + i * (slices + 1) + j % (slices + 1) + 1);
+
+			idx.push_back(offset + i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(offset + i * (slices + 1) + j);
+			idx.push_back(offset + (i - 1) * (slices + 1) + j);
 		}
 	}
 
-	// Lower hemisphere indices
-	offset += (slices + 1) * (levels / 2 + 1);
-	for (UINT j = 0; j < levels / 2; ++j)
-	{
-		for (UINT i = 0; i < slices; ++i)
-		{
-			idx.push_back(offset + j * (slices + 1) + i);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i);
-			idx.push_back(offset + j * (slices + 1) + i + 1);
+	// Offset to move to the bottom hemisphere vertices
+	offset += (slices + 1) * (levels / 2);
 
-			idx.push_back(offset + j * (slices + 1) + i + 1);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i);
-			idx.push_back(offset + (j + 1) * (slices + 1) + i + 1);
+	// Bottom hemisphere indices
+	for (UINT i = 0; i <= levels / 2; i++)
+	{
+		for (UINT j = 0; j <= slices; j++)
+		{
+			idx.push_back(offset + (i - 1) * (slices + 1) + j);
+			idx.push_back(offset + (i - 1) * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(offset + i * (slices + 1) + j % (slices + 1) + 1);
+
+			idx.push_back(offset + i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(offset + i * (slices + 1) + j);
+			idx.push_back(offset + (i - 1) * (slices + 1) + j);
 		}
 	}
 
+	for (UINT i = 0; i < slices; i++)
+	{
+		// Bottom point of the hemisphere
+		idx.push_back(offset + (levels - 2) * (slices + 1) + i);
+		idx.push_back(offset + (levels - 2) * (slices + 1) + i % (slices + 1) + 1);
+		idx.push_back(offset + (levels - 1) * (slices + 1) + 1);
+	}
 
-	
 	// Create MeshData
 	Mesh::MeshData desc = {};
 	desc.pVertex = vtx.data();

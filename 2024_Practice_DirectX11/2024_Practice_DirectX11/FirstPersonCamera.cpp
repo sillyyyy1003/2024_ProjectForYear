@@ -7,14 +7,19 @@ using namespace DirectX;
 
 enum CameraKind
 {
-    ///No Interaction
+    /// No Interaction
     CAM_NONE,
-    ///MOVE FREE
+    /// MOVE FREE
     CAM_FREE,
+    /// カメラをロックする
+    CAM_LOCK,
 };
 
 void FirstPersonCamera::Update(float dt)
 {
+    
+    if (isLock) return;
+
     UpdateState();
     if (mState == CAM_NONE) return;
 
@@ -103,6 +108,7 @@ void FirstPersonCamera::MoveUpward(float d)
 
 void FirstPersonCamera::UpdateState()
 {
+
     CameraKind prev = (CameraKind)mState;
 
     if (KInput::IsKeyPress(VK_MENU))//ALT

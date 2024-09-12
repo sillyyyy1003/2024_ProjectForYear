@@ -6,17 +6,17 @@
 #include <string>
 #include "DebugLog.h"
 
-/// @brief Game Obj Base
-class SceneObjectBase
+/// @brief ゲームシーンで使うすべてのオブジェクトの基底になる
+class Component
 {
 public:
-	virtual ~SceneObjectBase() {}
+	virtual ~Component() {}
 };
 
 /// @brief Scene Load Object
 /// @tparam T 多種オブジェクト対応
 template<class T>
-class SceneObject : public SceneObjectBase
+class SceneObject : public Component
 {
 public:
 	SceneObject(std::shared_ptr<T> ptr) : mObj(ptr) {}
@@ -28,7 +28,7 @@ public:
 class SceneBase
 {
 private:
-	using Objects = std::map<std::string, std::shared_ptr<SceneObjectBase>>;
+	using Objects = std::map<std::string, std::shared_ptr<Component>>;
 	using Items = std::list<std::string>;
 
 	static Objects mObjects;//シーン内すべてのオブジェクト
@@ -110,7 +110,7 @@ T* SceneBase::CreateObj(const char* _name)
 
 	// オブジェクト生成
 	std::shared_ptr<T> ptr = std::make_shared<T>();
-	mObjects.insert(std::pair<std::string, std::shared_ptr<SceneObjectBase>>(_name, std::make_shared<SceneObject<T>>(ptr)));
+	mObjects.insert(std::pair<std::string, std::shared_ptr<Component>>(_name, std::make_shared<SceneObject<T>>(ptr)));
 	mItems.push_back(_name);
 	return ptr.get();
 }

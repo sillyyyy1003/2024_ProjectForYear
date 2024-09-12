@@ -20,6 +20,7 @@ cbuffer Camera : register(b1)
 }
 
 cbuffer Light: register(b2){
+
     float4 lightAmbient;
 	float4 lightDiffuse;
     float4 lightPos;
@@ -40,13 +41,13 @@ float4 main (PS_IN pin) : SV_TARGET
 		color = material.diffuse;
     }
 
-
     float3 normal = normalize(pin.normal);
     float3 toEye = normalize(-eyePos.xyz);
 
 	//環境光計算
     float4 ambient = material.ambient * lightAmbient;
     float3 lightVec = normalize(lightPos.xyz);
+
     //Lambert Diffuse計算
     float diffuseFactor = saturate(dot(lightVec, normal));
     float4 diffuse = diffuseFactor * lightDiffuse / PI;
@@ -57,6 +58,7 @@ float4 main (PS_IN pin) : SV_TARGET
 
 	float4 litColor = color * (ambient + diffuse) + spec;
     litColor = saturate(litColor);
+
     //アルファ値をマテリアルに計算
     litColor.a = material.diffuse.a * color.a;
      return litColor;

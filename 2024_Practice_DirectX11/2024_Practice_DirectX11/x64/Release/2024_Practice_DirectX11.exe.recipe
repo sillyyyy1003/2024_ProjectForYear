@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Box.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Geometry.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Primitives.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_UI.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_UliObj.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Box.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Geometry.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Primitives.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_UI.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_UliObj.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

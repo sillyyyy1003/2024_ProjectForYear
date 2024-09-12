@@ -6,6 +6,7 @@
 #include "DebugLog.h"
 #include "GampApp.h"
 #include "KInput.h"
+#include "RenderState.h"
 
 #pragma warning(disable: 6031)
 #pragma warning(disable: 4099)
@@ -75,6 +76,7 @@ int D3DApp::Run()
     MSG msg = {};
     mTimer.Reset();
     timeBeginPeriod(1);
+    //mTimer.mOldTime = timeGetTime();
 
     while (msg.message != WM_QUIT)
     {
@@ -89,15 +91,21 @@ int D3DApp::Run()
 
             if (!isAppPaused)
             {
-              /*  mTimer.mNewTime = timeGetTime();
+                /*
+				mTimer.mNewTime = timeGetTime();
                 float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
                 if (diff >= 1000.0f / 60)
                 {
-                    CalculateFrameStats();
-                    UpdateScene(mTimer.DeltaTime());
-                    DrawScene();
+					CalculateFrameStats();
+	                ImGui_ImplDX11_NewFrame();
+	                ImGui_ImplWin32_NewFrame();
+	                ImGui::NewFrame();
+	                KInput::UpdateInput();//入力
+	                UpdateScene(mTimer.DeltaTime());
+	                DrawScene();
                     mTimer.mOldTime = mTimer.mNewTime;
                 }*/
+				
                 //todo:How to Set FrameRate?
                 CalculateFrameStats();
                 ImGui_ImplDX11_NewFrame();
@@ -156,9 +164,9 @@ void D3DApp::OnResize()
     mDepthStencilView.Reset();
     mDepthStencilBuffer.Reset();
 
-    // Reset SwapChain & rendertarget
+    // 重设交换链并且重新创建渲染目标视图
     ComPtr<ID3D11Texture2D> backBuffer;
-    HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0));
+    HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0));	// 注意此处DXGI_FORMAT_B8G8R8A8_UNORM
     HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
     HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
 
@@ -208,6 +216,8 @@ void D3DApp::OnResize()
     mViewport.MaxDepth = 1.0f;
 
     mContext->RSSetViewports(1, &mViewport);
+
+
 }
 
 void D3DApp::UpdateScene(float tick)
@@ -243,22 +253,23 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         // WmSIZE is sent when the user resizes the window.  
     case WM_SIZE:
+     
         // Save the new client area dimensions.
         mClientWidth = LOWORD(lParam);
-        mClientHeight = HIWORD(lParam);
+		mClientHeight = HIWORD(lParam);
         if (mDevice)
         {
             if (wParam == SIZE_MINIMIZED)
             {
                 isAppPaused = true;
                 isMinimized = true;
-               isMaximized = false;
+                isMaximized = false;
             }
             else if (wParam == SIZE_MAXIMIZED)
             {
                 isAppPaused = false;
                 isMinimized = false;
-               isMaximized = true;
+				isMaximized = true;
                 OnResize();
             }
             else if (wParam == SIZE_RESTORED)
@@ -276,7 +287,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 else if (isMaximized)
                 {
                     isAppPaused = false;
-                   isMaximized = false;
+                    isMaximized = false;
                     OnResize();
                 }
                 else if (isResizing)
@@ -296,6 +307,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
             }
         }
+
         return 0;
 
         // WmEXITSIZEMOVE is sent when the user grabs the resize bars.
@@ -372,8 +384,9 @@ bool D3DApp::InitMainWindow()
     int width = R.right - R.left;
     int height = R.bottom - R.top;
 
-    mhMainWnd = CreateWindow(L"D3DWndClassName", mWndTitle.c_str(),
-        WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
+    mhMainWnd = CreateWindow(L"D3DWndClassName", mWndTitle.c_str(),WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
+
+  
     if (!mhMainWnd)
     {
         MessageBox(0, L"CreateWindow Failed.", 0, 0);
@@ -390,8 +403,7 @@ bool D3DApp::InitDirect2D()
 {
 
     HR(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mpD2DFactory.GetAddressOf()));
-    HR(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
-        reinterpret_cast<IUnknown**>(mpDWriteFactory.GetAddressOf())));
+    HR(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),reinterpret_cast<IUnknown**>(mpDWriteFactory.GetAddressOf())));
 
     return true;
 }
@@ -505,63 +517,20 @@ bool D3DApp::InitDirect3D()
 
     dxgiFactory1->MakeWindowAssociation(mhMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
-    // Set Dubug Obj
+    // Set Debug Obj
     D3D11SetDebugObjectName(mContext.Get(), "ImmediateContext");
     DXGISetDebugObjectName(mSwapChain.Get(), "SwapChain");
 
-
-	//******************************************
-    // Create Sampler
-	//******************************************
-    D3D11_SAMPLER_DESC samplerDesc = {};
-    D3D11_FILTER filter[] = {
-        D3D11_FILTER_MIN_MAG_MIP_LINEAR,
-        D3D11_FILTER_MIN_MAG_MIP_POINT,
-    };
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    for (int i = 0; i < D3D::SAMPLER_MAX; ++i)
-    {
-        samplerDesc.Filter = filter[i];
-        HR(mDevice->CreateSamplerState(&samplerDesc, &mSamplerState[i]));
-    }
-    SetSamplerState(D3D::SAMPLER_LINEAR);
-
     //******************************************
-	// Blend State
+	// Init Render State
 	//******************************************
-    D3D11_BLEND_DESC blendDesc = {};
-    blendDesc.AlphaToCoverageEnable = FALSE;
-    blendDesc.IndependentBlendEnable = FALSE;
-    blendDesc.RenderTarget[0].BlendEnable = TRUE;
-    blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-    blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-    blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-    D3D11_BLEND blend[D3D::BLEND_MAX][2] =
-    {
-        {D3D11_BLEND_ONE,D3D11_BLEND_ZERO},//NONE
-        {D3D11_BLEND_SRC_ALPHA,D3D11_BLEND_INV_SRC_ALPHA}, // BLEND_ALPHA,
-        {D3D11_BLEND_ONE, D3D11_BLEND_ONE},  // BLEND_ADD,
-        {D3D11_BLEND_SRC_ALPHA,D3D11_BLEND_ONE},// BLEND_ADDALPHA,
-        {D3D11_BLEND_ZERO,D3D11_BLEND_INV_SRC_COLOR},// BLEND_SUB,
-        {D3D11_BLEND_INV_DEST_COLOR,D3D11_BLEND_ONE},// BLEND_SCREEN,
-        {D3D11_BLEND_DEST_COLOR,D3D11_BLEND_ZERO},// BLEND_MULTI,//正片叠底
-
-    };
-
-	for (int i = 0; i < D3D::BLEND_MAX; i++)
-    {
-        blendDesc.RenderTarget[0].SrcBlend = blend[i][0];
-        blendDesc.RenderTarget[0].DestBlend = blend[i][1];
-        HR(mDevice->CreateBlendState(&blendDesc, mBlendStates[i].GetAddressOf()));
-    }
-
-    SetBlendState(D3D::BLEND_ALPHA);
-
+    RenderState::InitAll(mDevice.Get());
+    //Set Sampler state
+    SetSamplerState(RenderState::SSLinearWrap);
+    //Set Blend state
+    SetBlendState(RenderState::BSTransparent);
+    //Set Rasterizer state
+    SetCullingMode(RenderState::RSNoCull);
 
     //Init Resize Tool
     OnResize();
@@ -613,19 +582,25 @@ void D3DApp::CalculateFrameStats()
     }
 }
 
-void D3DApp::SetSamplerState(D3D::SamplerState _state)
+void D3DApp::SetSamplerState(ComPtr<ID3D11SamplerState> _state)
 {
-    if (_state < 0 || _state >= D3D::SAMPLER_MAX) return;
-    mContext->VSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
-    mContext->PSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
-    mContext->HSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
-    mContext->DSSetSamplers(0, 1, mSamplerState[_state].GetAddressOf());
+    gD3D->GetContext()->VSSetSamplers(0, 1, _state.GetAddressOf());
+    gD3D->GetContext()->PSSetSamplers(0, 1, _state.GetAddressOf());
+    gD3D->GetContext()->HSSetSamplers(0, 1, _state.GetAddressOf());
+    gD3D->GetContext()->DSSetSamplers(0, 1, _state.GetAddressOf());
 }
 
-void D3DApp::SetBlendState(D3D::BlendState _state)
+void D3DApp::SetBlendState(ComPtr<ID3D11BlendState> _state)
 {
-    if (_state < D3D::BLEND_MAX && _state >= 0)//overflow Check
-    {
-        mContext->OMSetBlendState(mBlendStates[_state].Get(), NULL, 0xffffffff);
-    }
+    gD3D->GetContext()->OMSetBlendState(_state.Get(), nullptr, 0xffffffff);
+}
+
+void D3DApp::SetCullingMode(ComPtr<ID3D11RasterizerState> _rsState)
+{
+    gD3D->GetContext()->RSSetState(_rsState.Get());
+}
+
+void D3DApp::SetDepthTest(ComPtr<ID3D11DepthStencilState> _state)
+{
+    gD3D->GetContext()->OMSetDepthStencilState(_state.Get(), 0);
 }

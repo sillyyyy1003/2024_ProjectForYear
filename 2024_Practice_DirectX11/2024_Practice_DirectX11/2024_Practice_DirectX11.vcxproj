@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(ProjectDir);$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\Bin\Debug;C:\Assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\DirectXTex;$(ProjectDir);C:\Assimp\include\assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DirectXTex\Bin\Release;C:\Assimp\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\directxtk\include;C:\Assimp\include;C:\DirectXTex;$(ProjectDir)imgui\Include;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTex\Bin\Release;C:\Assimp\lib;C:\directxtk\lib\x64\Release;$(ProjectDir)imgui\Lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,6 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,11 +148,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Box3D.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CameraBase.cpp" />
-    <ClCompile Include="CameraDCC.cpp" />
     <ClCompile Include="CanvasUI.cpp" />
+    <ClCompile Include="Capsule.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D2DBrush.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="D3DUtil.cpp" />
@@ -162,15 +165,21 @@
     <ClCompile Include="GampApp.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="Ingredients.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="LightBase.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Plane3D.cpp" />
+    <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="RenderState.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneBlank.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartUp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
@@ -179,11 +188,13 @@
     <ClCompile Include="UI2D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Box3D.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="CameraBase.h" />
-    <ClInclude Include="CameraDCC.h" />
     <ClInclude Include="CanvasUI.h" />
+    <ClInclude Include="Capsule.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D2DBrush.h" />
     <ClInclude Include="D3DApp.h" />
     <ClInclude Include="D3DUtil.h" />
@@ -194,16 +205,22 @@
     <ClInclude Include="GampApp.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="Ingredients.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Plane3D.h" />
+    <ClInclude Include="Primitive.h" />
+    <ClInclude Include="RenderState.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneBlank.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
@@ -219,14 +236,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="PS_LightTempalte.hlsl">
+    <FxCompile Include="PS_Geometry.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="PS_Geometry.hlsl">
+    <FxCompile Include="PS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -254,14 +271,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="VS_LightTempalte.hlsl">
+    <FxCompile Include="VS_Geometry.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="VS_Geometry.hlsl">
+    <FxCompile Include="VS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

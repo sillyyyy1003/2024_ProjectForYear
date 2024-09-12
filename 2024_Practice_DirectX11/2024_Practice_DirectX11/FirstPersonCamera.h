@@ -12,6 +12,8 @@ private:
     int mState = 0;
     POINT mOldPos = { 0,0 };
 
+    bool isLock = false;
+
 public:
 
     FirstPersonCamera() = default;
@@ -56,6 +58,10 @@ public:
     void RotateY(float rad);
 
     void MoveUpward(float d);
+
+    /// @brief カメラの角度をロックす
+    void SetCameraLock(bool isLock) { this->isLock = isLock; };
+    bool GetCameraLock() { return isLock; };
 
 private:
     void UpdateState();

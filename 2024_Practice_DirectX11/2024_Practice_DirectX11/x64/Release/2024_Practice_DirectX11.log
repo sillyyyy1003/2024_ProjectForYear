@@ -1,102 +1,22 @@
-﻿  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Box.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_LightTempalte.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Geometry.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_UliObj.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Box.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_LightTempalte.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Geometry.cso
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_UliObj.cso
-  Box3D.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Camera.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  CameraBase.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  CameraDCC.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  D3DApp.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  D3DUtil.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\d3dUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  DebugLog.cpp
-  The contents of <format> are available only with C++20 or later.
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,26): error C2039: 'string_view': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,5): error C2061: 構文エラー: 識別子 'string_view'
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,33): error C2039: 'string_view': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,5): error C2061: 構文エラー: 識別子 'string_view'
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,31): error C2039: 'string_view': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,5): error C2061: 構文エラー: 識別子 'string_view'
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,32): error C2039: 'vformat': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,40): error C3861: 'rt_fmt_str': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,57): error C2039: 'make_format_args': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,74): error C3861: 'args': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,40): error C2065: 'rt_fmt_str': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(46,74): error C2065: 'args': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(44,17): message : コンパイラでのこの診断により関数 'void DebugLog::Log(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,32): error C2039: 'vformat': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,40): error C3861: 'rt_fmt_str': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,57): error C2039: 'make_format_args': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,74): error C3861: 'args': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,40): error C2065: 'rt_fmt_str': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(53,74): error C2065: 'args': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(51,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogWarning(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,32): error C2039: 'vformat': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,40): error C3861: 'rt_fmt_str': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,57): error C2039: 'make_format_args': 'std' のメンバーではありません
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.33.31629\include\string(24): message : 'std' の宣言を確認してください
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,74): error C3861: 'args': 識別子が見つかりませんでした
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,40): error C2065: 'rt_fmt_str': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(60,74): error C2065: 'args': 定義されていない識別子です。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\DebugLog.h(58,17): message : コンパイラでのこの診断により関数 'void DebugLog::LogError(void)' が生成されました。
-  DXTrace.cpp
-  FirstPersonCamera.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  GampApp.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Geometry.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  GUI.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  KInput.cpp
-  Mesh.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Model.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
+﻿  Box3D.cpp
+  Cylinder.cpp
   Plane3D.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Shader.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  StartUp.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Texture.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  ThirdPersonCamera.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  コンパイル中...
-  Timer.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
-  Transform.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\D3DUtil.h(15,10): fatal  error C1083: include ファイルを開けません。'SimpleMath.h':No such file or directory
+  Primitive.cpp
+  SceneBlank.cpp
+  SceneManager.cpp
+  Sphere3D.cpp
+imgui.lib(imgui_impl_dx11.obj) : warning LNK4075: /EDITANDCONTINUE は /OPT:ICF の指定によって無視されます。
+     ライブラリ C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.lib とオブジェクト C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exp を作成中
+LINK : warning LNK4098: defaultlib 'MSVCRTD' は他のライブラリの使用と競合しています。/NODEFAULTLIB:library を使用してください。
+  コード生成しています。
+  9 of 2492 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    8 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+imgui.lib(imgui_impl_dx11.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_impl_dx11.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+imgui.lib(imgui_impl_win32.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_impl_win32.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+imgui.lib(imgui.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+imgui.lib(imgui_draw.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_draw.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+imgui.lib(imgui_widgets.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_widgets.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+imgui.lib(imgui_tables.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_tables.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+  2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exe

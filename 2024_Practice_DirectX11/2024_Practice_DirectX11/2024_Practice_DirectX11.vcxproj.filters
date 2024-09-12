@@ -85,6 +85,36 @@
     <Filter Include="ソース ファイル\Debug">
       <UniqueIdentifier>{8b56a2ca-ca1c-4b93-9df5-aa4ae808879a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Timer">
+      <UniqueIdentifier>{e9f1c5f0-72f4-4fde-b158-f91a41d58e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Timer">
+      <UniqueIdentifier>{8ccac86b-30f5-4caa-bb07-5cb5ef7b1d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseModel\描画部分">
+      <UniqueIdentifier>{62997c9d-32e0-4d19-a805-40b67ca2de95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseModel\完成形">
+      <UniqueIdentifier>{ca61fe02-639d-4613-87fa-27d8e1f662eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Collider">
+      <UniqueIdentifier>{89e41fe3-0b40-4c23-a52d-ebd5ca584a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Collider">
+      <UniqueIdentifier>{b8dd8c17-41e8-42f8-a132-709ac164f995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject">
+      <UniqueIdentifier>{ba5f60e2-911f-45da-bec7-f4cbcecd8a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject">
+      <UniqueIdentifier>{8f2ba9b8-122a-4108-ba36-f1e9a6e1c7ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\RigidBody">
+      <UniqueIdentifier>{4f070e43-096c-4825-8635-e15b13bd5b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\RigidBody">
+      <UniqueIdentifier>{07990942-1c63-47ed-8934-2e3e88c4ecff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartUp.cpp">
@@ -102,9 +132,6 @@
     <ClCompile Include="DXTrace.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
@@ -117,17 +144,8 @@
     <ClCompile Include="KInput.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Box3D.cpp">
-      <Filter>ソース ファイル\BaseModel</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane3D.cpp">
-      <Filter>ソース ファイル\BaseModel</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
@@ -140,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -159,9 +174,6 @@
     <ClCompile Include="SceneBlank.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
-    <ClCompile Include="CameraDCC.cpp">
-      <Filter>ソース ファイル\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="CanvasUI.cpp">
       <Filter>ソース ファイル\UI\3D</Filter>
     </ClCompile>
@@ -176,6 +188,48 @@
     </ClCompile>
     <ClCompile Include="UI2D.cpp">
       <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>ソース ファイル\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>ソース ファイル\BaseModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Capsule.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane3D.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Ingredients.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTitle.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,14 +248,8 @@
     <ClInclude Include="Shader.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraDCC.h">
-      <Filter>ヘッダー ファイル\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraBase.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
@@ -215,7 +263,7 @@
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Box3D.h">
+    <ClInclude Include="Cube.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="Plane3D.h">
@@ -231,9 +279,6 @@
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>ヘッダー ファイル\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="GampApp.h">
@@ -272,6 +317,39 @@
     <ClInclude Include="UI2D.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>ヘッダー ファイル\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Capsule.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>ヘッダー ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Ingredients.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTitle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PS_Geometry.hlsl">
@@ -286,12 +364,6 @@
     <FxCompile Include="VS_Geometry.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
-    <FxCompile Include="PS_LightTempalte.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS_LightTempalte.hlsl">
-      <Filter>リソース ファイル\VS</Filter>
-    </FxCompile>
     <FxCompile Include="PS_Box.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
@@ -302,6 +374,12 @@
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="VS_UI.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Primitives.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Primitives.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
   </ItemGroup>
