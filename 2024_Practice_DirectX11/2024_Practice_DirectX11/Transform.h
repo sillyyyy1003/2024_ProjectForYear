@@ -86,6 +86,7 @@ public:
     void SetPosition(const DirectX::XMFLOAT3& position);
     void SetPosition(float x, float y, float z);
 	void SetPosition(float* pos);
+	void SetPositionZ(float z);
 
 	/// @brief Rotate given the degree
 	/// @param eulerAnglesInDegree 回転角度

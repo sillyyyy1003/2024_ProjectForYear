@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+
 #include "SceneBase.h"
 
 /// @brief すべてのシーンの管理
@@ -6,7 +8,8 @@ class SceneManager :public SceneBase
 {
 private:
 
-	int mIndex = 0;//Scene Index 
+	int mIndex = 0;//Scene Index
+	std::unordered_map<std::string, int> mSceneMap;
 
 private:
 	SceneManager(){};
@@ -29,9 +32,12 @@ public:
 	/// @brief 描画
 	void Draw();
 
+	void SetScene(std::string sceneName);
+
 private:
 	/// @brief シーンの切り替え
 	void ChangeScene();
+
 
 };
 

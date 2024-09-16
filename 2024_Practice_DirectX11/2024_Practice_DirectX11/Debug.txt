@@ -1,4 +1,5 @@
 Game Init Completed
 モデル読み込み開始
 モデル読み込み完了
+SceneName = SceneTitle
 SceneName = SceneBlank

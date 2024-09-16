@@ -1,11 +1,16 @@
 #pragma once
 #include "SceneBase.h"
+#include "UI_Button.h"
 
 //タイトルシーン
 class SceneTitle:public SceneBase
 {
 private:
-	
+
+	int mSceneIndex = 0;
+
+	std::unordered_map<std::string, std::vector<CanvasUI*>> uiManager = {};
+	std::vector<std::string> mUiOrder = {};
 
 public:
 	/// @brief データのロードと初期化
@@ -17,6 +22,10 @@ public:
 	void Update(float dt);
 
 	void Draw();
+
+private:
+	/// @brief シーンの切り替え
+	void ChangeScene();
 
 };
 

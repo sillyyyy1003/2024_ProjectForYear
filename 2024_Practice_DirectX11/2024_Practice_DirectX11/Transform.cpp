@@ -180,6 +180,11 @@ void Transform::SetPosition(float* pos)
 	mPos = Vector3(pos[0], pos[1], pos[2]);
 }
 
+void Transform::SetPositionZ(float z)
+{
+	mPos.z = z;
+}
+
 void Transform::Rotate(const DirectX::XMFLOAT3& eulerAnglesInDegree)
 {
 	XMFLOAT3 radian = Vector3(XMConvertToRadians(eulerAnglesInDegree.x), XMConvertToRadians(eulerAnglesInDegree.y), XMConvertToRadians(eulerAnglesInDegree.z));

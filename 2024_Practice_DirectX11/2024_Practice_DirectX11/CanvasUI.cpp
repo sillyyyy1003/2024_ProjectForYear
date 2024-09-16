@@ -1,26 +1,38 @@
 ﻿#include "CanvasUI.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
-#include "SceneManager.h"
 #include "Shader.h"
 #include "Texture.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-void CanvasUI::Init(const char* _fileName)
+CanvasUI::~CanvasUI()
+{
+}
+
+void CanvasUI::InitResource(const char* _fileName, DirectX::XMFLOAT2 size, bool isDefaultSize)
 {
 	CreateMeshBuffer();
 	CreateMaterial(_fileName);
+	LoadShader();
 
-	mPS = std::make_unique<PixelShader>();
-	mVS = std::make_unique<VertexShader>();
+	if (isDefaultSize)
+	{
+		SetSize(static_cast<float>(mMaterial.tex->GetWidth()), static_cast<float>(mMaterial.tex->GetHeight()));
+	}
+	else
+	{
+		SetSize(size.x, size.y);
+	}
 
-	HR(mPS->LoadShaderFile("Assets/Shader/PS_UI.cso"));
-	HR(mVS->LoadShaderFile("Assets/Shader/VS_UI.cso"));
 
-	SetSize(mMaterial.tex->GetWidth(), mMaterial.tex->GetHeight());
+}
 
+void CanvasUI::InitData(DirectX::XMFLOAT3 pos)
+{
+	mTransform.SetPosition(pos);
+	mOriginPos = { pos.x,pos.y };
 }
 
 void CanvasUI::Update(float dt)
@@ -35,31 +47,31 @@ void CanvasUI::Draw()
 	//============================================
 	//Generate Matrix
 	//============================================
-	
-	Vector2 viewSize = { static_cast<float>(gD3D->GetWinWidth()),static_cast<float>(gD3D->GetWinHeight()) };
 
-	XMMATRIX WVP[3]={};
-	WVP[0] = mTransform.GetMatrix();
-	WVP[1] = XMMatrixIdentity();
-	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
-	WVP[2] = XMMatrixTranspose(WVP[2]);
-
-	//Write Shader
-	mVS->WriteShader(0, WVP);
-	mPS->WriteShader(0, &(mMaterial.material));
+	WriteShader();
 
 	//Bind Shader
-	mVS->SetShader();
-	mPS->SetShader();
+	mDefVS->SetShader();
+	mDefPS->SetShader();
 	if(mMaterial.tex)
-		mPS->SetTexture(0, mMaterial.tex.get());
+		mDefPS->SetTexture(0, mMaterial.tex.get());
 	mMesh->Draw();
 }
 
 void CanvasUI::SetSize(float x, float y)
 {
+	//todo：プロトタイプ段階、テクスチャは全部1920*1080サイズ　
+	//オブジェクトのサイズの不具合はとりあえず強制修正で行くあとで直す
+	x *= 0.6666f;
+	y *= 0.6666f;
+
 	mTransform.SetScale(x, y, 1.0f);
 	mOriginScale = { x,y };
+}
+
+void CanvasUI::SetPosZ(float z)
+{
+	mTransform.SetPositionZ(z);
 }
 
 void CanvasUI::CreateMeshBuffer()
@@ -129,6 +141,16 @@ void CanvasUI::CreateMaterial(const char* _fileName)
 
 }
 
+void CanvasUI::LoadShader()
+{
+	mDefPS = std::make_unique<PixelShader>();
+	mDefVS = std::make_unique<VertexShader>();
+
+	HR(mDefPS->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso"));
+	HR(mDefVS->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso"));
+
+}
+
 void CanvasUI::UpdateScale()
 {
 	
@@ -137,7 +159,7 @@ void CanvasUI::UpdateScale()
 
 	if(gD3D->GetResized())
 	{
-		Vector3 ratio = { viewWidth / mOriginScale.x ,viewHeight / mOriginScale.y ,1.0f };
+		Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
 		Vector3 scale = { ratio.x * mOriginScale.x,ratio.y * mOriginScale.y,1.0f };
 		mTransform.SetScale(scale);
 	}
@@ -145,7 +167,32 @@ void CanvasUI::UpdateScale()
 
 void CanvasUI::UpdatePos()
 {
+	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
+	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
 
+	if (gD3D->GetResized())
+	{
+		Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
+		Vector3 pos = {mOriginPos.x,mOriginPos.y, mTransform.GetPosition().z};
+		pos *= ratio;
+		mTransform.SetPosition(pos);
+	}
+
+}
+
+void CanvasUI::WriteShader()
+{
+	Vector2 viewSize = { static_cast<float>(gD3D->GetWinWidth()),static_cast<float>(gD3D->GetWinHeight()) };
+
+	XMMATRIX WVP[3] = {};
+	WVP[0] = mTransform.GetMatrix();
+	WVP[1] = XMMatrixIdentity();
+	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
+	WVP[2] = XMMatrixTranspose(WVP[2]);
+
+	//Write Shader
+	mDefVS->WriteShader(0, WVP);
+	mDefPS->WriteShader(0, &(mMaterial.material));
 }
 
 

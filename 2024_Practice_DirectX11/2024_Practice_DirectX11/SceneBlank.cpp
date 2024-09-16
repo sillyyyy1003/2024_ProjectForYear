@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "Plane3D.h"
 #include "RenderState.h"
+#include "UI_Button.h"
 
 
 using namespace DirectX::SimpleMath;
@@ -35,20 +36,6 @@ void SceneBlank::Init()
 	floor->SetScale({ 10,10 });
 	floor->mTransform.SetPosition(0, -0.5f, 0);
 
-
-	uiBg = std::make_unique<CanvasUI>();
-	uiBg->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
-
-	uiStart = std::make_unique<CanvasUI>();
-	uiStart->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
-	
-
-	uiOption = std::make_unique<CanvasUI>();
-	uiOption->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
-
-	uiExit = std::make_unique<CanvasUI>();
-	uiExit->Init("Assets/Texture/UI/main_title_background_1920x1080.png");
-
 }
 
 void SceneBlank::UnInit()
@@ -60,7 +47,6 @@ void SceneBlank::Update(float dt)
 {
 	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
 	Object* obj = GetObj<Object>("Object");
-	
 
 	POINT mousePos;
 	GetCursorPos(&mousePos);
@@ -75,12 +61,6 @@ void SceneBlank::Update(float dt)
 	}
 
 	obj->Update(dt);
-
-	uiBg->Update(dt);
-	uiStart->Update(dt);
-	uiOption->Update(dt);
-	uiExit->Update(dt);
-
 
 	ImGui::End();
 }
@@ -97,8 +77,4 @@ void SceneBlank::Draw()
 	GameApp::SetCullingMode(RenderState::RSNoCull);
 	primitive->Draw();
 
-	uiBg->Draw();
-	uiStart->Draw();
-	uiOption->Draw();
-	uiExit->Draw();
 }

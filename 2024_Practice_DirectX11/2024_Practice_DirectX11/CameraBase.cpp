@@ -68,8 +68,6 @@ DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos)
 	);
 
 	return worldPosVec;
-	//XMStoreFloat3(&worldPos, worldPosVec);
-	//return worldPos;
 
 }
 

@@ -1,7 +1,2 @@
-﻿  CanvasUI.cpp
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\CanvasUI.cpp(22,61): warning C4244: '引数': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\CanvasUI.cpp(22,33): warning C4244: '引数': 'UINT' から 'float' への変換です。データが失われる可能性があります。
-  SceneBlank.cpp
-  SceneManager.cpp
-  コードを生成中...
+﻿  SceneTitle.cpp
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

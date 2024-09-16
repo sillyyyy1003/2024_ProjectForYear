@@ -115,6 +115,12 @@
     <Filter Include="ヘッダー ファイル\RigidBody">
       <UniqueIdentifier>{07990942-1c63-47ed-8934-2e3e88c4ecff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\RenderState">
+      <UniqueIdentifier>{395693fb-76cc-4e17-83f2-0def02390ce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX\RenderState">
+      <UniqueIdentifier>{43ceaec2-f692-4eb1-80ba-00543607c49c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartUp.cpp">
@@ -226,9 +232,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RenderState.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\DirectX\RenderState</Filter>
     </ClCompile>
     <ClCompile Include="SceneTitle.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Button.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -345,9 +354,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RenderState.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\DirectX\RenderState</Filter>
     </ClInclude>
     <ClInclude Include="SceneTitle.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Button.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -370,10 +382,10 @@
     <FxCompile Include="VS_Box.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
-    <FxCompile Include="PS_UI.hlsl">
+    <FxCompile Include="PS_DefaultUI.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
-    <FxCompile Include="VS_UI.hlsl">
+    <FxCompile Include="VS_DefaultUI.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Primitives.hlsl">
@@ -381,6 +393,9 @@
     </FxCompile>
     <FxCompile Include="VS_Primitives.hlsl">
       <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_ButtonUI.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

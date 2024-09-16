@@ -44,8 +44,8 @@
 #define SAFE_RELEASE(p) { if ((p)) { (p)->Release(); (p) = nullptr; } }
 #define WIN_WIDTH	(1280.0f)
 #define WIN_HEIGHT	(720.0f)
-#define ASPECT_RATIO	(16.0f/9);
-
+#define UI_NEARZ	(0.0f)
+#define UI_FARZ		(3.0f)
 //
 // 辅助调试相关函数
 //

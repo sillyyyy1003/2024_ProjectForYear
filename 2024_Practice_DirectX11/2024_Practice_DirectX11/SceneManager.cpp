@@ -3,18 +3,25 @@
 #include "FirstPersonCamera.h"
 #include "Model.h"
 #include "SceneBlank.h"
+#include "SceneTitle.h"
 using namespace DirectX::SimpleMath;
 
 //íËêîíËã`
 enum SceneName
 {
-	SCENE_BLANK,
-	SCENE_MAX
+	SCENE_TITLE = 0,
+	SCENE_LAB = 1,
+	SCENE_MAX,
 };
 
 
 void SceneManager::Init()
 {
+	//Set SceneMap
+	mSceneMap["Title"] = SCENE_TITLE;
+	mSceneMap["Lab"] = SCENE_LAB;
+
+
 	//ÉJÉÅÉâçÏê¨
 	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
 	camera->SetPosition(0.0f, 5.0f, -10.0f);
@@ -53,13 +60,25 @@ void SceneManager::Draw()
 {
 }
 
+void SceneManager::SetScene(std::string sceneName)
+{
+	if (mSceneMap.contains(sceneName))
+	{
+		mIndex = mSceneMap[sceneName];
+	}
+	ChangeScene();
+}
+
 void SceneManager::ChangeScene()
 {
 	switch (mIndex)
 	{
 		default:
-		case SCENE_BLANK:AddSubScene<SceneBlank>();
-			DebugLog::Log("SceneName = SceneBlank");
+		case SCENE_TITLE:AddSubScene<SceneTitle>();
+		DebugLog::Log("SceneName = SceneTitle");
+		break;
+		case SCENE_LAB:AddSubScene<SceneBlank>();
+		DebugLog::Log("SceneName = SceneBlank");
 		break;
 	}
 }
