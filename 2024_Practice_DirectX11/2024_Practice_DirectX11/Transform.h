@@ -68,6 +68,9 @@ public:
     
     void SetScale(const DirectX::XMFLOAT3& scale);
     void SetScale(float x, float y, float z);
+	void SetScale(const float* _scale);
+	void SetScaleXZ(float x, float z);
+	void SetScaleXY(float x, float y);
 
 	/// @brief Set Rotation in Degree
 	/// @param eulerAnglesInDegree 角度
@@ -85,7 +88,7 @@ public:
 
     void SetPosition(const DirectX::XMFLOAT3& position);
     void SetPosition(float x, float y, float z);
-	void SetPosition(float* pos);
+	void SetPosition(const float* pos);
 	void SetPositionZ(float z);
 
 	/// @brief Rotate given the degree

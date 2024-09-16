@@ -2,7 +2,7 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "Model.h"
-#include "SceneBlank.h"
+#include "SceneLab.h"
 #include "SceneTitle.h"
 using namespace DirectX::SimpleMath;
 
@@ -20,7 +20,6 @@ void SceneManager::Init()
 	//Set SceneMap
 	mSceneMap["Title"] = SCENE_TITLE;
 	mSceneMap["Lab"] = SCENE_LAB;
-
 
 	//ÉJÉÅÉâçÏê¨
 	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
@@ -66,6 +65,7 @@ void SceneManager::SetScene(std::string sceneName)
 	{
 		mIndex = mSceneMap[sceneName];
 	}
+
 	ChangeScene();
 }
 
@@ -77,8 +77,8 @@ void SceneManager::ChangeScene()
 		case SCENE_TITLE:AddSubScene<SceneTitle>();
 		DebugLog::Log("SceneName = SceneTitle");
 		break;
-		case SCENE_LAB:AddSubScene<SceneBlank>();
-		DebugLog::Log("SceneName = SceneBlank");
+		case SCENE_LAB:AddSubScene<SceneLab>();
+		DebugLog::Log("SceneName = SceneLab");
 		break;
 	}
 }

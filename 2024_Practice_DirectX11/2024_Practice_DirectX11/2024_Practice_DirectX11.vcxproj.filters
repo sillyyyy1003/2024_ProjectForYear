@@ -177,7 +177,7 @@
     <ClCompile Include="DirLight.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
-    <ClCompile Include="SceneBlank.cpp">
+    <ClCompile Include="SceneLab.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
     <ClCompile Include="CanvasUI.cpp">
@@ -305,7 +305,7 @@
     <ClInclude Include="LightBase.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SceneBlank.h">
+    <ClInclude Include="SceneLab.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
     <ClInclude Include="CanvasUI.h">

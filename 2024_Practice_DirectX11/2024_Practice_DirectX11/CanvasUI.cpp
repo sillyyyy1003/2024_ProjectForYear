@@ -17,6 +17,8 @@ void CanvasUI::InitResource(const char* _fileName, DirectX::XMFLOAT2 size, bool 
 	CreateMaterial(_fileName);
 	LoadShader();
 
+	
+
 	if (isDefaultSize)
 	{
 		SetSize(static_cast<float>(mMaterial.tex->GetWidth()), static_cast<float>(mMaterial.tex->GetHeight()));
@@ -138,7 +140,7 @@ void CanvasUI::CreateMaterial(const char* _fileName)
 		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
 	};
 	CreateTexture(_fileName);
-
+	mTexResource = _fileName;
 }
 
 void CanvasUI::LoadShader()

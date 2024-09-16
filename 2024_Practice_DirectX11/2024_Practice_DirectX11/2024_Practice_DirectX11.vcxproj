@@ -175,7 +175,7 @@
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SceneBase.cpp" />
-    <ClCompile Include="SceneBlank.cpp" />
+    <ClCompile Include="SceneLab.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -217,7 +217,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneBase.h" />
-    <ClInclude Include="SceneBlank.h" />
+    <ClInclude Include="SceneLab.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Shader.h" />

@@ -16,21 +16,23 @@ public:
 	Plane3D();
 	~Plane3D() = default;
 
-	void Init(const char* _fileName);
+	void InitPlane(const char* _fileName, DirectX::XMFLOAT2 _texUV = { 1,1 }) override;
+	
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
 	/// @brief Set Diffuse Color
 	/// @param diffuse 
-	void SetTexUV(DirectX::XMFLOAT2 _texUV = { 1,1 }) override;
+	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
 	void SetScale(const DirectX::XMFLOAT2& scale) override;
 
 
-
-private:
+protected:
+	void Init(const char* _fileName);
 	const void CreateMeshes();
 	const void CreateMaterial();
 	const void CreateTexture(const char* _fileName);
+
 
 	/*DefShader
 	 * Žg—p•ûŒüŒõ

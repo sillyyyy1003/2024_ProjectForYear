@@ -139,6 +139,23 @@ void Transform::SetScale(float x, float y, float z)
 	mScale = Vector3(x, y, z);
 }
 
+void Transform::SetScale(const float* _scale)
+{
+	mScale = Vector3(_scale[0], _scale[1], _scale[2]);
+}
+
+void Transform::SetScaleXZ(float x, float z)
+{
+	mScale.x = x;
+	mScale.z = z;
+}
+
+void Transform::SetScaleXY(float x, float y)
+{
+	mScale.x = x;
+	mScale.y = y;
+}
+
 void Transform::SetRotationInDegree(const DirectX::XMFLOAT3& eulerAnglesInDegree)
 {
 	XMFLOAT3 radian = Vector3(XMConvertToRadians(eulerAnglesInDegree.x), XMConvertToRadians(eulerAnglesInDegree.y), XMConvertToRadians(eulerAnglesInDegree.z));
@@ -175,7 +192,7 @@ void Transform::SetPosition(float x, float y, float z)
 	mPos = Vector3(x, y, z);
 }
 
-void Transform::SetPosition(float* pos)
+void Transform::SetPosition(const float* pos)
 {
 	mPos = Vector3(pos[0], pos[1], pos[2]);
 }

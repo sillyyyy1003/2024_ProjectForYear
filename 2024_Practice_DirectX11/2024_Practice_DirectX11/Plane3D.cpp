@@ -23,6 +23,12 @@ void Plane3D::SetScale(const DirectX::XMFLOAT2& scale)
 	mTransform.SetScale(scale.x, 1.0f, scale.y);
 }
 
+void Plane3D::InitPlane(const char* _fileName, DirectX::XMFLOAT2 _texUV)
+{
+	SetTexUV(_texUV);
+	Init(_fileName);
+}
+
 void Plane3D::Init(const char* _fileName)
 {
 	CreateMeshes();

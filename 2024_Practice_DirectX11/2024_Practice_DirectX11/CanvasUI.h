@@ -15,7 +15,7 @@ class CanvasUI
 public:
 
 	Transform mTransform = {};
-	bool isDefShader = true;
+	
 
 protected:
 
@@ -40,6 +40,10 @@ protected:
 	//最初の大きさを記録し、viewport変化するときに大きさを変化しないように
 	DirectX::XMFLOAT2 mOriginScale = {};
 	DirectX::XMFLOAT2 mOriginPos = {};
+
+	bool isDefShader = true;
+
+	std::string mTexResource = {};
 
 public:
 	CanvasUI() = default;
@@ -68,6 +72,14 @@ public:
 	/// @brief 自動並び替え描画
 	/// @param z 
 	void SetPosZ(float z);
+
+	/// @brief テクスチャのファイルパスを取得
+	/// @return ファイルパス
+	std::string GetFilePath() const { return mTexResource; };
+
+	/// @brief 位置を取得
+	/// @return 
+	DirectX::XMFLOAT3 GetPos() const { return mTransform.GetPosition(); };
 
 protected:
 

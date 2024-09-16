@@ -49,9 +49,11 @@ public:
 
 public:
 	Primitive(PrimitiveKind kind);
-	virtual ~Primitive();
+	virtual ~Primitive() override;
 
 	virtual void Init(const char* filePath = nullptr) = 0;
+	virtual void InitPlane(const char* filePath = nullptr, DirectX::XMFLOAT2 _texUV={1,1}) {};
+
 	virtual void Update(float dt);
 	virtual void Draw(int texSlot = 0) = 0;
 

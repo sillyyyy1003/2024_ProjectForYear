@@ -109,10 +109,10 @@ void UI_Button::PreUpdate(float dt)
 	float posX = mTransform.GetPosition().x + winWidth / 2;
 	float posY = abs(mTransform.GetPosition().y - winHeight / 2);//width/2~-width/2
 
-	float left = posX - buttonWidth / 2.0;
-	float top = posY - buttonHeight / 2;
-	float right = posX + buttonWidth / 2;
-	float bottom = posY + buttonHeight / 2;
+	float left = posX - buttonWidth / 2.f;
+	float top = posY - buttonHeight / 2.f;
+	float right = posX + buttonWidth / 2.f;
+	float bottom = posY + buttonHeight / 2.f;
 
 	//Get Cursor Pos;
 	POINT cursorPos;
