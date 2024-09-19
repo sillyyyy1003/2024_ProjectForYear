@@ -1,5 +1,6 @@
 ﻿#include "Object.h"
 #include "Cube.h"
+#include "CylinderOneCap.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
 #include "GUI.h"
@@ -47,12 +48,15 @@ void Object::Init(PrimitiveKind kind, const char* fileName)
 	case CAPSULE:
 		
 		break;
+	case CYLINDER_ONECAP:
+		mModel = std::make_unique<CylinderOneCap>();
+		mCollider = std::make_unique<BoxCollider>();
 	default:;
 	}
 
 	//モデルの初期化
 	mModel->Init(fileName);
-	mModel->mTransform.Rotate({ 0,0,45.0f});
+	//mModel->mTransform.Rotate({ 0,0,45.0f});
 }
 
 void Object::Update(float dt)
@@ -70,6 +74,11 @@ void Object::Update(float dt)
 void Object::Draw()
 {
 	mModel->Draw();
+}
+
+void Object::SetMaterial(const Material& mat)
+{
+	mModel->SetMaterial(mat);
 }
 
 void Object::PreUpdate(float dt)
@@ -153,6 +162,7 @@ void Object::PreUpdate(float dt)
 void Object::GameUpdate(float dt)
 {
 
+#ifdef _DEBUG
 	if (ImGui::Begin("Object Info"))
 	{
 		ImGui::Text("Position");
@@ -169,6 +179,7 @@ void Object::GameUpdate(float dt)
 	}
 
 	ImGui::End();
+#endif
 	if (mState == STATE_NONE) { return; }
 
 	switch(mState)
@@ -194,7 +205,7 @@ void Object::LateUpdate(float dt)
 	//Lazy Update->状態変更のときだけ、ステータス判定用のデータを更新する
 	if(isStateChange)
 	{
-		mCollider->Transform(mModel->GetPosition(), mModel->mTransform.GetRotationQuatXM(),mModel->GetScale());
+		mCollider->Transform(mModel->GetPosition(), mModel->mTransform.GetQuaternionXM(),mModel->GetScale());
 		isStateChange = false;
 	}
 		

@@ -17,9 +17,6 @@ enum CameraKind
 
 void FirstPersonCamera::Update(float dt)
 {
-    
-    if (isLock) return;
-
     UpdateState();
     if (mState == CAM_NONE) return;
 
@@ -84,12 +81,12 @@ void FirstPersonCamera::MoveForward(float d)
 void FirstPersonCamera::Pitch(float rad)
 {
     XMFLOAT3 rotation = mTransform.GetRotation();
-    // LIMIT ROTATE DEGREE TO ±70°
+    // LIMIT ROTATE DEGREE TO ±75°
     rotation.x += rad;
-    if (rotation.x > XM_PI * 7 / 18)
-        rotation.x = XM_PI * 7 / 18;
-    else if (rotation.x < -XM_PI * 7 / 18)
-        rotation.x = -XM_PI * 7 / 18;
+    if (rotation.x > XM_PI * 75 / 18)
+        rotation.x = XM_PI * 75 / 18;
+    else if (rotation.x < -XM_PI * 75 / 18)
+        rotation.x = -XM_PI * 75 / 18;
 
     mTransform.SetRotationInRadian(rotation);
 }
@@ -132,13 +129,18 @@ void FirstPersonCamera::UpdateState()
 
 void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
 {
+    if (!isLockAngle)
+    {
+        //横回転
+        float angleX = 360.0f * mouseMove.x / WIN_WIDTH;
+        RotateY(angleX * dt * mMoveSpeed);
+        //縦回転
+        float angleY = 180.0f * mouseMove.y / WIN_HEIGHT;
+        Pitch(angleY * dt * mMoveSpeed);
+    }
 
-	//横回転
-    float angleX = 360.0f * mouseMove.x / WIN_WIDTH;
-    RotateY(angleX * dt * mMoveSpeed);
-    //縦回転
-    float angleY = 180.0f * mouseMove.y / WIN_HEIGHT;
-    Pitch(angleY * dt * mMoveSpeed);
+    if (isLockPos)return;
+
 
 	// キー入力で移動
     if (KInput::IsKeyPress('W'))//Move Forward
@@ -153,5 +155,12 @@ void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
         MoveUpward(dt * mMoveSpeed);
     if (KInput::IsKeyPress('E'))
         MoveUpward(dt * -mMoveSpeed);
+
+    // Wheel入力
+    if (gD3D->GetMoveUnit() != 0)
+    {
+        MoveForward(gD3D->GetMoveUnit() * 0.2f);
+        gD3D->SetMoveUnit(0);
+    }
 }
 

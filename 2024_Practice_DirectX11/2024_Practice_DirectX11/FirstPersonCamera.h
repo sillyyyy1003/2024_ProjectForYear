@@ -12,7 +12,8 @@ private:
     int mState = 0;
     POINT mOldPos = { 0,0 };
 
-    bool isLock = false;
+    bool isLockPos = false;     // 位置移動可能？
+    bool isLockAngle = false;   // 角度固定？
 
 public:
 
@@ -59,9 +60,14 @@ public:
 
     void MoveUpward(float d);
 
-    /// @brief カメラの角度をロックす
-    void SetCameraLock(bool isLock) { this->isLock = isLock; };
-    bool GetCameraLock() { return isLock; };
+    /// @brief カメラの角度をロックする
+    void LockCameraAngle(bool isLockAngle) { this->isLockAngle = isLockAngle; };
+    bool GetAngleLock() { return isLockAngle; };
+
+    /// @brief カメラの位置をロックする
+    void LockCameraPos(bool isLockPos) { this->isLockPos = isLockPos; };
+    bool GetPosLock() { return isLockPos; };
+
 
 private:
     void UpdateState();

@@ -36,8 +36,8 @@ public:
 
 	/// @brief 回転の四元数を返す
 	/// @return 四元数　Pitch:x  Yaw:y  Roll:z
-	DirectX::XMFLOAT4 GetRotationQuat() const { return mRotation; }
-	DirectX::XMVECTOR GetRotationQuatXM() const { return XMLoadFloat4(&mRotation); }
+	DirectX::XMFLOAT4 GetQuaternion() const { return mRotation; }
+	DirectX::XMVECTOR  GetQuaternionXM() const { return XMLoadFloat4(&mRotation); }
 
 	/// @brief Position
 	/// @return 

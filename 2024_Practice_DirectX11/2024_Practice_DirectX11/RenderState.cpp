@@ -4,6 +4,7 @@
 ComPtr<ID3D11RasterizerState> RenderState::RSNoCull = nullptr;
 ComPtr<ID3D11RasterizerState> RenderState::RSWireframe = nullptr;
 ComPtr<ID3D11RasterizerState> RenderState::RSCullClockWise = nullptr;
+ComPtr<ID3D11RasterizerState> RenderState::RSCullFront = nullptr;
 ComPtr<ID3D11RasterizerState> RenderState::RSShadow = nullptr;
 
 ComPtr<ID3D11SamplerState> RenderState::SSPointClamp = nullptr;
@@ -48,10 +49,10 @@ void RenderState::InitAll(ID3D11Device* device)
 	//=========================
 	CD3D11_RASTERIZER_DESC rasterizerDesc(CD3D11_DEFAULT{});
 
-	//Wire Frame
-	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;
-	HR(device->CreateRasterizerState(&rasterizerDesc, RSWireframe.GetAddressOf()));
+    //Wire Frame
+    rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+    rasterizerDesc.CullMode = D3D11_CULL_NONE;
+    HR(device->CreateRasterizerState(&rasterizerDesc, RSWireframe.GetAddressOf()));
 
     // NoCull
     rasterizerDesc.FillMode = D3D11_FILL_SOLID;
@@ -59,21 +60,27 @@ void RenderState::InitAll(ID3D11Device* device)
     rasterizerDesc.FrontCounterClockwise = false;
     HR(device->CreateRasterizerState(&rasterizerDesc, RSNoCull.GetAddressOf()));
 
+    //CullClock
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_BACK;
+    rasterizerDesc.FrontCounterClockwise = true;
+    HR(device->CreateRasterizerState(&rasterizerDesc, RSCullClockWise.GetAddressOf()));
 
-	//CullClock
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
-	rasterizerDesc.FrontCounterClockwise = true;
-	HR(device->CreateRasterizerState(&rasterizerDesc, RSCullClockWise.GetAddressOf()));
+    // CullFront 
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_FRONT;  // 剔除正面
+    rasterizerDesc.FrontCounterClockwise = false;  // 默认情况下，顺时针为正面
+    HR(device->CreateRasterizerState(&rasterizerDesc, RSCullFront.GetAddressOf()));
 
-	//Shadow
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;
-	rasterizerDesc.FrontCounterClockwise = false;
-	rasterizerDesc.DepthBias = 0;
-	rasterizerDesc.DepthBiasClamp = 0.0f;
-	rasterizerDesc.SlopeScaledDepthBias = 1.0f;
-	HR(device->CreateRasterizerState(&rasterizerDesc, RSShadow.GetAddressOf()));
+    //Shadow
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_NONE;
+    rasterizerDesc.FrontCounterClockwise = false;
+    rasterizerDesc.DepthBias = 0;
+    rasterizerDesc.DepthBiasClamp = 0.0f;
+    rasterizerDesc.SlopeScaledDepthBias = 1.0f;
+    HR(device->CreateRasterizerState(&rasterizerDesc, RSShadow.GetAddressOf()));
+
 
     //=========================
 	//Sampler Init

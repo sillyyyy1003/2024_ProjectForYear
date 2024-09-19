@@ -43,7 +43,7 @@ protected:
 
 	bool isDefShader = true;
 
-	std::string mTexResource = {};
+	std::string mFilePath= {};
 
 public:
 	CanvasUI() = default;
@@ -52,13 +52,11 @@ public:
 	/// @brief UIのテクスチャとシェーダの初期化
 	///	基本UI/No Lighting Effect
 	/// @param _fileName テクスチャファイル名
-	/// @param size
-	/// @param isDefaultSize
-	virtual void InitResource(const char* _fileName = nullptr, DirectX::XMFLOAT2 size = {1,1}, bool isDefaultSize = true);
+	virtual void Init(const char* _fileName = nullptr);
 
 	/// @brief 位置の初期化
 	/// @param pos ピクセル位置
-	virtual void InitData(DirectX::XMFLOAT3 pos);
+	virtual void InitPosition(DirectX::XMFLOAT3 pos);
 
 	virtual void Update(float dt);
 
@@ -73,13 +71,24 @@ public:
 	/// @param z 
 	void SetPosZ(float z);
 
+
 	/// @brief テクスチャのファイルパスを取得
 	/// @return ファイルパス
-	std::string GetFilePath() const { return mTexResource; };
+	std::string GetFilePath() const { return mFilePath; };
 
 	/// @brief 位置を取得
 	/// @return 
-	DirectX::XMFLOAT3 GetPos() const { return mTransform.GetPosition(); };
+	DirectX::XMFLOAT3 GetPosition() const { return mTransform.GetPosition(); };
+
+	/// @brief 大きさを取得
+	/// @return X:幅　Y:高さ
+	DirectX::XMFLOAT2 GetScaleXY() const { return DirectX::XMFLOAT2{ mTransform.GetPosition().x,mTransform.GetPosition().y }; };
+
+	DirectX::XMFLOAT3 GetScale()const { return mTransform.GetScale(); };
+	DirectX::XMFLOAT4 GetQuaternion()const { return mTransform.GetQuaternion(); };
+	DirectX::XMFLOAT3 GetRotation()const { return mTransform.GetRotation(); };
+
+	const Material& GetMaterial() { return mMaterial.material; };
 
 protected:
 

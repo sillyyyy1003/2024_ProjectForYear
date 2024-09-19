@@ -352,6 +352,10 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         return 0;
     case WM_MOUSEMOVE:
         return 0;
+    case WM_MOUSEWHEEL:
+        mScrollValue = GET_WHEEL_DELTA_WPARAM(wParam);
+        moveUnit = mScrollValue / 120;
+        return 0;
     }
 
     return DefWindowProc(hwnd, msg, wParam, lParam);

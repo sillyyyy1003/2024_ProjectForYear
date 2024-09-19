@@ -41,8 +41,5 @@ private:
 	 */
 	/// @brief Default Shaderに使われるデータの書き込み
 	const void WriteDefShader();
-
-
-
 };
 

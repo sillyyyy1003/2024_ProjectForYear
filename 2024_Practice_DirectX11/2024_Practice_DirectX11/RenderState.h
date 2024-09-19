@@ -8,9 +8,11 @@ class RenderState
 {
 public:
     static ComPtr<ID3D11RasterizerState> RSWireframe;		            // wireFrame
-    static ComPtr<ID3D11RasterizerState> RSNoCull;			            // 正反両面レンダリング
-    static ComPtr<ID3D11RasterizerState> RSCullClockWise;	            // 正面だけ
+    static ComPtr<ID3D11RasterizerState> RSNoCull;			            // 表裏両面レンダリング
+    static ComPtr<ID3D11RasterizerState> RSCullClockWise;	            // 表面だけ
+    static ComPtr<ID3D11RasterizerState> RSCullFront;                    // 裏面だけ
     static ComPtr<ID3D11RasterizerState> RSShadow;						// 影用
+
 
     static ComPtr<ID3D11SamplerState> SSPointClamp;						// 采样器状态：点过滤与Clamp模式
     static ComPtr<ID3D11SamplerState> SSLinearWrap;			            // 采样器状态：线性过滤与Wrap模式

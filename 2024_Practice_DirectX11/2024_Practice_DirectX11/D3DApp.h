@@ -51,6 +51,10 @@ protected:
 
     Timer mTimer;
     FILE* fp = nullptr;
+
+    //Scroll wheel‚É‚æ‚é‘€ì
+    int mScrollValue = 0;	// WIN_API‚ğg‚¤
+    int moveUnit = 0;		// wheel‚É‚æ‚éˆÚ“®—Ê
    
 public:
 
@@ -110,7 +114,10 @@ public:
     static void SetDepthTest(ComPtr<ID3D11DepthStencilState> _state);
 
     bool GetResized() { return isResized; };
-    
+
+    //Wheel Unit
+    int GetMoveUnit() { return moveUnit; };
+    void SetMoveUnit(int moveUnit) { this->moveUnit = moveUnit; };
 
 protected:
     /// @brief Init Main Window

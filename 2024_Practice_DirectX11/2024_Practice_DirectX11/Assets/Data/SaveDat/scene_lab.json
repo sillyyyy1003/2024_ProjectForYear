@@ -1,0 +1,20 @@
+{
+    "Container": {
+        "Filepath": "Assets/Texture/Lab/rust_coarse_01_diff_1k.jpg",
+        "Position": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    }
+}

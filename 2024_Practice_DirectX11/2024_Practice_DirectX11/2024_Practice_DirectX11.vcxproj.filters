@@ -228,9 +228,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="RigidBody.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="RenderState.cpp">
       <Filter>ソース ファイル\DirectX\RenderState</Filter>
     </ClCompile>
@@ -238,6 +235,18 @@
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
     <ClCompile Include="UI_Button.cpp">
+      <Filter>ソース ファイル\UI\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>ソース ファイル\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="CylinderOneCap.cpp">
+      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Container.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -350,9 +359,6 @@
     <ClInclude Include="Object.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="RenderState.h">
       <Filter>ヘッダー ファイル\DirectX\RenderState</Filter>
     </ClInclude>
@@ -360,7 +366,19 @@
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
     <ClInclude Include="UI_Button.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\UI\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>ヘッダー ファイル\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderOneCap.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

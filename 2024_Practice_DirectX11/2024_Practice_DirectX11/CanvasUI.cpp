@@ -11,27 +11,15 @@ CanvasUI::~CanvasUI()
 {
 }
 
-void CanvasUI::InitResource(const char* _fileName, DirectX::XMFLOAT2 size, bool isDefaultSize)
+void CanvasUI::Init(const char* _fileName)
 {
 	CreateMeshBuffer();
 	CreateMaterial(_fileName);
 	LoadShader();
-
-	
-
-	if (isDefaultSize)
-	{
-		SetSize(static_cast<float>(mMaterial.tex->GetWidth()), static_cast<float>(mMaterial.tex->GetHeight()));
-	}
-	else
-	{
-		SetSize(size.x, size.y);
-	}
-
-
 }
 
-void CanvasUI::InitData(DirectX::XMFLOAT3 pos)
+
+void CanvasUI::InitPosition(DirectX::XMFLOAT3 pos)
 {
 	mTransform.SetPosition(pos);
 	mOriginPos = { pos.x,pos.y };
@@ -62,11 +50,6 @@ void CanvasUI::Draw()
 
 void CanvasUI::SetSize(float x, float y)
 {
-	//todo：プロトタイプ段階、テクスチャは全部1920*1080サイズ　
-	//オブジェクトのサイズの不具合はとりあえず強制修正で行くあとで直す
-	x *= 0.6666f;
-	y *= 0.6666f;
-
 	mTransform.SetScale(x, y, 1.0f);
 	mOriginScale = { x,y };
 }
@@ -140,7 +123,7 @@ void CanvasUI::CreateMaterial(const char* _fileName)
 		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
 	};
 	CreateTexture(_fileName);
-	mTexResource = _fileName;
+	mFilePath = _fileName;
 }
 
 void CanvasUI::LoadShader()

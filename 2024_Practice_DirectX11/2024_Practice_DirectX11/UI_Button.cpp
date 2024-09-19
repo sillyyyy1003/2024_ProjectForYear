@@ -18,20 +18,11 @@ UI_Button::~UI_Button()
 {
 }
 
-void UI_Button::InitResource(const char* _fileName, DirectX::XMFLOAT2 size, bool isDefaultSize)
+void UI_Button::Init(const char* _fileName)
 {
 	CreateMeshBuffer();
 	CreateMaterial(_fileName);
 	LoadShader();
-
-	if (isDefaultSize)
-	{
-		SetSize(static_cast<float>(mMaterial.tex->GetWidth()), static_cast<float>(mMaterial.tex->GetHeight()));
-	}
-	else
-	{
-		SetSize(size.x, size.y);
-	}
 }
 
 void UI_Button::Update(float dt)

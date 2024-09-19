@@ -17,7 +17,7 @@ public:
 	UI_Button() = default;
 	~UI_Button() override;
 
-	void InitResource(const char* _fileName, DirectX::XMFLOAT2 size, bool isDefaultSize) override;
+	void Init(const char* _fileName);
 
 	void Update(float dt) override;
 

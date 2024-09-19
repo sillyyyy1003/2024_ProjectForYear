@@ -23,22 +23,19 @@ void Plane3D::SetScale(const DirectX::XMFLOAT2& scale)
 	mTransform.SetScale(scale.x, 1.0f, scale.y);
 }
 
-void Plane3D::InitPlane(const char* _fileName, DirectX::XMFLOAT2 _texUV)
-{
-	SetTexUV(_texUV);
-	Init(_fileName);
-}
 
 void Plane3D::Init(const char* _fileName)
 {
 	CreateMeshes();
 	CreateMaterial();
 	CreateTexture(_fileName);
-	mDefPS = std::make_shared<PixelShader>();
-	mDefVS = std::make_shared<VertexShader>();
+	LoadDefShader();
+}
 
-	mDefPS->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
-	mDefVS->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
+void Plane3D::Init(const char* _fileName, DirectX::XMFLOAT2 _texUV)
+{
+	SetTexUV(_texUV);
+	Init(_fileName);
 }
 
 void Plane3D::Update(float dt)
@@ -142,7 +139,7 @@ const void Plane3D::CreateTexture(const char* fileName)
 		mMaterial.tex = nullptr;
 		mMaterial.material.isTexEnable = false;
 	}
-
+	mFilePath = fileName;
 }
 
 void Plane3D::WriteDefShader()

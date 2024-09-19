@@ -42,6 +42,20 @@ void Primitive::Update(float dt)
 
 }
 
+void Primitive::SetScaleXZ(const DirectX::XMFLOAT2& scale)
+{
+	mTransform.SetScale(scale.x, 1.0f, scale.y);
+}
+
+void Primitive::LoadDefShader()
+{
+	mDefPS = std::make_shared<PixelShader>();
+	mDefVS = std::make_shared<VertexShader>();
+
+	mDefPS->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
+	mDefVS->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
+}
+
 void Primitive::UpdateState()
 {
 	/*

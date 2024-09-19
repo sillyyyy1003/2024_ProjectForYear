@@ -21,16 +21,34 @@ public:
 
 public:
 	Object();
-	~Object();
+	virtual ~Object();
 
 	/// @brief オブジェクト実態の初期化
 	/// @param kind オブジェクトの形状
 	/// @param fileName テクスチャファイルパス
 	void Init(PrimitiveKind kind, const char* fileName);
+	void InitPosition(DirectX::XMFLOAT3& pos);
 
-	void Update(float dt);
-	void Draw();
+	virtual void Update(float dt);
+	virtual void Draw();
 
+	DirectX::XMFLOAT3 GetPosition() const { return mModel->GetPosition(); };
+	DirectX::XMFLOAT3 GetScale() const { return mModel->GetScale(); };
+	DirectX::XMFLOAT4 GetQuaternion() const { return mModel->GetQuaternion(); };
+	DirectX::XMFLOAT3 GetRotation()const { return mModel->GetRotation(); }
+
+	std::string GetFilePath() const { return mModel->GetFilePath(); };
+	Material GetMaterial() { return mModel->GetMaterial(); };
+
+	void SetScale(const DirectX::XMFLOAT3& scale) { mModel->SetScale(scale); };
+	void SetScale(const DirectX::XMFLOAT2& scale) {};
+	void SetScale(const float* scale) { mModel->mTransform.SetScale(scale); };
+
+	void SetPosition(const DirectX::XMFLOAT3 position) { mModel->mTransform.SetPosition(position); };
+	void SetPosition(float x, float y, float z) { mModel->mTransform.SetPosition(x, y, z); };
+	void SetPosition(const float* position) { mModel->mTransform.SetPosition(position); };
+
+	void SetMaterial(const Material& mat);
 
 private:
 

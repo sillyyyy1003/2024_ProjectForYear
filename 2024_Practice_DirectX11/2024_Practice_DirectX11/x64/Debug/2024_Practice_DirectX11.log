@@ -1,29 +1,7 @@
-﻿  CameraBase.cpp
-  CanvasUI.cpp
-  Capsule.cpp
-  Collider.cpp
-  Cube.cpp
-  Cylinder.cpp
-  FirstPersonCamera.cpp
+﻿  GUI.cpp
   GampApp.cpp
-  Ingredients.cpp
-  Model.cpp
   Object.cpp
-  Plane3D.cpp
-  Primitive.cpp
   SceneLab.cpp
-  SceneManager.cpp
-  SceneTitle.cpp
-  Sphere.cpp
-  ThirdPersonCamera.cpp
-  Transform.cpp
   UI_Button.cpp
   コードを生成中...
-imgui.lib(imgui.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-imgui.lib(imgui_widgets.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_widgets.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-imgui.lib(imgui_draw.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_draw.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-imgui.lib(imgui_impl_dx11.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_impl_dx11.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-imgui.lib(imgui_impl_win32.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_impl_win32.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-imgui.lib(imgui_tables.obj) : warning LNK4099: PDB '' が 'imgui.lib(imgui_tables.obj)' で、または '' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     ライブラリ C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.lib とオブジェクト C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exp を作成中
-  2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe
+  2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Downloads\2024_ProjectForYear-main\2024_ProjectForYear-main\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

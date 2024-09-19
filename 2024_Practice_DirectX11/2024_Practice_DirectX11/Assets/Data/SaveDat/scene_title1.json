@@ -1,0 +1,74 @@
+{
+    "title_bg": {
+        "Filepath": "Assets/Texture/UI/main_title_background_1920x1080.png",
+        "Position": [
+            0.0,
+            0.0,
+            2.9000000953674316
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            1279.8719482421875,
+            719.927978515625,
+            1.0
+        ]
+    },
+    "title_exit": {
+        "Filepath": "Assets/Texture/UI/main_title_exitbutton_700x140.png",
+        "Position": [
+            0.0,
+            -280.0,
+            2.6000003814697266
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            466.6199951171875,
+            93.3239974975586,
+            1.0
+        ]
+    },
+    "title_option": {
+        "Filepath": "Assets/Texture/UI/main_title_optionbutton_700x140.png",
+        "Position": [
+            0.0,
+            -150.0,
+            2.700000286102295
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            466.6199951171875,
+            93.3239974975586,
+            1.0
+        ]
+    },
+    "title_start": {
+        "Filepath": "Assets/Texture/UI/main_title_startbutton_700x140.png",
+        "Position": [
+            0.0,
+            -20.0,
+            2.8000001907348633
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            466.6199951171875,
+            93.3239974975586,
+            1.0
+        ]
+    }
+}

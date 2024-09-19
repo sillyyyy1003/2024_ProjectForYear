@@ -16,7 +16,11 @@ public:
 	Plane3D();
 	~Plane3D() = default;
 
-	void InitPlane(const char* _fileName, DirectX::XMFLOAT2 _texUV = { 1,1 }) override;
+	/// @brief Plane—p‰Šú‰»ƒvƒƒOƒ‰ƒ€
+	/// @param _fileName texture filepath
+	/// @param _texUV sampler wrap UV
+	void Init(const char* _fileName, DirectX::XMFLOAT2 _texUV) override;
+
 	
 	void Update(float dt);
 	void Draw(int texSlot = 0);

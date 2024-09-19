@@ -15,11 +15,7 @@ void Capsule::Init(const char* filePath)
 	CreateMaterial();
 	CreateTexture(filePath);
 
-	mDefPS = std::make_shared<PixelShader>();
-	mDefVS = std::make_shared<VertexShader>();
-
-	mDefPS->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
-	mDefVS->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
+	LoadDefShader();
 }
 
 void Capsule::Update(float dt)
@@ -248,6 +244,7 @@ void Capsule::CreateTexture(const char* filePath)
 		mMaterial.tex = nullptr;
 		mMaterial.material.isTexEnable = false;
 	}
+	mFilePath = filePath;
 }
 
 void Capsule::WriteDefShader()
@@ -285,3 +282,5 @@ void Capsule::WriteDefShader()
 	mDefPS->WriteShader(1, &eyePos);
 	mDefPS->WriteShader(2, &light);
 }
+
+

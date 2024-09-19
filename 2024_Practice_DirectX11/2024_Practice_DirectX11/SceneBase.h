@@ -1,10 +1,14 @@
 #pragma once
+#include "D3DUtil.h"
 #include <list>
 #include <map>
 #include <memory>
-#include <memory>
 #include <string>
+#include <nlohmann/json.hpp>
+
 #include "DebugLog.h"
+using json = nlohmann::json;
+using namespace DirectX::SimpleMath;
 
 /// @brief ゲームシーンで使うすべてのオブジェクトの基底になる
 class Component
@@ -48,6 +52,21 @@ public:
 	void _update(float dt);
 	void _draw();
 
+	/// @brief jsonファイルにオブジェクトデータ保存
+	/// @tparam T オブジェクト型
+	/// @param obj 
+	/// @return 
+	template<class T>
+	json SaveData(T* obj);
+
+
+	/// @brief UI などデータの読み込み(tex&pos)
+	/// @tparam T オブジェクトタイプ
+	/// @param objName mObjectsで保存される名前
+	///	@param data jsonData
+	/// @return 
+	template<class T>
+	T* LoadData2D(const char* objName, nlohmann::json data);
 
 	/// @brief サブシーンの追加
 	/// @tparam T サブシーンの型
@@ -81,6 +100,50 @@ public:
 	virtual void Update(float tick) = 0;
 	virtual void Draw() = 0;
 };
+
+template <class T>
+json SceneBase::SaveData(T* obj)
+{
+	json data;
+	data["Position"] = { obj->GetPosition().x,obj->GetPosition().y,obj->GetPosition().z };
+	data["Scale"] = { obj->GetScale().x,obj->GetScale().y,obj->GetScale().z };
+	data["Rotation"] = { obj->GetRotation().x,obj->GetRotation().y,obj->GetRotation().z };
+	data["Filepath"] = obj->GetFilePath();
+
+	//Set Material
+	/*
+	data["Material"]["Ambient"] = {obj->GetMaterial().ambient[0],obj->GetMaterial().ambient[1], obj->GetMaterial().ambient[2], obj->GetMaterial().ambient[3]};
+
+	data["Material"]["Diffuse"] = { obj->GetMaterial().diffuse[0], obj->GetMaterial().diffuse[1], obj->GetMaterial().diffuse[2], obj->GetMaterial().diffuse[3]};
+
+	data["Material"]["Specular"] = { obj->GetMaterial().specular[0],obj->GetMaterial().specular[1],obj->GetMaterial().specular[2],obj->GetMaterial().specular[3] };
+
+	data["Material"]["Emission"] = { obj->GetMaterial().emission[0], obj->GetMaterial().emission[1], obj->GetMaterial().emission[2], obj->GetMaterial().emission[3]};
+	*/
+	return data;
+}
+
+template <class T>
+T* SceneBase::LoadData2D(const char* objName, json data)
+{
+
+	T* obj = CreateObj<T>(objName);
+
+	//Scale
+	Vector2 size = Vector2(data[objName]["Scale"][0], data[objName]["Scale"][1]);
+	obj->SetSize(size.x, size.y);
+
+	//Pos
+	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	obj->InitPosition(pos);
+
+	obj->Init(data[objName]["Filepath"].get<std::string>().c_str());
+	//todo:Rotation
+
+	return obj;
+}
+
+
 
 template <class T>
 T* SceneBase::AddSubScene()

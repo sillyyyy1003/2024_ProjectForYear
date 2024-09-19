@@ -1,0 +1,38 @@
+{
+    "title_bg": {
+        "filepath": "Assets/Texture/UI/main_title_background_1920x1080.png",
+        "name": "title_bg",
+        "position": [
+            0.0,
+            0.0,
+            2.9000000953674316
+        ]
+    },
+    "title_exit": {
+        "filepath": "Assets/Texture/UI/main_title_exitbutton_700x140.png",
+        "name": "title_exit",
+        "position": [
+            0.0,
+            -280.0,
+            2.6000003814697266
+        ]
+    },
+    "title_option": {
+        "filepath": "Assets/Texture/UI/main_title_optionbutton_700x140.png",
+        "name": "title_option",
+        "position": [
+            0.0,
+            -150.0,
+            2.700000286102295
+        ]
+    },
+    "title_start": {
+        "filepath": "Assets/Texture/UI/main_title_startbutton_700x140.png",
+        "name": "title_start",
+        "position": [
+            0.0,
+            -20.0,
+            2.8000001907348633
+        ]
+    }
+}

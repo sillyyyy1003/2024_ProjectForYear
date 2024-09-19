@@ -33,7 +33,6 @@ private:
 	std::shared_ptr<PixelShader> mDefPS = nullptr;
 
 
-
 public:
 
 	Cube();

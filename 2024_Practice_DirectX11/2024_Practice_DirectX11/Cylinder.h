@@ -6,7 +6,6 @@ class Cylinder : public Primitive
 private:
 
 	std::unique_ptr<Mesh> mMesh = nullptr;
-	MaterialData mMaterial = {};
 
 public:
 	Cylinder();
