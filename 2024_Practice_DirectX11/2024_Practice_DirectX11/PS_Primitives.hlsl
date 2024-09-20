@@ -28,7 +28,7 @@ cbuffer DirLight : register(b2)
 Texture2D myTex : register(t0);
 SamplerState mySampler : register(s0);
 
-float4 main (PS_IN pin) : SV_TARGET
+float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 {
     float4 color = float4(0, 0, 0, 0);
 
@@ -44,6 +44,12 @@ float4 main (PS_IN pin) : SV_TARGET
 
 
     float3 normal = normalize(pin.normal);
+
+    if(!frontFace)
+    {
+		normal = -normal;
+	}
+
     float3 toEye = normalize(-eyePos.xyz);
 
 	//ŠÂ‹«ŒõŒvŽZ

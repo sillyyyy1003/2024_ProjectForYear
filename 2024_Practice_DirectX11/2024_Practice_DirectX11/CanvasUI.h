@@ -44,7 +44,7 @@ protected:
 	bool isDefShader = true;
 
 	std::string mFilePath= {};
-
+	std::string mObjectName = {};
 public:
 	CanvasUI() = default;
 	virtual ~CanvasUI();
@@ -57,6 +57,11 @@ public:
 	/// @brief 位置の初期化
 	/// @param pos ピクセル位置
 	virtual void InitPosition(DirectX::XMFLOAT3 pos);
+
+	/// @brief Load Save Data & Init Object Data
+	/// @param data json fileData
+	/// @param objName dataName
+	virtual void LoadSaveData(json data, const char* objName);
 
 	virtual void Update(float dt);
 
@@ -76,6 +81,8 @@ public:
 	/// @return ファイルパス
 	std::string GetFilePath() const { return mFilePath; };
 
+	std::string GetObjectName() const { return mObjectName; };
+
 	/// @brief 位置を取得
 	/// @return 
 	DirectX::XMFLOAT3 GetPosition() const { return mTransform.GetPosition(); };
@@ -89,6 +96,8 @@ public:
 	DirectX::XMFLOAT3 GetRotation()const { return mTransform.GetRotation(); };
 
 	const Material& GetMaterial() { return mMaterial.material; };
+
+	virtual json SaveData(const char* objName);
 
 protected:
 

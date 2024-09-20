@@ -20,7 +20,7 @@ enum TitleScene
 
 void SceneTitle::Init()
 {
-	std::filesystem::path filePath = "Assets/Data/SaveDat/scene_title.json";
+	std::filesystem::path filePath = "Assets/Data/SaveDat/scene_title_default.json";
 	if (!std::filesystem::exists(filePath))
 	{
 		DebugLog::Log("scene_title.json not found.");
@@ -39,11 +39,22 @@ void SceneTitle::Init()
 	file.close();
 
 	//Setting
-	CanvasUI* uiBg = LoadData2D<CanvasUI>("title_bg", sceneData);
-	CanvasUI* uiStart = LoadData2D<UI_Button>("title_start", sceneData);
-	CanvasUI* uiOption = LoadData2D<UI_Button>("title_option", sceneData);
-	CanvasUI* uiExit = LoadData2D<UI_Button>("title_exit", sceneData);
+	//CanvasUI* uiBg = LoadData2D<CanvasUI>("title_bg", sceneData);
+	//CanvasUI* uiStart = LoadData2D<UI_Button>("title_start", sceneData);
+	//CanvasUI* uiOption = LoadData2D<UI_Button>("title_option", sceneData);
+	//CanvasUI* uiExit = LoadData2D<UI_Button>("title_exit", sceneData);
 
+	CanvasUI* uiBg = CreateObj<CanvasUI>("title_bg");
+	uiBg->LoadSaveData(sceneData, "title_bg");
+
+	CanvasUI* uiStart = CreateObj<UI_Button>("title_start");
+	uiStart->LoadSaveData(sceneData, "title_start");
+
+	CanvasUI* uiOption = CreateObj<UI_Button>("title_option");
+	uiOption->LoadSaveData(sceneData, "title_option");
+
+	CanvasUI* uiExit = CreateObj<UI_Button>("title_exit");
+	uiExit->LoadSaveData(sceneData, "title_exit");
 
 	//Set data to map
 	uiManager["background"].push_back(uiBg);  
@@ -52,7 +63,7 @@ void SceneTitle::Init()
 	uiManager["button"].push_back(uiExit);
 
 	//描画順番の設定
-	mUiOrder = { "background",  "button" ,"effect" };
+	mUiOrder = { "background", "button" ,"effect" };
 
 	mSceneIndex = SCENE_NONE;
 }
@@ -62,13 +73,22 @@ void SceneTitle::UnInit()
 	// Create scene Data
 	json sceneData;
 
-	sceneData["title_bg"] = SaveData(GetObj<CanvasUI>("title_bg"));
+	/*sceneData["title_bg"] = SaveData(GetObj<CanvasUI>("title_bg"));
 	sceneData["title_start"] = SaveData(GetObj<UI_Button>("title_start"));
 	sceneData["title_option"] = SaveData(GetObj<UI_Button>("title_option"));
-	sceneData["title_exit"] = SaveData(GetObj<UI_Button>("title_exit"));
+	sceneData["title_exit"] = SaveData(GetObj<UI_Button>("title_exit"));*/
+
+	for(auto it =uiManager.begin();it!=uiManager.end();++it)
+	{
+		for(auto& element:it->second)
+		{
+			sceneData[element->GetObjectName().c_str()] = element->SaveData(element->GetFilePath().c_str());
+		}
+		
+	}
 
 
-	std::ofstream file("Assets/Data/SaveDat/scene_title1.json");
+	std::ofstream file("Assets/Data/SaveDat/scene_title_default.json");
 	if (file.is_open())
 	{
 		file << sceneData.dump(4);

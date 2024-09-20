@@ -43,13 +43,13 @@ void Circle::SetScale(const DirectX::XMFLOAT2& scale)
 
 void Circle::Init(const char* _fileName)
 {
-	CreateMeshes(64);
+	CreateMesh(64);
 	CreateMaterial();
 	CreateTexture(_fileName);
 	LoadDefShader();
 }
 
-const void Circle::CreateMeshes(UINT slices)
+const void Circle::CreateMesh(UINT slices)
 {
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 	std::vector<DWORD> idx;
@@ -100,6 +100,103 @@ const void Circle::CreateMeshes(UINT slices)
 	desc.pIndex = indexData.data();
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
+	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	mMesh = std::make_unique<Mesh>(desc);
+
+}
+
+const void Circle::CreateMesh(UINT levels, UINT slices)
+{
+
+	std::vector<Vertex::VtxPosNormalTex> vtx;
+
+	float theta = 0.0f;
+	float per_theta = XM_2PI / slices;
+	float radius = 0.5f;
+	float x, z;
+
+	// 添加圆心顶点
+	vtx.push_back({
+		Vector3(0.0f, 0.0f, 0.0f),  // 圆心位置
+		Vector3(0.0f, 1.0f, 0.0f),  // 法线方向
+		Vector2(0.5f, 0.5f),        // UV 中心
+		});
+
+	// 生成圆周上的顶点
+	for (UINT i = 0; i < levels; ++i)  // 頂点密度
+	{
+		float r = static_cast<float>(i + 1) / levels * radius;  
+		for (UINT j = 0; j <= slices; ++j)          // 円の縦分割
+		{
+			theta = per_theta * j;
+			x = r * cosf(theta);  // x 坐标
+			z = r * sinf(theta);  // z 坐标
+
+			// 计算 UV 坐标，以圆心为中心
+			float u = (x / radius + 1.0f) * 0.5f;
+			float v = (z / radius + 1.0f) * 0.5f;
+
+			vtx.push_back({
+				Vector3(x, 0.0f, z),         
+				Vector3(0.0f, 1.0f, 0.0f),    
+				Vector2(u, v)						
+				});
+		}
+	}
+	std::vector<DWORD> idx;
+
+	// 生成索引数据
+	if (levels > 1)
+	{
+		for (UINT i = 1; i <= slices; ++i)
+		{
+			/*
+			idx.push_back(i);
+			idx.push_back(i % (slices + 1) + 1);
+			idx.push_back(0);
+			*/
+			idx.push_back(0);
+			idx.push_back(i % (slices + 1) + 1);
+			idx.push_back(i);
+			
+		}
+	}
+
+	for (UINT i = 1; i < levels - 1; ++i)
+	{
+		for (UINT j = 1; j <= slices; ++j)
+		{
+			
+			idx.push_back((i - 1) * (slices + 1) + j);
+			idx.push_back((i - 1) * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back((i - 1) * (slices + 1) + j);
+			
+		
+	
+			/*
+			idx.push_back((i - 1) * (slices + 1) + j);
+			idx.push_back(i * (slices + 1) + j);
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back((i - 1) * (slices + 1) + j % (slices + 1) + 1);
+			idx.push_back((i - 1) * (slices + 1) + j);
+			*/
+		}
+	}
+
+
+	//Mesh 
+	Mesh::MeshData desc = {};
+	desc.pVertex = vtx.data();
+	desc.vertexSize = sizeof(Vertex::VtxPosNormalTex);
+	desc.vertexCount = static_cast<UINT>(vtx.size());
+	desc.pIndex = idx.data();
+	desc.indexSize = sizeof(DWORD);
+	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
 

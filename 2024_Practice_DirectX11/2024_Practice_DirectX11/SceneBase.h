@@ -45,6 +45,7 @@ protected:
 	SceneBase* mpParentScene = nullptr; //Parent Scene
 	SceneBase* mpSubScene = nullptr; //Sub Scene
 	Items mItems;
+
 public:
 	SceneBase();
 	virtual ~SceneBase();
@@ -60,14 +61,6 @@ public:
 	json SaveData(T* obj);
 
 
-	/// @brief UI などデータの読み込み(tex&pos)
-	/// @tparam T オブジェクトタイプ
-	/// @param objName mObjectsで保存される名前
-	///	@param data jsonData
-	/// @return 
-	template<class T>
-	T* LoadData2D(const char* objName, nlohmann::json data);
-
 	/// @brief サブシーンの追加
 	/// @tparam T サブシーンの型
 	///	@return 生成したサブシーン
@@ -75,12 +68,6 @@ public:
 
 	/// @brief シーン廃棄
 	void RemoveSubScene() const;
-
-	/// @brief オブジェクトの生成
-	/// @tparam T オブジェクトの型
-	/// @param _name オブジェクトの名称
-	/// @return 生成したオブジェクト
-	//template<class T> T* CreateObj(const char* _name);
 
 	template<class T> T* CreateObj(const char* _name);
 
@@ -111,38 +98,13 @@ json SceneBase::SaveData(T* obj)
 	data["Filepath"] = obj->GetFilePath();
 
 	//Set Material
-	/*
-	data["Material"]["Ambient"] = {obj->GetMaterial().ambient[0],obj->GetMaterial().ambient[1], obj->GetMaterial().ambient[2], obj->GetMaterial().ambient[3]};
-
-	data["Material"]["Diffuse"] = { obj->GetMaterial().diffuse[0], obj->GetMaterial().diffuse[1], obj->GetMaterial().diffuse[2], obj->GetMaterial().diffuse[3]};
-
-	data["Material"]["Specular"] = { obj->GetMaterial().specular[0],obj->GetMaterial().specular[1],obj->GetMaterial().specular[2],obj->GetMaterial().specular[3] };
-
-	data["Material"]["Emission"] = { obj->GetMaterial().emission[0], obj->GetMaterial().emission[1], obj->GetMaterial().emission[2], obj->GetMaterial().emission[3]};
-	*/
+	data["Material"]["Ambient"] = {obj->GetMaterial().ambient.x,obj->GetMaterial().ambient.y, obj->GetMaterial().ambient.z, obj->GetMaterial().ambient.w};
+	data["Material"]["Diffuse"] = { obj->GetMaterial().diffuse.x, obj->GetMaterial().diffuse.y, obj->GetMaterial().diffuse.z, obj->GetMaterial().diffuse.w};
+	data["Material"]["Specular"] = { obj->GetMaterial().specular.x,obj->GetMaterial().specular.y,obj->GetMaterial().specular.z,obj->GetMaterial().specular.w };
+	data["Material"]["Emission"] = { obj->GetMaterial().emission.x, obj->GetMaterial().emission.y, obj->GetMaterial().emission.z, obj->GetMaterial().emission.w};
+	
 	return data;
 }
-
-template <class T>
-T* SceneBase::LoadData2D(const char* objName, json data)
-{
-
-	T* obj = CreateObj<T>(objName);
-
-	//Scale
-	Vector2 size = Vector2(data[objName]["Scale"][0], data[objName]["Scale"][1]);
-	obj->SetSize(size.x, size.y);
-
-	//Pos
-	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
-	obj->InitPosition(pos);
-
-	obj->Init(data[objName]["Filepath"].get<std::string>().c_str());
-	//todo:Rotation
-
-	return obj;
-}
-
 
 
 template <class T>

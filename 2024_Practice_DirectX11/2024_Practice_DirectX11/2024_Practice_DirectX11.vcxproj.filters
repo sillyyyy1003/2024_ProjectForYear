@@ -247,7 +247,10 @@
       <Filter>ソース ファイル\BaseModel\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Container.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,8 +380,11 @@
     <ClInclude Include="CylinderOneCap.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
     <ClInclude Include="Container.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
+      <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,6 +419,12 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_ButtonUI.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Water.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Water.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>

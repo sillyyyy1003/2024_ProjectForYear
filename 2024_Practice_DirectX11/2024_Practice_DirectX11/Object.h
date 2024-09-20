@@ -7,7 +7,7 @@
 ///	For Test
 class Object
 {
-private:
+protected:
 
 	POINT mOldPos = {};
 
@@ -19,15 +19,28 @@ public:
 	std::unique_ptr<Primitive> 	mModel = nullptr;		//描画
 	std::unique_ptr<Collider> 	mCollider = nullptr;	//当たり判定
 
-public:
+
 	Object();
 	virtual ~Object();
 
 	/// @brief オブジェクト実態の初期化
 	/// @param kind オブジェクトの形状
-	/// @param fileName テクスチャファイルパス
-	void Init(PrimitiveKind kind, const char* fileName);
-	void InitPosition(DirectX::XMFLOAT3& pos);
+	virtual void Init(PrimitiveKind kind);
+
+	/// @brief 設定データからオブジェクトを初期化
+	/// @param kind オブジェクトの形状
+	/// @param filePath テクスチャファイルパス
+	virtual void Init(PrimitiveKind kind, const char* filePath);
+
+	/// @brief モデルの初期化(Mesh/Transform..)
+	/// @param filePath テクスチャファイルパス
+	virtual void InitModel(const char* filePath);
+
+	/// @brief Load Save Data & Init Object Data
+	/// @param data json fileData
+	/// @param objName dataName
+	virtual void LoadSaveData(json data, const char* objName);
+
 
 	virtual void Update(float dt);
 	virtual void Draw();
@@ -38,7 +51,7 @@ public:
 	DirectX::XMFLOAT3 GetRotation()const { return mModel->GetRotation(); }
 
 	std::string GetFilePath() const { return mModel->GetFilePath(); };
-	Material GetMaterial() { return mModel->GetMaterial(); };
+	const Material& GetMaterial() { return mModel->GetMaterial(); };
 
 	void SetScale(const DirectX::XMFLOAT3& scale) { mModel->SetScale(scale); };
 	void SetScale(const DirectX::XMFLOAT2& scale) {};
@@ -50,27 +63,27 @@ public:
 
 	void SetMaterial(const Material& mat);
 
-private:
+protected:
 
 	/// @brief 入力・物理演算などの処理を行うフラッグの更新
 	/// @param dt Delta Time
-	void PreUpdate(float dt);
+	virtual void PreUpdate(float dt);
 
 	/// @brief 入力などに応じて、ゲームロジックの実現
 	/// @param dt Delta Time
-	void GameUpdate(float dt);
+	virtual void GameUpdate(float dt);
 
 	/// @brief 
 	/// @param dt Delta Time
-	void LateUpdate(float dt);
+	virtual void LateUpdate(float dt);
 
 	/// @brief Drag状態処理
 	/// @param dt Delta Time
-	void OnStateDrag(float dt);
+	virtual void OnStateDrag(float dt);
 
 	/// @brief Selected状態処理
 	/// @param dt Delta Time
-	void OnStateSelected(float dt);
+	virtual void OnStateSelected(float dt);
 
 };
 

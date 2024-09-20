@@ -26,7 +26,7 @@ void Plane3D::SetScale(const DirectX::XMFLOAT2& scale)
 
 void Plane3D::Init(const char* _fileName)
 {
-	CreateMeshes();
+	CreateMesh();
 	CreateMaterial();
 	CreateTexture(_fileName);
 	LoadDefShader();
@@ -38,20 +38,25 @@ void Plane3D::Init(const char* _fileName, DirectX::XMFLOAT2 _texUV)
 	Init(_fileName);
 }
 
+void Plane3D::Init(const char* _fileName, int slices)
+{
+	CreateMesh(slices);
+	CreateMaterial();
+	CreateTexture(_fileName);
+	LoadDefShader();
+	
+}
+
 void Plane3D::Update(float dt)
 {
 
+
+	WriteDefShader();
 }
 
 void Plane3D::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
-
+	SetShader();
 	mPS->SetShader();
 	mVS->SetShader();
 	if (texSlot >= 0)
@@ -59,7 +64,16 @@ void Plane3D::Draw(int texSlot)
 	mMesh->Draw();
 }
 
-const void Plane3D::CreateMeshes()
+void Plane3D::SetShader()
+{
+	if (isDefShader)
+	{
+		mVS = mDefVS.get();
+		mPS = mDefPS.get();
+	}
+}
+
+const void Plane3D::CreateMesh()
 {
 	const float d = 0.5f;
 	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -78,11 +92,6 @@ const void Plane3D::CreateMeshes()
 	vtx.resize(8);
 
 	vtx = {
-		//+y
-		//{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
-		//{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(mTexUV.x,0.f)},
-		//{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(mTexUV.x,1.f)},
-		//{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,mTexUV.y)},
 
 		{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
 		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(mTexUV.x,0.f)},
@@ -140,6 +149,54 @@ const void Plane3D::CreateTexture(const char* fileName)
 		mMaterial.material.isTexEnable = false;
 	}
 	mFilePath = fileName;
+}
+
+const void Plane3D::CreateMesh(UINT slices)
+{
+	float size = 1.0f; 
+	float halfSize = size / 2;  
+	float step = size / slices; 
+	std::vector<Vertex::VtxPosNormalTex> vtx; 
+
+	for (UINT i = 0; i <= slices; i++)
+	{
+		for (UINT j = 0; j <= slices; j++)
+		{
+			float x = -halfSize + j * step; // x 
+			float z = -halfSize + i * step; // z 
+			float u = static_cast<float>(j) / slices; // u
+			float v = static_cast<float>(i) / slices; // v
+
+			vtx.push_back({ XMFLOAT3(x, 0, z), Vector3(0.0f, 1.0f, 0.0f), Vector2(u, v) });
+		}
+	}
+
+
+	std::vector<DWORD> indexData;
+	for (UINT i = 0; i < slices; i++)
+	{
+		for (UINT j = 0; j < slices; j++)
+		{
+			int start = i * (slices + 1) + j;
+			indexData.push_back(start);
+			indexData.push_back(start + 1);
+			indexData.push_back(start + slices + 2);
+
+			indexData.push_back(start);
+			indexData.push_back(start + slices + 2);
+			indexData.push_back(start + slices + 1);
+		}
+	}
+
+	Mesh::MeshData desc = {};
+	desc.pVertex = vtx.data();
+	desc.vertexSize = sizeof(Vertex::VtxPosNormalTex);
+	desc.vertexCount = static_cast<UINT>(vtx.size());
+	desc.pIndex = indexData.data();
+	desc.indexSize = sizeof(DWORD);
+	desc.indexCount = static_cast<UINT>(indexData.size());
+	//desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+	mMesh = std::make_unique<Mesh>(desc);
 }
 
 void Plane3D::WriteDefShader()

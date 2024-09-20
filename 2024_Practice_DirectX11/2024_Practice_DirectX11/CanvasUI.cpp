@@ -25,6 +25,25 @@ void CanvasUI::InitPosition(DirectX::XMFLOAT3 pos)
 	mOriginPos = { pos.x,pos.y };
 }
 
+void CanvasUI::LoadSaveData(json data, const char* objName)
+{
+	//Scale
+	Vector2 size = Vector2(data[objName]["Scale"][0], data[objName]["Scale"][1]);
+	SetSize(size.x, size.y);
+
+	//Pos
+	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	InitPosition(pos);
+
+	Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
+	mTransform.SetRotationInDegree(rotation);
+
+	Init(data[objName]["Filepath"].get<std::string>().c_str());
+
+	mObjectName = objName;
+
+}
+
 void CanvasUI::Update(float dt)
 {
 	UpdateScale();
@@ -57,6 +76,23 @@ void CanvasUI::SetSize(float x, float y)
 void CanvasUI::SetPosZ(float z)
 {
 	mTransform.SetPositionZ(z);
+}
+
+json CanvasUI::SaveData(const char* objName)
+{
+	json data;
+	data["Position"] = {GetPosition().x,GetPosition().y,GetPosition().z };
+	data["Scale"] = { GetScale().x,GetScale().y,GetScale().z };
+	data["Rotation"] = { GetRotation().x,GetRotation().y,GetRotation().z };
+	data["Filepath"] = GetFilePath();
+
+	//Set Material
+	data["Material"]["Ambient"] = { GetMaterial().ambient.x,GetMaterial().ambient.y, GetMaterial().ambient.z, GetMaterial().ambient.w };
+	data["Material"]["Diffuse"] = { GetMaterial().diffuse.x, GetMaterial().diffuse.y, GetMaterial().diffuse.z, GetMaterial().diffuse.w };
+	data["Material"]["Specular"] = { GetMaterial().specular.x,GetMaterial().specular.y,GetMaterial().specular.z,GetMaterial().specular.w };
+	data["Material"]["Emission"] = { GetMaterial().emission.x, GetMaterial().emission.y, GetMaterial().emission.z, GetMaterial().emission.w };
+
+	return data;
 }
 
 void CanvasUI::CreateMeshBuffer()

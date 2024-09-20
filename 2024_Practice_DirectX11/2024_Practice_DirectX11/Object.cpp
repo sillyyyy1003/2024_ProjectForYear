@@ -27,7 +27,7 @@ Object::~Object()
 {
 }
 
-void Object::Init(PrimitiveKind kind, const char* fileName)
+void Object::Init(PrimitiveKind kind)
 {
 	switch(kind)
 	{
@@ -42,9 +42,6 @@ void Object::Init(PrimitiveKind kind, const char* fileName)
 	case CYLINDER:
 		
 		break;
-	case PLANE:
-		
-		break;
 	case CAPSULE:
 		
 		break;
@@ -55,9 +52,49 @@ void Object::Init(PrimitiveKind kind, const char* fileName)
 	}
 
 	//モデルの初期化
-	mModel->Init(fileName);
 	//mModel->mTransform.Rotate({ 0,0,45.0f});
 }
+
+void Object::Init(PrimitiveKind kind, const char* filePath)
+{
+	Init(kind);
+	InitModel(filePath);
+}
+
+void Object::InitModel(const char* filePath)
+{
+	mModel->Init(filePath);
+}
+
+void Object::LoadSaveData(json data, const char* objName)
+{
+	//Init Model
+	std::string filePath = data[objName]["Filepath"].get<std::string>();
+	InitModel(filePath.c_str());
+
+	//Init Pos
+	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	mModel->SetPosition(pos);
+
+	//Init Rotation
+	Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
+	mModel->mTransform.SetRotationInDegree(rotation);
+
+	//Init Scale
+	Vector3 scale = Vector3(data[objName]["Scale"][0], data[objName]["Scale"][1], data[objName]["Scale"][2]);
+	mModel->SetScale(scale);
+
+	//Init Material
+	Material mat = {
+		Color(data[objName]["Material"]["Ambient"][0],data[objName]["Material"]["Ambient"][1],data[objName]["Material"]["Ambient"][2],data[objName]["Material"]["Ambient"][3]),
+		Color(data[objName]["Material"]["Diffuse"][0],data[objName]["Material"]["Diffuse"][1],data[objName]["Material"]["Diffuse"][2],data[objName]["Material"]["Diffuse"][3]),
+		Color(data[objName]["Material"]["Specular"][0],data[objName]["Material"]["Specular"][1],data[objName]["Material"]["Specular"][2],data[objName]["Material"]["Specular"][3]),
+		Color(data[objName]["Material"]["Emission"][0],data[objName]["Material"]["Emission"][1],data[objName]["Material"]["Emission"][2],data[objName]["Material"]["Emission"][3]),
+	};
+	SetMaterial(mat);
+
+}
+
 
 void Object::Update(float dt)
 {

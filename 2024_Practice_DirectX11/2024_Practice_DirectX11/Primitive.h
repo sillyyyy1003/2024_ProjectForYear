@@ -57,6 +57,7 @@ public:
 
 	virtual void Init(const char* filePath = nullptr) = 0;
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
+	virtual void Init(const char* filePath, int slices) {};
 
 	virtual void Update(float dt);
 	virtual void Draw(int texSlot = 0) = 0;
@@ -94,8 +95,13 @@ public:
 	virtual void SetPixelShader(PixelShader* ps) { mPS = ps; };
 	virtual void SetVertexShader(VertexShader* vs) { mVS = vs; };
 
+	PixelShader* GetDefPS() const { return mDefPS.get(); };
+	VertexShader* GetDefVS() const { return mDefVS.get(); };
+
 	/// @brief Default Shaderの初期化
 	virtual void LoadDefShader();
+	virtual void LoadDefShader(const char* vsPath,const char* psPath);
+
 private:
 	/// @brief デバッグ用　オブジェクト回す
 	void UpdateState();

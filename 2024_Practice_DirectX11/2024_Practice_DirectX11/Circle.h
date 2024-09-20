@@ -17,15 +17,17 @@ public:
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	/// @brief Set Diffuse Color
-	/// @param diffuse 
 	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
 	void SetScale(const DirectX::XMFLOAT2& scale) override;
 
 
-protected:
 	void Init(const char* _fileName);
-	const void CreateMeshes(UINT slices);
+
+	//分割が少ないメッシュを作る
+	const void CreateMesh(UINT slices);
+
+	//球体のような複雑なメッシュを作る
+	const void CreateMesh(UINT levels, UINT slices);
 	const void CreateMaterial();
 	const void CreateTexture(const char* _fileName);
 

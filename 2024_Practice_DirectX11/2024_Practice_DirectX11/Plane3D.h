@@ -6,7 +6,7 @@
 /// @brief 地面・平面・床などに使われる
 class Plane3D :public Primitive
 {
-private:
+public:
 
 	std::unique_ptr<Mesh> mMesh = nullptr;
 	DirectX::XMFLOAT2 mTexUV = { 1,1 };
@@ -21,21 +21,30 @@ public:
 	/// @param _texUV sampler wrap UV
 	void Init(const char* _fileName, DirectX::XMFLOAT2 _texUV) override;
 
+	/// @brief 分割がもっと細かい平面
+	/// @param _fileName 
+	/// @param slices 分割数
+	void Init(const char* _fileName, int slices);
 	
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	/// @brief Set Diffuse Color
-	/// @param diffuse 
+	/// @brief Set defPS & defVS to VS&PS 
+	void SetShader();
+
 	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
 	void SetScale(const DirectX::XMFLOAT2& scale) override;
 
 
-protected:
 	void Init(const char* _fileName);
-	const void CreateMeshes();
+	const void CreateMesh();
+	/// @brief N x Nの小さい正方形でプレーン
+	/// @param slices 分割数
+	const void CreateMesh(UINT slices);
+
 	const void CreateMaterial();
 	const void CreateTexture(const char* _fileName);
+
 
 
 	/*DefShader

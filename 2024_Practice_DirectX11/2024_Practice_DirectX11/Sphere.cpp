@@ -136,7 +136,7 @@ const void Sphere::CreateMesh(UINT levels, UINT slices)
     desc.vertexSize = sizeof(Vertex::VtxPosNormalTex);
     desc.vertexCount = static_cast<UINT>(vtx.size());
     desc.pIndex = idx.data();
-    desc.indexSize = sizeof(idx[0]);
+    desc.indexSize = sizeof(DWORD);
     desc.indexCount = static_cast<UINT>(idx.size());
     desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
     //desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;

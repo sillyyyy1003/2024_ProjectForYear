@@ -56,6 +56,15 @@ void Primitive::LoadDefShader()
 	mDefVS->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
 }
 
+void Primitive::LoadDefShader(const char* vsPath, const char* psPath)
+{
+	mDefPS = std::make_shared<PixelShader>();
+	mDefVS = std::make_shared<VertexShader>();
+	mDefPS->LoadShaderFile(psPath);
+	mDefVS->LoadShaderFile(vsPath);
+
+}
+
 void Primitive::UpdateState()
 {
 	/*
