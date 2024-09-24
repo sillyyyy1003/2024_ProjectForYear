@@ -20,29 +20,25 @@ enum TitleScene
 
 void SceneTitle::Init()
 {
-	std::filesystem::path filePath = "Assets/Data/SaveDat/scene_title_default.json";
-	if (!std::filesystem::exists(filePath))
-	{
-		DebugLog::Log("scene_title.json not found.");
-		return;
-	}
+	//std::filesystem::path filePath = "Assets/Data/SaveDat/scene_title_default.json";
+	//if (!std::filesystem::exists(filePath))
+	//{
+	//	DebugLog::Log("scene_title.json not found.");
+	//	return;
+	//}
 
-	std::ifstream file(filePath);
-	if (!file.is_open())
-	{
-		DebugLog::Log("Failed to open scene_title.json for reading.");
-		return;
-	}
+	//std::ifstream file(filePath);
+	//if (!file.is_open())
+	//{
+	//	DebugLog::Log("Failed to open scene_title.json for reading.");
+	//	return;
+	//}
 
-	json sceneData;
-	file >> sceneData;
-	file.close();
 
-	//Setting
-	//CanvasUI* uiBg = LoadData2D<CanvasUI>("title_bg", sceneData);
-	//CanvasUI* uiStart = LoadData2D<UI_Button>("title_start", sceneData);
-	//CanvasUI* uiOption = LoadData2D<UI_Button>("title_option", sceneData);
-	//CanvasUI* uiExit = LoadData2D<UI_Button>("title_exit", sceneData);
+	//file >> sceneData;
+	//file.close();
+
+	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title_default.json");
 
 	CanvasUI* uiBg = CreateObj<CanvasUI>("title_bg");
 	uiBg->LoadSaveData(sceneData, "title_bg");

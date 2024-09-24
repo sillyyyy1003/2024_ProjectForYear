@@ -303,6 +303,8 @@ struct Material
 	DirectX::XMFLOAT4 emission; // 反射 ke
 	BOOL isTexEnable = true;
 	float dummy[2] = {};
+
+	
 };
 
 

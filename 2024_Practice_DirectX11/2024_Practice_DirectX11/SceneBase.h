@@ -53,13 +53,7 @@ public:
 	void _update(float dt);
 	void _draw();
 
-	/// @brief jsonファイルにオブジェクトデータ保存
-	/// @tparam T オブジェクト型
-	/// @param obj 
-	/// @return 
-	template<class T>
-	json SaveData(T* obj);
-
+	json LoadSceneData(const char* fileName);
 
 	/// @brief サブシーンの追加
 	/// @tparam T サブシーンの型
@@ -88,23 +82,6 @@ public:
 	virtual void Draw() = 0;
 };
 
-template <class T>
-json SceneBase::SaveData(T* obj)
-{
-	json data;
-	data["Position"] = { obj->GetPosition().x,obj->GetPosition().y,obj->GetPosition().z };
-	data["Scale"] = { obj->GetScale().x,obj->GetScale().y,obj->GetScale().z };
-	data["Rotation"] = { obj->GetRotation().x,obj->GetRotation().y,obj->GetRotation().z };
-	data["Filepath"] = obj->GetFilePath();
-
-	//Set Material
-	data["Material"]["Ambient"] = {obj->GetMaterial().ambient.x,obj->GetMaterial().ambient.y, obj->GetMaterial().ambient.z, obj->GetMaterial().ambient.w};
-	data["Material"]["Diffuse"] = { obj->GetMaterial().diffuse.x, obj->GetMaterial().diffuse.y, obj->GetMaterial().diffuse.z, obj->GetMaterial().diffuse.w};
-	data["Material"]["Specular"] = { obj->GetMaterial().specular.x,obj->GetMaterial().specular.y,obj->GetMaterial().specular.z,obj->GetMaterial().specular.w };
-	data["Material"]["Emission"] = { obj->GetMaterial().emission.x, obj->GetMaterial().emission.y, obj->GetMaterial().emission.z, obj->GetMaterial().emission.w};
-	
-	return data;
-}
 
 
 template <class T>

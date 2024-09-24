@@ -39,7 +39,6 @@ void Primitive::Update(float dt)
 	default:;
 	}
 	*/
-
 }
 
 void Primitive::SetScaleXZ(const DirectX::XMFLOAT2& scale)
@@ -63,6 +62,11 @@ void Primitive::LoadDefShader(const char* vsPath, const char* psPath)
 	mDefPS->LoadShaderFile(psPath);
 	mDefVS->LoadShaderFile(vsPath);
 
+}
+
+void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices)
+{
+	mVertices = vertices;
 }
 
 void Primitive::UpdateState()

@@ -8,7 +8,7 @@ using namespace DirectX;
 using namespace SimpleMath;
 
 
-Plane3D::Plane3D():Primitive(PLANE)
+Plane3D::Plane3D() :Primitive(PLANE)
 {
 
 }
@@ -49,8 +49,6 @@ void Plane3D::Init(const char* _fileName, int slices)
 
 void Plane3D::Update(float dt)
 {
-
-
 	WriteDefShader();
 }
 
@@ -117,7 +115,8 @@ const void Plane3D::CreateMesh()
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
-	
+	//頂点情報をmVerticesに渡す
+	SetVertices(vtx);
 }
 
 const void Plane3D::CreateMaterial()
@@ -170,7 +169,6 @@ const void Plane3D::CreateMesh(UINT slices)
 			vtx.push_back({ XMFLOAT3(x, 0, z), Vector3(0.0f, 1.0f, 0.0f), Vector2(u, v) });
 		}
 	}
-
 
 	std::vector<DWORD> indexData;
 	for (UINT i = 0; i < slices; i++)

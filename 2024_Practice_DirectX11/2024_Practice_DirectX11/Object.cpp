@@ -70,6 +70,7 @@ void Object::LoadSaveData(json data, const char* objName)
 {
 	//Init Model
 	std::string filePath = data[objName]["Filepath"].get<std::string>();
+
 	InitModel(filePath.c_str());
 
 	//Init Pos
@@ -116,6 +117,23 @@ void Object::Draw()
 void Object::SetMaterial(const Material& mat)
 {
 	mModel->SetMaterial(mat);
+}
+
+json Object::SaveData()
+{
+	json data;
+	data["Position"] = {GetPosition().x,GetPosition().y,GetPosition().z };
+	data["Scale"] = { GetScale().x,GetScale().y,GetScale().z };
+	data["Rotation"] = { GetRotation().x,GetRotation().y,GetRotation().z };
+	data["Filepath"] = GetFilePath();
+
+	//Set Material
+	data["Material"]["Ambient"] = { GetMaterial().ambient.x,GetMaterial().ambient.y, GetMaterial().ambient.z, GetMaterial().ambient.w };
+	data["Material"]["Diffuse"] = { GetMaterial().diffuse.x, GetMaterial().diffuse.y, GetMaterial().diffuse.z, GetMaterial().diffuse.w };
+	data["Material"]["Specular"] = { GetMaterial().specular.x,GetMaterial().specular.y,GetMaterial().specular.z,GetMaterial().specular.w };
+	data["Material"]["Emission"] = { GetMaterial().emission.x, GetMaterial().emission.y, GetMaterial().emission.z, GetMaterial().emission.w };
+
+	return data;
 }
 
 void Object::PreUpdate(float dt)
@@ -179,7 +197,6 @@ void Object::PreUpdate(float dt)
 
 		if(KInput::IsKeyRelease(VK_LBUTTON))
 		{
-			//mState = STATE_NONE;
 			mState = STATE_SELECTED;
 			isStateChange = true;
 		}
@@ -199,7 +216,9 @@ void Object::PreUpdate(float dt)
 void Object::GameUpdate(float dt)
 {
 
+// オブジェクトの情報表示
 #ifdef _DEBUG
+
 	if (ImGui::Begin("Object Info"))
 	{
 		ImGui::Text("Position");
@@ -217,6 +236,7 @@ void Object::GameUpdate(float dt)
 
 	ImGui::End();
 #endif
+
 	if (mState == STATE_NONE) { return; }
 
 	switch(mState)
@@ -231,9 +251,7 @@ void Object::GameUpdate(float dt)
 		break;
 	}
 
-
 	mModel->Update(dt);
-
 
 }
 
@@ -271,6 +289,6 @@ void Object::OnStateDrag(float dt)
 
 void Object::OnStateSelected(float dt)
 {
-	float rotateSpeed = 30.0f;
-	mModel->mTransform.Rotate({ 0, 30 * dt,0 });
+	//float rotateSpeed = 30.0f;
+	//mModel->mTransform.Rotate({ 0, 30 * dt,0 });
 }

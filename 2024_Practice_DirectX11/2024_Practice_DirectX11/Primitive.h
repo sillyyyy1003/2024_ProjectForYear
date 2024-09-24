@@ -22,15 +22,18 @@ enum PrimitiveKind
 /// <summary>
 /// 基本モデル（Cube/Sphere/Cone/Capsule...）
 /// </summary>
-class Primitive:public Component
+class Primitive :public Component
 {
 
 protected:
+
 	struct MaterialData
 	{
 		Material material = {};
 		std::unique_ptr<Texture> tex = nullptr;
 	};
+
+
 
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
@@ -50,6 +53,8 @@ public:
 	/// @brief 大きさ・位置・回転などの情報
 	Transform mTransform = {};
 
+	/// @brief 頂点データの書き換え用
+	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
 
 public:
 	Primitive(PrimitiveKind kind);
@@ -88,7 +93,6 @@ public:
 
 	virtual	void SetDiffuse(DirectX::XMFLOAT4 _diffuse) { mMaterial.material.diffuse = _diffuse; };
 
-
 	/// @brief Default Shaderを使うかどうか？
 	virtual void SetIsDefShader(bool isDefShader) { this->isDefShader = isDefShader; };
 
@@ -101,6 +105,8 @@ public:
 	/// @brief Default Shaderの初期化
 	virtual void LoadDefShader();
 	virtual void LoadDefShader(const char* vsPath,const char* psPath);
+
+	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices);
 
 private:
 	/// @brief デバッグ用　オブジェクト回す

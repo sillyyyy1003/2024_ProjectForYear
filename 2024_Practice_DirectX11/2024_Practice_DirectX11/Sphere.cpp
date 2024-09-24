@@ -130,7 +130,6 @@ const void Sphere::CreateMesh(UINT levels, UINT slices)
     }
 
 
-
     Mesh::MeshData desc = {};
     desc.pVertex = vtx.data();
     desc.vertexSize = sizeof(Vertex::VtxPosNormalTex);
@@ -142,6 +141,8 @@ const void Sphere::CreateMesh(UINT levels, UINT slices)
     //desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
     mMesh = std::make_unique<Mesh>(desc);
 
+    //頂点情報をmVerticesに渡す
+    SetVertices(vtx);
     
 }
 

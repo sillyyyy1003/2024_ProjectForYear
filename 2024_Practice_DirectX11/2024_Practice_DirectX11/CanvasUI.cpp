@@ -1,4 +1,4 @@
-ï»¿#include "CanvasUI.h"
+#include "CanvasUI.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
 #include "Shader.h"
@@ -153,10 +153,10 @@ void CanvasUI::CreateTexture(const char* _fileName)
 void CanvasUI::CreateMaterial(const char* _fileName)
 {
 	mMaterial.material = {
-		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ç’°å¢ƒå…‰
-		Color(1.0f, 1.0f, 1.0f, 1.0f),		// è¡¨é¢è‰²
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// é¡é¢åå°„: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// è‡ªç™ºå…‰ãªã—};
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ŠÂ‹«Œõ
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// •\–ÊF
+		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ‹¾–Ê”½Ë: specular power 1
+		Color(0.0f, 0.0f, 0.0f, 0.0f)		// ©”­Œõ‚È‚µ};
 	};
 	CreateTexture(_fileName);
 	mFilePath = _fileName;

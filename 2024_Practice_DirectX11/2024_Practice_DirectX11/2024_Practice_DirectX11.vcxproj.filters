@@ -425,7 +425,7 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Water.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
+      <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

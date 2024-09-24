@@ -20,32 +20,10 @@ cbuffer WVP : register(b0)
     float4x4 proj;
 }
 
-cbuffer WaterPara : register(b1)
-{
-    float3 center;  // ”g‚Ì’†SˆÊ’u
-    float amplitude;// ”g‚Ì•
-    float frequency;// ”g‚Ì•p“x
-    float speed;    // ”g‚ÌƒXƒr[ƒh
-    float sigma;    // ”g‚ÌŠgU”ÍˆÍ
-    float time;     // Œo‰ßŠÔ
-}
-
-
 
 VS_OUT main(VS_IN vin)
 {
     VS_OUT vOut;
-
-    //‚±‚±‚Å”g‚É‚æ‚é—±q‚ÌŒvZ‚ğs‚¤
-
-    float distanceToCenter = length(vin.pos.xz - center.xz);
-    
-    if (distanceToCenter < sigma)
-    {
-        float waveHeight = amplitude * exp(-distanceToCenter * distanceToCenter / (2 * sigma * sigma)) * sin(2 * 3.14159 * (frequency * time - distanceToCenter /speed));
-
-        vin.pos.y += waveHeight;
-    }
 
     vOut.pos = float4(vin.pos, 1.0f);
     vOut.pos = mul(vOut.pos, world);

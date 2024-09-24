@@ -53,12 +53,12 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
     float3 toEye = normalize(-eyePos.xyz);
 
 	//ŠÂ‹«ŒõŒvŽZ
-    float4 ambient = material.ambient * lightAmbient;
+	float4 ambient = material.ambient * lightAmbient * 0.2f;
     float3 lightVec = normalize(lightPos.xyz);
 
     //Lambert DiffuseŒvŽZ
     float diffuseFactor = saturate(dot(lightVec, normal));
-    float4 diffuse = diffuseFactor * lightDiffuse;
+	float4 diffuse = diffuseFactor * lightDiffuse * material.diffuse;
 
     // specular ŒvŽZ
     float3 v = normalize(eyePos.xyz - pin.worldPos.xyz);

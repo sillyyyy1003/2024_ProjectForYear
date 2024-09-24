@@ -42,6 +42,29 @@ void SceneBase::_draw()
 	Draw();
 }
 
+json SceneBase::LoadSceneData(const char* fileName)
+{
+	std::filesystem::path filePath = fileName;
+	if (!std::filesystem::exists(filePath))
+	{
+		DebugLog::Log("scene_title.json not found.");
+		return nullptr;
+	}
+
+	std::ifstream file(filePath);
+	if (!file.is_open())
+	{
+		DebugLog::Log("Failed to open scene_title.json for reading.");
+		return nullptr;
+	}
+
+	json sceneData;
+	file >> sceneData;
+	file.close();
+
+	return sceneData;
+}
+
 void SceneBase::RemoveSubScene() const
 {
 	// 削除するサブシーンが存在するか

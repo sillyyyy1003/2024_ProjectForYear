@@ -43,11 +43,11 @@ HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCoun
 	bufDesc.ByteWidth = size * vertexCount;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	/*if (isWrite)
+	if (mData.isWrite)
 	{
 		bufDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	}*/
+	}
 
 	//--- バッファの初期値を設定
 	D3D11_SUBRESOURCE_DATA subResource = {};
@@ -99,7 +99,7 @@ HRESULT Mesh::CreateIndexBuffer(const void* pIndex, UINT size, UINT indexCount)
 
 HRESULT Mesh::Write(void* pVertex) const
 {
-	//if (!mData.isWrite) { return E_FAIL; }
+	if (!mData.isWrite) { return E_FAIL; }
 
 	HRESULT hr;
 	ID3D11Device* pDevice = GameApp::Get()->GetDevice();

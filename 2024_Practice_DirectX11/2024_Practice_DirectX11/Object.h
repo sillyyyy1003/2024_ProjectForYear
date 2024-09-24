@@ -63,6 +63,8 @@ public:
 
 	void SetMaterial(const Material& mat);
 
+	json SaveData();
+
 protected:
 
 	/// @brief 入力・物理演算などの処理を行うフラッグの更新

@@ -1,6 +1,5 @@
 #include "SceneLab.h"
 #include <memory>
-
 #include "Circle.h"
 #include "Container.h"
 #include "FirstPersonCamera.h"
@@ -18,51 +17,23 @@ using namespace DirectX;
 
 void SceneLab::Init()
 {
+	json sceneData=LoadSceneData("Assets/Data/SaveDat/scene_lab.json");
 	//ÉJÉÅÉâçÏê¨
 	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
 	camera->LookAt({ 0.0f, 5.0f, -5.0f }, { 0,0,0 }, { 0,1,0 });
+	camera->LockCameraAngle(true);
 
-	Material mat = {
-		Color(0.470f, 0.31f, 0.038f, 1.0f), 	// Ambient: 
-		Color(0.780f, 0.568f, 0.113f, 1.0f), 	// Diffuse: 
-		Color(0.992f, 0.941f, 0.807f, 32.0f), 	// Specular: 
-		Color(0.0f, 0.0f, 0.0f, 0.0f)        	// Emi:
-	};
-
-	//
 	Object* pot = CreateObj<Container>("Pot");
-	pot->Init(CYLINDER_ONECAP, "Assets/Texture/Lab/rust_coarse_01_diff_1k.jpg");
-	pot->SetMaterial(mat);
+	pot->Init(CYLINDER_ONECAP);
+	pot->LoadSaveData(sceneData, "Pot");
 
-	///êÖÇÃìßñæìxÇ‚îΩéÀÇÕëºÇ∆à·Ç§
-	mat = {
-   Color(0.5f, 0.5f, 0.5f, 1.0f),
-   Color(1.0f, 1.0f, 1.0f, 0.5f),
-   Color(0.8f, 0.8f, 0.8f, 32.0f),
-   Color(0.0f, 0.0f, 0.0f, 0.0f)
-	};
-	water = std::make_unique<Circle>();
-	water->Init("Assets/Texture/Lab/water.png");
-	water->SetScale({ 10,10 });
-	water->SetMaterial(mat);
-
-	//wave = std::make_unique<Plane3D>();
-	//wave->Init("Assets/Texture/Lab/water.png",20);
-	//wave->SetScale({ 10,10 });
-	//wave->mTransform.SetPosition(0, 1.0f, 0);
-	//wave->SetMaterial(mat);
-
-	wave = std::make_unique<Water>();
-	wave->Init("Assets/Texture/Lab/water.png");
-	wave->GetModel()->SetScale({ 6,6 });
-
-
-
+	water = std::make_unique<Water>();
+	water->LoadSaveData(sceneData, "Water");
 
 
 	table = std::make_unique<Plane3D>();
 	table->Init("Assets/Texture/Lab/worn_planks_diff_1k.jpg", Vector2(1, 1));
-	table->SetScale(Vector2(15, 15));
+	table->SetScale(Vector2(25, 15));
 	table->SetPosition(0.f, -1.0f, 0.0f);
 
 
@@ -74,10 +45,9 @@ void SceneLab::UnInit()
 	json sceneData;
 
 	//Save Pot
-	sceneData["Container"] = SaveData(GetObj<Container>("Pot"));
+	sceneData["Pot"] = GetObj<Container>("Pot")->SaveData();
 	//Save Water
-	
-
+	sceneData["Water"] = water->SaveData();
 
 	std::ofstream file("Assets/Data/SaveDat/scene_lab.json");
 	if (file.is_open())
@@ -96,30 +66,17 @@ void SceneLab::Update(float dt)
 	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
 	Object* obj = GetObj<Container>("Pot");
 
-	wave->Update(dt);
-	table->Update(dt);
 	water->Update(dt);
-	//wave->Update(dt);
+	table->Update(dt);
+
 	obj->Update(dt);
 	camera->Update(dt);
 
 #ifdef _DEBUG
 
-	if (ImGui::Begin("Water Option"))
-	{
-		float waterPos[3] = { water->GetPosition().x,water->GetPosition().y,water->GetPosition().z };
-		ImGui::InputFloat3("Position", waterPos);
-		water->mTransform.SetPosition(waterPos);
 
-		float waterScale[2] = { water->GetScale().x,water->GetScale().z };
-		ImGui::InputFloat2("Scale", waterScale);
-		water->mTransform.SetScaleXZ(waterScale[0], waterScale[1]);
-	}
-	ImGui::End();
 
 	GUI::ObjectSetting(obj, "Container");
-
-
 
 #endif
 
@@ -129,17 +86,16 @@ void SceneLab::Update(float dt)
 void SceneLab::Draw()
 {
 	// àÍî 
+	Object* obj = GetObj<Container>("Pot");
+
 	GameApp::SetBlendState(nullptr);
 	GameApp::SetCullingMode(nullptr);
-	Object* obj = GetObj<Container>("Pot");
-	
 	table->Draw();
-	
+
 	// ìßñæ
+	GameApp::SetCullingMode(RenderState::RSNoCull);	//ó†ï\óºñ ï`âÊÇ∑ÇÈ
+	GameApp::SetBlendState(RenderState::BSTransparent);	//ìßñæê›íË
 	obj->Draw();
-	//GameApp::SetCullingMode(RenderState::RSNoCull);
-	//GameApp::SetBlendState(RenderState::BSTransparent);
-	//water->Draw();
-	wave->Draw();
+	water->Draw();
 
 }

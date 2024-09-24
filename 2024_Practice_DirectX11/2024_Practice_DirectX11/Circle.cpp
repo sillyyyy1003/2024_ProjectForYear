@@ -1,5 +1,4 @@
-﻿#include "Circle.h"
-
+#include "Circle.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
@@ -74,8 +73,8 @@ const void Circle::CreateMesh(UINT slices)
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 
-		float u = (x / radius + 1.0f) * 0.5f; // 将 x 范围 [-radius, radius] 映射到 [0, 1]
-		float v = (z / radius + 1.0f) * 0.5f; // 将 z 范围 [-radius, radius] 映射到 [0, 1]
+		float u = (x / radius + 1.0f) * 0.5f; // Set X [-radius, radius] to [0, 1]
+		float v = (z / radius + 1.0f) * 0.5f; // Set Z [-radius, radius] to [0, 1]
 
 		vtx.push_back({
 			Vector3(x, 0, z),
@@ -88,9 +87,9 @@ const void Circle::CreateMesh(UINT slices)
 
 	for (UINT i = 0; i <= slices; i++)
 	{
-		indexData.push_back(0); // 圆心
-		indexData.push_back((i + 1) % (slices + 1) + 1); // 下一个边缘点
-		indexData.push_back(i + 1); // 当前边缘点
+		indexData.push_back(0); // CENTER
+		indexData.push_back((i + 1) % (slices + 1) + 1); // Next vertex
+		indexData.push_back(i + 1); // this vertex
 	}
 
 	Mesh::MeshData desc = {};
@@ -107,7 +106,6 @@ const void Circle::CreateMesh(UINT slices)
 
 const void Circle::CreateMesh(UINT levels, UINT slices)
 {
-
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 
 	float theta = 0.0f;
@@ -115,50 +113,41 @@ const void Circle::CreateMesh(UINT levels, UINT slices)
 	float radius = 0.5f;
 	float x, z;
 
-	// 添加圆心顶点
+	// CENTER
 	vtx.push_back({
-		Vector3(0.0f, 0.0f, 0.0f),  // 圆心位置
-		Vector3(0.0f, 1.0f, 0.0f),  // 法线方向
-		Vector2(0.5f, 0.5f),        // UV 中心
+		Vector3(0.0f, 0.0f, 0.0f),
+		Vector3(0.0f, 1.0f, 0.0f),
+		Vector2(0.5f, 0.5f),
 		});
 
-	// 生成圆周上的顶点
-	for (UINT i = 0; i < levels; ++i)  // 頂点密度
+	for (UINT i = 0; i < levels; ++i) // ���_���x
 	{
-		float r = static_cast<float>(i + 1) / levels * radius;  
-		for (UINT j = 0; j <= slices; ++j)          // 円の縦分割
+		float r = static_cast<float>(i + 1) / levels * radius;
+		for (UINT j = 0; j <= slices; ++j) // �~�̏c����
 		{
 			theta = per_theta * j;
-			x = r * cosf(theta);  // x 坐标
-			z = r * sinf(theta);  // z 坐标
+			x = r * cosf(theta); // x 
+			z = r * sinf(theta); // z 
 
-			// 计算 UV 坐标，以圆心为中心
 			float u = (x / radius + 1.0f) * 0.5f;
 			float v = (z / radius + 1.0f) * 0.5f;
 
 			vtx.push_back({
-				Vector3(x, 0.0f, z),         
-				Vector3(0.0f, 1.0f, 0.0f),    
-				Vector2(u, v)						
-				});
+				Vector3(x, 0.0f, z),
+				Vector3(0.0f, 1.0f, 0.0f),
+				Vector2(u, v)
+			});
 		}
 	}
 	std::vector<DWORD> idx;
 
-	// 生成索引数据
 	if (levels > 1)
 	{
 		for (UINT i = 1; i <= slices; ++i)
 		{
-			/*
-			idx.push_back(i);
-			idx.push_back(i % (slices + 1) + 1);
-			idx.push_back(0);
-			*/
 			idx.push_back(0);
 			idx.push_back(i % (slices + 1) + 1);
 			idx.push_back(i);
-			
 		}
 	}
 
@@ -166,7 +155,6 @@ const void Circle::CreateMesh(UINT levels, UINT slices)
 	{
 		for (UINT j = 1; j <= slices; ++j)
 		{
-			
 			idx.push_back((i - 1) * (slices + 1) + j);
 			idx.push_back((i - 1) * (slices + 1) + j % (slices + 1) + 1);
 			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
@@ -174,17 +162,6 @@ const void Circle::CreateMesh(UINT levels, UINT slices)
 			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
 			idx.push_back(i * (slices + 1) + j);
 			idx.push_back((i - 1) * (slices + 1) + j);
-			
-		
-	
-			/*
-			idx.push_back((i - 1) * (slices + 1) + j);
-			idx.push_back(i * (slices + 1) + j);
-			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
-			idx.push_back(i * (slices + 1) + j % (slices + 1) + 1);
-			idx.push_back((i - 1) * (slices + 1) + j % (slices + 1) + 1);
-			idx.push_back((i - 1) * (slices + 1) + j);
-			*/
 		}
 	}
 
@@ -200,16 +177,18 @@ const void Circle::CreateMesh(UINT levels, UINT slices)
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
 
+	//���_����mVertices�ɓn��
+	SetVertices(vtx);
 }
 
 const void Circle::CreateMaterial()
 {
 	mMaterial.material =
 	{
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// 環境光
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// 表面色
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
+		Color(1.0f, 1.0f, 1.0, 1.0f),		// ����
+		Color(1.0f, 1.0f, 1.0, 1.0f),		// �\�ʐF
+		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ���ʔ���: specular power 1
+		Color(0.0f, 0.0f, 0.0f, 0.0f)		// �������Ȃ�};
 	};
 
 }
@@ -267,4 +246,6 @@ void Circle::WriteDefShader()
 	mDefPS->WriteShader(0, &mMaterial.material);
 	mDefPS->WriteShader(1, &eyePos);
 	mDefPS->WriteShader(2, &light);
+
+
 }

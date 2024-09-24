@@ -134,6 +134,9 @@ void CylinderOneCap::CreateMesh(UINT slices, UINT stacks)
 	desc.indexCount = static_cast<UINT>(idx.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
+
+	//’¸“_î•ñ‚ğmVertices‚É“n‚·
+	SetVertices(vtx);
 }
 
 void CylinderOneCap::CreateMaterial()

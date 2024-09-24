@@ -4,10 +4,9 @@
 //円形の平面　容器内の平面用
 class Circle :public Primitive
 {
-private:
+public:
 
 	std::unique_ptr<Mesh> mMesh = nullptr;
-	DirectX::XMFLOAT2 mTexUV = { 1,1 };
 
 public:
 

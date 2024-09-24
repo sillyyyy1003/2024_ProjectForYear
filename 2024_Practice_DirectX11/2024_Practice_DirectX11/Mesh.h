@@ -17,7 +17,7 @@ public:
 		UINT indexCount;
 		//https://conscious-maple-e95.notion.site/D3D11_PRIMITIVE_TOPOLOGY-65f1aa0b85284bc4b1f1a2f9a8aa81c5?pvs=74
 		D3D11_PRIMITIVE_TOPOLOGY topology;
-
+		bool isWrite = true;	//データの書き換えが可能かどうか
 	};
 
 	MeshData mData = {};

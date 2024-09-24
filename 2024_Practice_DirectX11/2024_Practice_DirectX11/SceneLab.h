@@ -17,8 +17,8 @@ public:
 private:
 
 	std::unique_ptr<Primitive> circle = nullptr;
-	std::unique_ptr<Primitive> water = nullptr;
-	std::unique_ptr<Water> wave = nullptr;
+	
+	std::unique_ptr<Water> water = nullptr;
 	std::unique_ptr<Primitive> table = nullptr;
 
 };

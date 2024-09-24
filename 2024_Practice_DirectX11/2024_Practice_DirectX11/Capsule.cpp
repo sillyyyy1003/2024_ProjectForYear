@@ -216,6 +216,8 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mMesh = std::make_unique<Mesh>(desc);
+	//’¸“_î•ñ‚ğmVertices‚É“n‚·
+	SetVertices(vtx);
 }
 
 void Capsule::CreateMaterial()
