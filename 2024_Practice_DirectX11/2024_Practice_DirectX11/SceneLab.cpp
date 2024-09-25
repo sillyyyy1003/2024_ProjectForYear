@@ -8,6 +8,7 @@
 #include "GUI.h"
 #include "Object.h"
 #include "Plane3D.h"
+#include "PointLight.h"
 #include "RenderState.h"
 #include "UI_Button.h"
 
@@ -21,11 +22,13 @@ void SceneLab::Init()
 	//ÉJÉÅÉâçÏê¨
 	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
 	camera->LookAt({ 0.0f, 5.0f, -5.0f }, { 0,0,0 }, { 0,1,0 });
-	camera->LockCameraAngle(true);
+	//camera->LockCameraAngle(true);
 
 	Object* pot = CreateObj<Container>("Pot");
 	pot->Init(CYLINDER_ONECAP);
 	pot->LoadSaveData(sceneData, "Pot");
+	pot->ResetPSShader();
+
 
 	water = std::make_unique<Water>();
 	water->LoadSaveData(sceneData, "Water");
@@ -74,11 +77,15 @@ void SceneLab::Update(float dt)
 
 #ifdef _DEBUG
 
-
-
 	GUI::ObjectSetting(obj, "Container");
 
 #endif
+
+
+
+	//AfterRender
+
+
 
 
 }

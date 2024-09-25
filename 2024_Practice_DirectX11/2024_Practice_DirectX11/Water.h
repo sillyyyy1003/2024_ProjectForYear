@@ -6,6 +6,18 @@
 ///	todo:今は円形だけの対応
 class Water
 {
+private:
+
+	const Material defaultMat = 
+	{
+		Color(0.8f, 0.8f, 0.8f, 1.0f),	
+		Color(0.2f, 0.3f, 0.6f, 0.3f),	
+		Color(0.8f, 0.8f, 0.8f, 32.0f),	
+		Color(0.0f, 0.0f, 0.0f, 1.0f),	
+	};
+
+protected:
+
 	//水の物理表現に関するパラメータ
 	struct WaterParam
 	{
@@ -31,7 +43,7 @@ class Water
 public:
 	
 	Water();
-	~Water() = default;
+	virtual ~Water() = default;
 
 	void Init(const char* filePath);
 
@@ -76,6 +88,7 @@ public:
 	/// @return 
 	virtual json SaveData();
 	
+	void ResetMaterial();
 
 protected:
 

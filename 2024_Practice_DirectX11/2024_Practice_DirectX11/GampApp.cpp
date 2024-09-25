@@ -69,7 +69,7 @@ void GameApp::DrawScene()
 {
 	assert(mContext);
 	assert(mSwapChain);
-	static float color[4] = { 0.01f, 0.01f, 0.01f, 1.0f };  // RGBA = (0,0,255,255)
+	static float color[4] = { 0.1f, 0.1f, 0.1f, 1.0f };  // RGBA = (0,0,255,255)
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 

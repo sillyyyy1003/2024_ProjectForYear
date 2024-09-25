@@ -26,11 +26,11 @@ void SceneManager::Init()
 	camera->SetPosition(0.0f, 5.0f, -10.0f);
 	camera->LookAt({ 0.0f, 3.0f, -10.0f }, { 0,0,0 }, { 0,1,0 });
 
-	//基底ライト作成
+	//基底ライト作成 Ambient Light
 	DirLight* light = CreateObj<DirLight>("Light");
 	light->SetAmbient(Vector4(0.7f,0.7f,0.7f,1.0f));
-	light->SetPos(Vector3(5.0f,5.0f,0.0f));
-	light->SetDir(Vector3(0.0f,0.0f,0.f));
+	light->SetPos(Vector3(0.0f,10.0f,-10.0f));
+	light->SetDir(Vector3(0.0f,0.0,0.f));
 
 	Model* model = CreateObj<Model>("Model");
 	GetObj<Model>("Model")->Load("Assets/Model/Player.obj");
@@ -42,6 +42,11 @@ void SceneManager::Init()
 void SceneManager::UnInit()
 {
 	//Save data here
+	
+
+
+
+
 
 
 }

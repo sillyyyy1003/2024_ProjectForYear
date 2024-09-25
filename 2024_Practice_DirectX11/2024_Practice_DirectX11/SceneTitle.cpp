@@ -20,24 +20,6 @@ enum TitleScene
 
 void SceneTitle::Init()
 {
-	//std::filesystem::path filePath = "Assets/Data/SaveDat/scene_title_default.json";
-	//if (!std::filesystem::exists(filePath))
-	//{
-	//	DebugLog::Log("scene_title.json not found.");
-	//	return;
-	//}
-
-	//std::ifstream file(filePath);
-	//if (!file.is_open())
-	//{
-	//	DebugLog::Log("Failed to open scene_title.json for reading.");
-	//	return;
-	//}
-
-
-	//file >> sceneData;
-	//file.close();
-
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title_default.json");
 
 	CanvasUI* uiBg = CreateObj<CanvasUI>("title_bg");
@@ -84,17 +66,7 @@ void SceneTitle::UnInit()
 	}
 
 
-	std::ofstream file("Assets/Data/SaveDat/scene_title_default.json");
-	if (file.is_open())
-	{
-		file << sceneData.dump(4);
-		file.close();
-	}
-	else
-	{
-		DebugLog::Log("Failed to open scene_title.json for writing.");
-	}
-
+	SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
 
 }
 

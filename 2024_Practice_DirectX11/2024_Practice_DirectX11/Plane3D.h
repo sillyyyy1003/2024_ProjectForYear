@@ -29,8 +29,6 @@ public:
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-	/// @brief Set defPS & defVS to VS&PS 
-	void SetShader();
 
 	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
 	void SetScale(const DirectX::XMFLOAT2& scale) override;

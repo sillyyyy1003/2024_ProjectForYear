@@ -25,13 +25,7 @@ void Cube::Init(const char* fileName)
 
 void Cube::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
-
+	SetDefShader();
 
 	for (auto it = mMeshes.begin(); it != mMeshes.end(); ++it)
 	{
@@ -48,6 +42,9 @@ void Cube::Draw(int texSlot)
 void Cube::Update(float dt)
 {
 
+
+	//Render処理
+	WriteDefShader();
 }
 
 const void Cube::CreateMaterial(int matNum)

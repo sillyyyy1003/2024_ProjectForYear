@@ -29,6 +29,7 @@
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "BulletCollision.lib")
 
 // 16バイトにアラインメントする。
 #define ALIGN16 _declspec(align(16))
@@ -307,51 +308,49 @@ struct Material
 	
 };
 
-
-
-/// @brief  方向光
-struct DirectionLight
+namespace Light
 {
-	DirectX::XMFLOAT4 ambient;	// 環境光 
-	DirectX::XMFLOAT4 diffuse;	// 拡散反射
-	DirectX::XMFLOAT4 specular; // 鏡面反射 
-	DirectX::XMFLOAT3 direction;
-	float isEnable;//起動するかどうか
-	
-};
+	/// @brief  方向光
+	struct DirectionLight
+	{
+		DirectX::XMFLOAT4 ambient;	// 環境光 
+		DirectX::XMFLOAT4 diffuse;	// 拡散反射
+		DirectX::XMFLOAT3 direction;
+		float isEnable;//起動するかどうか
 
-/// @brief 点光源
-struct PointLight
-{
-	DirectX::XMFLOAT4 ambient;	// 環境光 
-	DirectX::XMFLOAT4 diffuse;	// 拡散反射
-	DirectX::XMFLOAT4 specular; // 鏡面反射 
-	DirectX::XMFLOAT3 position;
-	float range;
+	};
 
-	DirectX::XMFLOAT3  attenuation;//減衰
-	float isEnable;//起動するかどうか
+	/// @brief 点光源
+	struct PointLight
+	{
+		DirectX::XMFLOAT4 ambient;	// 環境光 
+		DirectX::XMFLOAT4 diffuse;	// 拡散反射
+		DirectX::XMFLOAT3 position;
+		float range;
 
-	
-};
+		DirectX::XMFLOAT3  attenuation;//減衰
+		float isEnable;//起動するかどうか
+	};
 
-/// @brief スポットライト
-struct Spotlight
-{
-	
-	DirectX::XMFLOAT4 ambient;	// 環境光 
-	DirectX::XMFLOAT4 diffuse;	// 拡散反射 
-	DirectX::XMFLOAT4 specular; // 鏡面反射
+	/// @brief スポットライト
+	struct Spotlight
+	{
 
-	DirectX::XMFLOAT3 position;
-	float range;
+		DirectX::XMFLOAT4 ambient;	// 環境光 
+		DirectX::XMFLOAT4 diffuse;	// 拡散反射 
 
-	DirectX::XMFLOAT3 direction; //向かうどころ
-	float Spot;	//焦点值，较高的值表示更聚焦的光束，较低的值表示更扩散的光束
+		DirectX::XMFLOAT3 position;
+		float range;
 
-	DirectX::XMFLOAT3  attenuation;//減衰
-	float isEnable;//起動するかどうか
-};
+		DirectX::XMFLOAT3 direction; //向かうどころ
+		float Spot;	//焦点值，较高的值表示更聚焦的光束，较低的值表示更扩散的光束
+
+		DirectX::XMFLOAT3  attenuation;//減衰
+		float isEnable;//起動するかどうか
+	};
+
+}
+
 
 /// @brief 射線当たり判定用
 struct Ray

@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(ProjectDir);C:\Bullet\include;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;C:\Bullet\Lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\directxtk\include;C:\Assimp\include;C:\DirectXTex;$(ProjectDir)imgui\Include;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;C:\directxtk\lib\x64\Release;$(ProjectDir)imgui\Lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Bullet\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;C:\directxtk\lib\x64\Release;$(ProjectDir)imgui\Lib\Release;C:\Bullet\Lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BtColliderManager.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Plane3D.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -194,6 +196,7 @@
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BtColliderManager.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Cube.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Plane3D.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="RenderState.h" />
     <ClInclude Include="resource.h" />
@@ -240,7 +244,7 @@
     <ClInclude Include="Water.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PS_Box.hlsl">
+    <FxCompile Include="PS_Object.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

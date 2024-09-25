@@ -18,11 +18,20 @@ cbuffer Camera : register(b1)
     float4 eyePos;
 }
 
+//Ambient light
 cbuffer DirLight : register(b2)
 {
     float4 lightAmbient;
     float4 lightDiffuse;
     float4 lightPos;
+}
+
+//追加のポイントライト
+cbuffer PointLight:register(b3)
+{
+	PointLight pointLight[MAX_NUM_POINT_LIGHT]; // Define NUM_POINT_LIGHTS as the max number
+	int actualLightNum;//actual light number
+	int dummy1, dummy2, dummy3;
 }
 
 Texture2D myTex : register(t0);
@@ -57,7 +66,7 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
     float3 lightVec = normalize(lightPos.xyz);
 
     //Lambert Diffuse計算
-    float diffuseFactor = saturate(dot(lightVec, normal));
+	float diffuseFactor = saturate(dot(lightVec, normal)) * 0.5f + 0.5f;
 	float4 diffuse = diffuseFactor * lightDiffuse * material.diffuse;
 
     // specular 計算

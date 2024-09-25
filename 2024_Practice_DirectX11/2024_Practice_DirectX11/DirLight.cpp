@@ -1,15 +1,38 @@
 #include "DirLight.h"
-#include "KInput.h"
+#include <imgui.h>
 
 void DirLight::Update(float dt)
 {
-	if (!KInput::IsKeyPress(VK_SHIFT))return;
+#ifdef _DEBUG
+	if(ImGui::Begin("Light Option"))
+	{
+		ImGui::Checkbox("isEnable", &isEnable);
 
-	if(KInput::IsKeyPress(VK_LEFT))mPos.x -= 3.0f * dt;
-	if(KInput::IsKeyPress(VK_RIGHT))mPos.x += 3.0f * dt;
-	if (KInput::IsKeyPress(VK_UP))mPos.y += 3.0f * dt;
-	if (KInput::IsKeyPress(VK_DOWN))mPos.y -= 3.0f * dt;
+		float ambient[4] = {
+			GetAmbient().x,GetAmbient().y,GetAmbient().z,GetAmbient().w
+		};
+		ImGui::ColorEdit4("Ambient", ambient);
+		SetAmbient(ambient);
+
+		float diffuse[4] = {
+		GetDiffuse().x,GetDiffuse().y,GetDiffuse().z,GetDiffuse().w
+		};
+		ImGui::ColorEdit4("Diffuse", diffuse);
+		SetDiffuse(diffuse);
 
 
+		float pos[3] = {
+		mPos.x,mPos.y,mPos.z
+		};
+		ImGui::InputFloat3("Position", pos);
+		SetPos(pos);
 
+		float dir[3] = {
+		mDir.x,mDir.y,mDir.z };
+		ImGui::InputFloat3("Direction", dir);
+		SetDir(dir);
+	}
+
+	ImGui::End();
+#endif
 }

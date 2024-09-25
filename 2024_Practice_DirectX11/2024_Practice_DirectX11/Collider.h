@@ -1,8 +1,12 @@
 #pragma once
 #include "D3DUtil.h"
 #include <DirectXCollision.h>
-#include "SceneBase.h"
+#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
+#include <BulletCollision/CollisionShapes/btBoxShape.h>
+#include <BulletCollision/CollisionShapes/btCylinderShape.h>
 
+
+#include "SceneBase.h"
 
 
 class Collider :public Component
@@ -15,6 +19,7 @@ protected:
 		CAPSULE_3D,
 		BOX_3D,
 		SPHERE_3D,
+		CYLINDER_3D,
 	};
 	ColliderKind mKind = DEFAULT_3D;
 
@@ -40,14 +45,7 @@ public:
 
 	virtual bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) = 0;
 
-
-	//todo: need more method
-	//virtual bool OnTriggerStart(Collider* col) = 0;
-
-	
-
-
-
+	virtual void RayTest(DirectX::XMVECTOR start, DirectX::XMVECTOR des,btCollisionWorld::RayResultCallback& resultCallback){};
 };
 
 /// @brief ボックスコライダー
@@ -56,6 +54,9 @@ class BoxCollider:public Collider
 private:
 
 	DirectX::BoundingOrientedBox mCollider;
+	std::unique_ptr<btBoxShape> mBoxCollider;	//あたり判定の形状を管理する
+	std::unique_ptr<btTransform> mTransform;	//移動、回転、拡大縮小などを管理する
+
 
 public:
 
@@ -79,9 +80,10 @@ public:
 	/// @return レイとの交差してるかどうか
 	bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) override;
 
-	DirectX::XMFLOAT4 GetOrientation() override { return mCollider.Orientation; };
-	DirectX::XMFLOAT3 GetCenter() override { return mCollider.Center; };
+	DirectX::XMFLOAT4 GetOrientation() override;
+	DirectX::XMFLOAT3 GetCenter() override;
 
+	void RayTest(DirectX::XMVECTOR start, DirectX::XMVECTOR des,btCollisionWorld::RayResultCallback& resultCallback) override;
 };
 
 
@@ -119,5 +121,19 @@ public:
 	float GetRadius() override { return mCollider.Radius; };
 
 	void UpdateSize(float radius)override;
+
+};
+
+class CylinderCollider:public Collider
+{
+
+protected:
+
+	std::unique_ptr<btCylinderShape> mCollider;
+
+public:
+	CylinderCollider();
+	~CylinderCollider() override = default;
+
 
 };

@@ -20,17 +20,12 @@ void Cylinder::Init(const char* filePath)
 
 void Cylinder::Update(float dt)
 {
-
+	WriteDefShader();
 }
 
 void Cylinder::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
+	SetDefShader();
 
 	mPS->SetShader();
 	mVS->SetShader();

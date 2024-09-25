@@ -54,7 +54,7 @@ void Plane3D::Update(float dt)
 
 void Plane3D::Draw(int texSlot)
 {
-	SetShader();
+	SetDefShader();
 	mPS->SetShader();
 	mVS->SetShader();
 	if (texSlot >= 0)
@@ -62,14 +62,6 @@ void Plane3D::Draw(int texSlot)
 	mMesh->Draw();
 }
 
-void Plane3D::SetShader()
-{
-	if (isDefShader)
-	{
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
-}
 
 const void Plane3D::CreateMesh()
 {

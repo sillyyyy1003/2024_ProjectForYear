@@ -14,23 +14,17 @@ void Capsule::Init(const char* filePath)
 	CreateMesh(64, 64,1);
 	CreateMaterial();
 	CreateTexture(filePath);
-
 	LoadDefShader();
 }
 
 void Capsule::Update(float dt)
 {
-
+	WriteDefShader();
 }
 
 void Capsule::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
+	SetDefShader();
 
 	mPS->SetShader();
 	mVS->SetShader();

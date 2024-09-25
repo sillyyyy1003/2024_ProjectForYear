@@ -13,6 +13,7 @@ protected:
 	bool isEnable = true;
 
 public:
+
 	LightBase();
 	virtual ~LightBase() = default;
 
@@ -26,9 +27,15 @@ public:
 	bool GetEnable() { return isEnable; };
 
 	void SetPos(const DirectX::XMFLOAT3& _pos);	//ˆÊ’u
+	void SetPos(float* _pos);
+
 	void SetDir(const DirectX::XMFLOAT3& _dir);	//•ûŒü
+	void SetDir(float* _dir);
+
 	void SetAmbient(const DirectX::XMFLOAT4& _ambient); //ŠÂ‹«Œõ
+	void SetAmbient(float* ambient);
 	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse); //ŠgU”½Ë
+	void SetDiffuse(float* diffuse);
 
 	void SetEnable(bool isEnable) { this->isEnable = isEnable; };
 };

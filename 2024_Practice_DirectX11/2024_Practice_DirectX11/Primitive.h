@@ -75,6 +75,7 @@ public:
 
 	virtual void SetPosition(const DirectX::XMFLOAT3 position) { mTransform.SetPosition(position); };
 	virtual void SetPosition(float x, float y, float z) { mTransform.SetPosition(x, y, z); };
+	virtual void SetPosition(const float* pos) { mTransform.SetPosition(pos); };
 
 	virtual DirectX::XMFLOAT3 GetPosition() const { return mTransform.GetPosition(); };
 	virtual DirectX::XMFLOAT4 GetQuaternion() const { return mTransform.GetQuaternion(); };
@@ -105,6 +106,11 @@ public:
 	/// @brief Default ShaderÇÃèâä˙âª
 	virtual void LoadDefShader();
 	virtual void LoadDefShader(const char* vsPath,const char* psPath);
+
+	virtual void ResetDefPSShader();
+	virtual void ResetDefVSShader();
+
+	virtual void SetDefShader();
 
 	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices);
 

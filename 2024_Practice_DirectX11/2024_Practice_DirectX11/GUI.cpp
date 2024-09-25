@@ -31,3 +31,5 @@ void GUI::ShowFloat4(const DirectX::XMFLOAT4& _rot)
 {
 	ImGui::Text("Float4 : x: %2f  y: %2f  z: %2f  w: %2f", _rot.x, _rot.y, _rot.z, _rot.w);
 }
+
+

@@ -21,6 +21,7 @@ public:
 
 	static void ShowFloat4(const DirectX::XMFLOAT4& _rot);
 
+
 	template<class T>
 	static void ObjectSetting(T* obj, const char* windowName);
 
@@ -34,7 +35,7 @@ void GUI::ObjectSetting(T* obj, const char* windowName)
 		//Set Pos
 		float Pos[3] = { obj->GetPosition().x,obj->GetPosition().y,obj->GetPosition().z };
 		//ImGui::InputFloat3("Position",Pos);
-		ImGui::SliderFloat3("Position", Pos, 0, 20);
+		ImGui::InputFloat3("Position", Pos);
 		obj->SetPosition(Pos);
 
 

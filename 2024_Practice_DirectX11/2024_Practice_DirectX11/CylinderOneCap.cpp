@@ -23,16 +23,12 @@ void CylinderOneCap::Init(const char* filePath)
 void CylinderOneCap::Update(float dt)
 {
 
+	WriteDefShader();
 }
 
 void CylinderOneCap::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
+	SetDefShader();
 
 	mPS->SetShader();
 	mVS->SetShader();
@@ -120,8 +116,9 @@ void CylinderOneCap::CreateMesh(UINT slices, UINT stacks)
 	for (UINT i = 1; i <= slices; i++)
 	{
 		idx.push_back(offset);
-		idx.push_back(offset + i % (slices + 1) + 1);
 		idx.push_back(offset + i);
+		idx.push_back(offset + i % (slices + 1) + 1);
+		
 	}
 
 

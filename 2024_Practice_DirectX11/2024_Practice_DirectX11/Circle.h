@@ -18,6 +18,7 @@ public:
 
 	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
 	void SetScale(const DirectX::XMFLOAT2& scale) override;
+	void SetScale(const float* scale) override;
 
 
 	void Init(const char* _fileName);

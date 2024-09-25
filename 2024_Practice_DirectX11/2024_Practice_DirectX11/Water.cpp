@@ -12,25 +12,42 @@ using namespace DirectX;
 
 Water::Water()
 {
+
 }
 
 void Water::Init(const char* filePath)
 {
 	mModel = std::make_unique<Circle>();
-
-
 	mModel->CreateMesh(50, 50);
 	mModel->CreateMaterial();
 	mModel->CreateTexture(filePath);
 	mModel->LoadDefShader("Assets/Shader/VS_Water.cso","Assets/Shader/PS_Water.cso");
+	
 }
 
 void Water::Update(float dt)
 {
+
 #ifdef _DEBUG
 	//…‚Ì”g‚ÌÝ’è‚ÆF‚ÌÝ’è‚ð‰ÂŽ‹‰»‚É‚·‚é
 	if (ImGui::Begin("Water Option"))
 	{
+		static bool isResetMaterial = false;
+		ImGui::Checkbox("Reset Material", &isResetMaterial);
+		if (isResetMaterial)ResetMaterial();
+
+		ImGui::Text("WaterPos");
+
+		float pos[3] = { mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
+		ImGui::InputFloat3("Position", pos);
+		mModel->SetPosition(pos);
+
+		float scale[3] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
+		ImGui::InputFloat3("Scale", scale);
+		mModel->SetScale(scale);
+	
+
+		ImGui::Text("Wave Option");
 		float center[3] = { mParam.center.x,mParam.center.y,mParam.center.z };
 		ImGui::SliderFloat3("Centre", center, -10.f, 10.f);
 		mParam.center = Vector3(center);
@@ -72,7 +89,7 @@ void Water::Update(float dt)
 		Color(emission),
 		};
 		mModel->SetMaterial(mat);
-		
+
 	}
 
 	ImGui::End();
@@ -264,6 +281,11 @@ json Water::SaveData()
 
 
 	return data;
+}
+
+void Water::ResetMaterial()
+{
+	mModel->SetMaterial(defaultMat);
 }
 
 void Water::LateUpdate(float dt)

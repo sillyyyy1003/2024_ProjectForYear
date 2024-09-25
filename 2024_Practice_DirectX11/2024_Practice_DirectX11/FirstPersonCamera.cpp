@@ -1,7 +1,4 @@
 ﻿#include "FirstPersonCamera.h"
-
-#include <complex>
-
 #include "KInput.h"
 using namespace DirectX;
 

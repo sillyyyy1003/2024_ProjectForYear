@@ -54,6 +54,7 @@ public:
 	void _draw();
 
 	json LoadSceneData(const char* fileName);
+	void SaveSceneFile(const char* fileName,json sceneFile);
 
 	/// @brief サブシーンの追加
 	/// @tparam T サブシーンの型

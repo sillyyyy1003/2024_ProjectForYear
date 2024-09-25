@@ -65,6 +65,20 @@ json SceneBase::LoadSceneData(const char* fileName)
 	return sceneData;
 }
 
+void SceneBase::SaveSceneFile(const char* fileName,json sceneFile)
+{
+	std::ofstream file(fileName);
+	if (file.is_open())
+	{
+		file << sceneFile.dump(4);
+		file.close();
+	}
+	else
+	{
+		DebugLog::Log("Failed to open scene_title.json for writing.");
+	}
+}
+
 void SceneBase::RemoveSubScene() const
 {
 	// 削除するサブシーンが存在するか

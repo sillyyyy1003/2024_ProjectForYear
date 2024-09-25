@@ -11,17 +11,12 @@ Circle::Circle():Primitive(CIRCLE)
 
 void Circle::Update(float dt)
 {
-	Primitive::Update(dt);
+	WriteDefShader();
 }
 
 void Circle::Draw(int texSlot)
 {
-	if (isDefShader)
-	{
-		WriteDefShader();
-		mVS = mDefVS.get();
-		mPS = mDefPS.get();
-	}
+	SetDefShader();
 
 	mPS->SetShader();
 	mVS->SetShader();
@@ -38,6 +33,11 @@ void Circle::SetTexUV(DirectX::XMFLOAT2 _texUV)
 void Circle::SetScale(const DirectX::XMFLOAT2& scale)
 {
 	SetScaleXZ(scale);
+}
+
+void Circle::SetScale(const float* scale)
+{
+	Primitive::SetScale(scale);
 }
 
 void Circle::Init(const char* _fileName)

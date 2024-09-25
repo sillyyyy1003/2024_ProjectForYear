@@ -121,6 +121,9 @@
     <Filter Include="ソース ファイル\DirectX\RenderState">
       <UniqueIdentifier>{43ceaec2-f692-4eb1-80ba-00543607c49c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Collider\btCollider">
+      <UniqueIdentifier>{d6567b6b-a939-4ee2-8639-f14e2249a22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartUp.cpp">
@@ -251,6 +254,12 @@
     </ClCompile>
     <ClCompile Include="Water.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="BtColliderManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +395,12 @@
     <ClInclude Include="Container.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="BtColliderManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PS_Geometry.hlsl">
@@ -400,7 +415,7 @@
     <FxCompile Include="VS_Geometry.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
-    <FxCompile Include="PS_Box.hlsl">
+    <FxCompile Include="PS_Object.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="VS_Box.hlsl">

@@ -5,6 +5,7 @@
 #include "GampApp.h"
 #include "GUI.h"
 #include "KInput.h"
+#include "PointLight.h"
 #include "Sphere.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -64,6 +65,7 @@ void Object::Init(PrimitiveKind kind, const char* filePath)
 void Object::InitModel(const char* filePath)
 {
 	mModel->Init(filePath);
+	
 }
 
 void Object::LoadSaveData(json data, const char* objName)
@@ -84,6 +86,10 @@ void Object::LoadSaveData(json data, const char* objName)
 	//Init Scale
 	Vector3 scale = Vector3(data[objName]["Scale"][0], data[objName]["Scale"][1], data[objName]["Scale"][2]);
 	mModel->SetScale(scale);
+
+	//Collider データ更新
+	mCollider->Transform(mModel->GetPosition(), mModel->mTransform.GetQuaternionXM(), mModel->GetScale());
+	
 
 	//Init Material
 	Material mat = {
@@ -136,14 +142,29 @@ json Object::SaveData()
 	return data;
 }
 
+void Object::ResetPSShader()
+{
+	mModel->ResetDefPSShader();
+	mModel->GetDefPS()->LoadShaderFile("Assets/Shader/PS_Object.cso");
+}
+
 void Object::PreUpdate(float dt)
 {
+	//Physical
+	if (isStateChange)
+	{
+		mCollider->Transform(mModel->GetPosition(), mModel->mTransform.GetQuaternionXM(), mModel->GetScale());
+		isStateChange = false;
+	}
+
+	// Input
 	int prev = static_cast<ObjectState>(mState);
 
 	switch (prev)
 	{
 	default:
 	case STATE_NONE:
+
 		if (KInput::IsKeyTrigger(VK_LBUTTON))
 		{
 
@@ -162,13 +183,12 @@ void Object::PreUpdate(float dt)
 			if (mCollider->Interacts(startPos, rayDir, distance))
 			{
 				mState = STATE_SELECTED;
-				isStateChange = true;
 			}
 		}
 		break;
 
 	case STATE_SELECTED:
-		
+	
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
 			FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
@@ -190,15 +210,21 @@ void Object::PreUpdate(float dt)
 					mState = STATE_DRAG;
 					isStateChange = true;
 				}
+			}else
+			{
+				mState = STATE_NONE;
 			}
 		}
 		break;
 	case STATE_DRAG:
 
-		if(KInput::IsKeyRelease(VK_LBUTTON))
+		if(KInput::IsKeyPress(VK_LBUTTON))
 		{
-			mState = STATE_SELECTED;
 			isStateChange = true;
+		}
+		else
+		{
+			mState = STATE_NONE;
 		}
 		break;
 
@@ -232,6 +258,9 @@ void Object::GameUpdate(float dt)
 
 		ImGui::Text("Center");
 		GUI::ShowFloat3(mCollider->GetCenter());
+
+		ImGui::Text("ColliderPos");
+		GUI::ShowFloat3(mCollider->GetCenter());
 	}
 
 	ImGui::End();
@@ -251,19 +280,38 @@ void Object::GameUpdate(float dt)
 		break;
 	}
 
-	mModel->Update(dt);
 
 }
 
 void Object::LateUpdate(float dt)
 {
-	//Lazy Update->状態変更のときだけ、ステータス判定用のデータを更新する
-	if(isStateChange)
+	//Render
+	mModel->Update(dt);
+
+	//PointLightを取得し、データをPSに書き込み
+	PointLight* pointLight = GameApp::GetComponent<PointLight>("PointLight");
+
+	if(pointLight)
 	{
-		mCollider->Transform(mModel->GetPosition(), mModel->mTransform.GetQuaternionXM(),mModel->GetScale());
-		isStateChange = false;
+		struct BindData
+		{
+			Light::PointLight pointLight;
+			int num = 1;
+		};
+
+		BindData data;
+		data.pointLight = {
+			Color(pointLight->GetAmbient()),
+			Color(pointLight->GetDiffuse()),
+			Vector3(pointLight->GetPos()),
+			float(pointLight->GetRange()),
+			Vector3(pointLight->GetAttenuation()),
+			static_cast<float>(pointLight->GetEnable()),
+		};
+
+		mModel->GetDefPS()->WriteShader(3, &data);
 	}
-		
+	
 }
 
 void Object::OnStateDrag(float dt)
@@ -284,11 +332,12 @@ void Object::OnStateDrag(float dt)
 	float yOnXYPlane = intersection.y;
 
 	mModel->mTransform.SetPosition(xOnXYPlane, yOnXYPlane, mModel->mTransform.GetPosition().z);
-	
+
+
+
 }
 
 void Object::OnStateSelected(float dt)
 {
-	//float rotateSpeed = 30.0f;
-	//mModel->mTransform.Rotate({ 0, 30 * dt,0 });
+
 }

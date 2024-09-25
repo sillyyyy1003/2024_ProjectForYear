@@ -21,18 +21,13 @@ void Sphere::Init(const char* _fileName)
 void Sphere::Update(float dt)
 {
 
-
+    WriteDefShader();
 }
 
 void Sphere::Draw(int texSlot)
 {
-    if (isDefShader)
-    {
-        WriteDefShader();
-        mVS = mDefVS.get();
-        mPS = mDefPS.get();
-    }
-
+    SetDefShader();
+   
     mPS->SetShader();
     mVS->SetShader();
 
