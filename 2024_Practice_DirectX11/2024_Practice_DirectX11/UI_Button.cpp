@@ -10,8 +10,9 @@ enum ButtonState
 {
 	STATE_NONE,		// Default State
 	STATE_TOUCH,	// マウスがボタンに置く
+	STATE_TRIGGER,	// マウスがリリースされてる
 	STATE_PRESS,	// マウスが押したら
-	//STATE_MOVE,
+	
 };
 
 UI_Button::~UI_Button()
@@ -31,11 +32,13 @@ void UI_Button::Update(float dt)
 	
 	GameUpdate(dt);
 
+	LateUpdate(dt);
+
 }
 
 void UI_Button::Draw()
 {
-	WriteShader();
+
 
 	if(isDefShader)
 	{
@@ -55,6 +58,17 @@ bool UI_Button::isPressed()
 {
 	if (mState == STATE_PRESS)
 		return true;
+
+	return false;
+}
+
+bool UI_Button::isTrigger()
+{
+	if (mState == STATE_TRIGGER)
+	{
+		mState = STATE_NONE;//Rest state
+		return true;
+	}
 
 	return false;
 }
@@ -117,15 +131,18 @@ void UI_Button::PreUpdate(float dt)
 		cursorPos.y > bottom) {
 
 		mState = STATE_NONE;
-		
 	}
 	else 
 	{
 		mState = STATE_TOUCH;
 		//クリックしたら
-		if (KInput::IsKeyTrigger(VK_LBUTTON))
+		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
 			mState = STATE_PRESS;
+		}
+		else if(KInput::IsKeyRelease(VK_LBUTTON))
+		{
+			mState = STATE_TRIGGER;
 		}
 	}
 
@@ -142,13 +159,18 @@ void UI_Button::GameUpdate(float dt)
 		mEffect = Color(0.85f, 0.85f, 0.85f, 1.0f);
 		break;
 	case STATE_PRESS:
-		mEffect = Color(1.f, 1.f, 1.f, 1.0f);
+		mEffect = Color(1.f, 0.4f, 0.2f, 1.0f);
 		break;
 	case STATE_TOUCH:
 		mEffect = Color(1.f, 1.f, 1.f, 1.0f);
 		break;
 	}
 
+}
+
+void UI_Button::LateUpdate(float dt)
+{
+	WriteShader();
 }
 
 RECT UI_Button::GetRect()

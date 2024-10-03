@@ -1,5 +1,8 @@
 ﻿#include "Object.h"
+
+#include "Capsule.h"
 #include "Cube.h"
+#include "Cylinder.h"
 #include "CylinderOneCap.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
@@ -41,10 +44,12 @@ void Object::Init(PrimitiveKind kind)
 		mCollider = std::make_unique<SphereCollider>();
 		break;
 	case CYLINDER:
-		
+		mModel = std::make_unique<Cylinder>();
+		mCollider = std::make_unique<BoxCollider>();
 		break;
 	case CAPSULE:
-		
+		mModel = std::make_unique<Capsule>();
+		mCollider = std::make_unique<BoxCollider>();
 		break;
 	case CYLINDER_ONECAP:
 		mModel = std::make_unique<CylinderOneCap>();
@@ -52,20 +57,19 @@ void Object::Init(PrimitiveKind kind)
 	default:;
 	}
 
-	//モデルの初期化
-	//mModel->mTransform.Rotate({ 0,0,45.0f});
 }
 
 void Object::Init(PrimitiveKind kind, const char* filePath)
 {
 	Init(kind);
 	InitModel(filePath);
+	
 }
 
 void Object::InitModel(const char* filePath)
 {
 	mModel->Init(filePath);
-	
+	mModel->LoadDefShader("Assets/Shader/VS_Primitives.cso", "Assets/Shader/PS_Object.cso");
 }
 
 void Object::LoadSaveData(json data, const char* objName)
@@ -100,6 +104,7 @@ void Object::LoadSaveData(json data, const char* objName)
 	};
 	SetMaterial(mat);
 
+	mObjectName = objName;
 }
 
 
@@ -213,14 +218,35 @@ void Object::PreUpdate(float dt)
 			}else
 			{
 				mState = STATE_NONE;
+				isStateChange = false;
 			}
 		}
+
 		break;
 	case STATE_DRAG:
 
-		if(KInput::IsKeyPress(VK_LBUTTON))
+		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
-			isStateChange = true;
+			FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
+			//マウスの位置スクリーン座標を取得
+			POINT mousePos;
+			GetCursorPos(&mousePos);
+
+			//カメラからマウス位置の方向ベクトルを取得
+			XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
+			//カメラの位置を取得
+			XMFLOAT3 camPos = camera->GetPos();
+			XMVECTOR startPos = XMLoadFloat3(&camPos);
+			float distance = 0;
+
+			if (mCollider->Interacts(startPos, rayDir, distance))
+			{
+				isStateChange = true;
+			}
+			else
+			{
+				mState = STATE_NONE;
+			}
 		}
 		else
 		{
@@ -234,7 +260,6 @@ void Object::PreUpdate(float dt)
 	{
 		GetCursorPos(&mOldPos);
 	}
-	
 
 }
 
@@ -245,32 +270,17 @@ void Object::GameUpdate(float dt)
 // オブジェクトの情報表示
 #ifdef _DEBUG
 
-	if (ImGui::Begin("Object Info"))
-	{
-		ImGui::Text("Position");
-		GUI::ShowFloat3(mModel->mTransform.GetPosition());
+	GUI::ObjectSetting(this, mObjectName.c_str());
+	
 
-		ImGui::Text("Rotation");
-		GUI::ShowFloat3(mModel->GetRotation());
-
-		ImGui::Text("Orientation");
-		GUI::ShowFloat4(mCollider->GetOrientation());
-
-		ImGui::Text("Center");
-		GUI::ShowFloat3(mCollider->GetCenter());
-
-		ImGui::Text("ColliderPos");
-		GUI::ShowFloat3(mCollider->GetCenter());
-	}
-
-	ImGui::End();
 #endif
-
-	if (mState == STATE_NONE) { return; }
 
 	switch(mState)
 	{
 	default:
+	case STATE_NONE:
+		OnStateNone(dt);
+		break;
 	case STATE_DRAG:
 		OnStateDrag(dt);
 		break;
@@ -288,6 +298,10 @@ void Object::LateUpdate(float dt)
 	//Render
 	mModel->Update(dt);
 
+	mModel->GetDefPS()->WriteShader(3, &mEffect);
+
+
+	/*
 	//PointLightを取得し、データをPSに書き込み
 	PointLight* pointLight = GameApp::GetComponent<PointLight>("PointLight");
 
@@ -311,7 +325,7 @@ void Object::LateUpdate(float dt)
 
 		mModel->GetDefPS()->WriteShader(3, &data);
 	}
-	
+	*/
 }
 
 void Object::OnStateDrag(float dt)
@@ -333,11 +347,18 @@ void Object::OnStateDrag(float dt)
 
 	mModel->mTransform.SetPosition(xOnXYPlane, yOnXYPlane, mModel->mTransform.GetPosition().z);
 
-
-
+	//色変化
+	mEffect = { 1.0f,1.0f,1.0f ,1.0f };
 }
 
 void Object::OnStateSelected(float dt)
 {
+	//色変化
+	mEffect = { 1.0f,1.0f,1.0f ,1.0f };
+	
+}
 
+void Object::OnStateNone(float dt)
+{
+	mEffect = { 0.85f,0.85f ,0.85f ,1.0f };
 }

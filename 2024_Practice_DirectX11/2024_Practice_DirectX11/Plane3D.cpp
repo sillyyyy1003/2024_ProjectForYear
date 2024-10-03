@@ -13,12 +13,12 @@ Plane3D::Plane3D() :Primitive(PLANE)
 
 }
 
-void Plane3D::SetTexUV(DirectX::XMFLOAT2 _texUV)
+void Plane3D::SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept
 {
 	mTexUV = _texUV;
 }
 
-void Plane3D::SetScale(const DirectX::XMFLOAT2& scale)
+void Plane3D::SetScale(const DirectX::XMFLOAT2& scale)  noexcept
 {
 	mTransform.SetScale(scale.x, 1.0f, scale.y);
 }
@@ -43,8 +43,6 @@ void Plane3D::Init(const char* _fileName, int slices)
 	CreateMesh(slices);
 	CreateMaterial();
 	CreateTexture(_fileName);
-	LoadDefShader();
-	
 }
 
 void Plane3D::Update(float dt)

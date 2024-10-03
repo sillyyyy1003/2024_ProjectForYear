@@ -16,9 +16,9 @@
 #include "DXTrace.h"
 #include "Mesh.h"
 #include "DirectXTex.h"
-#include <imgui.h>
-#include <imgui_impl_dx11.h>
-#include <imgui_impl_win32.h>
+#include <imgui/Include/imgui.h>
+#include <imgui/Include/imgui_impl_dx11.h>
+#include <imgui/Include/imgui_impl_win32.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -29,7 +29,7 @@
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "BulletCollision.lib")
+
 
 // 16バイトにアラインメントする。
 #define ALIGN16 _declspec(align(16))

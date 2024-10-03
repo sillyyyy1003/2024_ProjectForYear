@@ -2,6 +2,7 @@
 #include <d2d1.h>
 #include <map>
 #include <string>
+#include <variant>
 #include <wrl/client.h>
 using namespace Microsoft::WRL;
 
@@ -26,8 +27,14 @@ private:
 
 	ComPtr<ID2D1GradientStopCollection> mGradientStopLiner = nullptr;
 	ComPtr<ID2D1GradientStopCollection> mGradientStopRadian= nullptr;
+	using BrushVariant = std::variant<ID2D1SolidColorBrush*, ID2D1LinearGradientBrush*, ID2D1RadialGradientBrush*>;
+	using BrushList = std::map<BrushKind, ID2D1Brush*>;
 
 public:
+	BrushList mBrushList;
+
+public:
+
 	D2DBrush() {};
 	~D2DBrush();
 
@@ -40,14 +47,17 @@ public:
 
 	/// @brief SolidBrush Colorを設定する
 	///	@param color 設定する色
-	void SetBrushColor(D2D1::ColorF color);
+	void SetSolidBrushColor(D2D1::ColorF color);
 
-	/// @brief
-	///	@param
-	///	@param 
+	/// @brief Radian& Linear Brushの色を設定する
+	/// @param frontColor 前景色
+	/// @param backColor 后景色
+	/// @param brush 変えたいBrush
 	void SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor,BrushKind brush);
 
 	void UnInit();
+
+
 private:
 
 	void InitSolidBrush();

@@ -1,5 +1,4 @@
 ﻿#include "GampApp.h"
-#include <cassert>
 #include "Model.h"
 #include "d3dUtil.h"
 #include "GUI.h"
@@ -51,7 +50,7 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float deltaTime)
 {
-	mTimer.GameTick();
+	//mTimer.GameTick();
 
 	//Game update
 	SceneManager::Get()->_update(deltaTime);
@@ -76,13 +75,6 @@ void GameApp::DrawScene()
 	//Game描画
 	SceneManager::Get()->_draw();
 
-	//ui3d描画
-	//todo:ここで描画
-
-	//ui2d描画
-	std::string str = mTimer.GetSystemTime();
-	ui->DrawTextStr(str, SOLID);
-
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	mSwapChain->Present(0, 0);
 
@@ -96,15 +88,15 @@ void GameApp::UnInit()
 	//Scene Release
 	SceneManager::Get()->UnInit();
 
+	
 	D3DApp::UnInit();
 }
 
 bool GameApp::InitResource()
 {
+	//シーン管理の初期化を行う
 	SceneManager::Get()->Init();
 
-	ui = std::make_unique<UI2D>();
-	ui->InitUI2D();
 	return true;
 }
 

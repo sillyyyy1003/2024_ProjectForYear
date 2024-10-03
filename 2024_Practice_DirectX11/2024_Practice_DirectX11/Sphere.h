@@ -25,14 +25,14 @@ private:
 	/// @brief Mesh初期化
 	///	@param levels 垂直分割数
 	///	@param slices 水平分割数
-	const void CreateMesh(UINT levels, UINT slices);
+	void CreateMesh(UINT levels, UINT slices);
 
 	/// @brief マテリアル初期化 default Color:White
-	const void CreateMaterial();
+	void CreateMaterial();
 
 	/// @brief Texture初期化
 	/// @param fileName  File Root
-	const void CreateTexture(const char* fileName);
+	void CreateTexture(const char* fileName);
 
 	/*DefShader
 	 * 使用方向光

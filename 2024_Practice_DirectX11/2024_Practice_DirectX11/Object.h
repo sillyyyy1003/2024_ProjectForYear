@@ -5,14 +5,21 @@
 
 /// @brief 基本オブジェクト・当たり判定付き
 ///	For Test
-class Object
+class Object :public Component
 {
 protected:
 
-	POINT mOldPos = {};
+	POINT mOldPos = {};//Old MouseCursor Pos
 
 	int mState = 0;//オブジェクトの状態を司る
 	bool isStateChange = false;//状態変更判定
+
+	bool isEditable = false;	//編集できるか？
+	bool isToBeDestroyed = false;	//
+
+	DirectX::XMFLOAT4 mEffect = { 1,1,1,1 };//オブジェクトに色効果をつける
+
+	std::string mObjectName;
 
 public:
 	
@@ -56,16 +63,25 @@ public:
 	void SetScale(const DirectX::XMFLOAT3& scale) { mModel->SetScale(scale); };
 	void SetScale(const DirectX::XMFLOAT2& scale) {};
 	void SetScale(const float* scale) { mModel->mTransform.SetScale(scale); };
+	void SetScale(const float _scale) { mModel->mTransform.SetScale(_scale, _scale, _scale); };
 
-	void SetPosition(const DirectX::XMFLOAT3 position) { mModel->mTransform.SetPosition(position); };
+
+	void SetPosition(const DirectX::XMFLOAT3& position) { mModel->mTransform.SetPosition(position); };
 	void SetPosition(float x, float y, float z) { mModel->mTransform.SetPosition(x, y, z); };
 	void SetPosition(const float* position) { mModel->mTransform.SetPosition(position); };
+
+	void SetRotation(const DirectX::XMFLOAT3& rotation) { mModel->mTransform.SetRotationInDegree(rotation); };
+	void SetRotation(float* rotation) { mModel->mTransform.SetRotation(rotation); }
+	void SetRotation(float x, float y, float z) { mModel->mTransform.SetRotationInDegree(x, y, z); };
+
 
 	void SetMaterial(const Material& mat);
 
 	json SaveData();
 
 	void ResetPSShader();
+
+	bool GetDestroy() { return isToBeDestroyed;};
 
 protected:
 
@@ -77,7 +93,7 @@ protected:
 	/// @param dt Delta Time
 	virtual void GameUpdate(float dt);
 
-	/// @brief 
+	/// @brief Renderの後処理
 	/// @param dt Delta Time
 	virtual void LateUpdate(float dt);
 
@@ -88,6 +104,11 @@ protected:
 	/// @brief Selected状態処理
 	/// @param dt Delta Time
 	virtual void OnStateSelected(float dt);
+
+	/// @brief Default State状態処理
+	/// @param dt Delta Time
+	virtual void OnStateNone(float dt);
+
 
 };
 

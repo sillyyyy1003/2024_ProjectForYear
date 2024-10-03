@@ -39,6 +39,9 @@ public:
 	template<class T>
     static T* GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
 
+    /// @brief Timerを取得する
+	Timer& GetTimer() { return Get()->mTimer; };
+
     /// @brief 
     /// @return 
     bool Init() override;
@@ -54,6 +57,8 @@ public:
     void DrawScene() override;
 
     void UnInit() override;
+
+   
 
 private:
 

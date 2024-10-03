@@ -42,6 +42,12 @@ void GUI::ObjectSetting(T* obj, const char* windowName)
 		float Scale[3] = { obj->GetScale().x,obj->GetScale().y,obj->GetScale().z };
 		ImGui::InputFloat3("Scale", Scale);
 		obj->SetScale(Scale);
+
+
+		float Rotation[3] = { obj->GetRotation().x,obj->GetRotation().y,obj->GetRotation().z };
+		ImGui::InputFloat3("Rotation", Rotation);
+		obj->SetRotation(Rotation[0], Rotation[1], Rotation[2]);
+
 	}
 
 	ImGui::End();

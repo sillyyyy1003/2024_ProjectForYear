@@ -14,8 +14,6 @@ void Sphere::Init(const char* _fileName)
     CreateMesh(64, 64);
 	CreateMaterial();
     CreateTexture(_fileName);
-    LoadDefShader();
-  
 }
 
 void Sphere::Update(float dt)
@@ -37,7 +35,7 @@ void Sphere::Draw(int texSlot)
 	mMesh->Draw();
 }
 
-const void Sphere::CreateMesh(UINT levels, UINT slices)
+void Sphere::CreateMesh(UINT levels, UINT slices)
 {
     std::vector<Vertex::VtxPosNormalTex> vtx;
 
@@ -141,7 +139,7 @@ const void Sphere::CreateMesh(UINT levels, UINT slices)
     
 }
 
-const void Sphere::CreateMaterial()
+void Sphere::CreateMaterial()
 {
     mMaterial.material = {
         Color(1.0f, 1.0f, 1.0f, 1.0f),		// 環境光
@@ -151,7 +149,7 @@ const void Sphere::CreateMaterial()
     };
 }
 
-const void Sphere::CreateTexture(const char* fileName)
+void Sphere::CreateTexture(const char* fileName)
 {
     if (!fileName)
     {

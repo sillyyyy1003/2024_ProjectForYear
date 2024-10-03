@@ -19,11 +19,8 @@ Primitive::~Primitive()
 {
 }
 
-void Primitive::Update(float dt)
-{
-}
 
-void Primitive::SetScaleXZ(const DirectX::XMFLOAT2& scale)
+void Primitive::SetScaleXZ(const DirectX::XMFLOAT2& scale) noexcept
 {
 	mTransform.SetScale(scale.x, 1.0f, scale.y);
 }
@@ -67,7 +64,7 @@ void Primitive::SetDefShader()
 	}
 }
 
-void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices)
+void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept
 {
 	mVertices = vertices;
 }

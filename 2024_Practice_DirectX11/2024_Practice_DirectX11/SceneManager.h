@@ -25,7 +25,7 @@ public:
 	/// @brief データ保存・リソースリリース
 	void UnInit();
 
-	/// @brief 
+	/// @brief ここでゲーム全体の時間処理などを行う
 	/// @param dt deltaTime
 	void Update(float dt);
 

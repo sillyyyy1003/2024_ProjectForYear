@@ -12,6 +12,8 @@ private:
 	std::unordered_map<std::string, std::vector<CanvasUI*>> uiManager = {};
 	std::vector<std::string> mUiOrder = {};
 
+	bool isEditable = false;
+
 public:
 	/// @brief データのロードと初期化
 	void Init();

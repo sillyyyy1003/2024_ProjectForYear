@@ -100,6 +100,26 @@ void FirstPersonCamera::MoveUpward(float d)
     mTransform.Translate(mTransform.GetUpAxis(), d);
 }
 
+json FirstPersonCamera::SaveData()
+{
+    json data;
+    data["Position"]={mTransform.GetPosition().x,mTransform.GetPosition().y,mTransform.GetPosition().z};
+    data["Rotation"] = { mTransform.GetRotation().x,mTransform.GetRotation().y,mTransform.GetRotation().z };
+
+	return data;
+}
+
+void FirstPersonCamera::LoadSaveData(json data, const char* objName)
+{
+    Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	SetPosition(pos);
+
+    //Init Rotation
+    Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
+    mTransform.SetRotationInDegree(rotation);
+
+}
+
 void FirstPersonCamera::UpdateState()
 {
 

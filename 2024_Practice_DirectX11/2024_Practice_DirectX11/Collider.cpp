@@ -1,7 +1,4 @@
 #include "Collider.h"
-
-#include <BulletCollision/CollisionShapes/btCylinderShape.h>
-
 #include "Cube.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
@@ -23,29 +20,15 @@ BoxCollider::BoxCollider() :Collider(BOX_3D)
 	mCollider.Extents = { 0.5,0.5,0.5 };//Extent is half width
 	mCollider.Orientation = { 0,0,0,1 };
 
-	mBoxCollider = std::make_unique<btBoxShape>(btVector3(0.5f, 0.5f, 0.5f));
-
-	mTransform = std::make_unique<btTransform>();
-	mTransform->setIdentity();
-	mTransform->setOrigin(btVector3(0.f, 0.f, 0.f));
 
 }
 
 void BoxCollider::Transform(DirectX::XMFLOAT3 pos, DirectX::XMVECTOR rot, DirectX::XMFLOAT3 scale)
 {
-	//mCollider.Center = pos;
-	//XMStoreFloat4(&mCollider.Orientation, rot);
-	//Vector3 extents = mCollider.Extents;
-
-	//extents *= scale;
-	//mCollider.Extents = extents;
-	XMFLOAT4 quaternion;
-	XMStoreFloat4(&quaternion, rot);
-	mTransform->setOrigin(btVector3(pos.x, pos.y, pos.z));
-	mTransform->setRotation(btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
-	btVector3 newScale = btVector3(scale.x, scale.y, scale.z);
-	mBoxCollider->setLocalScaling(newScale);
-
+	mCollider.Center = pos;
+	XMStoreFloat4(&mCollider.Orientation, rot);
+	Vector3 extents = scale / 2;
+	mCollider.Extents = extents;
 }
 
 void BoxCollider::UpdateSize(DirectX::XMFLOAT3 size)
@@ -59,24 +42,18 @@ DirectX::XMFLOAT4 BoxCollider::GetOrientation()
 	return Collider::GetOrientation();
 }
 
-DirectX::XMFLOAT3 BoxCollider::GetCenter()
+const DirectX::XMFLOAT3& BoxCollider::GetCenter()
 {
+	//btVector3 center = mTransform.getOrigin();
+	//Vector3 pos = Vector3(center.x(), center.y(), center.z());
+	//return pos;
+	//return{ 0,0,0 };
+	return mCollider.Center;
 }
 
-void BoxCollider::RayTest(DirectX::XMVECTOR start, DirectX::XMVECTOR des,
-	btCollisionWorld::RayResultCallback& resultCallback)
+const DirectX::XMFLOAT3& BoxCollider::GetScale()
 {
-	Vector3 startPos,desPos;
-	XMStoreFloat3(&startPos, start);
-	XMStoreFloat3(&desPos, des);
-	desPos *= 100;
-	btVector3 s = btVector3(startPos.x, startPos.y, startPos.z);
-	btVector3 d = btVector3(desPos.x, desPos.y, desPos.z);
-
-	btCollisionWorld::ClosestRayResultCallback rayCallback(s, d);
-
-
-
+	return mCollider.Extents;
 }
 
 bool BoxCollider::Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance)
@@ -84,7 +61,8 @@ bool BoxCollider::Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, floa
 	return mCollider.Intersects(start, des, distance);
 }
 
-SphereCollider::SphereCollider():Collider(SPHERE_3D)
+
+SphereCollider::SphereCollider() :Collider(SPHERE_3D)
 {
 	mCollider.Center = { 0,0,0 };
 	mCollider.Radius = 0.5f;
@@ -93,25 +71,18 @@ SphereCollider::SphereCollider():Collider(SPHERE_3D)
 void SphereCollider::Transform(DirectX::XMFLOAT3 pos, DirectX::XMVECTOR rot, DirectX::XMFLOAT3 scale)
 {
 	mCollider.Center = pos;
-	mCollider.Radius *= scale.x;
+	mCollider.Radius = scale.x / 2.0f;
 }
 
 
 bool SphereCollider::Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance)
 {
 	return mCollider.Intersects(start, des, distance);
-	
+
 }
 
 void SphereCollider::UpdateSize(float radius)
 {
 	mCollider.Radius = radius;
 }
-
-CylinderCollider::CylinderCollider() :Collider(CYLINDER_3D)
-{
-	mCollider = std::make_unique<btCylinderShape>(btVector3(0.5f, 0.5f, 0.5f));
-}
-
-
 

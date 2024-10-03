@@ -122,7 +122,7 @@ int D3DApp::Run()
         }
     }
 
-    //UnInit();
+    UnInit();
     fclose(fp);
     return (int)msg.wParam;
 }

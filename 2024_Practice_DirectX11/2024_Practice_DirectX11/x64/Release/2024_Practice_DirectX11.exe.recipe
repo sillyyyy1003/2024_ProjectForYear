@@ -7,7 +7,10 @@
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Box.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Object.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_ButtonUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Geometry.cso</FullPath>
@@ -16,10 +19,13 @@
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_UI.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_DefaultUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_UliObj.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\PS_Water.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Box.cso</FullPath>
@@ -31,10 +37,13 @@
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_UI.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_DefaultUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_UliObj.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Release\VS_Water.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

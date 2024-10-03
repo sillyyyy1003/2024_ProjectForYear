@@ -23,11 +23,16 @@ public:
 
 	void Draw() override;
 
-	/// @brief このボタンが押されたかどうか？
+	/// @brief Press 
 	/// @return 
 	bool isPressed();
 
-private:
+	/// @brief Trigger
+	/// @return 
+	bool isTrigger();
+
+protected:
+
 	/// @brief 
 	void WriteShader() override;
 
@@ -40,6 +45,10 @@ private:
 	/// @brief 入力に応じる処理
 	/// @param dt 
 	void GameUpdate(float dt);
+
+	/// @brief Render処理
+	/// @param dt 
+	void LateUpdate(float dt);
 
 	/// @brief ボタン上下作用の位置を取得
 	/// @return 

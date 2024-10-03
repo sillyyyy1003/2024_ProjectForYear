@@ -1,11 +1,6 @@
 #pragma once
 #include "D3DUtil.h"
 #include <DirectXCollision.h>
-#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
-#include <BulletCollision/CollisionShapes/btBoxShape.h>
-#include <BulletCollision/CollisionShapes/btCylinderShape.h>
-
-
 #include "SceneBase.h"
 
 
@@ -39,24 +34,24 @@ public:
 	virtual void UpdateSize(DirectX::XMFLOAT3 size){};
 	virtual void UpdateSize(float size) {};
 
-	virtual DirectX::XMFLOAT4 GetOrientation() { return { 0,0,0,0 }; };
-	virtual DirectX::XMFLOAT3 GetCenter() = 0;
-	virtual float GetRadius() { return 0; };
+	virtual DirectX::XMFLOAT4 GetOrientation() { return { 0,0,0,1 }; };
+	virtual const DirectX::XMFLOAT3& GetCenter() = 0;
+	virtual const float GetRadius() { return 0; };
+	virtual const DirectX::XMFLOAT3& GetScale() { return { 0,0,0 }; };
 
 	virtual bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) = 0;
 
-	virtual void RayTest(DirectX::XMVECTOR start, DirectX::XMVECTOR des,btCollisionWorld::RayResultCallback& resultCallback){};
 };
 
 /// @brief ボックスコライダー
-class BoxCollider:public Collider
+class BoxCollider :public Collider
 {
 private:
 
 	DirectX::BoundingOrientedBox mCollider;
-	std::unique_ptr<btBoxShape> mBoxCollider;	//あたり判定の形状を管理する
-	std::unique_ptr<btTransform> mTransform;	//移動、回転、拡大縮小などを管理する
-
+	//std::unique_ptr<btBoxShape> mShape;	//あたり判定の形状を管理する
+	//std::unique_ptr<btCollisionObject> mBoxCollider;
+	//btTransform mTransform;	//移動、回転、拡大縮小などを管理する
 
 public:
 
@@ -81,11 +76,10 @@ public:
 	bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) override;
 
 	DirectX::XMFLOAT4 GetOrientation() override;
-	DirectX::XMFLOAT3 GetCenter() override;
+	const DirectX::XMFLOAT3& GetCenter() override;
+	const DirectX::XMFLOAT3& GetScale() override;
 
-	void RayTest(DirectX::XMVECTOR start, DirectX::XMVECTOR des,btCollisionWorld::RayResultCallback& resultCallback) override;
 };
-
 
 class SphereCollider :public Collider
 {
@@ -104,7 +98,6 @@ public:
 	///	@param scale 拡大縮小の比率
 	void Transform(DirectX::XMFLOAT3 pos, DirectX::XMVECTOR rot, DirectX::XMFLOAT3 scale) override;
 
-
 	/// @brief レイとの交差してるかどうか
 	/// @param start 光線の原点
 	/// @param des 光線の方向
@@ -114,26 +107,11 @@ public:
 
 	/// @brief 中心点を取得
 	/// @return コライダーの中心点
-	DirectX::XMFLOAT3 GetCenter() override { return mCollider.Center; };
+	const DirectX::XMFLOAT3& GetCenter() override { return mCollider.Center; };
 
 	/// @brief 半径を取得
 	/// @return 半径
-	float GetRadius() override { return mCollider.Radius; };
+	const float GetRadius() override { return mCollider.Radius; };
 
 	void UpdateSize(float radius)override;
-
-};
-
-class CylinderCollider:public Collider
-{
-
-protected:
-
-	std::unique_ptr<btCylinderShape> mCollider;
-
-public:
-	CylinderCollider();
-	~CylinderCollider() override = default;
-
-
 };

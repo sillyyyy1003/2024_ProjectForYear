@@ -10,7 +10,7 @@ using json = nlohmann::json;
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-enum TitleScene
+enum SceneList
 {
 	SCENE_NONE = 0 ,
 	SCENE_MAIN,
@@ -48,30 +48,39 @@ void SceneTitle::Init()
 
 void SceneTitle::UnInit()
 {
-	// Create scene Data
-	json sceneData;
-
-	/*sceneData["title_bg"] = SaveData(GetObj<CanvasUI>("title_bg"));
-	sceneData["title_start"] = SaveData(GetObj<UI_Button>("title_start"));
-	sceneData["title_option"] = SaveData(GetObj<UI_Button>("title_option"));
-	sceneData["title_exit"] = SaveData(GetObj<UI_Button>("title_exit"));*/
-
-	for(auto it =uiManager.begin();it!=uiManager.end();++it)
+	//
+	if(isEditable)
 	{
-		for(auto& element:it->second)
+		// Create scene Data
+		json sceneData;
+
+		for (auto it = uiManager.begin(); it != uiManager.end(); ++it)
 		{
-			sceneData[element->GetObjectName().c_str()] = element->SaveData(element->GetFilePath().c_str());
+			for (auto& element : it->second)
+			{
+				sceneData[element->GetObjectName().c_str()] = element->SaveData(element->GetFilePath().c_str());
+			}
+
 		}
-		
+
+		SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
 	}
 
-
-	SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
-
+	//
 }
 
 void SceneTitle::Update(float dt)
 {
+#ifdef _DEBUG
+
+	if(ImGui::Begin("EditCheck"))
+	{
+		ImGui::Checkbox("isEditable", &isEditable);
+	}
+
+	ImGui::End();
+#endif
+
 	//ボタンの状態変更
 	for (const std::string& category : mUiOrder)
 	{
@@ -86,11 +95,11 @@ void SceneTitle::Update(float dt)
 
 	//シーンの切り替え//todo can be automatic
 	UI_Button* startButton = GetObj<UI_Button>("title_start");
-	if(startButton->isPressed())
+	if(startButton->isTrigger())
 		mSceneIndex = SCENE_MAIN;
 
 	UI_Button* exitButton = GetObj<UI_Button>("title_exit");
-	if(exitButton->isPressed())
+	if(exitButton->isTrigger())
 		mSceneIndex = EXIT;
 
 	if (mSceneIndex != SCENE_NONE)

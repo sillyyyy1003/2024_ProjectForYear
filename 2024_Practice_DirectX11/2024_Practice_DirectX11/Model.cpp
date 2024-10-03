@@ -10,7 +10,7 @@
 #pragma comment(lib, "assimp-vc143-mt.lib")
 #endif
 
-Model::Model()
+Model::Model() :Primitive(MULTI)
 {
 	importer = std::make_unique<Assimp::Importer>();
 }
@@ -19,15 +19,11 @@ Model::~Model()
 {
 }
 
-void Model::SetVertexShader(VertexShader* vs)
+void Model::Init(const char* filePath)
 {
-	mVS = vs;
+	Load(filePath);
 }
 
-void Model::SetPixelShader(PixelShader* ps)
-{
-	mPS = ps;
-}
 
 bool Model::Load(const char* file, bool flip, bool simpleMode)
 {
@@ -50,7 +46,7 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 	}
 
 	// assimp‚Å“Ç‚Ýž‚Ý
-	mScene=importer.get()->ReadFile(file, flag);
+	mScene = importer.get()->ReadFile(file, flag);
 	if (!mScene) {
 		Error(importer->GetErrorString());
 		DebugLog::Log("{} Assimpƒ‚ƒfƒ‹ƒ[ƒhŽ¸”s", file);
@@ -195,6 +191,11 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 	return true;
 }
 
+void Model::Update(float dt)
+{
+	Primitive::Update(dt);
+}
+
 void Model::Draw(int texSlot)
 {
 	auto it = mMeshes.begin();
@@ -214,4 +215,8 @@ void Model::Draw(int texSlot)
 		it->mesh->Draw();
 		++it;
 	}
+}
+
+void Model::WriteDefShader()
+{
 }

@@ -76,8 +76,8 @@
     <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;C:\Bullet\Lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Bullet\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;C:\directxtk\lib\x64\Release;$(ProjectDir)imgui\Lib\Release;C:\Bullet\Lib\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;$(ProjectDir)\imgui\Lib\Release;C:\Bullet\Lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);C:\directxtk\include;C:\DirectXTex;C:\Bullet\include;C:\Assimp\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,7 +149,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BtColliderManager.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -170,12 +169,13 @@
     <ClCompile Include="GampApp.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="Ingredients.cpp" />
+    <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="LightBase.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Plane3D.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="RenderState.cpp" />
@@ -196,7 +196,6 @@
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BtColliderManager.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Cube.h" />
@@ -217,12 +216,13 @@
     <ClInclude Include="GampApp.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
-    <ClInclude Include="Ingredients.h" />
+    <ClInclude Include="Ingredient.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Plane3D.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="RenderState.h" />

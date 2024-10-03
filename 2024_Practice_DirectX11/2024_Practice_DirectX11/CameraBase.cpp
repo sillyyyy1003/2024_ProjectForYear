@@ -7,12 +7,12 @@ CameraBase::CameraBase():mFovY(DirectX::XM_PI/3), mAspect(GameApp::Get()->Aspect
 {
 }
 
-DirectX::XMMATRIX CameraBase::GetViewXM() const
+const DirectX::XMMATRIX CameraBase::GetViewXM() noexcept
 {
 	return mTransform.GetWorldToLocalMatrixXM();
 }
 
-DirectX::XMMATRIX CameraBase::GetProjXM(bool isReversed) const
+const DirectX::XMMATRIX CameraBase::GetProjXM(bool isReversed) noexcept
 {
 	if (isReversed)
 	{
@@ -24,7 +24,7 @@ DirectX::XMMATRIX CameraBase::GetProjXM(bool isReversed) const
 	}
 }
 
-DirectX::XMFLOAT4X4 CameraBase::GetViewXMF(bool isTranspose) const
+const DirectX::XMFLOAT4X4 CameraBase::GetViewXMF(bool isTranspose) noexcept
 {
 	DirectX::XMMATRIX mat = GetViewXM();
 	if(isTranspose)
@@ -34,7 +34,7 @@ DirectX::XMFLOAT4X4 CameraBase::GetViewXMF(bool isTranspose) const
 	return fMat;
 }
 
-DirectX::XMFLOAT4X4 CameraBase::GetProjXMF(bool isTranspose) const
+const DirectX::XMFLOAT4X4 CameraBase::GetProjXMF(bool isTranspose) noexcept
 {
 	DirectX::XMMATRIX mat = GetProjXM();
 	if (isTranspose)
@@ -45,13 +45,13 @@ DirectX::XMFLOAT4X4 CameraBase::GetProjXMF(bool isTranspose) const
 }
 
 
-void CameraBase::ResetCamera()
+void CameraBase::ResetCamera() noexcept
 {
-	mTransform.SetPosition(0, 0, -5.0f);
-	mTransform.SetRotation(0, 0, 0);
+	mTransform.SetPosition(defaultPos);
+	mTransform.SetRotationInDegree(0, 0, 0);
 }
 
-DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos)
+DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos) noexcept
 {
 	DirectX::XMFLOAT3 worldPos={};
 	ScreenToClient(gD3D->MainWnd(), &mousePos); // 转换为窗口内坐标
@@ -71,7 +71,7 @@ DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos)
 
 }
 
-DirectX::XMVECTOR CameraBase::ScreenPointToRay(POINT mousePos)
+DirectX::XMVECTOR CameraBase::ScreenPointToRay(POINT mousePos) noexcept
 {
 	Vector3 cameraPos = mTransform.GetPosition();
 	Vector3 mouseWorldPos = MousePosToWorld(mousePos);

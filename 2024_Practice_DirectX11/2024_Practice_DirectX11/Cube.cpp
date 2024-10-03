@@ -17,7 +17,6 @@ void Cube::Init(const char* fileName)
 	CreateMeshes();
 	CreateMaterial();
 	CreateTexture(fileName);
-	LoadDefShader();
 
 }
 

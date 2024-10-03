@@ -181,6 +181,11 @@ void Transform::SetRotationInDegree(float x, float y, float z)
 	DirectX::XMStoreFloat4(&mRotation, quat);
 }
 
+void Transform::SetRotation(float* rot)
+{
+	SetRotation(rot[0], rot[1], rot[2]);
+}
+
 
 void Transform::SetPosition(const DirectX::XMFLOAT3& position)
 {

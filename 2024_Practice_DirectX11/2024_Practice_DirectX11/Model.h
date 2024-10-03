@@ -1,20 +1,20 @@
 #pragma once
 #include "D3DUtil.h"
-#include "Transform.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include "Primitive.h"
 #include "SceneBase.h"
 #include "assimp/Importer.hpp"
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/matrix4x4.h"
 
-class Model :public Component
+class Model :public Primitive
 {
 public:
 
-	Transform mTransform = {};
+	//Transform mTransform = {};
 
 private:
 
@@ -48,15 +48,13 @@ public:
 	Model();
 	~Model();
 
-	void SetVertexShader(VertexShader* vs);
-	void SetPixelShader(PixelShader* ps);
-
+	void Init(const char* filePath = nullptr);
 	bool Load(const char* file, bool flip = false, bool simpleMode = false);
+
+	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-
-	/// @brief Default Shader‚ðŽg‚¤‚©‚Ç‚¤‚©H
-	//void SetDefShader(bool isDefShader) { this->isDefShader = isDefShader; };
+	void WriteDefShader();
 
 private:
 
@@ -65,11 +63,8 @@ private:
 
 private:
 
-	Meshes mMeshes={};
-	Materials mMaterials={};
-	VertexShader* mVS = nullptr;
-	PixelShader* mPS = nullptr;
-
+	Meshes mMeshes = {};
+	Materials mMaterials = {};
 
 };
 

@@ -17,14 +17,18 @@ enum SceneName
 
 void SceneManager::Init()
 {
+	//LoadSaveData
+	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_manager.json");
+
 	//Set SceneMap
 	mSceneMap["Title"] = SCENE_TITLE;
 	mSceneMap["Lab"] = SCENE_LAB;
 
 	//ƒJƒƒ‰ì¬
 	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
-	camera->SetPosition(0.0f, 5.0f, -10.0f);
-	camera->LookAt({ 0.0f, 3.0f, -10.0f }, { 0,0,0 }, { 0,1,0 });
+	camera->LoadSaveData(sceneData, "Camera");
+	//camera->SetPosition(0.0f, 7.0f, -7.0f);
+	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
 
 	//Šî’êƒ‰ƒCƒgì¬ Ambient Light
 	DirLight* light = CreateObj<DirLight>("Light");
@@ -41,14 +45,12 @@ void SceneManager::Init()
 
 void SceneManager::UnInit()
 {
+	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
+	json sceneData;
+	sceneData["Camera"] = camera->SaveData();
+
 	//Save data here
-	
-
-
-
-
-
-
+	SaveSceneFile("Assets/Data/SaveDat/scene_manager.json", sceneData);
 }
 
 void SceneManager::Update(float dt)
@@ -62,6 +64,7 @@ void SceneManager::Update(float dt)
 
 void SceneManager::Draw()
 {
+
 }
 
 void SceneManager::SetScene(std::string sceneName)

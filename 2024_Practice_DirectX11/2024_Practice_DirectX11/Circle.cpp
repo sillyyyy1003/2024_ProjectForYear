@@ -25,17 +25,17 @@ void Circle::Draw(int texSlot)
 	mMesh->Draw();
 }
 
-void Circle::SetTexUV(DirectX::XMFLOAT2 _texUV)
+void Circle::SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept
 {
 	Primitive::SetTexUV(_texUV);
 }
 
-void Circle::SetScale(const DirectX::XMFLOAT2& scale)
+void Circle::SetScale(const DirectX::XMFLOAT2& scale)  noexcept
 {
 	SetScaleXZ(scale);
 }
 
-void Circle::SetScale(const float* scale)
+void Circle::SetScale(const float* scale)  noexcept
 {
 	Primitive::SetScale(scale);
 }
@@ -45,10 +45,9 @@ void Circle::Init(const char* _fileName)
 	CreateMesh(64);
 	CreateMaterial();
 	CreateTexture(_fileName);
-	LoadDefShader();
 }
 
-const void Circle::CreateMesh(UINT slices)
+void Circle::CreateMesh(UINT slices)
 {
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 	std::vector<DWORD> idx;
@@ -104,7 +103,7 @@ const void Circle::CreateMesh(UINT slices)
 
 }
 
-const void Circle::CreateMesh(UINT levels, UINT slices)
+void Circle::CreateMesh(UINT levels, UINT slices)
 {
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 
@@ -181,7 +180,7 @@ const void Circle::CreateMesh(UINT levels, UINT slices)
 	SetVertices(vtx);
 }
 
-const void Circle::CreateMaterial()
+void Circle::CreateMaterial()
 {
 	mMaterial.material =
 	{
@@ -193,7 +192,7 @@ const void Circle::CreateMaterial()
 
 }
 
-const void Circle::CreateTexture(const char* _fileName)
+void Circle::CreateTexture(const char* _fileName)
 {
 	if (!_fileName)
 	{

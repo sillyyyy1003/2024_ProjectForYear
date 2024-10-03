@@ -75,7 +75,7 @@ void SceneBase::SaveSceneFile(const char* fileName,json sceneFile)
 	}
 	else
 	{
-		DebugLog::Log("Failed to open scene_title.json for writing.");
+		DebugLog::Log("Failed to open jsonFile for writing.");
 	}
 }
 

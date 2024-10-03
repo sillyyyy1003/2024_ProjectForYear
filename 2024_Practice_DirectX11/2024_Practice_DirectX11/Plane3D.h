@@ -30,8 +30,8 @@ public:
 	void Draw(int texSlot = 0);
 
 
-	void SetTexUV(DirectX::XMFLOAT2 _texUV) override;
-	void SetScale(const DirectX::XMFLOAT2& scale) override;
+	void SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept override;
+	void SetScale(const DirectX::XMFLOAT2& scale) noexcept  override;
 
 
 	void Init(const char* _fileName);

@@ -225,7 +225,7 @@
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Ingredients.cpp">
+    <ClCompile Include="Ingredient.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
@@ -258,7 +258,7 @@
     <ClCompile Include="PointLight.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
-    <ClCompile Include="BtColliderManager.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -365,7 +365,7 @@
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Ingredients.h">
+    <ClInclude Include="Ingredient.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
@@ -398,7 +398,7 @@
     <ClInclude Include="PointLight.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="BtColliderManager.h">
+    <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

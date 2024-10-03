@@ -1,6 +1,17 @@
 ﻿#pragma once
 #include <string>
+#include <unordered_map>
+
 #include "Windows.h"
+
+enum Season
+{
+	SPRING,
+    SUMMER,
+    AUTUMN,
+    WINTER,
+};
+
 
 class Timer
 {
@@ -21,15 +32,22 @@ private:
 	//  以下の部分はゲームループ内に使われる変数
     //===============================================
     // Game time related variables
-    int gameMinutesPerSecond = 10;  // 1 second in real-time equals 10 minutes in-game
+    //todo:ここの部分をSceneManagerに移行
+    int gameMinutesPerSecond = 60;  // 1 second in real-time equals 10 minutes in-game
     int gameHoursPerDay = 24;
     int gameMinutesPerHour = 60;
 
-    int gameDay = 1;
-    int gameHour = 0;
-    int gameMinute = 0;
-    double accumulatedRealTime = 0.0;  // Accumulated real-time since last update
+    int mGameDay = 1;
+    int mGameHour = 0;
+    int mGameMinute = 0;
+    double mAccumulatedRealTime = 0.0;   // Accumulated real-time since last update //todo:RESET FUNCTION
+    double mGameHourPassed = 0.0f;    // Accumulated game minute
 
+    int mCurrentSeasonDayCounter = 1; 
+    Season mCurrSeason = SPRING;  //今の季節
+
+    using SeasonSet = std::unordered_map<Season, int>;//各季節の日数設定用
+    SeasonSet mSeasonSet;
 public:
 
     bool isPaused = false;  //ゲーム内Pause
@@ -47,19 +65,19 @@ public:
 
     /// @brief Delta Time
     /// @return 
-    float DeltaTime()const { return (float)mDeltaTime; };
+    float DeltaTime()const { return static_cast<float>((mDeltaTime)); };
 
     /// @brief リセット
-    void Reset();               // 计时开始前或者需要重置时调用
+    void Reset();              
 
     /// @brief 再開
-    void Start();               // 在开始计时或取消暂停的时候调用
+    void Start();             
 
     /// @brief 一旦停止
-    void Stop();                // 在需要暂停的时候调用
+    void Stop();            
 
     /// @brief フレーム開始時使う
-    void Tick();                // 在每一帧开始的时候调用
+    void Tick();               
 
     /// @brief タイマーが停止しているかどうか
     /// @return 
@@ -88,6 +106,21 @@ public:
 
     /// @brief スキップ
     void Skip(bool isSkipped) { isSkippedToNextDay = isSkipped; };
+
+    /// @brief ゲーム内の季節と日数の初期化
+    void InitSeasonSetting();
+
+    /// @brief 季節の日数を設定する
+    /// @param _season 季節
+    /// @param _days 日数
+    void SetDayValueInSeason(Season _season, int _days) noexcept;
+
+    /// @brief 季節の更新状態
+    void UpdateSeason();
+
+    Season GetCurrentSeason() noexcept { return mCurrSeason; };
+
+	double GetGameHourPassed() const noexcept { return mGameHourPassed; };
 };
 
 

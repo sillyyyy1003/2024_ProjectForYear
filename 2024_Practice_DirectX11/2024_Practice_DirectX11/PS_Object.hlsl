@@ -26,11 +26,18 @@ cbuffer Light: register(b2){
     float4 lightPos;
 }
 
-cbuffer PointLight:register(b3){
-	PointLight pointLight[MAX_NUM_POINT_LIGHT];
-	int actualLightNum;
-	float dummy[3];
+//オブジェクトの状態を示す
+cbuffer StateFactor : register(b3)
+{
+	float4 effect;
 }
+
+//cbuffer PointLight:register(b3){
+//	PointLight pointLight[MAX_NUM_POINT_LIGHT];
+//	int actualLightNum;
+//	float dummy[3];
+//}
+
 
 Texture2D myTex : register(t0);
 SamplerState mySampler : register(s0);
@@ -86,6 +93,8 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 
 	float4 litColor = color * (ambient + diffuse) + spec ;
 	litColor = saturate(litColor);
+
+	litColor *= effect;
 
     //アルファ値をマテリアルに計算
 	litColor.a = material.diffuse.a;

@@ -16,7 +16,7 @@ enum PrimitiveKind
 	CYLINDER_ONECAP,
 	PLANE,
 	CIRCLE,
-	
+	MULTI,
 };
 
 /// <summary>
@@ -32,8 +32,6 @@ protected:
 		Material material = {};
 		std::unique_ptr<Texture> tex = nullptr;
 	};
-
-
 
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
@@ -64,41 +62,42 @@ public:
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
 	virtual void Init(const char* filePath, int slices) {};
 
-	virtual void Update(float dt);
+	virtual void Update(float dt){};
 	virtual void Draw(int texSlot = 0) = 0;
 
-	virtual void SetScale(const DirectX::XMFLOAT3& scale) { mTransform.SetScale(scale); };
-	virtual void SetScale(const DirectX::XMFLOAT2& scale) {};
-	virtual void SetScale(float x, float y, float z) { mTransform.SetScale(x, y, z); };
-	virtual void SetScale(const float* scale) { mTransform.SetScale(scale); };
-	virtual void SetScaleXZ(const DirectX::XMFLOAT2& scale);
+	virtual void SetScale(const DirectX::XMFLOAT3& scale) noexcept { mTransform.SetScale(scale); };
+	virtual void SetScale(const DirectX::XMFLOAT2& scale) noexcept {};
+	virtual void SetScale(float x, float y, float z) noexcept { mTransform.SetScale(x, y, z); };
+	virtual void SetScale(const float* scale) noexcept { mTransform.SetScale(scale); };
+	virtual void SetScaleXZ(const DirectX::XMFLOAT2& scale) noexcept;
 
-	virtual void SetPosition(const DirectX::XMFLOAT3 position) { mTransform.SetPosition(position); };
-	virtual void SetPosition(float x, float y, float z) { mTransform.SetPosition(x, y, z); };
-	virtual void SetPosition(const float* pos) { mTransform.SetPosition(pos); };
+	virtual void SetPosition(const DirectX::XMFLOAT3& position) noexcept { mTransform.SetPosition(position); };
+	virtual void SetPosition(float x, float y, float z) noexcept { mTransform.SetPosition(x, y, z); };
+	virtual void SetPosition(const float* pos) noexcept { mTransform.SetPosition(pos); };
 
-	virtual DirectX::XMFLOAT3 GetPosition() const { return mTransform.GetPosition(); };
-	virtual DirectX::XMFLOAT4 GetQuaternion() const { return mTransform.GetQuaternion(); };
-	virtual DirectX::XMFLOAT3 GetRotation() const { return mTransform.GetRotation(); };
-	virtual DirectX::XMFLOAT3 GetScale() const { return mTransform.GetScale(); };
+	virtual const DirectX::XMFLOAT3 GetPosition() noexcept { return mTransform.GetPosition(); };
+	virtual const DirectX::XMFLOAT4 GetQuaternion()noexcept { return mTransform.GetQuaternion(); };
+	virtual const DirectX::XMFLOAT3 GetRotation()noexcept { return mTransform.GetRotation(); };
+	virtual const DirectX::XMFLOAT3 GetScale()noexcept { return mTransform.GetScale(); };
 
-	virtual Material& GetMaterial() { return mMaterial.material; };
-	virtual void SetMaterial(Material _material) { mMaterial.material = _material; };
+	virtual Material& GetMaterial() noexcept { return mMaterial.material; };
+
+	virtual void SetMaterial(Material _material) noexcept { mMaterial.material = _material; };
 
 	/// @brief テクスチャのファイルパスを取得
-	std::string GetFilePath() { return mFilePath; };
-	void SetFilePath(const char* filePath) { mFilePath = filePath; };
+	const std::string GetFilePath() noexcept { return mFilePath; };
+	void SetFilePath(const char* filePath) noexcept { mFilePath = filePath; };
 
 	/// @brief For Sampler Wrap
-	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV) {};
+	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV)noexcept {};
 
-	virtual	void SetDiffuse(DirectX::XMFLOAT4 _diffuse) { mMaterial.material.diffuse = _diffuse; };
+	virtual	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse) noexcept { mMaterial.material.diffuse = _diffuse; };
 
 	/// @brief Default Shaderを使うかどうか？
-	virtual void SetIsDefShader(bool isDefShader) { this->isDefShader = isDefShader; };
+	virtual void SetIsDefShader(bool isDefShader)noexcept { this->isDefShader = isDefShader; };
 
-	virtual void SetPixelShader(PixelShader* ps) { mPS = ps; };
-	virtual void SetVertexShader(VertexShader* vs) { mVS = vs; };
+	virtual void SetPixelShader(PixelShader* ps) noexcept { mPS = ps; };
+	virtual void SetVertexShader(VertexShader* vs) noexcept { mVS = vs; };
 
 	PixelShader* GetDefPS() const { return mDefPS.get(); };
 	VertexShader* GetDefVS() const { return mDefVS.get(); };
@@ -112,7 +111,8 @@ public:
 
 	virtual void SetDefShader();
 
-	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices);
+	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept;
+
 
 private:
 	/// @brief デバッグ用　オブジェクト回す

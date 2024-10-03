@@ -11,9 +11,15 @@ void D2DBrush::InitBrush()
 	InitSolidBrush();
 	InitLinearBrush();
 	InitRadianBrush();
+
+	mBrushList.emplace(SOLID, GetSolidBrush());
+	mBrushList.emplace(LINEAR, GetLGBrush());
+	mBrushList.emplace(RADIAN, GetRGBrush());
+
+
 }
 
-void D2DBrush::SetBrushColor(D2D1::ColorF color)
+void D2DBrush::SetSolidBrushColor(D2D1::ColorF color)
 {
 	mSolidBrush->SetColor(color);
 }

@@ -14,7 +14,6 @@ void Capsule::Init(const char* filePath)
 	CreateMesh(64, 64,1);
 	CreateMaterial();
 	CreateTexture(filePath);
-	LoadDefShader();
 }
 
 void Capsule::Update(float dt)

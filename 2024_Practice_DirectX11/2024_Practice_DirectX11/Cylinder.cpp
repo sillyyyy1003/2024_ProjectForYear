@@ -15,7 +15,6 @@ void Cylinder::Init(const char* filePath)
 	CreateMaterial();
 	CreateTexture(filePath);
 
-	LoadDefShader();
 }
 
 void Cylinder::Update(float dt)

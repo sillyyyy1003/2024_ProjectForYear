@@ -68,7 +68,8 @@ public:
     void LockCameraPos(bool isLockPos) { this->isLockPos = isLockPos; };
     bool GetPosLock() { return isLockPos; };
 
-
+    json SaveData();
+    void LoadSaveData(json data, const char* objName);
 private:
     void UpdateState();
     void UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt);

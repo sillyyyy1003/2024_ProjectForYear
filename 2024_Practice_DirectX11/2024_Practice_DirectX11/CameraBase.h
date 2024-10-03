@@ -12,7 +12,7 @@ namespace CameraSet
 		CAM_THIRD_FREE,
 		CAM_THIRD_TRACK,
 	};
-}
+};
 
 class CameraBase :public Component
 {
@@ -24,6 +24,10 @@ protected:
 	float mAspect = 0.0f;
 	float mFovY = 0.0f;//Default:90°
 
+	const DirectX::XMFLOAT3 defaultPos={0,10.f,-10.f};
+	const DirectX::XMFLOAT3 defaultTarget = { 0,0,0 };
+	const DirectX::XMFLOAT3 defaultUpAxis = { 0,1,0 };
+
 public:
 
 	CameraSet::CameraMode mMode = CameraSet::CAM_NONE;
@@ -34,44 +38,44 @@ public:
 	virtual void Update(float dt) = 0;
 
 	/// @brief 位置取得
-	DirectX::XMFLOAT3 GetPos() const { return mTransform.GetPosition(); };
+	DirectX::XMFLOAT3 GetPos() const noexcept { return mTransform.GetPosition(); };
 	/// @brief 位置設定
-	void SetPos(const DirectX::XMFLOAT3& pos) { mTransform.SetPosition(pos); };
+	void SetPos(const DirectX::XMFLOAT3& pos) noexcept { mTransform.SetPosition(pos); };
 
 	/// @brief 上方向取得
-	DirectX::XMFLOAT3 GetUpDir() const { return mTransform.GetUpAxis(); };
+	const DirectX::XMFLOAT3 GetUpDir()noexcept { return mTransform.GetUpAxis(); };
 
-	DirectX::XMMATRIX GetViewXM() const;
-	DirectX::XMMATRIX GetProjXM(bool isReversed = false) const;
+	const DirectX::XMMATRIX GetViewXM()noexcept;
+	const DirectX::XMMATRIX GetProjXM(bool isReversed = false)noexcept;
 
 	/// @brief ビュー行列を取得
 	/// @param isTranspose 行列の行と列を交換するか
 	/// @return 
-	DirectX::XMFLOAT4X4 GetViewXMF(bool isTranspose = true) const;
+	const  DirectX::XMFLOAT4X4 GetViewXMF(bool isTranspose = true)noexcept;
 
 	/// @brief 投影行列を取得
 	/// @param isTranspose 行列の行と列を交換するか
 	/// @return 
-	DirectX::XMFLOAT4X4 GetProjXMF(bool isTranspose = true) const;
+	const DirectX::XMFLOAT4X4 GetProjXMF(bool isTranspose = true) noexcept;
 
 	/// @brief カメラのパターンを設定
 	/// @param _mode 
-	void SetCameraMode(CameraSet::CameraMode _mode) { mMode = _mode; }
+	void SetCameraMode(CameraSet::CameraMode _mode) noexcept { mMode = _mode; }
 
-	void ResetCamera();
+	/// @brief カメラを指定位置にリセット
+	void ResetCamera() noexcept;
 
 
-
-	//todo:D3D有专用函数
 	/// @brief マウス座標をワールド座標に変換する
 	/// @param mousePos マウス座標
 	/// @return ワールド座標
-	//DirectX::XMFLOAT3 MousePosToWorld(POINT mousePos);
-	DirectX::XMVECTOR MousePosToWorld(POINT mousePos);
+	DirectX::XMVECTOR MousePosToWorld(POINT mousePos) noexcept;
 
 	/// @brief カメラからマウス方向の射線をお求める
 	/// @param mousePos マウス座標
 	/// @return 射線ベクトル
-	DirectX::XMVECTOR ScreenPointToRay(POINT mousePos);
+	DirectX::XMVECTOR ScreenPointToRay(POINT mousePos) noexcept;
+
+	const DirectX::XMFLOAT3& GetDefaultUpAxis() noexcept { return defaultUpAxis; };
 
 };

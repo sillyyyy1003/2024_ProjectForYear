@@ -85,6 +85,7 @@ public:
 	/// 回転の順序：Z-X-Y
     void SetRotation(float x, float y, float z);
 	void SetRotationInDegree(float x, float y, float z);
+	void SetRotation(float* rot);
 
     void SetPosition(const DirectX::XMFLOAT3& position);
     void SetPosition(float x, float y, float z);

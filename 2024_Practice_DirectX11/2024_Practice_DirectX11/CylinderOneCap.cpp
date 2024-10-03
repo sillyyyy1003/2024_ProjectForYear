@@ -17,7 +17,6 @@ void CylinderOneCap::Init(const char* filePath)
 	CreateMaterial();
 	CreateTexture(filePath);
 
-	LoadDefShader();
 }
 
 void CylinderOneCap::Update(float dt)

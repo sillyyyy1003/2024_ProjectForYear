@@ -26,11 +26,6 @@ private:
 	/// ６つのメッシュにして、一つの面の処理を行うときやりやすくなる
 	/// </summary>
 	Meshes mMeshes; //描画
-	VertexShader* mVS = nullptr;
-	PixelShader* mPS = nullptr;
-
-	std::shared_ptr<VertexShader> mDefVS = nullptr;
-	std::shared_ptr<PixelShader> mDefPS = nullptr;
 
 
 public:

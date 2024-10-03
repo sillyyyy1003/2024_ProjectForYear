@@ -12,7 +12,8 @@ Timer::Timer()
 	__int64 currTime{};
     QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
 
-    
+    //季節関連の初期化
+    InitSeasonSetting();
 
 }
 
@@ -120,9 +121,10 @@ void Timer::Tick()
 
 void Timer::GameTick()
 {
+    
     if(!isPaused)
     {
-        accumulatedRealTime += mDeltaTime;
+        mAccumulatedRealTime += mDeltaTime;
         UpdateSystemTime();
     }
 }
@@ -139,35 +141,63 @@ void Timer::UpdateSystemTime()
         return;
     }
 
-    int realSecondsElapsed = static_cast<int>(accumulatedRealTime);
+    int realSecondsElapsed = static_cast<int>(mAccumulatedRealTime);
 
     if (realSecondsElapsed >= 1)  // Update game time every real-time second
     {
-        gameMinute += realSecondsElapsed * gameMinutesPerSecond;
-        accumulatedRealTime -= realSecondsElapsed; // Subtract the converted time
+        mGameMinute += realSecondsElapsed * gameMinutesPerSecond;
+        mAccumulatedRealTime -= realSecondsElapsed; // Subtract the converted time
 
-        if (gameMinute >= gameMinutesPerHour)
+        if (mGameMinute >= gameMinutesPerHour)
         {
-            gameHour += gameMinute / gameMinutesPerHour;
-            gameMinute %= gameMinutesPerHour;
+            mGameHour += mGameMinute / gameMinutesPerHour;
+            mGameHourPassed += mGameMinute / gameMinutesPerHour;//Accumulate Hours
+            mGameMinute %= gameMinutesPerHour;
+       
 
-            if (gameHour >= gameHoursPerDay)
+            if (mGameHour >= gameHoursPerDay)
             {
-                gameDay += gameHour / gameHoursPerDay;
-                gameHour %= gameHoursPerDay;
+                mGameDay += mGameHour / gameHoursPerDay;
+                mCurrentSeasonDayCounter += mGameHour / gameHoursPerDay;
+            	mGameHour %= gameHoursPerDay;
+
+                //季節の日数更新
+                UpdateSeason();
             }
         }
+
     }
+
 }
 
 std::string Timer::GetSystemTime() const
 {
     std::ostringstream oss;
-    oss << "Day: " << gameDay
-        << ", Time: " << std::setw(2) << std::setfill('0') << gameHour
-        << ":" << std::setw(2) << std::setfill('0') << gameMinute;
+
+    std::string seasonStr;
+    switch (mCurrSeason)
+    {
+    case SPRING:
+        seasonStr = "Spring";
+        break;
+    case SUMMER:
+        seasonStr = "Summer";
+        break;
+    case AUTUMN:
+        seasonStr = "Autumn";
+        break;
+    case WINTER:
+        seasonStr = "Winter";
+        break;
+    }
+
+    oss << "Day: " << mGameDay<<"\n"
+        << "Time: " << std::setw(2) << std::setfill('0') << mGameHour
+        << ":" << std::setw(2) << std::setfill('0') << mGameMinute<<"\n"
+        << "Season: " << seasonStr
+        << " (Day " << mCurrentSeasonDayCounter << " / " << mSeasonSet.at(mCurrSeason) << ")" << "Accumulate Hour: " << mGameHourPassed;
+
     return oss.str();
- 
 }
 
 void Timer::Pause()
@@ -184,11 +214,50 @@ void Timer::Resume()
 
 void Timer::SkipTime(int dayNum)
 {
-    gameMinute = 0;
-    gameHour = 0;
-    gameDay += dayNum;
+    mGameMinute = 0;
+    mGameHour = 0;
+    mGameDay += dayNum;
     isSkippedToNextDay = false; // Reset the flag after skipping
-    accumulatedRealTime = 0.0f;  // Reset accumulated real time
+    mAccumulatedRealTime = 0.0f;  // Reset accumulated real time
+}
+
+void Timer::InitSeasonSetting()
+{
+    //todo:後でファイルの読み込みで
+    mSeasonSet.emplace(SPRING, 4);
+    mSeasonSet.emplace(SUMMER, 2);
+    mSeasonSet.emplace(AUTUMN, 4);
+    mSeasonSet.emplace(WINTER, 2);
+}
+
+void Timer::SetDayValueInSeason(Season _season, int _days) noexcept
+{
+
+}
+
+void Timer::UpdateSeason()
+{
+    if (mCurrentSeasonDayCounter > mSeasonSet.at(mCurrSeason))
+    {
+        mCurrentSeasonDayCounter = 1;  // Reset Day Counter
+
+        // 切换到下一个季节
+        switch (mCurrSeason)
+        {
+        case SPRING:
+            mCurrSeason = SUMMER;
+            break;
+        case SUMMER:
+            mCurrSeason = AUTUMN;
+            break;
+        case AUTUMN:
+            mCurrSeason = WINTER;
+            break;
+        case WINTER:
+            mCurrSeason = SPRING;
+            break;
+        }
+    }
 }
 
 
@@ -196,3 +265,5 @@ void Timer::SkipTime(int dayNum)
 
 
 
+
+	
