@@ -8,10 +8,10 @@
 #include "GUI.h"
 #include "KInput.h"
 #include "Object.h"
-#include "Plane3D.h"
+#include "Square.h"
 #include "PointLight.h"
 #include "RenderState.h"
-#include "UI_Button.h"
+#include "UIButton.h"
 
 enum SceneList
 {
@@ -27,13 +27,11 @@ void SceneLab::Init()
 {
 	json sceneData=LoadSceneData("Assets/Data/SaveDat/scene_lab.json");
 	//ÉJÉÅÉâçÏê¨
-	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
-	//camera->LoadSaveData(sceneData, "Camera");
-	camera->SetPosition(0, 7, -7);
-	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0, 7, -7);
+	GetObj<FirstPersonCamera>("DefaultCamera")->LookAt(GetObj<FirstPersonCamera>("DefaultCamera")->GetPos(), { 0,0,0 }, GetObj<FirstPersonCamera>("DefaultCamera")->GetDefaultUpAxis());
 	//camera->LockCameraAngle(true);
 
-	Object* pot = CreateObj<Container>("Pot");
+	std::shared_ptr<Object> pot = CreateObj<Container>("Pot");
 	pot->Init(CYLINDER_ONECAP);
 	pot->LoadSaveData(sceneData, "Pot");
 	pot->ResetPSShader();
@@ -42,7 +40,8 @@ void SceneLab::Init()
 	water = std::make_unique<Water>();
 	water->LoadSaveData(sceneData, "Water");
 
-	table = std::make_unique<Plane3D>();
+
+	table = std::make_unique<Square>();
 	table->Init("Assets/Texture/Lab/worn_planks_diff_1k.jpg", Vector2(1, 1));
 	table->LoadDefShader();
 	table->SetScale(Vector2(30, 15));
@@ -62,10 +61,10 @@ void SceneLab::Init()
 	time->InitUI2D(260, 120, 500, 200);
 
 
-	infoButton = std::make_unique<UI_Button>();
+	infoButton = std::make_unique<UIButton>();
 	infoButton->Init("Assets/Texture/UI/ingredient_usebutton_100x70.png");
 	infoButton->InitPosition(Vector3(580.f, 0.0f, 0.1f));
-	infoButton->SetSize(100.f, 70.f);
+	infoButton->InitCanvasSize(100.f, 70.f);
 	
 }
 
@@ -79,7 +78,7 @@ void SceneLab::UnInit()
 	//Save Water
 	sceneData["Water"] = water->SaveData();
 	//Save Camera
-	sceneData["Camera"] = GetObj<FirstPersonCamera>("Camera")->SaveData();
+	sceneData["DefaultCamera"] = GetObj<FirstPersonCamera>("DefaultCamera")->SaveData();
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json", sceneData);
 }
@@ -88,36 +87,33 @@ void SceneLab::Update(float dt)
 {
 	GameApp::Get()->GetTimer().GameTick();
 
-	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
-	Object* obj = GetObj<Container>("Pot");
-
 	//Input
-	if(KInput::IsKeyPress(VK_ESCAPE))
+	if (KInput::IsKeyPress(VK_ESCAPE))
 	{
 		mSceneIndex = SCENE_TITLE;
 		ChangeScene();
+		return;
 	}
-
-
-
 
 	water->Update(dt);
 	table->Update(dt);
 	testIngredient->Update(dt);
 
-	obj->Update(dt);
-	camera->Update(dt);
+	GetObj<Container>("Pot")->Update(dt);
+	GetObj<FirstPersonCamera>("DefaultCamera")->Update(dt);
 
 	infoBox->Update();
 	time->Update();
 
 	infoButton->Update(dt);
+
+	
 }
 
 void SceneLab::Draw()
 {
 	// àÍî 
-	Object* obj = GetObj<Container>("Pot");
+	std::shared_ptr<Object> obj = GetObj<Container>("Pot");
 
 	GameApp::SetBlendState(nullptr);
 	GameApp::SetCullingMode(nullptr);
@@ -125,7 +121,7 @@ void SceneLab::Draw()
 	testIngredient->Draw();
 
 	// ìßñæ
-	GameApp::SetCullingMode(RenderState::RSNoCull);	//ó†ï\óºñ ï`âÊÇ∑ÇÈ
+	GameApp::SetCullingMode(RenderState::RSNoCull);		//ó†ï\óºñ ï`âÊÇ∑ÇÈ
 	GameApp::SetBlendState(RenderState::BSTransparent);	//ìßñæê›íË
 	obj->Draw();
 	water->Draw();

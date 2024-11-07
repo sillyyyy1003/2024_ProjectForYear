@@ -14,7 +14,7 @@ class Model :public Primitive
 {
 public:
 
-	//Transform mTransform = {};
+	Transform mTransform = {};
 
 private:
 
@@ -28,11 +28,6 @@ private:
 		int		boneCount = 0;
 	};
 
-	struct MaterialData
-	{
-		Material material = {};
-		std::shared_ptr<Texture> tex = nullptr;
-	};
 
 	using Materials = std::vector<MaterialData>;
 
@@ -44,12 +39,47 @@ private:
 	using Meshes = std::vector<MeshBuffer>;
 
 
+	struct PBRMaterial
+	{
+		// Basic color/Albedo
+		DirectX::XMFLOAT4 baseColor;
+		std::shared_ptr<Texture> albedoTex;
+
+		// Metallic
+		float metallic;
+		float roughness;
+		std::shared_ptr<Texture> metallicSmoothnessTex;
+
+		//Normal Tex
+		std::shared_ptr<Texture> normalTex;
+
+		//AO
+		float ambientOcclusion;
+		std::shared_ptr<Texture> aoTex;
+
+		//State
+		bool isAlbedoTexEnabled = false;
+		bool isMetallicSmoothnessTexEnabled = false;
+		bool isNormalTexEnabled = false;
+		bool isAOTexEnabled = false;
+
+		PBRMaterial() :
+		baseColor(1.f, 1.f, 1.f, 1.f),
+		metallic(0.f),
+		roughness(1.f),
+		ambientOcclusion(1.f){}
+	};
+
+	using PBRMaterials = std::vector<PBRMaterial>;
+
 public:
 	Model();
 	~Model();
 
 	void Init(const char* filePath = nullptr);
 	bool Load(const char* file, bool flip = false, bool simpleMode = false);
+
+	void LoadDefShader() override;
 
 	void Update(float dt);
 	void Draw(int texSlot = 0);
@@ -65,6 +95,8 @@ private:
 
 	Meshes mMeshes = {};
 	Materials mMaterials = {};
+	PBRMaterials mPBRMaterials = {};
+	
 
 };
 

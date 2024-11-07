@@ -14,10 +14,19 @@ enum PrimitiveKind
 	SPHERE,
 	CYLINDER,
 	CYLINDER_ONECAP,
+	SQUARE,
 	PLANE,
 	CIRCLE,
 	MULTI,
 };
+
+struct MaterialData
+{
+	Material material = {};
+	std::shared_ptr<Texture> tex = nullptr;
+};
+
+
 
 /// <summary>
 /// 基本モデル（Cube/Sphere/Cone/Capsule...）
@@ -26,12 +35,6 @@ class Primitive :public Component
 {
 
 protected:
-
-	struct MaterialData
-	{
-		Material material = {};
-		std::unique_ptr<Texture> tex = nullptr;
-	};
 
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
@@ -58,9 +61,16 @@ public:
 	Primitive(PrimitiveKind kind);
 	virtual ~Primitive() override;
 
+	virtual void CreateMesh(UINT levels, UINT slices){};
+	virtual void CreateMesh(UINT slices) {};
+
 	virtual void Init(const char* filePath = nullptr) = 0;
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
 	virtual void Init(const char* filePath, int slices) {};
+
+	virtual void CreateMaterial(){};
+	virtual void CreateMaterial(Material& material) { mMaterial.material = material; };
+	virtual void CreateTexture(const char* filePath){};
 
 	virtual void Update(float dt){};
 	virtual void Draw(int texSlot = 0) = 0;

@@ -46,7 +46,7 @@ void Cube::Update(float dt)
 	WriteDefShader();
 }
 
-const void Cube::CreateMaterial(int matNum)
+void Cube::CreateMaterial()
 {
 	mMaterial.material = {
 		Color(1.0f, 1.0f, 1.0, 1.0f),		// 環境光
@@ -56,7 +56,7 @@ const void Cube::CreateMaterial(int matNum)
 	};
 }
 
-const void Cube::CreateTexture(const char* fileName)
+void Cube::CreateTexture(const char* fileName)
 {
 	if (!fileName)
 	{
@@ -65,7 +65,7 @@ const void Cube::CreateTexture(const char* fileName)
 		return;
 	}
 
-	mMaterial.tex = std::make_unique<Texture>();
+	mMaterial.tex = std::make_shared<Texture>();
 	HRESULT hr = mMaterial.tex->Create(fileName);
 	if (FAILED(hr))
 	{
@@ -78,9 +78,9 @@ const void Cube::CreateTexture(const char* fileName)
 
 const void Cube::WriteDefShader()
 {
-	FirstPersonCamera* firstCamera = GameApp::GetComponent<FirstPersonCamera>("Camera");
-	DirLight* dirLight = GameApp::GetComponent<DirLight>("Light");
-	
+	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
 	WVP[0] = mTransform.GetMatrixFX4();
@@ -113,7 +113,7 @@ const void Cube::WriteDefShader()
 
 }
 
-const void Cube::CreateMeshes()
+void Cube::CreateMeshes()
 {
 	mMeshes.resize(6);
 	const float d = 0.5f;

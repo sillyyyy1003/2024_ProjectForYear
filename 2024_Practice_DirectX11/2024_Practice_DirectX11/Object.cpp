@@ -172,8 +172,7 @@ void Object::PreUpdate(float dt)
 
 		if (KInput::IsKeyTrigger(VK_LBUTTON))
 		{
-
-			FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
+			std::shared_ptr<FirstPersonCamera> camera= GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -196,7 +195,7 @@ void Object::PreUpdate(float dt)
 	
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
-			FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
+			std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -227,7 +226,7 @@ void Object::PreUpdate(float dt)
 
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
-			FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
+			std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -331,7 +330,7 @@ void Object::LateUpdate(float dt)
 void Object::OnStateDrag(float dt)
 {
 	GetCursorPos(&mOldPos);
-	FirstPersonCamera* camera = GameApp::GetComponent<FirstPersonCamera>("Camera");
+	std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
 	//カメラからマウス位置の方向ベクトルを取得
 	XMVECTOR rayDir = camera->ScreenPointToRay(mOldPos);
 	XMFLOAT3 rayDirection;

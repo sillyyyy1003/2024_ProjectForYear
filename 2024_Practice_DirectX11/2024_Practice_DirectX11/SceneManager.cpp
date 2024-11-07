@@ -1,7 +1,9 @@
 #include "SceneManager.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
+#include "Geometry.h"
 #include "Model.h"
+#include "PBRModel.h"
 #include "SceneLab.h"
 #include "SceneTitle.h"
 using namespace DirectX::SimpleMath;
@@ -25,41 +27,45 @@ void SceneManager::Init()
 	mSceneMap["Lab"] = SCENE_LAB;
 
 	//ÉJÉÅÉâçÏê¨
-	FirstPersonCamera* camera = CreateObj<FirstPersonCamera>("Camera");
-	camera->LoadSaveData(sceneData, "Camera");
-	//camera->SetPosition(0.0f, 7.0f, -7.0f);
+	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("DefaultCamera");
+	camera->LoadSaveData(sceneData, "DefaultCamera");
+	camera->SetPosition(0.0, 2.0, -2.0);
 	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
 
 	//äÓíÍÉâÉCÉgçÏê¨ Ambient Light
-	DirLight* light = CreateObj<DirLight>("Light");
+	std::shared_ptr<DirLight> light = CreateObj<DirLight>("Light");
 	light->SetAmbient(Vector4(0.7f,0.7f,0.7f,1.0f));
 	light->SetPos(Vector3(0.0f,10.0f,-10.0f));
 	light->SetDir(Vector3(0.0f,0.0,0.f));
 
-	Model* model = CreateObj<Model>("Model");
-	GetObj<Model>("Model")->Load("Assets/Model/Player.obj");
-	GetObj<Model>("Model")->mTransform.SetPosition(1.0f, 1.0f, 0.0f);
+	//std::shared_ptr<Model> model= CreateObj<Model>("Model");
+	//GetObj<Model>("Model")->Init("Assets/Model/test.obj");
+	//GetObj<Model>("Model")->mTransform.SetPosition(0.0f, 0.0f, 0.0f);
+	//GetObj<Model>("Model")->SetScale(100, 100, 100);
 
+
+	std::shared_ptr<PBRModel> testModel = CreateObj<PBRModel>("testModel");
+	GetObj<Model>("testModel")->Init("Assets/Model/LabAssets/Bucket.obj");
+	GetObj<Model>("testModel")->mTransform.SetPosition(2.0f, 2.f, 0.0f);
+
+	
 	ChangeScene();
 }
 
 void SceneManager::UnInit()
 {
-	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
 	json sceneData;
-	sceneData["Camera"] = camera->SaveData();
+	sceneData["DefaultCamera"] = GetObj<FirstPersonCamera>("DefaultCamera")->SaveData();
 
 	//Save data here
 	SaveSceneFile("Assets/Data/SaveDat/scene_manager.json", sceneData);
+
 }
 
 void SceneManager::Update(float dt)
 {
-	FirstPersonCamera* camera = GetObj<FirstPersonCamera>("Camera");
-	DirLight* light = GetObj<DirLight>("Light");
-
-	camera->Update(dt);
-	light->Update(dt);
+	GetObj<FirstPersonCamera>("DefaultCamera")->Update(dt);
+	GetObj<DirLight>("Light")->Update(dt);
 }
 
 void SceneManager::Draw()

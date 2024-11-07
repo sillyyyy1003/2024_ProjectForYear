@@ -201,7 +201,7 @@ void Circle::CreateTexture(const char* _fileName)
 		return;
 	}
 
-	mMaterial.tex = std::make_unique<Texture>();
+	mMaterial.tex = std::make_shared<Texture>();
 	HRESULT hr = mMaterial.tex->Create(_fileName);
 	if (FAILED(hr))
 	{
@@ -213,8 +213,9 @@ void Circle::CreateTexture(const char* _fileName)
 
 void Circle::WriteDefShader()
 {
-	FirstPersonCamera* firstCamera = GameApp::GetComponent<FirstPersonCamera>("Camera");
-	DirLight* dirLight = GameApp::GetComponent<DirLight>("Light");
+
+	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -245,6 +246,4 @@ void Circle::WriteDefShader()
 	mDefPS->WriteShader(0, &mMaterial.material);
 	mDefPS->WriteShader(1, &eyePos);
 	mDefPS->WriteShader(2, &light);
-
-
 }

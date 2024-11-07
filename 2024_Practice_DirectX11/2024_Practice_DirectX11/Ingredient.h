@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Object.h"
 #include "Primitive.h"
-#include "UI_Button.h"
+#include "UIButton.h"
 
 /// Potionを構成する素材
 class Ingredient :public Object

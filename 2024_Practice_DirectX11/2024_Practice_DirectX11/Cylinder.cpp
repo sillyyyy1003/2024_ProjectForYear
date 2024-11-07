@@ -179,7 +179,7 @@ void Cylinder::CreateTexture(const char* fileName)
 		return;
 	}
 
-	mMaterial.tex = std::make_unique<Texture>();
+	mMaterial.tex = std::make_shared<Texture>();
 	HRESULT hr = mMaterial.tex->Create(fileName);
 	if (FAILED(hr))
 	{
@@ -191,8 +191,8 @@ void Cylinder::CreateTexture(const char* fileName)
 
 void Cylinder::WriteDefShader()
 {
-	FirstPersonCamera* firstCamera = GameApp::GetComponent<FirstPersonCamera>("Camera");
-	DirLight* dirLight = GameApp::GetComponent<DirLight>("Light");
+	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD

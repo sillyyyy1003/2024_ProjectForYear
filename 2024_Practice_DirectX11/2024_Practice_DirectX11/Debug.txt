@@ -1,5 +1,8 @@
 Game Init Completed
 モデル読み込み開始
 モデル読み込み完了
+WARNING::File Path is wrong
 SceneName = SceneTitle
 SceneName = SceneLab
+WARNING::File Path is wrong
+SceneName = SceneTitle

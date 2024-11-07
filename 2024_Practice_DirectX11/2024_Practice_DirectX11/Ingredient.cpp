@@ -52,7 +52,7 @@ void Ingredient::UpdatePrice()
 {
 	if (mFreshness > 0)
 	{
-		mFreshness = 100 * (1 - GameApp::Get()->GetTimer().GetGameHourPassed() / mShelfLife);
+		mFreshness = 100.f * (1.f - GameApp::Get()->GetTimer().GetGameHourPassed() / mShelfLife);
 
 	}
 	else

@@ -43,20 +43,16 @@ public:
 
 private:
 	/// @brief MeshData(頂点)作成
-	const void CreateMeshes();
+	void CreateMeshes();
 
 	/// @brief Materialを作る default Color:White
 	/// @param matNum materialの数
-	const void CreateMaterial(int matNum = 6);
+	void CreateMaterial();
 
 	/// @brief ファイルを読み込んでテクスチャを作る
 	/// @param fileName ファイル名(テクスチャなしの状態もあり)
-	const void CreateTexture(const char* fileName);
+	void CreateTexture(const char* fileName);
 
-	/*DefShader 
-	 * 使用方向光
-	 * 使用Default Camera
-	 */
 	/// @brief Default Shaderに使われるデータの書き込み
 	const void WriteDefShader();
 

@@ -64,16 +64,21 @@ public:
 	/// @brief シーン廃棄
 	void RemoveSubScene() const;
 
-	template<class T> T* CreateObj(const char* _name);
+	/// @brief オブジェクトを作る
+	/// @tparam T オブジェクトの型
+	/// @param name オブジェクトの名称
+	/// @return 
+	template<class T> std::shared_ptr<T> CreateObj(const char* name);
+
 
 	/// @brief オブジェクト破棄
 	void DestroyObj(const char* name);
 
 	/// @brief オブジェクトの取得
 	/// @tparam T オブジェクトの型
-	/// @param _name オブジェクトの名称
+	/// @param name オブジェクトの名称
 	/// @return 取得したオブジェクト
-	template<class T> T* GetObj(const char* _name);
+	template<class T> std::shared_ptr<T> GetObj(const char* name);
 
 
 	// virtual function
@@ -96,16 +101,16 @@ T* SceneBase::AddSubScene()
 	return pScene;
 }
 
-
 template <class T>
-T* SceneBase::CreateObj(const char* _name)
+std::shared_ptr<T> SceneBase::CreateObj(const char* name)
 {
 #ifdef _DEBUG
 	// デバッグ中のみ、名称ダブりがないかチェック
-	Objects::iterator it = mObjects.find(_name);
-	if (it != mObjects.end()) {
+	Objects::iterator it = mObjects.find(name);
+	if (it != mObjects.end())
+	{
 		static char buf[256];
-		sprintf_s(buf, sizeof(buf), "Failed to create object. %s", _name);
+		sprintf_s(buf, sizeof(buf), "Failed to create object. %s", name);
 		DebugLog::LogError(buf);
 		return nullptr;
 	}
@@ -113,21 +118,20 @@ T* SceneBase::CreateObj(const char* _name)
 
 	// オブジェクト生成
 	std::shared_ptr<T> ptr = std::make_shared<T>();
-	mObjects.insert(std::pair<std::string, std::shared_ptr<Component>>(_name, std::make_shared<SceneObject<T>>(ptr)));
-	mItems.push_back(_name);
-	return ptr.get();
+	mObjects.insert(std::pair<std::string, std::shared_ptr<Component>>(name, std::make_shared<SceneObject<T>>(ptr)));
+	mItems.push_back(name);
+	return ptr;
 }
 
 template <class T>
-T* SceneBase::GetObj(const char* _name)
-{
-	// オブジェクトの探索
-	Objects::iterator it = mObjects.find(_name);
+std::shared_ptr<T> SceneBase::GetObj(const char* name)
+{	// オブジェクトの探索
+	Objects::iterator it = mObjects.find(name);
 	if (it == mObjects.end()) return nullptr;
 
 	// 型変換
 	std::shared_ptr<SceneObject<T>> ptr = std::reinterpret_pointer_cast<SceneObject<T>>(it->second);
-	return ptr->mObj.get();
+	return ptr->mObj;
 }
 
 

@@ -167,14 +167,14 @@
     <ClCompile Include="DXTrace.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="GampApp.cpp" />
-    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="LightBase.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Plane3D.cpp" />
+    <ClCompile Include="PBRModel.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Primitive.cpp" />
@@ -192,7 +192,9 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UI2D.cpp" />
-    <ClCompile Include="UI_Button.cpp" />
+    <ClCompile Include="UIFont.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UVAnimation.cpp" />
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -214,14 +216,14 @@
     <ClInclude Include="DXTrace.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="GampApp.h" />
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="Plane3D.h" />
+    <ClInclude Include="PBRModel.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Primitive.h" />
@@ -240,7 +242,9 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI2D.h" />
-    <ClInclude Include="UI_Button.h" />
+    <ClInclude Include="UIFont.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UVAnimation.h" />
     <ClInclude Include="Water.h" />
   </ItemGroup>
   <ItemGroup>
@@ -260,13 +264,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="PS_Geometry.hlsl">
+    <FxCompile Include="PS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -309,13 +312,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="VS_Geometry.hlsl">
+    <FxCompile Include="VS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="VS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

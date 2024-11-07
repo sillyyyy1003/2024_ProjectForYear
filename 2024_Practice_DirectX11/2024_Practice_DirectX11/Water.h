@@ -1,20 +1,31 @@
 #pragma once
 #include "Circle.h"
-#include "Plane3D.h"
+#include "Square.h"
+
+//Water Default Parameter
+namespace WaterDefault
+{
+	//default water material
+	const Material defaultMat =
+	{
+		Color(0.8f, 0.8f, 0.8f, 1.0f),
+		Color(0.2f, 0.3f, 0.6f, 0.3f),
+		Color(0.8f, 0.8f, 0.8f, 32.0f),
+		Color(0.0f, 0.0f, 0.0f, 1.0f),
+	};
+
+	//Default circle slice
+	constexpr int defaultSlice = 50;
+	//Default circle level
+	constexpr int defaultLevel = 50;
+}
 
 /// @brief ポーションの規定になる
-///	todo:今は円形だけの対応
 class Water
 {
 private:
 
-	const Material defaultMat = 
-	{
-		Color(0.8f, 0.8f, 0.8f, 1.0f),	
-		Color(0.2f, 0.3f, 0.6f, 0.3f),	
-		Color(0.8f, 0.8f, 0.8f, 32.0f),	
-		Color(0.0f, 0.0f, 0.0f, 1.0f),	
-	};
+	
 
 protected:
 
@@ -37,8 +48,9 @@ protected:
 	bool isTrigger = true;
 	float mDuration = 3.0f;		// 波の継続時間
 
-	//水の描画
-	std::unique_ptr<Circle> mModel;//todo:プレーン多種対応にする
+	//水の描画 //todo: make the model multi kinds
+	std::unique_ptr<Circle> mModel = nullptr;
+
 
 public:
 	
@@ -57,7 +69,6 @@ public:
 	/// @brief WaterParamの内容をシェーダに書き込む
 	void WriteShader();
 
-	Circle* GetModel() { return mModel.get(); };
 
 	/// @brief 波の中心点を設定する
 	/// @param centerPos 波の中心点
@@ -89,6 +100,8 @@ public:
 	virtual json SaveData();
 	
 	void ResetMaterial();
+
+	Circle* GetModel() { return mModel.get(); };
 
 protected:
 

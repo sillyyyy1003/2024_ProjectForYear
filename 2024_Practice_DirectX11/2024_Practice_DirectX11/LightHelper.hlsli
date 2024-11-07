@@ -1,4 +1,6 @@
 //Direction Light
+
+
 struct DirectionLight
 {
     float4 ambient;

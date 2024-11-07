@@ -232,7 +232,7 @@ void Capsule::CreateTexture(const char* filePath)
 		return;
 	}
 
-	mMaterial.tex = std::make_unique<Texture>();
+	mMaterial.tex = std::make_shared<Texture>();
 	HRESULT hr = mMaterial.tex->Create(filePath);
 	if (FAILED(hr))
 	{
@@ -244,8 +244,8 @@ void Capsule::CreateTexture(const char* filePath)
 
 void Capsule::WriteDefShader()
 {
-	FirstPersonCamera* firstCamera = GameApp::GetComponent<FirstPersonCamera>("Camera");
-	DirLight* dirLight = GameApp::GetComponent<DirLight>("Light");
+	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD

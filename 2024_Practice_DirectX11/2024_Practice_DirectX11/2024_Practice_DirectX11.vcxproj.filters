@@ -156,9 +156,6 @@
     <ClCompile Include="ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
@@ -213,7 +210,7 @@
     <ClCompile Include="Cylinder.cpp">
       <Filter>ソース ファイル\BaseModel\描画部分</Filter>
     </ClCompile>
-    <ClCompile Include="Plane3D.cpp">
+    <ClCompile Include="Square.cpp">
       <Filter>ソース ファイル\BaseModel\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Primitive.cpp">
@@ -237,7 +234,7 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Button.cpp">
+    <ClCompile Include="UIButton.cpp">
       <Filter>ソース ファイル\UI\3D</Filter>
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
@@ -259,6 +256,15 @@
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="UIFont.cpp">
+      <Filter>ソース ファイル\UI\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="UVAnimation.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRModel.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,16 +302,13 @@
     <ClInclude Include="Cube.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
-    <ClInclude Include="Plane3D.h">
+    <ClInclude Include="Square.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>ヘッダー ファイル\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometry.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
@@ -377,7 +380,7 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
-    <ClInclude Include="UI_Button.h">
+    <ClInclude Include="UIButton.h">
       <Filter>ヘッダー ファイル\UI\3D</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
@@ -401,18 +404,21 @@
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="UIFont.h">
+      <Filter>ヘッダー ファイル\UI\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="UVAnimation.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRModel.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PS_Geometry.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
     <FxCompile Include="PS_UliObj.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="VS_UliObj.hlsl">
-      <Filter>リソース ファイル\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS_Geometry.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Object.hlsl">
@@ -440,6 +446,12 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Water.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_PBRModel.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_PBRModel.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
   </ItemGroup>

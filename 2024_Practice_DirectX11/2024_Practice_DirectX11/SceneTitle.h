@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneBase.h"
-#include "UI_Button.h"
+#include "UIButton.h"
+#include "UIFont.h"
 
 //タイトルシーン
 class SceneTitle:public SceneBase
@@ -9,8 +10,10 @@ private:
 
 	int mSceneIndex = 0;
 
-	std::unordered_map<std::string, std::vector<CanvasUI*>> uiManager = {};
+	std::unordered_map<std::string, std::vector<std::shared_ptr<CanvasUI>>> uiManager = {};
 	std::vector<std::string> mUiOrder = {};
+
+	std::unique_ptr<UIFont> testFont;
 
 	bool isEditable = false;
 
@@ -22,6 +25,12 @@ public:
 	void UnInit();
 
 	void Update(float dt);
+
+	void TriggerListener();
+
+	/// @brief Objects Update
+	/// @param dt delta time
+	void ObjectUpdate(float dt);
 
 	void Draw();
 

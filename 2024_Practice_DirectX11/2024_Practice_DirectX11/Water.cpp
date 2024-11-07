@@ -2,9 +2,8 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
-#include "GUI.h"
 #include "KInput.h"
-#include "Plane3D.h"
+#include "Square.h"
 #include "RenderState.h"
 
 using namespace DirectX::SimpleMath;
@@ -148,14 +147,14 @@ void Water::RenderUpdate()
 
 void Water::Draw()
 {
-
 	mModel->Draw();
 }
 
 void Water::WriteShader()
 {
-	FirstPersonCamera* firstCamera = GameApp::GetComponent<FirstPersonCamera>("Camera");
-	DirLight* dirLight = GameApp::GetComponent<DirLight>("Light");
+	
+	std::shared_ptr<FirstPersonCamera> firstCamera= GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -285,7 +284,7 @@ json Water::SaveData()
 
 void Water::ResetMaterial()
 {
-	mModel->SetMaterial(defaultMat);
+	mModel->SetMaterial(WaterDefault::defaultMat);
 }
 
 void Water::LateUpdate(float dt)

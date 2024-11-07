@@ -1,6 +1,5 @@
 #pragma once
 #include <unordered_map>
-
 #include "SceneBase.h"
 
 /// @brief ‚·‚×‚Ä‚ÌƒV[ƒ“‚ÌŠÇ—
@@ -10,6 +9,9 @@ private:
 
 	int mIndex = 0;//Scene Index
 	std::unordered_map<std::string, int> mSceneMap;
+
+
+	
 
 private:
 	SceneManager(){};

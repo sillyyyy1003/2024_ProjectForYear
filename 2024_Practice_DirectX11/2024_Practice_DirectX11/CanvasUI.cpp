@@ -11,11 +11,43 @@ CanvasUI::~CanvasUI()
 {
 }
 
-void CanvasUI::Init(const char* _fileName)
+void CanvasUI::Init(const char* _fileName, DirectX::XMINT2 split)
 {
+	//UV Animation ÇégÇ§Ç©
+	if (split.x == 1 && split.y == 1)
+	{
+		isUseUVAnimation = false;
+	}else
+	{
+		isUseUVAnimation = true;
+	}
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(split);
 	CreateMeshBuffer();
 	CreateMaterial(_fileName);
 	LoadShader();
+}
+
+void CanvasUI::Init(MaterialData& _materialData, DirectX::XMINT2 _split)
+{
+	//UV Animation ÇégÇ§Ç©
+	if (_split.x == 1 && _split.y == 1)
+	{
+		isUseUVAnimation = false;
+	}
+	else
+	{
+		isUseUVAnimation = true;
+	}
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_split);
+
+	CreateMeshBuffer();
+	CreateMaterial(_materialData);
+	LoadShader();
+
 }
 
 
@@ -25,11 +57,13 @@ void CanvasUI::InitPosition(DirectX::XMFLOAT3 pos)
 	mOriginPos = { pos.x,pos.y };
 }
 
+
+
 void CanvasUI::LoadSaveData(json data, const char* objName)
 {
 	//Scale
 	Vector2 size = Vector2(data[objName]["Scale"][0], data[objName]["Scale"][1]);
-	SetSize(size.x, size.y);
+	InitCanvasSize(size.x, size.y);
 
 	//Pos
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
@@ -48,6 +82,16 @@ void CanvasUI::Update(float dt)
 {
 	UpdateScale();
 	UpdatePos();
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
+}
+
+void CanvasUI::Update()
+{
+	UpdateScale();
+	UpdatePos();
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 void CanvasUI::Draw()
@@ -56,7 +100,6 @@ void CanvasUI::Draw()
 	//============================================
 	//Generate Matrix
 	//============================================
-
 	WriteShader();
 
 	//Bind Shader
@@ -67,7 +110,7 @@ void CanvasUI::Draw()
 	mMesh->Draw();
 }
 
-void CanvasUI::SetSize(float x, float y)
+void CanvasUI::InitCanvasSize(float x, float y)
 {
 	mTransform.SetScale(x, y, 1.0f);
 	mOriginScale = { x,y };
@@ -115,9 +158,9 @@ void CanvasUI::CreateMeshBuffer()
 	vtx = {
 		//+y
 		{pos[0],Vector3(0.0f,0.0f,-1.0f),Vector2(0.f,0.f)},
-		{pos[1],Vector3(0.0f,0.0F,-1.0f),Vector2(1.f,0.f)},
-		{pos[2],Vector3(0.0f,0.0F,-1.0f),Vector2(1.f,1.f)},
-		{pos[3],Vector3(0.0f,0.0F,-1.0f),Vector2(0.f,1.f)},
+		{pos[1],Vector3(0.0f,0.0f,-1.0f),Vector2(1.f / mUvAnimation->GetSplit().x,0.f)},
+		{pos[2],Vector3(0.0f,0.0f,-1.0f),Vector2(1.f / mUvAnimation->GetSplit().x,1.f / mUvAnimation->GetSplit().y)},
+		{pos[3],Vector3(0.0f,0.0f,-1.0f),Vector2(0.f,1.f / mUvAnimation->GetSplit().y)},
 	};
 
 	std::vector<DWORD> indexData;
@@ -141,13 +184,26 @@ void CanvasUI::CreateTexture(const char* _fileName)
 {
 	if(!_fileName)
 	{
+		DebugLog::LogWarning("File Path is wrong");
 		mMaterial.material.isTexEnable = false;
 		mMaterial.tex = nullptr;
 		return;
 	}
 
-	mMaterial.tex = std::make_unique<Texture>();
+	mMaterial.tex = std::make_shared<Texture>();
 	mMaterial.tex->Create(_fileName);
+}
+
+void CanvasUI::CreateTexture(std::shared_ptr<Texture> pTex)
+{
+	if(!pTex)
+	{
+		DebugLog::LogError("Texture pointer is null");
+		mMaterial.material.isTexEnable = false;
+		mMaterial.tex = nullptr;
+		return;
+	}
+	mMaterial.tex = pTex;
 }
 
 void CanvasUI::CreateMaterial(const char* _fileName)
@@ -159,45 +215,62 @@ void CanvasUI::CreateMaterial(const char* _fileName)
 		Color(0.0f, 0.0f, 0.0f, 0.0f)		// é©î≠åıÇ»Çµ};
 	};
 	CreateTexture(_fileName);
-	mFilePath = _fileName;
+	if(_fileName)
+		mFilePath = _fileName;
+		
+
 }
+
+void CanvasUI::CreateMaterial(MaterialData& _materialData)
+{
+	mMaterial.material = _materialData.material;
+	mMaterial.tex = _materialData.tex;
+}
+
 
 void CanvasUI::LoadShader()
 {
-	mDefPS = std::make_unique<PixelShader>();
-	mDefVS = std::make_unique<VertexShader>();
+	mDefPS = std::make_shared<PixelShader>();
+	mDefVS = std::make_shared<VertexShader>();
 
 	HR(mDefPS->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso"));
 	HR(mDefVS->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso"));
 
 }
 
+void CanvasUI::SetShader(const char* PSFile, const char* VSFile)
+{
+	mDefPS.reset();
+	mDefVS.reset();
+	mDefPS = std::make_shared<PixelShader>();
+	mDefVS = std::make_shared<VertexShader>();
+	mDefPS->LoadShaderFile(PSFile);
+	mDefVS->LoadShaderFile(VSFile);
+}
+
+
 void CanvasUI::UpdateScale()
 {
-	
+	if (!gD3D->GetResized()) { return; }
+
 	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
 	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
-
-	if(gD3D->GetResized())
-	{
-		Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
-		Vector3 scale = { ratio.x * mOriginScale.x,ratio.y * mOriginScale.y,1.0f };
-		mTransform.SetScale(scale);
-	}
+	Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
+	Vector3 scale = { ratio.x * mOriginScale.x,ratio.y * mOriginScale.y,1.0f };
+	mTransform.SetScale(scale);
+	
 }
 
 void CanvasUI::UpdatePos()
 {
+	if (!gD3D->GetResized()) { return; }
 	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
 	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
-
-	if (gD3D->GetResized())
-	{
-		Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
-		Vector3 pos = {mOriginPos.x,mOriginPos.y, mTransform.GetPosition().z};
-		pos *= ratio;
-		mTransform.SetPosition(pos);
-	}
+	Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
+	Vector3 pos = {mOriginPos.x,mOriginPos.y, mTransform.GetPosition().z};
+	pos *= ratio;
+	mTransform.SetPosition(pos);
+	
 
 }
 
@@ -211,8 +284,25 @@ void CanvasUI::WriteShader()
 	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
 	WVP[2] = XMMatrixTranspose(WVP[2]);
 
+	struct UVBuffer
+	{
+		XMMATRIX uv;
+		int useUV;
+	};
+	UVBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+
+	//UV MATRIX çÏê¨
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
+
 	//Write Shader
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
+
 	mDefPS->WriteShader(0, &(mMaterial.material));
 }
 

@@ -82,13 +82,9 @@ void GameApp::DrawScene()
 
 void GameApp::UnInit()
 {
-	//Geometry Release
-	Geometry::UnInit();
-
 	//Scene Release
 	SceneManager::Get()->UnInit();
 
-	
 	D3DApp::UnInit();
 }
 

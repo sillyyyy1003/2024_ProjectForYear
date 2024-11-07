@@ -1,7 +1,7 @@
 #pragma once
-#include "Collider.h"
 #include "Primitive.h"
 #include "Transform.h"
+#include "UVAnimation.h"
 
 class PixelShader;
 class VertexShader;
@@ -18,13 +18,6 @@ public:
 	
 
 protected:
-
-	struct MaterialData
-	{
-		Material material;
-		std::unique_ptr<Texture> tex;
-	};
-
 	//Material & Texture
 	MaterialData mMaterial = {};
 
@@ -32,8 +25,8 @@ protected:
 	std::unique_ptr<Mesh> mMesh = {};
 
 	//VertexShader & PixelShader
-	std::unique_ptr<VertexShader> mDefVS = nullptr;	// Default Vertex Shader
-	std::unique_ptr<PixelShader> mDefPS = nullptr;	// Default Pixel Shader
+	std::shared_ptr<VertexShader> mDefVS = nullptr;	// Default Vertex Shader
+	std::shared_ptr<PixelShader> mDefPS = nullptr;	// Default Pixel Shader
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
 
@@ -42,9 +35,12 @@ protected:
 	DirectX::XMFLOAT2 mOriginPos = {};
 
 	bool isDefShader = true;
+	bool isUseUVAnimation = false;//UVAnimationを使うか
 
 	std::string mFilePath= {};
 	std::string mObjectName = {};
+
+	std::unique_ptr<UVAnimation> mUvAnimation = nullptr;
 public:
 	CanvasUI() = default;
 	virtual ~CanvasUI();
@@ -52,7 +48,10 @@ public:
 	/// @brief UIのテクスチャとシェーダの初期化
 	///	基本UI/No Lighting Effect
 	/// @param _fileName テクスチャファイル名
-	virtual void Init(const char* _fileName = nullptr);
+	///	@param _split 分割
+	virtual void Init(const char* _fileName = nullptr,DirectX::XMINT2 _split={1,1});
+
+	virtual void Init(MaterialData& _materialData, DirectX::XMINT2 _split = { 1,1 });
 
 	/// @brief 位置の初期化
 	/// @param pos ピクセル位置
@@ -64,13 +63,15 @@ public:
 	virtual void LoadSaveData(json data, const char* objName);
 
 	virtual void Update(float dt);
+	virtual void Update();
+
 
 	virtual void Draw();
 
 	/// @brief Canvasのサイズを設定
 	/// @param x 幅
 	/// @param y 高
-	void SetSize(float x, float y);
+	void InitCanvasSize(float x, float y);
 
 	/// @brief 自動並び替え描画
 	/// @param z 
@@ -99,6 +100,8 @@ public:
 
 	virtual json SaveData(const char* objName);
 
+	UVAnimation* GetUVAnimation() { return mUvAnimation.get(); };
+
 protected:
 
 	/// @brief メッシュ作成
@@ -108,11 +111,25 @@ protected:
 	/// @param _fileName テクスチャファイル名
 	void CreateTexture(const char* _fileName);
 
+	/// @brief テクスチャ作成
+	/// @param pTex 作成されているTexture pointer
+	void CreateTexture(std::shared_ptr<Texture> pTex);
+
 	/// @brief マテリアル作成
 	/// @param _fileName テクスチャファイル名
 	void CreateMaterial(const char* _fileName);
 
+	/// @brief マテリアル作成
+	/// @param _materialData 作成されているマテリアルデータ
+	void CreateMaterial(MaterialData& _materialData);
+
+	/// @brief Load Default Shader
 	virtual void LoadShader();
+
+	/// @brief シェーダファイルをリセット
+	/// @param PSFile PS file path
+	/// @param VSFile VS file path
+	virtual void SetShader(const char* PSFile, const char* VSFile);
 
 	/// @brief uiのスケールを計算して、uiの大きさを保つ
 	/// @return viewWidth&viewHeightの計算

@@ -69,7 +69,7 @@ HRESULT Shader::LoadShaderFile(const char* _fileName)
 
 	//pData->Shader字节码
 	hr = Create(pData, fileSize);
-
+	
 	if (pData) { delete[] pData; }
 	return hr;
 }

@@ -13,12 +13,6 @@ cbuffer Material : register(b0)
     Material material;
 }
 
-cbuffer UiStatus : register(b1)
-{
-    int isActive;
-	int dummy1, dummy2, dummy3;
-}
-
 Texture2D myTex : register(t0);
 SamplerState mySampler : register(s0);
 

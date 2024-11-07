@@ -1,2 +1,5 @@
-﻿  UI_Button.cpp
+﻿C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\PS_PBRModel.hlsl(170,9-72): warning X3206: implicit truncation of vector type
+C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\PS_PBRModel.hlsl(181,2-34): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_PBRModel.cso
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

@@ -1,10 +1,9 @@
 #pragma once
-#include "CanvasUI.h"
 #include "Ingredient.h"
 #include "SceneBase.h"
 #include "Primitive.h"
 #include "UI2D.h"
-#include "UI_Button.h"
+#include "UIButton.h"
 #include "Water.h"
 
 /// @brief メインのラブシーン
@@ -29,8 +28,9 @@ private:
 	std::unique_ptr<UI2D> infoBox = nullptr;
 	std::unique_ptr<UI2D> time = nullptr;
 
-	std::unique_ptr<UI_Button> infoButton = nullptr;
-
+	std::unique_ptr<UIButton> infoButton = nullptr;
 	std::unique_ptr<Ingredient> testIngredient = nullptr;
+
+	std::unique_ptr<Water> testWater = nullptr;
 
 };

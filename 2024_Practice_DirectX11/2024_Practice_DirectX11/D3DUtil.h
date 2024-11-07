@@ -13,12 +13,12 @@
 #include <string>
 #include <memory>
 #include <SimpleMath.h>
-#include "DXTrace.h"
-#include "Mesh.h"
-#include "DirectXTex.h"
 #include <imgui/Include/imgui.h>
 #include <imgui/Include/imgui_impl_dx11.h>
 #include <imgui/Include/imgui_impl_win32.h>
+#include "DXTrace.h"
+#include "Mesh.h"
+#include "DirectXTex.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -256,7 +256,7 @@ namespace Vertex
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT2 texCoord;
+		DirectX::XMFLOAT2 tex;
 	};
 
 
@@ -268,12 +268,12 @@ namespace Vertex
 		DirectX::XMFLOAT2 tex;
 	};
 
-	struct VxPosNormalTangentColor
+	struct VtxPosNormalTangentTex
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT4 tangent;
-		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT3 tangent;
+		DirectX::XMFLOAT2 tex;
 	};
 
 	struct Vtx

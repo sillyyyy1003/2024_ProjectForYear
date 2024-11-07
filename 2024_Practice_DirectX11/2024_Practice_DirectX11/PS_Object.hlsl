@@ -32,13 +32,6 @@ cbuffer StateFactor : register(b3)
 	float4 effect;
 }
 
-//cbuffer PointLight:register(b3){
-//	PointLight pointLight[MAX_NUM_POINT_LIGHT];
-//	int actualLightNum;
-//	float dummy[3];
-//}
-
-
 Texture2D myTex : register(t0);
 SamplerState mySampler : register(s0);
 
@@ -77,19 +70,6 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	float3 v = normalize(eyePos.xyz - pin.worldPos.xyz);
 	float specFactor = pow(max(dot(v, toEye), 0.0f), material.specular.w);
 	float4 spec = specFactor * material.specular;
-
-	/*
-	float4 a,d,s;
-	a = d = s = float4(0, 0, 0, 0);
-	for (int i = 0; i < actualLightNum;i++)
-	{
-		CalculatePointLight(pointLight[i],material,normal,pin.worldPos,eyePos,a,d,s);
-		ambient += a;
-		diffuse += d;
-		spec += s;
-
-	}
-	*/
 
 	float4 litColor = color * (ambient + diffuse) + spec ;
 	litColor = saturate(litColor);

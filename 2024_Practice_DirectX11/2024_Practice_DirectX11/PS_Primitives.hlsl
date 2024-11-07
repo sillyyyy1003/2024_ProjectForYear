@@ -78,7 +78,6 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
     litColor = saturate(litColor);
 
     //アルファ値をマテリアルに計算
-    //litColor.a = material.diffuse.a * color.a;
     litColor.a = material.diffuse.a;
     return litColor;
 
