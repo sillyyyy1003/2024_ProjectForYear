@@ -42,25 +42,32 @@ DirectX::XMFLOAT4 BoxCollider::GetOrientation()
 	return Collider::GetOrientation();
 }
 
-const DirectX::XMFLOAT3& BoxCollider::GetCenter()
+DirectX::XMFLOAT3 BoxCollider::GetCenter()
 {
-	//btVector3 center = mTransform.getOrigin();
-	//Vector3 pos = Vector3(center.x(), center.y(), center.z());
-	//return pos;
-	//return{ 0,0,0 };
 	return mCollider.Center;
 }
 
-const DirectX::XMFLOAT3& BoxCollider::GetScale()
+DirectX::XMFLOAT3 BoxCollider::GetExtents()
 {
 	return mCollider.Extents;
 }
+
+DirectX::XMFLOAT3 BoxCollider::GetScale()
+{
+	return mCollider.Extents * 2;
+}
+
 
 bool BoxCollider::Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance)
 {
 	return mCollider.Intersects(start, des, distance);
 }
 
+
+void BoxCollider::SetOrientation(const DirectX::XMVECTOR rot)
+{
+	XMStoreFloat4(&mCollider.Orientation, rot);
+}
 
 SphereCollider::SphereCollider() :Collider(SPHERE_3D)
 {

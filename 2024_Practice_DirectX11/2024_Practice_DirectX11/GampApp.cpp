@@ -50,8 +50,6 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float deltaTime)
 {
-	//mTimer.GameTick();
-
 	//Game update
 	SceneManager::Get()->_update(deltaTime);
 

@@ -1,11 +1,14 @@
 ﻿#include <nlohmann/json.hpp>
 #include <fstream>
 #include "SceneTitle.h"
+
+#include <memory>
+
 #include "FirstPersonCamera.h"
 #include "Model.h"
 #include "PBRModel.h"
 #include "UIFont.h"
-#include "SceneLab.h"
+#include "SceneGame.h"
 #include "SceneManager.h"
 using json = nlohmann::json;
 
@@ -24,46 +27,38 @@ void SceneTitle::Init()
 {
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title_default.json");
 
-	std::shared_ptr<CanvasUI> uiBg = CreateObj<CanvasUI>("title_bg");
+	uiBg = std::make_shared<CanvasUI>();
 	uiBg->LoadSaveData(sceneData, "title_bg");
 
-	std::shared_ptr<CanvasUI> uiStart = CreateObj<UIButton>("title_start");
+	uiStart = std::make_shared<UIButton>();
 	uiStart->LoadSaveData(sceneData, "title_start");
 
-	std::shared_ptr<CanvasUI> uiOption = CreateObj<UIButton>("title_option");
+	uiOption = std::make_shared<UIButton>();
 	uiOption->LoadSaveData(sceneData, "title_option");
 
-	std::shared_ptr<CanvasUI> uiExit = CreateObj<UIButton>("title_exit");
+	uiExit = std::make_shared<UIButton>();
 	uiExit->LoadSaveData(sceneData, "title_exit");
 
 	//Set data to map
-	uiManager["background"].push_back(uiBg);  
-	uiManager["button"].push_back(uiStart);   
-	uiManager["button"].push_back(uiOption);  
-	uiManager["button"].push_back(uiExit);
+	objManager["background"].push_back(uiBg);  
+	objManager["button"].push_back(uiStart);   
+	objManager["button"].push_back(uiOption);  
+	objManager["button"].push_back(uiExit);
 
 	//描画順番の設定
 	mUiOrder = { "background", "button" ,"effect" };
 
-	mSceneIndex = SCENE_NONE;
-
-	testFont = std::make_unique<UIFont>();
-	testFont->Init("Assets/Texture/UI/ASCIILib_StringLiteral.png", { 20.f,45.3f});
-	testFont->SetFontRectWidth(400);
-
-	testFont->UpdateContents("This is another Test which is harder");
 	
 }
 
 void SceneTitle::UnInit()
 {
-	//
 	if(isEditable)
 	{
 		// Create scene Data
 		json sceneData;
 
-		for (auto it = uiManager.begin(); it != uiManager.end(); ++it)
+		for (auto it = objManager.begin(); it != objManager.end(); ++it)
 		{
 			for (auto& element : it->second)
 			{
@@ -71,7 +66,6 @@ void SceneTitle::UnInit()
 			}
 
 		}
-
 		SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
 	}
 }
@@ -83,26 +77,36 @@ void SceneTitle::Update(float dt)
 
 	//シーン切り替えなどトリガーに使われる
 	TriggerListener();
-
 }
 
 void SceneTitle::TriggerListener()
 {
-	//シーンの切り替え//todo can be automatic
-	std::shared_ptr<UIButton> startButton = GetObj<UIButton>("title_start");
-	if (startButton->isTrigger())
-		mSceneIndex = SCENE_MAIN;
+	if (uiStart->isTrigger())
+	{
+		SceneManager::Get()->SetSwitchScene(true);
+		SceneManager::Get()->SetMainScene("Lab");
+	}
 
-	std::shared_ptr<UIButton> exitButton = GetObj<UIButton>("title_exit");
-	if (exitButton->isTrigger())
-		mSceneIndex = EXIT;
+	if (uiExit->isTrigger())
+	{
+		SceneManager::Get()->SetSwitchScene(true);
+		SceneManager::Get()->SetMainScene("Exit");
+	}
 
-	if (mSceneIndex != SCENE_NONE)
-		ChangeScene();
+	if (uiOption->isTrigger())
+	{
+		SceneManager::Get()->SetSwitchScene(true);
+		SceneManager::Get()->SetMainScene("Option");
+	}
+		
 }
 
 void SceneTitle::ObjectUpdate(float dt)
 {
+
+	
+
+
 #ifdef _DEBUG
 
 	if (ImGui::Begin("EditCheck"))
@@ -116,57 +120,37 @@ void SceneTitle::ObjectUpdate(float dt)
 	//ボタンの状態変更
 	for (const std::string& category : mUiOrder)
 	{
-		if (uiManager.contains(category))
+		if (objManager.contains(category))
 		{
-			for (std::shared_ptr<CanvasUI> obj : uiManager[category])
+			for (auto obj : objManager[category])
 			{
 				obj->Update(dt);
 			}
 		}
 	}
 
-	testFont->Update();
-	GetObj<PBRModel>("testModel")->Update(dt);
+
+
+
 }
 
 void SceneTitle::Draw()
 {
-	GetObj<PBRModel>("testModel")->Draw();
-	testFont->Draw();
 	float currentZ = UI_FARZ - 0.1f;
 
-
-
-	//for (const std::string& category : mUiOrder)
-	//{
-	//	// 获取该类别下的所有 UI 对象
-	//	if (uiManager.contains(category))
-	//	{
-	//		for (std::shared_ptr<CanvasUI> obj : uiManager[category])
-	//		{
-	//			obj->SetPosZ(currentZ);
-	//			obj->Draw();          
-	//			currentZ -= 0.1f;      
-	//		}
-	//	}
-	//}
+	for (const std::string& category : mUiOrder)
+	{
+		// 获取该类别下的所有 UI 对象
+		if (objManager.contains(category))
+		{
+			for (auto& obj : objManager[category])
+			{
+				obj->SetPosZ(currentZ);
+				obj->Draw();          
+				currentZ -= 0.1f;      
+			}
+		}
+	}
 	
 }
 
-void SceneTitle::ChangeScene()
-{
-	switch (mSceneIndex)
-	{
-	default:
-	case SCENE_MAIN:
-		//ENTER A NEW SCENE
-		SceneManager::Get()->SetScene("Lab");
-		break;
-	case SCENE_OPTION:
-		
-	case EXIT:
-		DebugLog::Log("Exiting the application...");
-		PostQuitMessage(0); 
-		break;
-	}
-}

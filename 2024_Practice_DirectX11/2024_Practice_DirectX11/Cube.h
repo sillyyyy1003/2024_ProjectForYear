@@ -27,13 +27,14 @@ private:
 	/// </summary>
 	Meshes mMeshes; //描画
 
-
 public:
 
 	Cube();
 	~Cube() = default;
 
-	void Init(const char* fileName = nullptr);
+	void Init(const char* fileName);
+
+	void Init(std::shared_ptr<Texture>);
 
 	/// @brief 描画
 	void Draw(int texSlot = 0);
@@ -44,14 +45,6 @@ public:
 private:
 	/// @brief MeshData(頂点)作成
 	void CreateMeshes();
-
-	/// @brief Materialを作る default Color:White
-	/// @param matNum materialの数
-	void CreateMaterial();
-
-	/// @brief ファイルを読み込んでテクスチャを作る
-	/// @param fileName ファイル名(テクスチャなしの状態もあり)
-	void CreateTexture(const char* fileName);
 
 	/// @brief Default Shaderに使われるデータの書き込み
 	const void WriteDefShader();

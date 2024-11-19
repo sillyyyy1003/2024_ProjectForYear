@@ -18,7 +18,7 @@ class Ingredient :public Object
 
 protected:
 
-	std::string mIngredientName="default ingredient";
+	std::string mIngredientName = "default ingredient";
 
 public:
 	Ingredient();

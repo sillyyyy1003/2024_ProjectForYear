@@ -31,6 +31,17 @@ const DirectX::XMMATRIX Transform::GetMatrix()
 	return World;
 }
 
+const DirectX::XMMATRIX Transform::GetIdentityMatrix()
+{
+	DirectX::XMFLOAT3 identity = { 1,1,1 };
+	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&identity);
+	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
+	World = XMMatrixTranspose(World);
+	return World;
+}
+
 DirectX::XMFLOAT3 Transform::GetRotation() const
 {
 	float sinX = 2 * (mRotation.w * mRotation.x - mRotation.y * mRotation.z);
@@ -54,7 +65,9 @@ DirectX::XMFLOAT3 Transform::GetRotation() const
 		rotation.z = atan2f(sinZ_cosX, cosZ_cosX);
 	}
 
+	//return rotation;
 	return rotation;
+
 }
 
 DirectX::XMFLOAT3 Transform::GetRightAxis() const
@@ -109,9 +122,9 @@ DirectX::XMFLOAT4X4 Transform::GetLocalToWorldMatrix() const
 DirectX::XMMATRIX Transform::GetLocalToWorldMatrixXM() const
 {
 	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
-	DirectX::XMVECTOR quateration = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
 	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
-	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quateration, positionVec);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
 	return World;
 
 }
@@ -150,10 +163,20 @@ void Transform::SetScaleXZ(float x, float z)
 	mScale.z = z;
 }
 
+void Transform::SetScaleXZ(const DirectX::XMFLOAT2& scale)
+{
+}
+
 void Transform::SetScaleXY(float x, float y)
 {
 	mScale.x = x;
 	mScale.y = y;
+}
+
+void Transform::SetScaleXY(const DirectX::XMFLOAT2& scale)
+{
+	mScale.x = scale.x;
+	mScale.y = scale.y;
 }
 
 void Transform::SetRotationInDegree(const DirectX::XMFLOAT3& eulerAnglesInDegree)
@@ -169,7 +192,7 @@ void Transform::SetRotationInRadian(const DirectX::XMFLOAT3& eulerAnglesInRadian
 	
 }
 
-void Transform::SetRotation(float x, float y, float z)
+void Transform::SetRotationInRadian(float x, float y, float z)
 {
 	auto quat = DirectX::XMQuaternionRotationRollPitchYaw(x, y, z);
 	DirectX::XMStoreFloat4(&mRotation, quat);
@@ -181,9 +204,16 @@ void Transform::SetRotationInDegree(float x, float y, float z)
 	DirectX::XMStoreFloat4(&mRotation, quat);
 }
 
-void Transform::SetRotation(float* rot)
+void Transform::SetRotationInRadian(const float* rot)
 {
-	SetRotation(rot[0], rot[1], rot[2]);
+	Vector3 rotation = { rot[0],rot[1],rot[2] };
+	SetRotationInRadian(rotation);
+}
+
+void Transform::SetRotationInDegree(const float* rot)
+{
+	Vector3 rotation = { rot[0],rot[1],rot[2] };
+	SetRotationInDegree(rotation);
 }
 
 
@@ -205,6 +235,12 @@ void Transform::SetPosition(const float* pos)
 void Transform::SetPositionZ(float z)
 {
 	mPos.z = z;
+}
+
+void Transform::SetPosition(float x, float y)
+{
+	mPos.x = x;
+	mPos.y = y;
 }
 
 void Transform::Rotate(const DirectX::XMFLOAT3& eulerAnglesInDegree)

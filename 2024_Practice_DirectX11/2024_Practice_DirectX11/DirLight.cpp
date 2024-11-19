@@ -25,14 +25,40 @@ void DirLight::Update(float dt)
 		mPos.x,mPos.y,mPos.z
 		};
 		ImGui::InputFloat3("Position", pos);
-		SetPos(pos);
+		SetPosition(pos);
 
 		float dir[3] = {
 		mDir.x,mDir.y,mDir.z };
 		ImGui::InputFloat3("Direction", dir);
-		SetDir(dir);
+		SetDirection(dir);
 	}
 
 	ImGui::End();
 #endif
+}
+
+void DirLight::LoadSaveData(json data, const char* objName)
+{
+	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	SetPosition(pos);
+
+	//Init direction
+	Vector3 direction = Vector3(data[objName]["Direction"][0], data[objName]["Direction"][1], data[objName]["Direction"][2]);
+	SetDirection(direction);
+
+	//Init Ambient
+	Color ambient = Color(data[objName]["Ambient"][0], data[objName]["Ambient"][1], data[objName]["Ambient"][2], data[objName]["Ambient"][3]);
+	SetAmbient(ambient);
+
+}
+
+json DirLight::SaveData()
+{
+	json data;
+	data["Position"] = { GetPosition().x,GetPosition().y,GetPosition().z };
+	data["Direction"] = { GetDirection().x,GetDirection().y,GetDirection().z };
+
+	data["Ambient"] = { GetAmbient().x, GetAmbient().y, GetAmbient().z, GetAmbient().w };
+
+	return data;
 }

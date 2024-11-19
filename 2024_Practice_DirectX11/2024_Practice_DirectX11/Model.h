@@ -37,40 +37,8 @@ private:
 		unsigned int materialID;
 	};
 	using Meshes = std::vector<MeshBuffer>;
-
-
-	struct PBRMaterial
-	{
-		// Basic color/Albedo
-		DirectX::XMFLOAT4 baseColor;
-		std::shared_ptr<Texture> albedoTex;
-
-		// Metallic
-		float metallic;
-		float roughness;
-		std::shared_ptr<Texture> metallicSmoothnessTex;
-
-		//Normal Tex
-		std::shared_ptr<Texture> normalTex;
-
-		//AO
-		float ambientOcclusion;
-		std::shared_ptr<Texture> aoTex;
-
-		//State
-		bool isAlbedoTexEnabled = false;
-		bool isMetallicSmoothnessTexEnabled = false;
-		bool isNormalTexEnabled = false;
-		bool isAOTexEnabled = false;
-
-		PBRMaterial() :
-		baseColor(1.f, 1.f, 1.f, 1.f),
-		metallic(0.f),
-		roughness(1.f),
-		ambientOcclusion(1.f){}
-	};
-
-	using PBRMaterials = std::vector<PBRMaterial>;
+	/// @brief 頂点データの書き換え用
+	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
 
 public:
 	Model();
@@ -78,8 +46,6 @@ public:
 
 	void Init(const char* filePath = nullptr);
 	bool Load(const char* file, bool flip = false, bool simpleMode = false);
-
-	void LoadDefShader() override;
 
 	void Update(float dt);
 	void Draw(int texSlot = 0);
@@ -95,7 +61,7 @@ private:
 
 	Meshes mMeshes = {};
 	Materials mMaterials = {};
-	PBRMaterials mPBRMaterials = {};
+
 	
 
 };

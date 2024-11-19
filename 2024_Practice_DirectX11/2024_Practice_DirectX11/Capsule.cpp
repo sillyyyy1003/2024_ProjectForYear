@@ -9,11 +9,18 @@ Capsule::Capsule() :Primitive(CAPSULE)
 {
 }
 
-void Capsule::Init(const char* filePath)
+void Capsule::Init(const char* filePath, int levels, int slices)
 {
 	CreateMesh(64, 64,1);
 	CreateMaterial();
 	CreateTexture(filePath);
+}
+
+void Capsule::Init(std::shared_ptr<Texture> tex,  int levels, int slices)
+{
+	CreateMesh(levels, slices, 1);
+	CreateMaterial();
+	LoadTexture(tex);
 }
 
 void Capsule::Update(float dt)
@@ -213,39 +220,16 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 	SetVertices(vtx);
 }
 
-void Capsule::CreateMaterial()
-{
-	mMaterial.material = {
-   Color(1.0f, 1.0f, 1.0f, 1.0f),		// ä¬ã´åı
-   Color(1.0f, 1.0f, 1.0f, 1.0f),		// ï\ñ êF
-   Color(1.0f, 0.5f, 0.5f, 0.2f),		// ãæñ îΩéÀ: specular power 1
-   Color(0.0f, 0.0f, 0.0f, 0.0f)		// é©î≠åıÇ»Çµ};
-	};
-}
-
-void Capsule::CreateTexture(const char* filePath)
-{
-	if (!filePath)
-	{
-		mMaterial.material.isTexEnable = false;
-		mMaterial.tex = nullptr;
-		return;
-	}
-
-	mMaterial.tex = std::make_shared<Texture>();
-	HRESULT hr = mMaterial.tex->Create(filePath);
-	if (FAILED(hr))
-	{
-		mMaterial.tex = nullptr;
-		mMaterial.material.isTexEnable = false;
-	}
-	mFilePath = filePath;
-}
 
 void Capsule::WriteDefShader()
 {
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	if (!mDefPS || !mDefVS)
+	{
+		DebugLog::LogError("ShaderFile is not set");
+		return;
+	}
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -269,7 +253,7 @@ void Capsule::WriteDefShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mDefVS->WriteShader(0, WVP);

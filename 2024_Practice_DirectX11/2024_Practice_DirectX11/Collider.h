@@ -27,7 +27,7 @@ public:
 	/// @param pos 位置
 	/// @param rot 回転
 	///	@param scale 拡大縮小の比率
-	virtual void Transform(DirectX::XMFLOAT3 pos,DirectX::XMVECTOR rot,DirectX::XMFLOAT3 scale) = 0;
+	virtual void Transform(DirectX::XMFLOAT3 pos,DirectX::XMVECTOR rot,DirectX::XMFLOAT3 scale){};
 
 	/// @brief コライダー大きさ
 	/// @param size 大きさ
@@ -35,9 +35,9 @@ public:
 	virtual void UpdateSize(float size) {};
 
 	virtual DirectX::XMFLOAT4 GetOrientation() { return { 0,0,0,1 }; };
-	virtual const DirectX::XMFLOAT3& GetCenter() = 0;
-	virtual const float GetRadius() { return 0; };
-	virtual const DirectX::XMFLOAT3& GetScale() { return { 0,0,0 }; };
+	virtual  DirectX::XMFLOAT3 GetCenter() = 0;
+	virtual DirectX::XMFLOAT3 GetScale() { return { 0,0,0 }; };
+	virtual float GetRadius() { return 0; };
 
 	virtual bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) = 0;
 
@@ -49,9 +49,6 @@ class BoxCollider :public Collider
 private:
 
 	DirectX::BoundingOrientedBox mCollider;
-	//std::unique_ptr<btBoxShape> mShape;	//あたり判定の形状を管理する
-	//std::unique_ptr<btCollisionObject> mBoxCollider;
-	//btTransform mTransform;	//移動、回転、拡大縮小などを管理する
 
 public:
 
@@ -76,8 +73,19 @@ public:
 	bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) override;
 
 	DirectX::XMFLOAT4 GetOrientation() override;
-	const DirectX::XMFLOAT3& GetCenter() override;
-	const DirectX::XMFLOAT3& GetScale() override;
+	 DirectX::XMFLOAT3 GetCenter() override;
+
+	/// @brief Get Box's Height・Width・Depth
+	DirectX::XMFLOAT3 GetScale() override;
+
+	/// @brief Get Box Extents
+	DirectX::XMFLOAT3 GetExtents();
+
+
+	void SetCenter(const DirectX::XMFLOAT3& _center) { mCollider.Center = _center; };
+	void SetExtents(const DirectX::XMFLOAT3& _extents) { mCollider.Extents = _extents; };
+	void SetOrientation(const DirectX::XMVECTOR rot);
+	void SetOrientation(const DirectX::XMFLOAT4 quaternion) { mCollider.Orientation = quaternion; };
 
 };
 
@@ -107,11 +115,11 @@ public:
 
 	/// @brief 中心点を取得
 	/// @return コライダーの中心点
-	const DirectX::XMFLOAT3& GetCenter() override { return mCollider.Center; };
+	DirectX::XMFLOAT3 GetCenter() override { return mCollider.Center; };
 
 	/// @brief 半径を取得
 	/// @return 半径
-	const float GetRadius() override { return mCollider.Radius; };
+	float GetRadius() override { return mCollider.Radius; };
 
 	void UpdateSize(float radius)override;
 };

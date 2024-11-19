@@ -29,7 +29,6 @@ SceneBase::~SceneBase()
 
 void SceneBase::_update(float dt)
 {
-
 	if (mpSubScene)
 		mpSubScene->_update(dt);
 	Update(dt);
@@ -90,7 +89,7 @@ void SceneBase::RemoveSubScene() const
 	// 直下のサブシーンを削除
 	mpSubScene->UnInit();
 
-	// 释放内存并将指针置空
+	// release and make the ptr nullptr
 	delete mpSubScene;
 }
 

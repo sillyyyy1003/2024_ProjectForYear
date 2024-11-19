@@ -32,7 +32,15 @@ PBRModel::~PBRModel()
 void PBRModel::Init(const char* filePath)
 {
 	Load(filePath);
-	LoadDefShader();
+	//LoadDefShader();
+
+}
+
+void PBRModel::InitWithoutTex(const char* file)
+{
+	LoadWithoutTex(file);
+	//LoadDefShader();
+
 }
 
 bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
@@ -71,7 +79,6 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		MeshBuffer mesh = {};
 
 		// 頂点の作成
-		//std::vector<Vertex::VtxPosNormalTex> vtx;
 		std::vector<Vertex::VtxPosNormalTangentTex> vtx;
 		vtx.resize(mScene->mMeshes[i]->mNumVertices);
 		for (unsigned int j = 0; j < vtx.size(); ++j)
@@ -89,9 +96,12 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 				XMFLOAT3(pos.x, pos.y, pos.z),
 				XMFLOAT3(normal.x, normal.y, normal.z),
 				XMFLOAT3(tangent.x,tangent.y,tangent.z),
-				DirectX::XMFLOAT2(uv.x, 1.0f - uv.y),
+				DirectX::XMFLOAT2(uv.x, 1-uv.y),
 			};
+			//todo:need to check
 		}
+	
+		mPBRVertices.push_back(vtx);
 
 		// インデックスの作成
 		std::vector<unsigned int> idx;
@@ -325,6 +335,124 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 	return true;
 }
 
+bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
+{
+	DebugLog::Log("モデル読み込み開始");
+
+	int flag = 0;
+	if (simpleMode)
+	{
+		flag |= aiProcess_Triangulate;					// 非三角ポリゴンを三角に割る
+		flag |= aiProcess_JoinIdenticalVertices;		// 同一位置頂点を一つに統合する
+		flag |= aiProcess_FlipUVs;						//　UV値をY軸を基準に反転させる
+		flag |= aiProcess_PreTransformVertices;			// ノードを一つに統合 !!アニメーション情報が消えることに注意!!
+		if (flip) flag |= aiProcess_MakeLeftHanded;		// 左手系座標に変換
+	}
+	else
+	{
+		flag |= aiProcessPreset_TargetRealtime_MaxQuality;	// リアルタイム レンダリング用にデータを最適化するデフォルトの後処理構成。
+		flag |= aiProcess_PopulateArmatureData;				// 標準的なボーン,アーマチュアの設定
+		if (flip) flag |= aiProcess_ConvertToLeftHanded;	// 左手系変更オプションがまとまったもの
+	}
+
+	// assimpで読み込み
+	mScene = importer.get()->ReadFile(file, flag);
+	if (!mScene)
+	{
+		Error(importer->GetErrorString());
+		DebugLog::Log("{} Assimpモデルロード失敗", file);
+		return false;
+	}
+
+	// メッシュの作成
+	aiVector3D zero(0.0f, 0.0f, 0.0f);
+	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
+	{
+		MeshBuffer mesh = {};
+
+		// 頂点の作成
+		//std::vector<Vertex::VtxPosNormalTex> vtx;
+		std::vector<Vertex::VtxPosNormalTangentTex> vtx;
+		vtx.resize(mScene->mMeshes[i]->mNumVertices);
+		for (unsigned int j = 0; j < vtx.size(); ++j)
+		{
+			// 値の吸出し
+			aiVector3D pos = mScene->mMeshes[i]->mVertices[j];
+			aiVector3D uv = mScene->mMeshes[i]->HasTextureCoords(0) ?
+				mScene->mMeshes[i]->mTextureCoords[0][j] : zero;
+			aiVector3D normal = mScene->mMeshes[i]->HasNormals() ?
+				mScene->mMeshes[i]->mNormals[j] : zero;
+			aiVector3D tangent = mScene->mMeshes[i]->HasTangentsAndBitangents() ?
+				mScene->mMeshes[i]->mTangents[j] : zero;
+			// 値を設定
+			vtx[j] = {
+				XMFLOAT3(pos.x, pos.y, pos.z),
+				XMFLOAT3(normal.x, normal.y, normal.z),
+				XMFLOAT3(tangent.x,tangent.y,tangent.z),
+				DirectX::XMFLOAT2(uv.x, 1-uv.y),
+			};
+		}
+		mPBRVertices.push_back(vtx);
+
+		// インデックスの作成
+		std::vector<unsigned int> idx;
+		idx.resize(mScene->mMeshes[i]->mNumFaces * 3); // faceはポリゴンの数を表す(１ポリゴンで3インデックス
+		for (unsigned int j = 0; j < mScene->mMeshes[i]->mNumFaces; ++j)
+		{
+			aiFace face = mScene->mMeshes[i]->mFaces[j];
+			int faceIdx = j * 3;
+			idx[faceIdx + 0] = face.mIndices[0];
+			idx[faceIdx + 1] = face.mIndices[1];
+			idx[faceIdx + 2] = face.mIndices[2];
+		}
+
+		// マテリアルの割り当て
+		mesh.materialID = mScene->mMeshes[i]->mMaterialIndex;
+
+		// メッシュを元に頂点バッファ作成
+		Mesh::MeshData desc = {};
+		desc.pVertex = vtx.data();
+		desc.vertexSize = sizeof(Vertex::VtxPosNormalTangentTex);
+		desc.vertexCount = static_cast<UINT>(vtx.size());
+		desc.pIndex = idx.data();
+		desc.indexSize = sizeof(unsigned int);
+		desc.indexCount = static_cast<UINT>(idx.size());
+		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		mesh.mesh = std::make_shared<Mesh>(desc);
+
+		// メッシュ追加
+		mMeshes.push_back(mesh);
+	}
+
+	//--- マテリアルの作成
+	// ファイルの探索
+	std::string dir = file;
+	dir = dir.substr(0, dir.find_last_of('/') + 1);
+	// マテリアル
+	aiColor3D color(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT4 diffuse(1.0f, 1.0f, 1.0f, 1.0f);
+	DirectX::XMFLOAT4 ambient(0.3f, 0.3f, 0.3f, 1.0f);
+
+	for (unsigned int i = 0; i < mScene->mNumMaterials; ++i)
+	{
+		PBRMaterial material = {};
+
+		// 各種パラメーター
+		float shininess;
+		material.material.diffuse = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS ?
+			DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f) : diffuse;
+		material.material.ambient = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS ?
+			DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f) : ambient;
+		shininess = mScene->mMaterials[i]->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS ? shininess : 0.0f;
+		material.material.specular = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS ?
+			DirectX::XMFLOAT4(color.r, color.g, color.b, shininess) : DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, shininess);
+
+		mMaterials.push_back(material);
+	}
+	DebugLog::Log("モデル読み込み完了");
+	return true;
+}
+
 void PBRModel::LoadDefShader()
 {
 	mDefPS = std::make_shared<PixelShader>();
@@ -346,13 +474,13 @@ void PBRModel::Draw(int texSlot)
 	auto it = mMeshes.begin();
 	while (it != mMeshes.end())
 	{
-		mPS->WriteShader(0, &mMaterials[it->materialID]);
 		mVS->SetShader();
 		mPS->SetShader();
 		
 		mPS->SetTexture(0, mMaterials[it->materialID].albedoTex.get());
 		mPS->SetTexture(1, mMaterials[it->materialID].metallicTex.get());
 		mPS->SetTexture(2, mMaterials[it->materialID].normalMap.get());
+		mPS->SetTexture(3, mMaterials[it->materialID].albedoTex.get());
 		it->mesh->Draw();
 		++it;
 	}
@@ -360,8 +488,14 @@ void PBRModel::Draw(int texSlot)
 
 void PBRModel::WriteDefShader()
 {
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	if (!mDefPS || !mDefVS)
+	{
+		DebugLog::LogError("ShaderFile is not set");
+		return;
+	}
+
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -382,15 +516,56 @@ void PBRModel::WriteDefShader()
 		DirectX::XMFLOAT4 lightDir;
 	};
 
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
-	};
+	Light light;
+	light.lightAmbient = dirLight->GetAmbient();
+	light.lightDiffuse = dirLight->GetDiffuse();
+	light.lightDir = Vector4(dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0);
+
+
 
 	mDefVS->WriteShader(0, WVP);
-	mDefVS->WriteShader(1, &eyePos);
-	mDefVS->WriteShader(2, &light);
 	mDefPS->WriteShader(0, &eyePos);
 	mDefPS->WriteShader(1, &light);
 }
+
+void PBRModel::LoadAlbedoTex(std::shared_ptr<Texture> tex)
+{
+	if (mMaterials.size() == 1)
+	{
+		mMaterials[0].albedoTex = tex;
+	}
+}
+
+void PBRModel::LoadNormalMapTex(std::shared_ptr<Texture> tex)
+{
+	if (mMaterials.size() == 1)
+	{
+		mMaterials[0].normalMap = tex;
+	}
+}
+
+void PBRModel::LoadMetallicMapTex(std::shared_ptr<Texture> tex)
+{
+	if (mMaterials.size() == 1)
+	{
+		mMaterials[0].metallicTex = tex;
+	}
+}
+
+void PBRModel::LoadAOTex(std::shared_ptr<Texture> tex)
+{
+	if (mMaterials.size() == 1)
+	{
+		mMaterials[0].aoTex = tex;
+	}
+}
+
+void PBRModel::LoadTex(PBRConfig::PBRTexList list)
+{
+	LoadAlbedoTex(list[PBRConfig::PBRTex::ALBEDO]);
+	LoadNormalMapTex(list[PBRConfig::PBRTex::NORMAL]);
+	LoadMetallicMapTex(list[PBRConfig::PBRTex::METALLIC]);
+	LoadAOTex(list[PBRConfig::PBRTex::AO]);
+}
+
+

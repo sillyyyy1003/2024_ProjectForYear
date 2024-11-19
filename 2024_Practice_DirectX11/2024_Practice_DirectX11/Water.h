@@ -23,10 +23,6 @@ namespace WaterDefault
 /// @brief ポーションの規定になる
 class Water
 {
-private:
-
-	
-
 protected:
 
 	//水の物理表現に関するパラメータ
@@ -49,15 +45,24 @@ protected:
 	float mDuration = 3.0f;		// 波の継続時間
 
 	//水の描画 //todo: make the model multi kinds
-	std::unique_ptr<Circle> mModel = nullptr;
+	std::unique_ptr<Primitive> mModel = nullptr;
 
-
+	std::string mObjectName;
 public:
 	
 	Water();
 	virtual ~Water() = default;
 
-	void Init(const char* filePath);
+	/// @brief Init object & creating new texture
+	/// @param filePath 
+	/// @param objName 
+	void Init(const char* filePath,const char* objName);
+
+	/// @brief Init Object with existing texture
+	/// @param tex 
+	/// @param objName 
+	void Init(std::shared_ptr<Texture> tex, const char* objName);
+
 
 	void Update(float dt);
 
@@ -68,6 +73,23 @@ public:
 
 	/// @brief WaterParamの内容をシェーダに書き込む
 	void WriteShader();
+
+
+
+	/// @brief Load Save Data & Init Object Data
+	/// @param data json fileData
+	/// @param objName dataName
+	void LoadSaveData(json data, const char* objName);
+
+	/// @brief オブジェクトのデータをjsonファイルに書き込み
+	/// @return 
+	json SaveData();
+
+	//Circle* GetModel() { return mModel.get(); };
+
+	void SetTexture(std::shared_ptr<Texture> tex) { mModel->LoadTexture(tex); };
+
+protected:
 
 
 	/// @brief 波の中心点を設定する
@@ -90,20 +112,7 @@ public:
 	/// @param duration 波の継続時間
 	void SetWaveDuration(float duration);
 
-	/// @brief Load Save Data & Init Object Data
-	/// @param data json fileData
-	/// @param objName dataName
-	virtual void LoadSaveData(json data, const char* objName);
-
-	/// @brief オブジェクトのデータをjsonファイルに書き込み
-	/// @return 
-	virtual json SaveData();
-	
 	void ResetMaterial();
-
-	Circle* GetModel() { return mModel.get(); };
-
-protected:
 
 	/// @brief 後処理(Shaderに書き込み)
 	/// @param dt delta Time

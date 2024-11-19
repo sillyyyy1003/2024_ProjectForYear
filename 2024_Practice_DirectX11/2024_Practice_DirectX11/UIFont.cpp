@@ -1,159 +1,85 @@
 ﻿#include "UIFont.h"
 
+#include "GampApp.h"
 #include "Geometry.h"
+#include "RenderState.h"
+
+using namespace DirectX::SimpleMath;
+using namespace DirectX;
 
 UIFont::UIFont()
 {
 }
 
-void UIFont::Init(const char* filePath,DirectX::XMFLOAT2 fontSize)
+
+
+void UIFont::Init(const char* filePath,DirectX::XMFLOAT2 charSize)
 {
-	mSize = fontSize;
-	mOriginalSize = mSize;
+	mCharSize = charSize;
+    mOriginalCharSize = mCharSize;
 	mText.resize(UITextOption::defaultMaxChar);
 
-    //Init MaterialData
-    mTexData.material = {
-        Color(1.0f, 1.0f, 1.0f, 1.0f),		// 環境光
-        Color(1.0f, 1.0f, 1.0f, 1.0f),		// 表面色
-        Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
-        Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
-    };
     mTexData.tex = std::make_shared<Texture>();
     mTexData.tex->Create(filePath);
 
 	for (int i = 0; i < UITextOption::defaultMaxChar; i++)
 	{
-		mText[i] = std::make_shared<CanvasUI>();
-		//mText[i]->Init(filePath, UITextOption::defaultSplit);
-        mText[i]->Init(mTexData, UITextOption::defaultSplit);
-		mText[i]->InitCanvasSize(mSize.x,mSize.y);
+		mText[i] = std::make_shared<UI_Square>();
+        mText[i]->Init(filePath,0, UITextOption::defaultSplit);
+        mText[i]->SetScale(mCharSize.x, mCharSize.y);
+        mText[i]->LoadDefShader("Assets/Shader/VS_DefaultUI.cso", "Assets/Shader/PS_UIFont.cso");
 	}
+#ifdef _DEBUG
+    InitDebugFunction();
+#endif
+
+
+}
+
+void UIFont::Init(std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize)
+{
+    mCharSize = charSize;
+    mOriginalCharSize = mCharSize;
+    mText.resize(UITextOption::defaultMaxChar);
+
+    mTexData.tex = fontTex;
+    for (int i = 0; i < UITextOption::defaultMaxChar; i++)
+    {
+        mText[i] = std::make_shared<UI_Square>();
+        mText[i]->Init(fontTex, 0, UITextOption::defaultSplit);
+        mText[i]->SetScale(mCharSize.x, mCharSize.y);
+        mText[i]->LoadDefShader("Assets/Shader/VS_DefaultUI.cso","Assets/Shader/PS_UIFont.cso");
+    }
 
 #ifdef _DEBUG
-
-    mDebugAnchorPos = std::make_unique<CanvasUI>();
-    mDebugAnchorPos->Init(nullptr);
-
+    InitDebugFunction();
 #endif
+}
+
+void UIFont::SetFont(std::shared_ptr<Texture> fontTex)
+{
+    mTexData.tex.reset();
+    mTexData.tex = fontTex;
+    for(int i=0;i<UITextOption::defaultMaxChar;i++)
+    {
+        mText[i]->SetTexture(fontTex);
+    }
+
 
 }
 
 void UIFont::SetFontRectWidth(float width)
 {
-    if(!isSetWidth)
-    {
-        mFontWidthRectWidth = width;
-        isSetWidth = true;
-    }
-
+    if (mBlockWidth == width)return;
+	mBlockWidth = width;
+	mOriginalBlockWidth = width;
 }
 
-
-void UIFont::UpdateChar(const char* str, UITextOption::TextAlign align, UITextOption::AnchorAlign anchor)
-{
-    /*
-    int charNum = static_cast<int>(strlen(str));
-
-    //calculate total width & height
-    float totalWidth = 0.0f;
-    float lineHeight = mSize.y;
-    float totalHeight = lineHeight;
-    float lineWidth = 0.0f;//current lineWidth
-
-    int lineCount = 1;
-
-    for (int i = 0; i < charNum; i++)
-    {
-        if (str[i] == '\n' || (lineWidth + mSize.x > mFontWidthRectWidth && lineWidth > 0))
-        {
-        	totalHeight += lineHeight; //totalHeightを加算
-            totalWidth = std::max(totalWidth, lineWidth);
-            lineWidth = 0.0f;//Reset Line Width
-            lineCount++;
-        }
-
-        lineWidth += mSize.x;
-    }
-
-    totalWidth = std::max(totalWidth, lineWidth);  //last line
-
-	// Set Anchor pos
-    float anchorPos.x = 0.0f, anchorPos.y = 0.0f;
-    switch (anchor)
-    {
-    case UITextOption::AnchorAlign::TopLeft:      anchorPos.x = 0.0f; anchorPos.y = 0.0f; break;
-    case UITextOption::AnchorAlign::TopCenter:    anchorPos.x = -totalWidth / 2; anchorPos.y = 0.0f; break;
-    case UITextOption::AnchorAlign::TopRight:     anchorPos.x = -totalWidth; anchorPos.y = 0.0f; break;
-    case UITextOption::AnchorAlign::CenterLeft:   anchorPos.x = 0.0f; anchorPos.y = totalHeight / 2; break;
-    case UITextOption::AnchorAlign::Center:       anchorPos.x = -totalWidth / 2; anchorPos.y = totalHeight / 2; break;
-    case UITextOption::AnchorAlign::CenterRight:  anchorPos.x = -totalWidth; anchorPos.y = totalHeight / 2; break;
-    case UITextOption::AnchorAlign::BottomLeft:   anchorPos.x = 0.0f; anchorPos.y = totalHeight; break;
-    case UITextOption::AnchorAlign::BottomCenter: anchorPos.x = -totalWidth / 2; anchorPos.y = totalHeight; break;
-    case UITextOption::AnchorAlign::BottomRight:  anchorPos.x = -totalWidth; anchorPos.y = totalHeight; break;
-    }
-
-    // Draw the chars
-    float currentX = anchorPos.x;
-    float currentY = anchorPos.y;
-    int lineCharCount = 0;
-
-    for (int i = 0; i < charNum; i++)
-    {
-        char c = str[i];
-
-		if (c == '\n')
-        {
-            currentX = anchorPos.x;      
-            currentY -= lineHeight; 
-            lineCharCount = 0;
-            continue;//Skip this loop to avoid the /n being drawn
-        }
-
-        if(currentX + mSize.x > anchorPos.x + mFontWidthRectWidth && lineCharCount > 0)
-        {
-            currentX = anchorPos.x;
-            currentY -= lineHeight;
-            lineCharCount = 0;
-        
-        }
-
-        // 根据 TextAlign 调整每行的水平对齐方式
-        if (lineCharCount == 0)
-        {
-            switch (align)
-            {
-            case UITextOption::TextAlign::Left:   currentX = anchorPos.x; break;
-            case UITextOption::TextAlign::Center: currentX = anchorPos.x + (totalWidth - lineWidth) / 2; break;
-            case UITextOption::TextAlign::Right:  currentX = anchorPos.x + (totalWidth - lineWidth); break;
-            }
-        }
-
-        //Set FrameX/FrameY
-        int frameX = ((int)c - 32) % UITextOption::defaultSplit.x;
-        mText[i]->GetUVAnimation()->SetFrameX(frameX);
-
-        int frameY = ((int)c - 32) / UITextOption::defaultSplit.x;
-        mText[i]->GetUVAnimation()->SetFrameY(frameY);
-
-        // Set Char Pos
-        mText[i]->mTransform.SetPosition(currentX, currentY, 0.1f);
-
-        // Update Next Char
-        currentX += mSize.x;
-        lineCharCount++;
-
-        //Update UV Animation
-        mText[i]->Update();
-    }
-	*/
-
-}
 
 void UIFont::UpdateCharSize() noexcept
 {
     //When the screen is resized
-    if(gD3D->GetResized())
+    if(gD3D->GetResized()||GetFontSizeChanged())
     {
         Vector2 ratio={0,0};
         //Get Change Ratio
@@ -161,9 +87,14 @@ void UIFont::UpdateCharSize() noexcept
         ratio.y = gD3D->GetWinHeight()/ WIN_HEIGHT;
 
         //Calculate Size
-        mSize = mOriginalSize * ratio;
-        //Calculate anchor pos
-        mAnchorPos = mOriginalPos * ratio;
+        mCharSize = mOriginalCharSize * ratio * mFontSize;
+
+        //Calculate winWidth
+        mBlockWidth = mOriginalBlockWidth * ratio.x;
+
+        //Calculate anchor pos //todo:根据不同的排列方式，anchor的变换方式也 不一样
+        mAnchorPos = { mAnchorPos.x * ratio.x,mAnchorPos.y * ratio.y };
+
     }
 }
 
@@ -181,112 +112,186 @@ void UIFont::UpdateContents(std::string str) noexcept
 
 void UIFont::UpdatePosition()
 {
-    int charNum = mContent.size();
 
-    float currentLineWidth = 0.0f;
-	float totalLineHeight = 0.0f;
-    float totalLineWidth = 0.0;
-    float lineHeight = mSize.y;
-    int lineCount = 1;//行数
-    
-    // 计算行数和总宽度、高度
-    for (int i = 0; i < charNum; i++)
-    {
-        // 换行处理
-        if (mContent[i] == '\n' || (currentLineWidth + mSize.x) > mFontWidthRectWidth)
+	int charNum = (int)mContent.size();
+    float charWidth = mOriginalCharSize.x * mFontSize;
+    float charHeight = mOriginalCharSize.y * mFontSize;
+	// Calculate total width and height
+    float lineHeight = mCharSize.y + mLineSpacing;
+	float lineWidth = 0.0f; // current line width
+	std::vector<float> lines; // store line widths for alignment
+
+	for (int i = 0; i < charNum; i++)
+	{
+        if (mContent[i] == '\n')
         {
-            lineCount++;
-            currentLineWidth = 0.0f;
-            totalLineHeight += lineHeight;
+            lines.push_back(lineWidth);
+            lineWidth = 0.0f; // Reset line width for the new line
+            continue;
         }
-        currentLineWidth += mSize.x;
-        totalLineWidth = std::max(totalLineWidth, currentLineWidth);  // 记录最宽的行宽
-    }
 
-    // 计算锚点起始位置
-    float anchorX = mAnchorPos.x;
-    float anchorY = mAnchorPos.y;
+	    if (lineWidth + charWidth > mBlockWidth && lineWidth > 0)
+	    {
+	        lineWidth = std::max(mBlockWidth, lineWidth);
+	        lines.push_back(lineWidth);
+	        lineWidth = 0.0f; // Reset line width for the new line
+        }
 
-    switch (mAnchorAlign)
-    {
+	    lineWidth += charWidth;
+	}
+
+	lineWidth = std::min(mBlockWidth, lineWidth); // last line width
+	lines.push_back(lineWidth); // store the last line width
+    float totalHeight = lines.size() * mCharSize.y + lines.size() * mLineSpacing;
+
+
+	// Set Anchor position
+	switch (mAnchorAlign)
+	{
     case UITextOption::AnchorAlign::TopLeft:
-        // 使用原始的 anchorX 和 anchorY
+        startX = mAnchorPos.x;
+        endX = mAnchorPos.x + mBlockWidth;
+        startY = mAnchorPos.y;
+        endY = mAnchorPos.y - totalHeight;
         break;
     case UITextOption::AnchorAlign::TopCenter:
-        anchorX -= totalLineWidth / 2;
+        startX = mAnchorPos.x - mBlockWidth / 2;
+        endX = startX + mBlockWidth;
+        startY = mAnchorPos.y;
+        endY = mAnchorPos.y - totalHeight;
         break;
     case UITextOption::AnchorAlign::TopRight:
-        anchorX -= totalLineWidth;
+        startX = mAnchorPos.x - mBlockWidth;
+        endX = mAnchorPos.x;
+        startY = mAnchorPos.y;
+        endY = mAnchorPos.y - totalHeight;
         break;
     case UITextOption::AnchorAlign::CenterLeft:
-        anchorY -= totalLineHeight / 2;
+        startX = mAnchorPos.x ;
+        endX = mAnchorPos.x + mBlockWidth;
+        startY = mAnchorPos.y + totalHeight / 2 ;
+        endY = mAnchorPos.y - totalHeight / 2;
         break;
     case UITextOption::AnchorAlign::Center:
-        anchorX -= totalLineWidth / 2;
-        anchorY -= totalLineHeight / 2;
+        startX = mAnchorPos.x - mBlockWidth / 2;
+        endX = startX + mBlockWidth;
+        startY = mAnchorPos.y + totalHeight / 2;
+        endY = mAnchorPos.y - totalHeight / 2;
         break;
     case UITextOption::AnchorAlign::CenterRight:
-        anchorX -= totalLineWidth;
-        anchorY -= totalLineHeight / 2;
-        break;
+        startX = mAnchorPos.x - mBlockWidth;
+        endX = mAnchorPos.x;
+        startY = mAnchorPos.y + totalHeight / 2;
+        endY = mAnchorPos.y - totalHeight / 2;
+		break;
     case UITextOption::AnchorAlign::BottomLeft:
-        anchorY -= totalLineHeight;
+        startX = mAnchorPos.x;
+        endX = mAnchorPos.x + mBlockWidth;
+        startY = mAnchorPos.y + totalHeight;
+        endY = mAnchorPos.y;
         break;
     case UITextOption::AnchorAlign::BottomCenter:
-        anchorX -= totalLineWidth / 2;
-        anchorY -= totalLineHeight;
+        startX = mAnchorPos.x - mBlockWidth / 2 ;
+        endX = mAnchorPos.x + mBlockWidth / 2;
+        startY = mAnchorPos.y + totalHeight;
+        endY = mAnchorPos.y;
         break;
     case UITextOption::AnchorAlign::BottomRight:
-        anchorX -= totalLineWidth;
-        anchorY -= totalLineHeight;
-        break;
-    }
+        startX = mAnchorPos.x - mBlockWidth;
+        endX = mAnchorPos.x;
+        startY = mAnchorPos.y + totalHeight;
+        endY = mAnchorPos.y;
+		break;
+	}
 
-    // 从锚点开始的字符位置更新
-    float currentX = anchorX;
-    float currentY = anchorY;
-    currentLineWidth = 0.0f;
+    // Adjust anchor position by half character size to counteract character center anchor
+    float offsetX = charWidth / 2.0f;
+    float offsetY = charHeight / 2.0f;
+	// Draw the characters
+    float currentX = 0;
+    float currentY = startY - offsetY;
+   
+	int lineIndex = 0;//current line index
+    int currentLineCharIndex = 0;
 
-    for (int i = 0; i < charNum; i++)
-    {
-        char c = mContent[i];
+	for (int i = 0; i < charNum; i++)
+	{
+	    char c = mContent[i];
 
-        // 检测换行
-        if (c == '\n' || (currentLineWidth + mSize.x) > mFontWidthRectWidth)
+        // Newline or wrap to a new line
+        if (c == '\n')
         {
-            currentY += lineHeight;  // 换到下一行
-            currentLineWidth = 0.0f;
-
-            // 根据 TextAlign 调整行的起始位置
-            switch (mTextAlign)
-            {
-            case UITextOption::TextAlign::Left:
-                currentX = anchorX;
-                break;
-            case UITextOption::TextAlign::Center:
-                currentX = anchorX + (mFontWidthRectWidth - currentLineWidth) / 2;
-                break;
-            case UITextOption::TextAlign::Right:
-                currentX = anchorX + mFontWidthRectWidth - currentLineWidth;
-                break;
-            }
+            currentY -= lineHeight;
+            currentLineCharIndex = 0;
+            lineIndex++;
+            continue;
         }
 
-        // 设置字符的实际位置
-        mText[i]->mTransform.SetPosition(currentX, currentY, 0.1f);
+        if (currentLineCharIndex * charWidth + offsetX > mBlockWidth && lineIndex < lines.size())
+        {
+           
+            currentY -= lineHeight;
+            currentLineCharIndex = 0;
+            lineIndex++;
+        }
 
-        // 更新到下一个字符的位置
-        currentX += mSize.x;
-        currentLineWidth += mSize.x;
-        //Update UV Animation
-        mText[i]->Update();
-    }
+		switch (mTextAlign)
+        {
+        case UITextOption::TextAlign::Left:
+            currentX = startX + offsetX + currentLineCharIndex * charWidth;
+            break;
+        case UITextOption::TextAlign::Center:
+            currentX = (startX + endX) / 2 - lines[lineIndex] / 2 + offsetX + currentLineCharIndex * charWidth;
+            break;
+        case UITextOption::TextAlign::Right:
+            currentX = endX - lines[lineIndex] + offsetX + currentLineCharIndex * charWidth;
+            break;
+        }
+
+	    // Calculate frameX and frameY for character texture
+	    int frameX = ((int)c - 32) % UITextOption::defaultSplit.x;
+	    int frameY = ((int)c - 32) / UITextOption::defaultSplit.x;
+	    mText[i]->GetAnimation()->SetFrameX(frameX);
+	    mText[i]->GetAnimation()->SetFrameY(frameY);
+
+	    // Set character position
+        mText[i]->SetPosition({ currentX, currentY, posZ });
+        mText[i]->SetScale({ charWidth,charHeight });
+
+	    // Update next character position
+        currentLineCharIndex++;
+	    // Update UV Animation
+	    mText[i]->Update();
+	}
+}
+
+void UIFont::SetFontColor(DirectX::XMFLOAT4 color)
+{
+    for (int i = 0; i < mText.size(); i++)
+	{
+        mText[i]->SetDiffuseColor(color);
+      
+	}
+}
+
+void UIFont::InitDebugFunction()
+{
+    mDebugAnchorPos = std::make_unique<UI_Square>();
+    mDebugAnchorPos->Init(nullptr);
+    mDebugAnchorPos->SetScale(10, 10);
+    mDebugAnchorPos->SetDiffuseColor(Color(1.0f, 0.0f, 0.0f, 0.4f));
+    mDebugAnchorPos->LoadDefShader();
+
+    mDebugRect = std::make_unique<UI_Square>();
+    mDebugRect->Init(nullptr);
+    mDebugRect->SetScale(UITextOption::defaultFontRectWidth, UITextOption::defaultFontRectWidth);
+    mDebugRect->SetDiffuseColor(Color(0.2f, 0.2f, 0.2f, 0.4f));
+    mDebugRect->LoadDefShader();
 }
 
 void UIFont::DebugFunction()
 {
 	#ifdef _DEBUG
-	  
 
 	    if (ImGui::Begin("FontSet"))
 	    {
@@ -310,49 +315,71 @@ void UIFont::DebugFunction()
                 mAnchorAlign = static_cast<UITextOption::AnchorAlign>(selectedAnchorAlign);
             }
 
-            ImGui::Text("Selected Text Align: %s", UITextOption::TextAlignToString(mTextAlign));
-            ImGui::Text("Selected Anchor Align: %s", UITextOption::AnchorAlignToString(mAnchorAlign));
+            float fontSize = mFontSize;
+            ImGui::InputFloat("FontSize",&mFontSize);
+            if (fontSize != mFontSize)
+                NotifyFontSizeChanged();
+
+            ImGui::InputFloat("LineSpacing", &mLineSpacing);
+
+            float blockSize = mBlockWidth;
+            ImGui::InputFloat("BlockWidth", &blockSize);
+            SetFontRectWidth(blockSize);
+
 	    }
 
 	    ImGui::End();
 	#endif
 }
 
+
 void UIFont::Update()
 {
-
     DebugFunction();
     UpdateCharSize();
     UpdatePosition();
 
 #ifdef _DEBUG
-    mDebugAnchorPos->mTransform.SetPosition(mAnchorPos.x,mAnchorPos.y,0.1f);
+    mDebugAnchorPos->SetPosition({ mAnchorPos.x,mAnchorPos.y,0.1f });
+    mDebugAnchorPos->Update();
+
+	float posX = (startX + endX) / 2;
+	float posY = (startY + endY) / 2;
+
+	float width = endX - startX;
+    float height = startY - endY;
+    mDebugRect->SetPosition({ posX, posY, posZ + 0.05f });
+    mDebugRect->SetScale(width, height);
+    mDebugRect->Update();
+
 #endif
 
 }
 
 void UIFont::Draw()
 {
-	for (int i = 0; i < mText.size(); i++)
-	{
-		mText[i]->Draw();
-	}
+    for (int i = 0; i < mText.size(); i++)
+    {
+        mText[i]->Draw();
+    }
 
 #ifdef _DEBUG
+    GameApp::SetBlendState(RenderState::BSTransparent);
     mDebugAnchorPos->Draw();
+    mDebugRect->Draw();
 #endif
 }
 
-void UIFont::ResetAnchorPos(float x, float y)
+void UIFont::SetAnchorPos(float x, float y)
 {
     mAnchorPos = { x,y };
-    mOriginalPos = mAnchorPos;
+    mOriginalAnchorPos = mAnchorPos;
 }
 
-void UIFont::ResetAnchorPos(DirectX::XMFLOAT2 anchorPos)
+void UIFont::SetAnchorPos(DirectX::XMFLOAT2 anchorPos)
 {
     mAnchorPos = anchorPos;
-    mOriginalPos = mAnchorPos;
+    mOriginalAnchorPos = mAnchorPos;
 }
 
 void UIFont::SetContent(const char* str)
@@ -371,9 +398,9 @@ void UIFont::SetTextAlign(UITextOption::TextAlign align)
     mTextAlign = align;
 }
 
-void UIFont::ResetSize(DirectX::XMFLOAT2 _size)noexcept
+void UIFont::SetFontSize(DirectX::XMFLOAT2 _size)noexcept
 {
-    mSize = _size;
-    mOriginalSize = mSize;
+    mCharSize = _size;
+    mOriginalCharSize = mCharSize;
 
 }

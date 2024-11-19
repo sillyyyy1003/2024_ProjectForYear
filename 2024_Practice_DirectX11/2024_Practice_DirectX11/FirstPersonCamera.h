@@ -32,6 +32,9 @@ public:
     /// @param up ã•ûŒü
     void LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
 
+
+    void LookAt(const DirectX::XMFLOAT3& target);
+
     /// @brief ‚ ‚é•ûŒü‚É‰ˆ‚Á‚ÄŠÏ@
     /// @param pos ƒJƒƒ‰‚ÌˆÊ’u
     /// @param to •ûŒü

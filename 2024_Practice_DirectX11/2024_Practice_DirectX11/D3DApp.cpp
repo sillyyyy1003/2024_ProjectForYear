@@ -57,11 +57,18 @@ void D3DApp::InitDX(HINSTANCE hInstance, const std::wstring& windowName, int ini
 
 void D3DApp::UnInit()
 {
+    Microsoft::WRL::ComPtr<ID3D11InfoQueue> infoQueue;
+    if (SUCCEEDED(gD3D->GetDevice()->QueryInterface(__uuidof(ID3D11InfoQueue), reinterpret_cast<void**>(infoQueue.GetAddressOf()))))
+    {
+        infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
+        infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
+    }
+
+
     if (mContext)
     {
         mContext->ClearState();
     }
-
 }
 
 
@@ -419,7 +426,7 @@ bool D3DApp::InitDirect3D()
 	//******************************************
 	// Create D3D device& D3D context
 	//******************************************
-    UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;	// Direct2D需要支持BGRA格式
+    UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUGGABLE;	// Direct2D需要支持BGRA格式
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif

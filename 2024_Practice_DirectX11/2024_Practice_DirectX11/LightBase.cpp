@@ -6,22 +6,22 @@ LightBase::LightBase()
 {
 }
 
-void LightBase::SetPos(const DirectX::XMFLOAT3& _pos)
+void LightBase::SetPosition(const DirectX::XMFLOAT3& _pos)
 {
 	mPos = _pos;
 }
 
-void LightBase::SetPos(float* _pos)
+void LightBase::SetPosition(float* _pos)
 {
 	mPos = Vector3(_pos[0], _pos[1], _pos[2]);
 }
 
-void LightBase::SetDir(const DirectX::XMFLOAT3& _dir)
+void LightBase::SetDirection(const DirectX::XMFLOAT3& _dir)
 {
 	mDir = _dir;
 }
 
-void LightBase::SetDir(float* _dir)
+void LightBase::SetDirection(float* _dir)
 {
 	mDir = Vector3(_dir[0], _dir[1], _dir[2]);
 }

@@ -26,7 +26,7 @@ void PointLight::Update(float dt)
 		//à íu
 		float pos[3] = { mPos.x,mPos.y,mPos.z};
 		ImGui::InputFloat3("Position", pos);
-		SetPos(pos);
+		SetPosition(pos);
 
 		//å∏êä
 		float attenuation[3] = { mAttenuation.x,mAttenuation.y,mAttenuation.z };

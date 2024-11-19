@@ -2,48 +2,45 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Object.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_InterActiveObjectPBRModel.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_ButtonUI.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Object.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_PBRModel.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_ButtonUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Primitives.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_PBRModel.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_DefaultUI.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UliObj.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_DefaultUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Water.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UIFont.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Box.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Water.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_PBRModel.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_PBRModel.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Primitives.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Primitives.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_DefaultUI.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_DefaultUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_UliObj.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Water.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\VS_Water.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

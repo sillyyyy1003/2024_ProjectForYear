@@ -11,6 +11,7 @@ public:
 	std::unique_ptr<Mesh> mMesh = nullptr;
 	DirectX::XMFLOAT2 mTexUV = { 1,1 };
 
+
 public:
 
 	Square();
@@ -25,6 +26,11 @@ public:
 	/// @param _fileName 
 	/// @param slices 分割数
 	void Init(const char* _fileName, int slices);
+
+	/// @brief Create square with existing;
+	/// @param slices
+	///	@param tex
+	void Init(std::shared_ptr<Texture> tex, int slices);
 	
 	void Update(float dt);
 	void Draw(int texSlot = 0);
@@ -44,8 +50,6 @@ public:
 	/// @param slices 分割数
 	void CreateMesh(UINT slices);
 
-	void CreateMaterial();
-	void CreateTexture(const char* _fileName);
 
 	/// @brief Default Shaderに使われるデータの書き込み
 	void WriteDefShader();

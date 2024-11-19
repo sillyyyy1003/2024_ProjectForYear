@@ -48,6 +48,13 @@ void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, cons
    
 }
 
+void FirstPersonCamera::LookAt(const DirectX::XMFLOAT3& target)
+{
+    DirectX::XMFLOAT3 up = this->GetDefaultUpAxis();
+    mTransform.LookAt(target, up);
+
+}
+
 void FirstPersonCamera::LookTo(const XMFLOAT3& pos, const XMFLOAT3& to, const XMFLOAT3& up)
 {
     mTransform.SetPosition(pos);
@@ -122,7 +129,6 @@ void FirstPersonCamera::LoadSaveData(json data, const char* objName)
 
 void FirstPersonCamera::UpdateState()
 {
-
     CameraKind prev = (CameraKind)mState;
 
     if (KInput::IsKeyPress(VK_MENU))//ALT
@@ -142,6 +148,8 @@ void FirstPersonCamera::UpdateState()
 
     if (prev != mState)
         GetCursorPos(&mOldPos);
+
+
 }
 
 void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
@@ -179,5 +187,13 @@ void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
         MoveForward(gD3D->GetMoveUnit() * 0.2f);
         gD3D->SetMoveUnit(0);
     }
+
+#ifdef _DEBUG
+
+    
+
+
+	#endif
+
 }
 

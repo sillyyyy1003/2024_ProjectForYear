@@ -151,14 +151,14 @@ void RenderState::InitAll(ID3D11Device* device)
     auto& rtDesc = blendDesc.RenderTarget[0];
 
     // Alpha-To-Coverage模式
-    blendDesc.AlphaToCoverageEnable = true;
+    blendDesc.AlphaToCoverageEnable = TRUE;
     HR(device->CreateBlendState(&blendDesc, BSAlphaToCoverage.GetAddressOf()));
 
     // alpha blend
     // Color = SrcAlpha * SrcColor + (1 - SrcAlpha) * DestColor 
     // Alpha = SrcAlpha
-    blendDesc.AlphaToCoverageEnable = false;
-    rtDesc.BlendEnable = true;
+    blendDesc.AlphaToCoverageEnable = FALSE;
+    rtDesc.BlendEnable = TRUE;
     rtDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;
     rtDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
     rtDesc.BlendOp = D3D11_BLEND_OP_ADD;

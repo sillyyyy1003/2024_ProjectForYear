@@ -297,15 +297,12 @@ namespace Vertex
 //todo
 struct Material
 {
-	DirectX::XMFLOAT4 ambient;	// 環境光 ka
-	DirectX::XMFLOAT4 diffuse;	// 拡散反射 kd
-	DirectX::XMFLOAT4 specular; // 鏡面反射 ks 
-	//specular={ specPower スペキュラの絞り,metallic メタリック,smooth スムース,blank}
-	DirectX::XMFLOAT4 emission; // 反射 ke
+	DirectX::XMFLOAT4 ambient = { 0.5f, 0.5f, 0.5f, 0.5f };	// 環境光 ka
+	DirectX::XMFLOAT4 diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };	// 拡散反射 kd
+	DirectX::XMFLOAT4 specular = { 1.0f, 0.5f, 0.5f, 0.2f }; // 鏡面反射 ks 
+	DirectX::XMFLOAT4 emission = { 0.0f, 0.0f, 0.0f, 0.0f }; // 反射 ke 自発光なし
 	BOOL isTexEnable = true;
 	float dummy[2] = {};
-
-	
 };
 
 namespace Light

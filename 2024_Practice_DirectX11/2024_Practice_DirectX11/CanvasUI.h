@@ -53,9 +53,11 @@ public:
 
 	virtual void Init(MaterialData& _materialData, DirectX::XMINT2 _split = { 1,1 });
 
+	virtual void Init(std::shared_ptr<Texture> tex, DirectX::XMINT2 _split = { 1,1 });
+
 	/// @brief 位置の初期化
 	/// @param pos ピクセル位置
-	virtual void InitPosition(DirectX::XMFLOAT3 pos);
+	virtual void SetPosition(DirectX::XMFLOAT3 pos);
 
 	/// @brief Load Save Data & Init Object Data
 	/// @param data json fileData
@@ -69,13 +71,19 @@ public:
 	virtual void Draw();
 
 	/// @brief Canvasのサイズを設定
-	/// @param x 幅
-	/// @param y 高
-	void InitCanvasSize(float x, float y);
+	/// @param width 幅
+	/// @param height 高
+	void SetCanvasSize(float width, float height);
 
 	/// @brief 自動並び替え描画
 	/// @param z 
 	void SetPosZ(float z);
+
+
+	/// @brief Set Canvas position
+	/// @param x 
+	/// @param y 
+	void SetPosition(float x, float y);
 
 
 	/// @brief テクスチャのファイルパスを取得
@@ -102,6 +110,17 @@ public:
 
 	UVAnimation* GetUVAnimation() { return mUvAnimation.get(); };
 
+	const DirectX::XMFLOAT4& GetDiffuseColor() { return mMaterial.material.diffuse; };
+
+	/// @brief 色設定
+	/// @param color 
+	void SetColor(DirectX::XMFLOAT4 color);
+
+	/// @brief 透明度設定
+	/// @param _transparency 
+	void SetTransparency(float _transparency);
+
+	void LoadPSShader(const char* filePath);
 protected:
 
 	/// @brief メッシュ作成
@@ -123,8 +142,12 @@ protected:
 	/// @param _materialData 作成されているマテリアルデータ
 	void CreateMaterial(MaterialData& _materialData);
 
+	void CreateMaterial(std::shared_ptr<Texture> tex);
+
 	/// @brief Load Default Shader
 	virtual void LoadShader();
+
+
 
 	/// @brief シェーダファイルをリセット
 	/// @param PSFile PS file path

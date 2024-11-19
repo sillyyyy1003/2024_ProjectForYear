@@ -1,6 +1,6 @@
 //Use Lambert Model
-static const float PI = 3.1415926f; // ƒÎ
 #include "LightHelper.hlsli"
+static const float PI = 3.1415926f; // ƒÎ
 struct PS_IN
 {
     float4 pos : SV_POSITION0;
@@ -50,12 +50,6 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	}
 
 	float3 normal = normalize(pin.normal);
-
-	if (!frontFace)
-	{
-		normal = -normal;
-	}
-
 	float3 toEye = normalize(-eyePos.xyz);
 
 	//ŠÂ‹«ŒõŒvŽZ

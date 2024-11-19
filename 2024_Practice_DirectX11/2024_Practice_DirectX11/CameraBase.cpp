@@ -54,8 +54,17 @@ void CameraBase::ResetCamera() noexcept
 DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos) noexcept
 {
 	DirectX::XMFLOAT3 worldPos={};
-	ScreenToClient(gD3D->MainWnd(), &mousePos); // 转换为窗口内坐标
-	XMVECTOR screenPos = XMVectorSet((float)mousePos.x, (float)mousePos.y, 0.0f, 1.0f);
+	XMVECTOR screenPos;
+
+	//To avoid error that mouse cursor is out of the client
+	if(ScreenToClient(gD3D->MainWnd(), &mousePos))
+	{
+		screenPos = XMVectorSet((float)mousePos.x, (float)mousePos.y, 0.0f, 1.0f);
+	}else
+	{
+		screenPos = { 0.0,0.0f,0.0f, 1.0f };
+	}
+	
 
 	XMVECTOR worldPosVec = XMVector3Unproject(
 		screenPos,

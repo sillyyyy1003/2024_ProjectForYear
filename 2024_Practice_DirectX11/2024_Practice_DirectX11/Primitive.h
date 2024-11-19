@@ -27,6 +27,19 @@ struct MaterialData
 };
 
 
+namespace PBRConfig
+{
+	enum class PBRTex
+	{
+		ALBEDO,
+		METALLIC,
+		NORMAL,
+		AO,
+	};
+
+	using PBRTexList = std::unordered_map<PBRTex, std::shared_ptr<Texture>>;
+}
+
 
 /// <summary>
 /// 基本モデル（Cube/Sphere/Cone/Capsule...）
@@ -49,28 +62,32 @@ protected:
 
 	std::string mFilePath;
 
+	
 public:
 
 	/// @brief 大きさ・位置・回転などの情報
 	Transform mTransform = {};
-
 	/// @brief 頂点データの書き換え用
 	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
-
 public:
 	Primitive(PrimitiveKind kind);
 	virtual ~Primitive() override;
 
 	virtual void CreateMesh(UINT levels, UINT slices){};
 	virtual void CreateMesh(UINT slices) {};
+	
 
-	virtual void Init(const char* filePath = nullptr) = 0;
+	virtual void Init(const char* filePath = nullptr){};
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
 	virtual void Init(const char* filePath, int slices) {};
+	virtual void Init(std::shared_ptr<Texture> tex) {};
+	virtual void Init(std::shared_ptr<Texture> tex, int slices) {};
+	virtual void Init(const char* filePath, int slices, int levels){};
+	virtual void Init(std::shared_ptr<Texture> tex, int slices, int levels){};
 
-	virtual void CreateMaterial(){};
+	virtual void CreateMaterial();
 	virtual void CreateMaterial(Material& material) { mMaterial.material = material; };
-	virtual void CreateTexture(const char* filePath){};
+	virtual void CreateTexture(const char* filePath);
 
 	virtual void Update(float dt){};
 	virtual void Draw(int texSlot = 0) = 0;
@@ -80,10 +97,17 @@ public:
 	virtual void SetScale(float x, float y, float z) noexcept { mTransform.SetScale(x, y, z); };
 	virtual void SetScale(const float* scale) noexcept { mTransform.SetScale(scale); };
 	virtual void SetScaleXZ(const DirectX::XMFLOAT2& scale) noexcept;
+	virtual void SetScaleXY(const DirectX::XMFLOAT2& scale) noexcept;
 
 	virtual void SetPosition(const DirectX::XMFLOAT3& position) noexcept { mTransform.SetPosition(position); };
 	virtual void SetPosition(float x, float y, float z) noexcept { mTransform.SetPosition(x, y, z); };
 	virtual void SetPosition(const float* pos) noexcept { mTransform.SetPosition(pos); };
+
+
+	virtual void SetRotation(const float* rot)noexcept { mTransform.SetRotationInDegree(rot[0],rot[1],rot[2]); };
+	virtual void SetRotation(const DirectX::XMFLOAT3& rotation)noexcept { mTransform.SetRotationInDegree(rotation); };
+	virtual void SetRotation(float x, float y, float z)noexcept { mTransform.SetRotationInDegree(x, y, z); };
+
 
 	virtual const DirectX::XMFLOAT3 GetPosition() noexcept { return mTransform.GetPosition(); };
 	virtual const DirectX::XMFLOAT4 GetQuaternion()noexcept { return mTransform.GetQuaternion(); };
@@ -93,15 +117,15 @@ public:
 	virtual Material& GetMaterial() noexcept { return mMaterial.material; };
 
 	virtual void SetMaterial(Material _material) noexcept { mMaterial.material = _material; };
+	virtual	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse) noexcept { mMaterial.material.diffuse = _diffuse; };
+	virtual void LoadTexture(std::shared_ptr<Texture> tex);
 
 	/// @brief テクスチャのファイルパスを取得
 	const std::string GetFilePath() noexcept { return mFilePath; };
 	void SetFilePath(const char* filePath) noexcept { mFilePath = filePath; };
 
 	/// @brief For Sampler Wrap
-	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV)noexcept {};
-
-	virtual	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse) noexcept { mMaterial.material.diffuse = _diffuse; };
+	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept {};
 
 	/// @brief Default Shaderを使うかどうか？
 	virtual void SetIsDefShader(bool isDefShader)noexcept { this->isDefShader = isDefShader; };
@@ -115,22 +139,31 @@ public:
 	/// @brief Default Shaderの初期化
 	virtual void LoadDefShader();
 	virtual void LoadDefShader(const char* vsPath,const char* psPath);
+	virtual void LoadDefShader(std::shared_ptr<VertexShader> vsShader, std::shared_ptr<PixelShader> psShader);
+
 
 	virtual void ResetDefPSShader();
 	virtual void ResetDefVSShader();
+	virtual void ResetDefPSShader(std::shared_ptr<PixelShader> psShader){};
+	virtual void ResetDefVSShader(std::shared_ptr<VertexShader> vsShader){};
 
 	virtual void SetDefShader();
 
 	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept;
 
+	virtual std::shared_ptr<Mesh> GetMesh() { return nullptr; };
 
-private:
-	/// @brief デバッグ用　オブジェクト回す
-	void UpdateState();
 
-	/// @brief オブジェクトを回転させ　
-	/// @param mouseMove 
-	/// @param dt 
-	void UpdateTransform(DirectX::XMFLOAT2 mouseMove, float dt);
+	//=====================================
+	// Used in PBR Model
+	//=====================================
+	virtual void LoadAlbedoTex(std::shared_ptr<Texture> tex){};
+	virtual void LoadNormalMapTex(std::shared_ptr<Texture> tex){};
+	virtual void LoadMetallicMapTex(std::shared_ptr<Texture> tex){};
+	virtual void LoadAOTex(std::shared_ptr<Texture> tex){};
+	virtual void InitWithoutTex(const char* file){};
+	
+	virtual void LoadTex(PBRConfig::PBRTexList list) {};
+	virtual const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& GetPBRVertices();
 };
 

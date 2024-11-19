@@ -1,5 +1,38 @@
-﻿C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\PS_PBRModel.hlsl(170,9-72): warning X3206: implicit truncation of vector type
-C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\PS_PBRModel.hlsl(181,2-34): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_PBRModel.cso
-  2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe
+﻿  CanvasUI.cpp
+  Capsule.cpp
+  Circle.cpp
+  Collider.cpp
+  Cube.cpp
+  Cylinder.cpp
+  CylinderOneCap.cpp
+  GampApp.cpp
+  Ingredient.cpp
+C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Ingredient.cpp(55,22): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  InteractiveStaticObject.cpp
+  MissionPaper.cpp
+  Model.cpp
+  Object.cpp
+  PBRModel.cpp
+  Primitive.cpp
+  SceneGame.cpp
+  SceneLab.cpp
+  SceneManager.cpp
+  SceneMission.cpp
+  SceneOption.cpp
+  正在生成代码...
+C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\2024_Practice_DirectX11\Primitive.cpp(124,1): warning C4172: 返回局部变量的地址或临时 : empty
+  正在编译...
+  SceneTitle.cpp
+  Sphere.cpp
+  Square.cpp
+  StaticObject.cpp
+  Tile.cpp
+  UIButton.cpp
+  UIFont.cpp
+  UIStackContainer.cpp
+  UI_Capsule.cpp
+  UI_Primitive.cpp
+  UI_Square.cpp
+  Water.cpp
+  正在生成代码...
+  2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_11_Proj\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

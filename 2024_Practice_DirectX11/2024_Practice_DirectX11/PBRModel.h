@@ -1,34 +1,24 @@
 #pragma once
+#include "Cube.h"
 #include "D3DUtil.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Mesh.h"
 #include "Primitive.h"
 #include "SceneBase.h"
+#include "SceneManager.h"
 #include "assimp/Importer.hpp"
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/matrix4x4.h"
 
 
+
 /// @brief This is for pbr Model
 class PBRModel :public Primitive
 {
-public:
-
-	Transform mTransform = {};
 
 private:
-
-	struct VertexWithBone
-	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT2 uv;
-		int		boneIndex[4];
-		float	boneWeight[4];
-		int		boneCount = 0;
-	};
 
 	struct PBRMaterial
 	{
@@ -49,25 +39,39 @@ private:
 	};
 	using Meshes = std::vector<MeshBuffer>;
 
+	/// @brief 頂点データの書き換え用
+	std::vector<std::vector<Vertex::VtxPosNormalTangentTex>> mPBRVertices = {};
 
 public:
+
 	PBRModel();
 	~PBRModel();
 
 	void Init(const char* filePath = nullptr);
-	
-	bool Load(const char* file, bool flip = false, bool simpleMode = false);
 
-	void LoadDefShader() override;
+	/// @brief テクスチャ別などころで読み込み
+	/// @param file モデルと基本のマテリアルのみ
+	void InitWithoutTex(const char* file);
+
+	void LoadDefShader();
 
 	void Update(float dt);
-	void Draw(int texSlot=0) override;
+	void Draw(int texSlot=0);
 	void WriteDefShader();
 
-	void LoadAlbedoTex(Texture* tex);
-	void LoadNormalMapTex(Texture* tex);
-	void LoadMetallicMapTex(Texture* tex);
-	void LoadAOTex(Texture* tex);
+	void LoadAlbedoTex(std::shared_ptr<Texture> tex);
+	void LoadNormalMapTex(std::shared_ptr<Texture> tex);
+	void LoadMetallicMapTex(std::shared_ptr<Texture> tex);
+	void LoadAOTex(std::shared_ptr<Texture> tex);
+
+	void LoadTex(PBRConfig::PBRTexList list);
+
+	const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& GetPBRVertices() { return mPBRVertices; }
+
+protected:
+
+	bool Load(const char* file, bool flip = false, bool simpleMode = false);
+	bool LoadWithoutTex(const char* file, bool flip = false, bool simpleMode = false);
 private:
 
 	std::unique_ptr<Assimp::Importer> importer = nullptr;
@@ -77,8 +81,6 @@ private:
 
 	Meshes mMeshes = {};
 	Materials mMaterials = {};
-	PBRMaterial mPBRMaterial = {};
-
 
 };
 

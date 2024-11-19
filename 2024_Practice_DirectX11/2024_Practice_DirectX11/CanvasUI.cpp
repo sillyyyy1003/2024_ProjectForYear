@@ -50,8 +50,31 @@ void CanvasUI::Init(MaterialData& _materialData, DirectX::XMINT2 _split)
 
 }
 
+void CanvasUI::Init(std::shared_ptr<Texture> tex, DirectX::XMINT2 _split)
+{
+	//UV Animation ÇégÇ§Ç©
+	if (_split.x == 1 && _split.y == 1)
+	{
+		isUseUVAnimation = false;
+	}
+	else
+	{
+		isUseUVAnimation = true;
+	}
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_split);
 
-void CanvasUI::InitPosition(DirectX::XMFLOAT3 pos)
+
+	CreateMeshBuffer();
+	CreateMaterial(tex);
+	LoadShader();
+
+
+}
+
+
+void CanvasUI::SetPosition(DirectX::XMFLOAT3 pos)
 {
 	mTransform.SetPosition(pos);
 	mOriginPos = { pos.x,pos.y };
@@ -63,11 +86,11 @@ void CanvasUI::LoadSaveData(json data, const char* objName)
 {
 	//Scale
 	Vector2 size = Vector2(data[objName]["Scale"][0], data[objName]["Scale"][1]);
-	InitCanvasSize(size.x, size.y);
+	SetCanvasSize(size.x, size.y);
 
 	//Pos
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
-	InitPosition(pos);
+	SetPosition(pos);
 
 	Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
 	mTransform.SetRotationInDegree(rotation);
@@ -96,12 +119,11 @@ void CanvasUI::Update()
 
 void CanvasUI::Draw()
 {
-
 	//============================================
 	//Generate Matrix
 	//============================================
-	WriteShader();
 
+	WriteShader();
 	//Bind Shader
 	mDefVS->SetShader();
 	mDefPS->SetShader();
@@ -110,15 +132,22 @@ void CanvasUI::Draw()
 	mMesh->Draw();
 }
 
-void CanvasUI::InitCanvasSize(float x, float y)
+void CanvasUI::SetCanvasSize(float width, float height)
 {
-	mTransform.SetScale(x, y, 1.0f);
-	mOriginScale = { x,y };
+	mTransform.SetScale(width, height, 1.0f);
+	mOriginScale = { width,height };
 }
 
 void CanvasUI::SetPosZ(float z)
 {
 	mTransform.SetPositionZ(z);
+}
+
+void CanvasUI::SetPosition(float x, float y)
+{
+	mOriginPos.x = x;
+	mOriginPos.y = y;
+	mTransform.SetPosition(x, y);
 }
 
 json CanvasUI::SaveData(const char* objName)
@@ -136,6 +165,16 @@ json CanvasUI::SaveData(const char* objName)
 	data["Material"]["Emission"] = { GetMaterial().emission.x, GetMaterial().emission.y, GetMaterial().emission.z, GetMaterial().emission.w };
 
 	return data;
+}
+
+void CanvasUI::SetColor(DirectX::XMFLOAT4 color)
+{
+	mMaterial.material.diffuse = color;
+}
+
+void CanvasUI::SetTransparency(float _transparency)
+{
+	mMaterial.material.diffuse.w = _transparency;
 }
 
 void CanvasUI::CreateMeshBuffer()
@@ -227,6 +266,12 @@ void CanvasUI::CreateMaterial(MaterialData& _materialData)
 	mMaterial.tex = _materialData.tex;
 }
 
+void CanvasUI::CreateMaterial(std::shared_ptr<Texture> tex)
+{
+	mMaterial.material = {};
+	mMaterial.tex = tex;
+}
+
 
 void CanvasUI::LoadShader()
 {
@@ -236,6 +281,13 @@ void CanvasUI::LoadShader()
 	HR(mDefPS->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso"));
 	HR(mDefVS->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso"));
 
+}
+
+void CanvasUI::LoadPSShader(const char* filePath)
+{
+	mDefPS.reset();
+	mDefPS = std::make_shared<PixelShader>();
+	HR(mDefPS->LoadShaderFile(filePath));
 }
 
 void CanvasUI::SetShader(const char* PSFile, const char* VSFile)
@@ -302,7 +354,6 @@ void CanvasUI::WriteShader()
 	//Write Shader
 	mDefVS->WriteShader(0, WVP);
 	mDefVS->WriteShader(1, &uvBuffer);
-
 	mDefPS->WriteShader(0, &(mMaterial.material));
 }
 

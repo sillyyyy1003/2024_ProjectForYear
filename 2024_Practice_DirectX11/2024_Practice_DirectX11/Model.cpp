@@ -29,7 +29,6 @@ Model::~Model()
 void Model::Init(const char* filePath)
 {
 	Load(filePath);
-	LoadDefShader();
 }
 
 
@@ -202,10 +201,7 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 	return true;
 }
 
-void Model::LoadDefShader()
-{
-	Primitive::LoadDefShader();
-}
+
 
 void Model::Update(float dt)
 {
@@ -234,8 +230,8 @@ void Model::Draw(int texSlot)
 
 void Model::WriteDefShader()
 {
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -259,7 +255,7 @@ void Model::WriteDefShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mDefVS->WriteShader(0, WVP);

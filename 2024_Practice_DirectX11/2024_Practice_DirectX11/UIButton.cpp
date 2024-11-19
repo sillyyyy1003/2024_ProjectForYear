@@ -39,8 +39,6 @@ void UIButton::Update(float dt)
 
 void UIButton::Draw()
 {
-
-
 	if(isDefShader)
 	{
 		mVS = mDefVS.get();
@@ -84,8 +82,24 @@ void UIButton::WriteShader()
 	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
 	WVP[2] = XMMatrixTranspose(WVP[2]);
 
+		struct UVBuffer
+	{
+		XMMATRIX uv;
+		int useUV;
+	};
+	UVBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+
+	//UV MATRIX ì¬
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
+
 	//Write Shader
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &(mMaterial.material));
 	mDefPS->WriteShader(1, &mEffect);
 

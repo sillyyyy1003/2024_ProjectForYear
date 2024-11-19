@@ -45,6 +45,13 @@ void Square::Init(const char* _fileName, int slices)
 	CreateTexture(_fileName);
 }
 
+void Square::Init(std::shared_ptr<Texture> tex, int slices)
+{
+	CreateMesh(slices);
+	CreateMaterial();
+	LoadTexture(tex);
+}
+
 void Square::Update(float dt)
 {
 	WriteDefShader();
@@ -109,36 +116,6 @@ void Square::CreateMesh()
 	SetVertices(vtx);
 }
 
-void Square::CreateMaterial()
-{
-	mMaterial.material = 
-	{
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// 環境光
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// 表面色
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
-	};
-
-}
-
-void Square::CreateTexture(const char* fileName)
-{
-	if (!fileName)
-	{
-		mMaterial.material.isTexEnable = false;
-		mMaterial.tex = nullptr;
-		return;
-	}
-
-	mMaterial.tex = std::make_shared<Texture>();
-	HRESULT hr = mMaterial.tex->Create(fileName);
-	if (FAILED(hr))
-	{
-		mMaterial.tex = nullptr;
-		mMaterial.material.isTexEnable = false;
-	}
-	mFilePath = fileName;
-}
 
 void Square::CreateMesh(UINT slices)
 {
@@ -189,8 +166,14 @@ void Square::CreateMesh(UINT slices)
 
 void Square::WriteDefShader()
 {
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	if (!mDefPS || !mDefVS)
+	{
+		DebugLog::LogError("ShaderFile is not set");
+		return;
+	}
+
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
 	WVP[0] = mTransform.GetMatrixFX4();
@@ -213,7 +196,7 @@ void Square::WriteDefShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mDefVS->WriteShader(0, WVP);

@@ -64,7 +64,7 @@ public:
 	/// @brief シーン廃棄
 	void RemoveSubScene() const;
 
-	/// @brief オブジェクトを作る
+	/// @brief オブジェクトを作り出す
 	/// @tparam T オブジェクトの型
 	/// @param name オブジェクトの名称
 	/// @return 
@@ -79,7 +79,6 @@ public:
 	/// @param name オブジェクトの名称
 	/// @return 取得したオブジェクト
 	template<class T> std::shared_ptr<T> GetObj(const char* name);
-
 
 	// virtual function
 	virtual void Init() = 0;
@@ -133,5 +132,4 @@ std::shared_ptr<T> SceneBase::GetObj(const char* name)
 	std::shared_ptr<SceneObject<T>> ptr = std::reinterpret_pointer_cast<SceneObject<T>>(it->second);
 	return ptr->mObj;
 }
-
 

@@ -20,8 +20,9 @@ public:
     static GameApp* Get(){ static GameApp instance; return &instance; }
 
     template<class T>
-    static std::shared_ptr<T>GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
+    static std::shared_ptr<T> GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
 
+    static CameraBase* GetCurrentCamera() { return SceneManager::Get()->GetCurrentCamera(); };
 
     /// @brief Timerを取得する
 	Timer& GetTimer() { return Get()->mTimer; };

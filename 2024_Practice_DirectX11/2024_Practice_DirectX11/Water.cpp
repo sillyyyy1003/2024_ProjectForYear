@@ -14,14 +14,24 @@ Water::Water()
 
 }
 
-void Water::Init(const char* filePath)
+void Water::Init(const char* filePath, const char* objName)
 {
 	mModel = std::make_unique<Circle>();
 	mModel->CreateMesh(50, 50);
 	mModel->CreateMaterial();
 	mModel->CreateTexture(filePath);
 	mModel->LoadDefShader("Assets/Shader/VS_Water.cso","Assets/Shader/PS_Water.cso");
-	
+	mObjectName = objName;
+}
+
+void Water::Init(std::shared_ptr<Texture> tex, const char* objName)
+{
+	mModel = std::make_unique<Circle>();
+	mModel->CreateMesh(50, 50);
+	mModel->CreateMaterial();
+	mModel->LoadTexture(tex);
+	mModel->LoadDefShader("Assets/Shader/VS_Water.cso", "Assets/Shader/PS_Water.cso");
+	mObjectName = objName;
 }
 
 void Water::Update(float dt)
@@ -67,18 +77,18 @@ void Water::Update(float dt)
 		ImGui::SliderFloat("duration", &mDuration, 0.1f, 10.f);
 
 		float ambient[4] = {
-			GetModel()->GetMaterial().ambient.x, GetModel()->GetMaterial().ambient.y,
-			GetModel()->GetMaterial().ambient.z, GetModel()->GetMaterial().ambient.w,
+			mModel->GetMaterial().ambient.x, mModel->GetMaterial().ambient.y,
+			mModel->GetMaterial().ambient.z, mModel->GetMaterial().ambient.w,
 		};
 		ImGui::ColorEdit4("Ambient", ambient);
 
-		float diffuse[4] = { GetModel()->GetMaterial().diffuse.x, GetModel()->GetMaterial().diffuse.y, GetModel()->GetMaterial().diffuse.z, GetModel()->GetMaterial().diffuse.w };
+		float diffuse[4] = { mModel->GetMaterial().diffuse.x, mModel->GetMaterial().diffuse.y, mModel->GetMaterial().diffuse.z, mModel->GetMaterial().diffuse.w };
 		ImGui::ColorEdit4("Diffuse", diffuse);
 
-		float specular[4] = { GetModel()->GetMaterial().specular.x,GetModel()->GetMaterial().specular.y,GetModel()->GetMaterial().specular.z,GetModel()->GetMaterial().specular.w };
+		float specular[4] = { mModel->GetMaterial().specular.x,mModel->GetMaterial().specular.y,mModel->GetMaterial().specular.z,mModel->GetMaterial().specular.w };
 		ImGui::ColorEdit4("Specular", specular);
 
-		float emission[4] = { GetModel()->GetMaterial().emission.x, GetModel()->GetMaterial().emission.y, GetModel()->GetMaterial().emission.z, GetModel()->GetMaterial().emission.w };
+		float emission[4] = { mModel->GetMaterial().emission.x, mModel->GetMaterial().emission.y, mModel->GetMaterial().emission.z, mModel->GetMaterial().emission.w };
 		ImGui::ColorEdit4("Emission", emission);
 
 		Material mat = {
@@ -140,7 +150,7 @@ void Water::RenderUpdate()
 	}
 
 	//更新した頂点データを書き込み
-	mModel->mMesh->Write(mModel->mVertices.data());
+	mModel->GetMesh()->Write(mModel->mVertices.data());
 
 	WriteShader();
 }
@@ -152,9 +162,8 @@ void Water::Draw()
 
 void Water::WriteShader()
 {
-	
-	std::shared_ptr<FirstPersonCamera> firstCamera= GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -178,7 +187,7 @@ void Water::WriteShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mModel->GetDefVS()->WriteShader(0, WVP);
@@ -217,12 +226,11 @@ void Water::LoadSaveData(json data, const char* objName)
 {
 	mModel = std::make_unique<Circle>();
 
-	//Init Model
-	std::string filePath = data[objName]["Filepath"].get<std::string>();
+	mObjectName = objName;
+
 	//CreateMesh
 	mModel->CreateMesh(50, 50);
-	//CreateTexture
-	mModel->CreateTexture(filePath.c_str());
+
 	//LoadShader
 	mModel->LoadDefShader("Assets/Shader/VS_Water.cso", "Assets/Shader/PS_Water.cso");
 
@@ -236,7 +244,7 @@ void Water::LoadSaveData(json data, const char* objName)
 
 	//Init Scale
 	Vector3 scale = Vector3(data[objName]["Scale"][0], data[objName]["Scale"][1], data[objName]["Scale"][2]);
-	mModel->SetScale({ scale.x, scale.z });
+	mModel->SetScaleXZ({ scale.x, scale.z });
 
 	//Init Material
 	Material mat = {
@@ -260,16 +268,16 @@ void Water::LoadSaveData(json data, const char* objName)
 json Water::SaveData()
 {
 	json data;
-	data["Position"] = {GetModel()->GetPosition().x,GetModel()->GetPosition().y,GetModel()->GetPosition().z };
-	data["Scale"] = { GetModel()->GetScale().x,GetModel()->GetScale().y,GetModel()->GetScale().z };
-	data["Rotation"] = { GetModel()->GetRotation().x,GetModel()->GetRotation().y,GetModel()->GetRotation().z };
-	data["Filepath"] = GetModel()->GetFilePath();
+	
+	data["Position"] = {mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
+	data["Scale"] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
+	data["Rotation"] = { mModel->GetRotation().x,mModel->GetRotation().y,mModel->GetRotation().z };
 
 	//Set Material
-	data["Material"]["Ambient"] = { GetModel()->GetMaterial().ambient.x,GetModel()->GetMaterial().ambient.y, GetModel()->GetMaterial().ambient.z, GetModel()->GetMaterial().ambient.w };
-	data["Material"]["Diffuse"] = { GetModel()->GetMaterial().diffuse.x, GetModel()->GetMaterial().diffuse.y, GetModel()->GetMaterial().diffuse.z, GetModel()->GetMaterial().diffuse.w };
-	data["Material"]["Specular"] = { GetModel()->GetMaterial().specular.x,GetModel()->GetMaterial().specular.y,GetModel()->GetMaterial().specular.z,GetModel()->GetMaterial().specular.w };
-	data["Material"]["Emission"] = { GetModel()->GetMaterial().emission.x, GetModel()->GetMaterial().emission.y, GetModel()->GetMaterial().emission.z, GetModel()->GetMaterial().emission.w };
+	data["Material"]["Ambient"] = { mModel->GetMaterial().ambient.x,mModel->GetMaterial().ambient.y, mModel->GetMaterial().ambient.z, mModel->GetMaterial().ambient.w };
+	data["Material"]["Diffuse"] = { mModel->GetMaterial().diffuse.x, mModel->GetMaterial().diffuse.y, mModel->GetMaterial().diffuse.z, mModel->GetMaterial().diffuse.w };
+	data["Material"]["Specular"] = { mModel->GetMaterial().specular.x,mModel->GetMaterial().specular.y,mModel->GetMaterial().specular.z,mModel->GetMaterial().specular.w };
+	data["Material"]["Emission"] = { mModel->GetMaterial().emission.x, mModel->GetMaterial().emission.y, mModel->GetMaterial().emission.z, mModel->GetMaterial().emission.w };
 
 	//Set Water Param
 	data["Center"] = { mParam.center.x,mParam.center.y,mParam.center.z };
@@ -277,7 +285,6 @@ json Water::SaveData()
 	data["Frequency"] = { mParam.frequency };
 	data["Speed"] = { mParam.speed };
 	data["Sigma"] = { mParam.sigma };
-
 
 	return data;
 }

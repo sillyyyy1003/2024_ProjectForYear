@@ -149,14 +149,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CanvasUI.cpp" />
     <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Container.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CameraBase.cpp" />
-    <ClCompile Include="CanvasUI.cpp" />
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CylinderOneCap.cpp" />
+    <ClCompile Include="InteractiveStaticObject.cpp" />
+    <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D2DBrush.cpp" />
@@ -174,6 +175,11 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PBRModel.cpp" />
+    <ClCompile Include="SceneInGameOption.cpp" />
+    <ClCompile Include="SceneLab.cpp" />
+    <ClCompile Include="SceneMission.cpp" />
+    <ClCompile Include="SceneOption.cpp" />
+    <ClCompile Include="ScenePotion.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -181,31 +187,38 @@
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SceneBase.cpp" />
-    <ClCompile Include="SceneLab.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartUp.cpp" />
+    <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UI2D.cpp" />
     <ClCompile Include="UIFont.cpp" />
     <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UIStackContainer.cpp" />
+    <ClCompile Include="UI_Capsule.cpp" />
+    <ClCompile Include="UI_Primitive.cpp" />
+    <ClCompile Include="UI_Square.cpp" />
     <ClCompile Include="UVAnimation.cpp" />
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CanvasUI.h" />
     <ClInclude Include="Circle.h" />
-    <ClInclude Include="Container.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CameraBase.h" />
-    <ClInclude Include="CanvasUI.h" />
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CylinderOneCap.h" />
+    <ClInclude Include="InteractiveStaticObject.h" />
+    <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D2DBrush.h" />
@@ -223,6 +236,11 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PBRModel.h" />
+    <ClInclude Include="SceneInGameOption.h" />
+    <ClInclude Include="SceneLab.h" />
+    <ClInclude Include="SceneMission.h" />
+    <ClInclude Include="SceneOption.h" />
+    <ClInclude Include="ScenePotion.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
@@ -231,23 +249,35 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneBase.h" />
-    <ClInclude Include="SceneLab.h" />
+    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartUp.h" />
+    <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI2D.h" />
     <ClInclude Include="UIFont.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIStackContainer.h" />
+    <ClInclude Include="UI_Capsule.h" />
+    <ClInclude Include="UI_Primitive.h" />
+    <ClInclude Include="UI_Square.h" />
     <ClInclude Include="UVAnimation.h" />
     <ClInclude Include="Water.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="PS_InterActiveObjectPBRModel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PS_Object.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -270,6 +300,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -287,14 +318,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="PS_UliObj.hlsl">
+    <FxCompile Include="PS_UIFont.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Assets\Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_Water.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -304,20 +333,13 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="VS_Box.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="VS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="VS_Primitives.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -334,14 +356,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="VS_UliObj.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="VS_Water.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

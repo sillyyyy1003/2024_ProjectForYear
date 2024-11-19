@@ -9,11 +9,18 @@ Sphere::Sphere() :Primitive(SPHERE)
 {
 }
 
-void Sphere::Init(const char* _fileName)
+void Sphere::Init(const char* _fileName, int levels, int slices)
 {
-    CreateMesh(64, 64);
+    CreateMesh(levels, slices);
 	CreateMaterial();
     CreateTexture(_fileName);
+}
+
+void Sphere::Init(std::shared_ptr<Texture> tex, int levels, int slices)
+{
+    CreateMesh(levels, slices);
+    CreateMaterial();
+    LoadTexture(tex);
 }
 
 void Sphere::Update(float dt)
@@ -139,39 +146,17 @@ void Sphere::CreateMesh(UINT levels, UINT slices)
     
 }
 
-void Sphere::CreateMaterial()
-{
-    mMaterial.material = {
-        Color(1.0f, 1.0f, 1.0f, 1.0f),		// 環境光
-        Color(1.0f, 1.0f, 1.0f, 1.0f),		// 表面色
-        Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
-        Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
-    };
-}
-
-void Sphere::CreateTexture(const char* fileName)
-{
-    if (!fileName)
-    {
-        mMaterial.material.isTexEnable = false;
-        mMaterial.tex = nullptr;
-        return;
-    }
-
-    mMaterial.tex = std::make_shared<Texture>();
-    HRESULT hr = mMaterial.tex->Create(fileName);
-    if (FAILED(hr))
-    {
-        mMaterial.tex = nullptr;
-        mMaterial.material.isTexEnable = false;
-    }
-	mFilePath = fileName;
-}
 
 const void Sphere::WriteDefShader()
 {
-    std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-    std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+    if (!mDefPS || !mDefVS)
+    {
+        DebugLog::LogError("ShaderFile is not set");
+        return;
+    }
+
+    CameraBase* firstCamera = GameApp::GetCurrentCamera();
+    std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
     XMFLOAT4X4 WVP[3] = {};
     //WORLD
@@ -195,7 +180,7 @@ const void Sphere::WriteDefShader()
     Light light = {
         dirLight->GetAmbient(),
         dirLight->GetDiffuse(),
-        Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+        Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
     };
 
     mDefVS->WriteShader(0, WVP);

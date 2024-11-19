@@ -1,5 +1,4 @@
 ﻿#include "Object.h"
-
 #include "Capsule.h"
 #include "Cube.h"
 #include "Cylinder.h"
@@ -147,11 +146,7 @@ json Object::SaveData()
 	return data;
 }
 
-void Object::ResetPSShader()
-{
-	mModel->ResetDefPSShader();
-	mModel->GetDefPS()->LoadShaderFile("Assets/Shader/PS_Object.cso");
-}
+
 
 void Object::PreUpdate(float dt)
 {
@@ -172,7 +167,8 @@ void Object::PreUpdate(float dt)
 
 		if (KInput::IsKeyTrigger(VK_LBUTTON))
 		{
-			std::shared_ptr<FirstPersonCamera> camera= GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+			CameraBase* camera = GameApp::GetCurrentCamera();
+
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -195,7 +191,7 @@ void Object::PreUpdate(float dt)
 	
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
-			std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+			CameraBase* camera = GameApp::GetCurrentCamera();
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -226,7 +222,7 @@ void Object::PreUpdate(float dt)
 
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
-			std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+			CameraBase* camera = GameApp::GetCurrentCamera();
 			//マウスの位置スクリーン座標を取得
 			POINT mousePos;
 			GetCursorPos(&mousePos);
@@ -283,7 +279,6 @@ void Object::GameUpdate(float dt)
 	case STATE_DRAG:
 		OnStateDrag(dt);
 		break;
-	
 	case STATE_SELECTED:
 		OnStateSelected(dt);
 		break;
@@ -298,8 +293,6 @@ void Object::LateUpdate(float dt)
 	mModel->Update(dt);
 
 	mModel->GetDefPS()->WriteShader(3, &mEffect);
-
-
 	/*
 	//PointLightを取得し、データをPSに書き込み
 	PointLight* pointLight = GameApp::GetComponent<PointLight>("PointLight");
@@ -330,7 +323,7 @@ void Object::LateUpdate(float dt)
 void Object::OnStateDrag(float dt)
 {
 	GetCursorPos(&mOldPos);
-	std::shared_ptr<FirstPersonCamera> camera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
+	CameraBase* camera = GameApp::GetCurrentCamera();
 	//カメラからマウス位置の方向ベクトルを取得
 	XMVECTOR rayDir = camera->ScreenPointToRay(mOldPos);
 	XMFLOAT3 rayDirection;

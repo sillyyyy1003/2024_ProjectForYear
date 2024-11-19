@@ -16,7 +16,19 @@ public:
 	~Sphere() override = default;
 
 
-	void Init(const char* _fileName);
+	/// @brief 
+	/// @param filePath 
+	///	@param levels 球体垂直分割数
+	///	@param slices 球体・シリンダー水平分割数
+	void Init(const char* filePath, int levels = 64, int slices = 64);
+
+	/// @brief 
+	/// @param tex 
+	///	@param levels 球体垂直分割数
+	///	@param slices 球体・シリンダー水平分割数
+	void Init(std::shared_ptr<Texture>tex, int levels = 64, int slices = 64);
+
+
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
@@ -26,13 +38,6 @@ private:
 	///	@param levels 垂直分割数
 	///	@param slices 水平分割数
 	void CreateMesh(UINT levels, UINT slices);
-
-	/// @brief マテリアル初期化 default Color:White
-	void CreateMaterial();
-
-	/// @brief Texture初期化
-	/// @param fileName  File Root
-	void CreateTexture(const char* fileName);
 
 	/*DefShader
 	 * 使用方向光

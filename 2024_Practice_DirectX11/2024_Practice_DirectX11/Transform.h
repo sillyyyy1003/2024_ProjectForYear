@@ -24,10 +24,12 @@ public:
 	/// @return 行列を返す
 	const DirectX::XMFLOAT4X4 GetMatrixFX4();
 	const DirectX::XMMATRIX GetMatrix();
+	const DirectX::XMMATRIX GetIdentityMatrix();
 
 	/// @brief Scale
 	DirectX::XMFLOAT3 GetScale() const { return mScale; }
 	DirectX::XMVECTOR GetScaleXM() const { return DirectX::XMLoadFloat3(&mScale); }
+
 	
 	
 	/// @brief Angle in Radian
@@ -70,7 +72,9 @@ public:
     void SetScale(float x, float y, float z);
 	void SetScale(const float* _scale);
 	void SetScaleXZ(float x, float z);
+	void SetScaleXZ(const DirectX::XMFLOAT2& scale);
 	void SetScaleXY(float x, float y);
+	void SetScaleXY(const DirectX::XMFLOAT2& scale);
 
 	/// @brief Set Rotation in Degree
 	/// @param eulerAnglesInDegree 角度
@@ -83,14 +87,16 @@ public:
 
 	/// @brief Set Rotation in eulerAnglesInRadian
 	/// 回転の順序：Z-X-Y
-    void SetRotation(float x, float y, float z);
+    void SetRotationInRadian(float x, float y, float z);
 	void SetRotationInDegree(float x, float y, float z);
-	void SetRotation(float* rot);
+	void SetRotationInRadian(const float* rot);
+	void SetRotationInDegree(const float* rot);
 
     void SetPosition(const DirectX::XMFLOAT3& position);
     void SetPosition(float x, float y, float z);
 	void SetPosition(const float* pos);
 	void SetPositionZ(float z);
+	void SetPosition(float x, float y);
 
 	/// @brief Rotate given the degree
 	/// @param eulerAnglesInDegree 回転角度

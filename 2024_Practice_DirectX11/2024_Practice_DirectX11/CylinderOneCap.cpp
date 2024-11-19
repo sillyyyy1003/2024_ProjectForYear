@@ -11,11 +11,19 @@ CylinderOneCap::CylinderOneCap() :Primitive(CYLINDER_ONECAP)
 {
 }
 
-void CylinderOneCap::Init(const char* filePath)
+void CylinderOneCap::Init(const char* filePath, int slices, int stacks)
 {
-	CreateMesh(64, 64);
+	CreateMesh(slices, stacks);
 	CreateMaterial();
 	CreateTexture(filePath);
+
+}
+
+void CylinderOneCap::Init(std::shared_ptr<Texture> tex, int slices, int stacks)
+{
+	CreateMesh(slices, stacks);
+	CreateMaterial();
+	LoadTexture(tex);
 
 }
 
@@ -135,41 +143,17 @@ void CylinderOneCap::CreateMesh(UINT slices, UINT stacks)
 	SetVertices(vtx);
 }
 
-void CylinderOneCap::CreateMaterial()
-{
-	mMaterial.material = {
-   Color(1.0f, 1.0f, 1.0f, 1.0f),		// ä¬ã´åı
-   Color(1.0f, 1.0f, 1.0f, 1.0f),		// ï\ñ êF
-   Color(1.0f, 0.5f, 0.5f, 0.2f),		// ãæñ îΩéÀ: specular power 1
-   Color(0.0f, 0.0f, 0.0f, 0.0f)		// é©î≠åıÇ»Çµ};
-	};
-}
-
-void CylinderOneCap::CreateTexture(const char* filePath)
-{
-	if (!filePath)
-	{
-		mMaterial.material.isTexEnable = false;
-		mMaterial.tex = nullptr;
-		return;
-	}
-
-	mMaterial.tex = std::make_shared<Texture>();
-	HRESULT hr = mMaterial.tex->Create(filePath);
-	if (FAILED(hr))
-	{
-		mMaterial.tex = nullptr;
-		mMaterial.material.isTexEnable = false;
-	}
-
-	mFilePath = filePath;
-}
-
 
 void CylinderOneCap::WriteDefShader()
 {
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	if (!mDefPS || !mDefVS)
+	{
+		DebugLog::LogError("ShaderFile is not set");
+		return;
+	}
+
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
 	WVP[0] = mTransform.GetMatrixFX4();
@@ -192,7 +176,7 @@ void CylinderOneCap::WriteDefShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mDefVS->WriteShader(0, WVP);

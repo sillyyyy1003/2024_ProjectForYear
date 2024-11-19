@@ -71,15 +71,13 @@ public:
 	void SetPosition(const float* position) { mModel->mTransform.SetPosition(position); };
 
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mModel->mTransform.SetRotationInDegree(rotation); };
-	void SetRotation(float* rotation) { mModel->mTransform.SetRotation(rotation); }
+	void SetRotation(const float* rotation) { mModel->mTransform.SetRotationInRadian(rotation); }
 	void SetRotation(float x, float y, float z) { mModel->mTransform.SetRotationInDegree(x, y, z); };
 
 
 	void SetMaterial(const Material& mat);
 
 	json SaveData();
-
-	void ResetPSShader();
 
 	bool GetDestroy() { return isToBeDestroyed;};
 

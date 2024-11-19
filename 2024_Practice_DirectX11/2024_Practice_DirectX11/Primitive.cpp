@@ -20,9 +20,52 @@ Primitive::~Primitive()
 }
 
 
+
+void Primitive::CreateMaterial()
+{
+	mMaterial.material =
+	{
+		Color(0.5f, 0.5f, 0.5f, 1.0f),		// 環境光
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// 表面色
+		Color(1.0f, 0.5f, 0.5f, 0.2f),		// 鏡面反射: specular power 1
+		Color(0.0f, 0.0f, 0.0f, 0.0f)		// 自発光なし};
+	};
+
+}
+
+void Primitive::CreateTexture(const char* filePath)
+{
+	if (!filePath)
+	{
+		mMaterial.material.isTexEnable = false;
+		mMaterial.tex = nullptr;
+		return;
+	}
+
+	mMaterial.tex = std::make_shared<Texture>();
+	HRESULT hr = mMaterial.tex->Create(filePath);
+	if (FAILED(hr))
+	{
+		mMaterial.tex = nullptr;
+		mMaterial.material.isTexEnable = false;
+	}
+	mFilePath = filePath;
+}
+
+
 void Primitive::SetScaleXZ(const DirectX::XMFLOAT2& scale) noexcept
 {
 	mTransform.SetScale(scale.x, 1.0f, scale.y);
+}
+
+void Primitive::SetScaleXY(const DirectX::XMFLOAT2& scale) noexcept
+{
+	mTransform.SetScale(scale.x, scale.y, 1.0f);
+}
+
+void Primitive::LoadTexture(std::shared_ptr<Texture> tex)
+{
+	mMaterial.tex = tex;
 }
 
 void Primitive::LoadDefShader()
@@ -41,6 +84,12 @@ void Primitive::LoadDefShader(const char* vsPath, const char* psPath)
 	mDefPS->LoadShaderFile(psPath);
 	mDefVS->LoadShaderFile(vsPath);
 
+}
+
+void Primitive::LoadDefShader(std::shared_ptr<VertexShader> vsShader, std::shared_ptr<PixelShader> psShader)
+{
+	mDefPS = psShader;
+	mDefVS = vsShader;
 }
 
 void Primitive::ResetDefPSShader()
@@ -69,29 +118,10 @@ void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexc
 	mVertices = vertices;
 }
 
-void Primitive::UpdateState()
+const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& Primitive::GetPBRVertices()
 {
-	/*
-	DebugState prev = static_cast<DebugState>(mState);
-
-	if(KInput::IsKeyPress(VK_CONTROL))
-	{
-		mState = STATE_NONE;
-
-	}if (KInput::IsKeyPress(VK_LBUTTON))
-	{
-		mState = STATE_CHECK;
-	}
-	else
-	{
-		mState = STATE_NONE;
-	}
-
-	if (prev != mState)
-		GetCursorPos(&mOldPos);*/
+	const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>> empty;
+	return empty;
 }
 
-void Primitive::UpdateTransform(DirectX::XMFLOAT2 mouseMove, float dt)
-{
- 
-}
+

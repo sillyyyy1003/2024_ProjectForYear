@@ -40,15 +40,6 @@
     <Filter Include="ソース ファイル\GameApp">
       <UniqueIdentifier>{e0d050f3-4a78-44a2-bc50-20c4737ec473}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{50232feb-ff0a-4e10-9830-2c15ae2f7c00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\SubScene">
-      <UniqueIdentifier>{b6ad6e7f-fc2d-4be0-9f91-03741d0268b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\BaseModel">
-      <UniqueIdentifier>{edf8cd8f-0b58-491c-9380-a57b5116cf5d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\BaseModel">
       <UniqueIdentifier>{bd85fa06-bfe5-4cf5-97f3-413894a73fdf}</UniqueIdentifier>
     </Filter>
@@ -70,14 +61,8 @@
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{0fc653e1-25d7-4e91-81d4-26a2a1901b10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\UI\3D">
-      <UniqueIdentifier>{e6987715-b3cf-4820-a3c7-44a5f1b7ca0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\UI">
       <UniqueIdentifier>{9a62864d-621e-4d91-bcb4-8e184a8e8115}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\UI\3D">
-      <UniqueIdentifier>{7d82cd8c-4ffb-4e3d-8088-f660e66ba965}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Debug">
       <UniqueIdentifier>{729e3c1d-1a6f-4154-b85a-789de9ae0de2}</UniqueIdentifier>
@@ -90,12 +75,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Timer">
       <UniqueIdentifier>{8ccac86b-30f5-4caa-bb07-5cb5ef7b1d28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\BaseModel\描画部分">
-      <UniqueIdentifier>{62997c9d-32e0-4d19-a805-40b67ca2de95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\BaseModel\完成形">
-      <UniqueIdentifier>{ca61fe02-639d-4613-87fa-27d8e1f662eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Collider">
       <UniqueIdentifier>{89e41fe3-0b40-4c23-a52d-ebd5ca584a02}</UniqueIdentifier>
@@ -123,6 +102,39 @@
     </Filter>
     <Filter Include="ソース ファイル\Collider\btCollider">
       <UniqueIdentifier>{d6567b6b-a939-4ee2-8639-f14e2249a22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Animation">
+      <UniqueIdentifier>{5ec31312-e8af-48c9-bf67-253aa87f3143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Animation">
+      <UniqueIdentifier>{300386b7-8b13-4478-8a98-587e21337ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{50232feb-ff0a-4e10-9830-2c15ae2f7c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\SubScene">
+      <UniqueIdentifier>{b6ad6e7f-fc2d-4be0-9f91-03741d0268b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\BaseModel\2DGraphics">
+      <UniqueIdentifier>{da6a0e49-9ec4-4efb-a2d0-04f06e5af473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI\BillboardUI">
+      <UniqueIdentifier>{7d82cd8c-4ffb-4e3d-8088-f660e66ba965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\UI\BillboardUI">
+      <UniqueIdentifier>{e6987715-b3cf-4820-a3c7-44a5f1b7ca0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseMesh">
+      <UniqueIdentifier>{edf8cd8f-0b58-491c-9380-a57b5116cf5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseMesh\描画部分">
+      <UniqueIdentifier>{62997c9d-32e0-4d19-a805-40b67ca2de95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseMesh\完成形">
+      <UniqueIdentifier>{ca61fe02-639d-4613-87fa-27d8e1f662eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BaseMesh\UIMesh">
+      <UniqueIdentifier>{16e2af58-7db3-4161-bbca-cc570da491f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,11 +189,8 @@
     <ClCompile Include="DirLight.cpp">
       <Filter>ソース ファイル\Light</Filter>
     </ClCompile>
-    <ClCompile Include="SceneLab.cpp">
+    <ClCompile Include="SceneGame.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
-    </ClCompile>
-    <ClCompile Include="CanvasUI.cpp">
-      <Filter>ソース ファイル\UI\3D</Filter>
     </ClCompile>
     <ClCompile Include="DebugLog.cpp">
       <Filter>ソース ファイル\Debug</Filter>
@@ -199,25 +208,22 @@
       <Filter>ソース ファイル\Timer</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>ソース ファイル\BaseModel</Filter>
+      <Filter>ソース ファイル\BaseMesh</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Capsule.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
-    </ClCompile>
-    <ClCompile Include="Square.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Primitive.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル\Collider</Filter>
@@ -235,19 +241,13 @@
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
     <ClCompile Include="UIButton.cpp">
-      <Filter>ソース ファイル\UI\3D</Filter>
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>ソース ファイル\RigidBody</Filter>
     </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
-    </ClCompile>
     <ClCompile Include="CylinderOneCap.cpp">
-      <Filter>ソース ファイル\BaseModel\描画部分</Filter>
-    </ClCompile>
-    <ClCompile Include="Container.cpp">
-      <Filter>ソース ファイル\GameObject</Filter>
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="Water.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -259,13 +259,61 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="UIFont.cpp">
-      <Filter>ソース ファイル\UI\3D</Filter>
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
     </ClCompile>
-    <ClCompile Include="UVAnimation.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="SceneLab.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneInGameOption.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMission.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePotion.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
     <ClCompile Include="PBRModel.cpp">
+      <Filter>ソース ファイル\BaseMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractiveStaticObject.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MissionPaper.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="UVAnimation.cpp">
+      <Filter>ソース ファイル\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="UIStackContainer.cpp">
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneOption.cpp">
+      <Filter>ソース ファイル\Scene\SubScene</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Capsule.cpp">
+      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Primitive.cpp">
+      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Square.cpp">
+      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasUI.cpp">
+      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +350,6 @@
     <ClInclude Include="Cube.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
-    <ClInclude Include="Square.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
     </ClInclude>
@@ -329,11 +374,8 @@
     <ClInclude Include="LightBase.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SceneLab.h">
+    <ClInclude Include="SceneGame.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasUI.h">
-      <Filter>ヘッダー ファイル\UI\3D</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>ヘッダー ファイル\Debug</Filter>
@@ -352,9 +394,6 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="Primitive.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
@@ -381,21 +420,15 @@
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
     <ClInclude Include="UIButton.h">
-      <Filter>ヘッダー ファイル\UI\3D</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
       <Filter>ヘッダー ファイル\RigidBody</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="CylinderOneCap.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="Water.h">
-      <Filter>ヘッダー ファイル\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Container.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
@@ -405,27 +438,69 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="UIFont.h">
-      <Filter>ヘッダー ファイル\UI\3D</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
-    <ClInclude Include="UVAnimation.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="SceneInGameOption.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLab.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMission.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenePotion.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
     <ClInclude Include="PBRModel.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractiveStaticObject.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MissionPaper.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="UVAnimation.h">
+      <Filter>ヘッダー ファイル\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneOption.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
+    <ClInclude Include="UIStackContainer.h">
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Capsule.h">
+      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Square.h">
+      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Primitive.h">
+      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasUI.h">
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PS_UliObj.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS_UliObj.hlsl">
-      <Filter>リソース ファイル\VS</Filter>
-    </FxCompile>
     <FxCompile Include="PS_Object.hlsl">
       <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS_Box.hlsl">
-      <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_DefaultUI.hlsl">
       <Filter>リソース ファイル\PS</Filter>
@@ -453,6 +528,12 @@
     </FxCompile>
     <FxCompile Include="VS_PBRModel.hlsl">
       <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_InterActiveObjectPBRModel.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_UIFont.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -50,7 +50,6 @@ float ThirdPersonCamera::GetDistance() const
 void ThirdPersonCamera::RotateX(float rad)
 {
     XMFLOAT3 rotation = mTransform.GetRotation();
-    // 将绕x轴旋转弧度限制在[0, pi/3]之间
     rotation.x += rad;
     if (rotation.x < 0.0f)
         rotation.x = 0.0f;

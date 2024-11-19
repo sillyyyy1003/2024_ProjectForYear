@@ -31,9 +31,6 @@ float4 main (PS_IN pin) : SV_TARGET
 
 	clip(color.a - 0.1f);
 
-    //Change Factor according to ui states
-    float4 ambientFactor = float4(1.0, 1.0, 1.0, 1.0f);
-
-    return color  * ambientFactor;
+    return color;
 
 }

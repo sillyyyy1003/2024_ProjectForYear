@@ -30,21 +30,18 @@ void Circle::SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept
 	Primitive::SetTexUV(_texUV);
 }
 
-void Circle::SetScale(const DirectX::XMFLOAT2& scale)  noexcept
+void Circle::Init(const char* _fileName, int slices)
 {
-	SetScaleXZ(scale);
-}
-
-void Circle::SetScale(const float* scale)  noexcept
-{
-	Primitive::SetScale(scale);
-}
-
-void Circle::Init(const char* _fileName)
-{
-	CreateMesh(64);
+	CreateMesh(slices);
 	CreateMaterial();
 	CreateTexture(_fileName);
+}
+
+void Circle::Init(std::shared_ptr<Texture> tex, int slices)
+{
+	CreateMesh(slices);
+	CreateMaterial();
+	LoadTexture(tex);
 }
 
 void Circle::CreateMesh(UINT slices)
@@ -65,7 +62,7 @@ void Circle::CreateMesh(UINT slices)
 		Vector2(0.5f,0.5f)
 		});
 
-	//top cap
+
 	for (UINT i = 0; i <= slices; i++)
 	{
 		theta = i * per_theta;
@@ -99,7 +96,7 @@ void Circle::CreateMesh(UINT slices)
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mMesh = std::make_unique<Mesh>(desc);
+	mMesh = std::make_shared<Mesh>(desc);
 
 }
 
@@ -180,42 +177,18 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 	SetVertices(vtx);
 }
 
-void Circle::CreateMaterial()
-{
-	mMaterial.material =
-	{
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// ä¬ã´åı
-		Color(1.0f, 1.0f, 1.0, 1.0f),		// ï\ñ êF
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ãæñ îΩéÀ: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// é©î≠åıÇ»Çµ};
-	};
 
-}
-
-void Circle::CreateTexture(const char* _fileName)
-{
-	if (!_fileName)
-	{
-		mMaterial.material.isTexEnable = false;
-		mMaterial.tex = nullptr;
-		return;
-	}
-
-	mMaterial.tex = std::make_shared<Texture>();
-	HRESULT hr = mMaterial.tex->Create(_fileName);
-	if (FAILED(hr))
-	{
-		mMaterial.tex = nullptr;
-		mMaterial.material.isTexEnable = false;
-	}
-	mFilePath = _fileName;
-}
 
 void Circle::WriteDefShader()
 {
+	if (!mDefPS || !mDefVS)
+	{
+		DebugLog::LogError("ShaderFile is not set");
+		return;
+	}
 
-	std::shared_ptr<FirstPersonCamera> firstCamera = GameApp::GetComponent<FirstPersonCamera>("DefaultCamera");
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("Light");
+	CameraBase* firstCamera = GameApp::GetCurrentCamera();
+	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -239,7 +212,7 @@ void Circle::WriteDefShader()
 	Light light = {
 		dirLight->GetAmbient(),
 		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPos().x,dirLight->GetPos().y,dirLight->GetPos().z,0},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
 	mDefVS->WriteShader(0, WVP);
