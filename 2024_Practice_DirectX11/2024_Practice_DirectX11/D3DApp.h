@@ -1,9 +1,9 @@
 #pragma once
 #include "D3DUtil.h"
 #include "Timer.h"
-#include <wrl/client.h>
 #include <d2d1.h>
 #include <dwrite.h>
+#include "Texture.h"
 
 using namespace Microsoft::WRL;
 
@@ -24,9 +24,7 @@ protected:
     bool      isResizing = false;        // Application Window change size or not
     bool      isResized = false;         // Trigger for UI to ChangeSize 
 
-
-
-    bool      isEnable4xMsaa = true;    // is Use Multiple Anti Aliasing
+    bool      isEnable4xMsaa = false;    // is Use Multiple Anti Aliasing
     UINT      m4xMsaaQuality = 0;       //  Multiple Anti Aliasing
 
     // Direct2D 
@@ -43,6 +41,10 @@ protected:
     ComPtr<ID3D11Texture2D> mDepthStencilBuffer = nullptr;
     ComPtr<ID3D11RenderTargetView> mRenderTargetView = nullptr;
     ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
+   
+    std::shared_ptr<RenderTarget> mRenderTarget = nullptr;
+    std::shared_ptr<DepthStencil> mDepthStencil = nullptr;
+
     D3D11_VIEWPORT mViewport = {};
 
     std::wstring mWndTitle = {}; //Window Name                 
@@ -69,9 +71,15 @@ public:
     ID3D11DeviceContext* GetContext() const { return mContext.Get(); };
     IDXGISwapChain* GetSwapChain() const { return mSwapChain.Get(); };
 
+    RenderTarget* GetDefaultRTV() const { return mRenderTarget.get(); };
+    DepthStencil* GetDefaultDSV() const { return mDepthStencil.get(); };
+
     ID2D1RenderTarget* Get2DRenderTarget() const { return mpD2DRenderTarget.Get(); };
     ID2D1Factory* GetD2DFactory()const { return mpD2DFactory.Get(); };
     IDWriteFactory* GetWriteFactory()const { return mpDWriteFactory.Get(); };
+
+
+
 
     HINSTANCE AppInst()const { return mhAppInst; };   // èâä˙âª
     HWND      MainWnd()const { return mhMainWnd; };   // Get Main Wnd 
@@ -112,6 +120,10 @@ public:
     static void SetCullingMode(ComPtr<ID3D11RasterizerState> _rsState);
 
     static void SetDepthTest(ComPtr<ID3D11DepthStencilState> _state);
+
+    static void SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, DepthStencil* pView);
+    static void SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, ID3D11DepthStencilView* pView);
+    static void SetRenderTarget();
 
     bool GetResized() { return isResized; };
 

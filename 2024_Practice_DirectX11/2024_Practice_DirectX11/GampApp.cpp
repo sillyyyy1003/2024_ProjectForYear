@@ -4,6 +4,7 @@
 #include "GUI.h"
 #include "KInput.h"
 #include "SceneManager.h"
+#include "Sprite.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -67,8 +68,8 @@ void GameApp::DrawScene()
 	assert(mContext);
 	assert(mSwapChain);
 	static float color[4] = { 0.1f, 0.1f, 0.1f, 1.0f };  // RGBA = (0,0,255,255)
-	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
-	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	mContext->ClearDepthStencilView(mDepthStencil->GetView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	mContext->ClearRenderTargetView(mRenderTarget->GetView(), color);
 
 	//Game描画
 	SceneManager::Get()->_draw();
@@ -84,12 +85,16 @@ void GameApp::UnInit()
 	SceneManager::Get()->UnInit();
 
 	D3DApp::UnInit();
+
+	Sprite::UnInit();
 }
 
 bool GameApp::InitResource()
 {
 	//シーン管理の初期化を行う
 	SceneManager::Get()->Init();
+
+	Sprite::Init();
 
 	return true;
 }

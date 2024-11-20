@@ -233,7 +233,7 @@ void CanvasUI::CreateTexture(const char* _fileName)
 	mMaterial.tex->Create(_fileName);
 }
 
-void CanvasUI::CreateTexture(std::shared_ptr<Texture> pTex)
+void CanvasUI::CreateTexture(const std::shared_ptr<Texture>& pTex)
 {
 	if(!pTex)
 	{
@@ -266,7 +266,7 @@ void CanvasUI::CreateMaterial(MaterialData& _materialData)
 	mMaterial.tex = _materialData.tex;
 }
 
-void CanvasUI::CreateMaterial(std::shared_ptr<Texture> tex)
+void CanvasUI::CreateMaterial(const std::shared_ptr<Texture>& tex)
 {
 	mMaterial.material = {};
 	mMaterial.tex = tex;

@@ -238,11 +238,17 @@ HRESULT LoadTextureFromFile(ID3D11Device* pDevice,const char* pszFileName, ID3D1
 
 namespace Vertex
 {
+	struct VtxPosTex
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT2 tex;
+	};
+
 	struct VtxPosColorNormal
 	{
 		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT4 color;
 		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 color;
 
 	};
 
@@ -264,25 +270,26 @@ namespace Vertex
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT4 color;
 		DirectX::XMFLOAT2 tex;
+		DirectX::XMFLOAT4 color;
 	};
 
 	struct VtxPosNormalTangentTex
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
-		DirectX::XMFLOAT3 tangent;
 		DirectX::XMFLOAT2 tex;
+		DirectX::XMFLOAT3 tangent;
 	};
 
 	struct Vtx
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT2 tex;	//Texture coordination;
 		DirectX::XMFLOAT4 tangent;
 		DirectX::XMFLOAT4 color;
-		DirectX::XMFLOAT2 tex;	//Texture coordination;
+		
 	};
 
 	enum PrintMode

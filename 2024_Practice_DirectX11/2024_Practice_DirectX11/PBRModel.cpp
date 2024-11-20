@@ -95,8 +95,8 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 			vtx[j] = {
 				XMFLOAT3(pos.x, pos.y, pos.z),
 				XMFLOAT3(normal.x, normal.y, normal.z),
+				XMFLOAT2(uv.x, 1-uv.y),
 				XMFLOAT3(tangent.x,tangent.y,tangent.z),
-				DirectX::XMFLOAT2(uv.x, 1-uv.y),
 			};
 			//todo:need to check
 		}
@@ -388,8 +388,9 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 			vtx[j] = {
 				XMFLOAT3(pos.x, pos.y, pos.z),
 				XMFLOAT3(normal.x, normal.y, normal.z),
+				XMFLOAT2(uv.x, 1 - uv.y),
 				XMFLOAT3(tangent.x,tangent.y,tangent.z),
-				DirectX::XMFLOAT2(uv.x, 1-uv.y),
+			
 			};
 		}
 		mPBRVertices.push_back(vtx);
@@ -462,9 +463,14 @@ void PBRModel::LoadDefShader()
 	mDefVS->LoadShaderFile("Assets/Shader/VS_PBRModel.cso");
 }
 
+void PBRModel::LoadDefShader(const std::shared_ptr<VertexShader>& vsShader,
+	const std::shared_ptr<PixelShader>& psShader)
+{
+	Primitive::LoadDefShader(vsShader, psShader);
+}
+
 void PBRModel::Update(float dt)
 {
-	WriteDefShader();
 }
 
 void PBRModel::Draw(int texSlot)

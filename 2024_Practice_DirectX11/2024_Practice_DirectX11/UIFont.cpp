@@ -316,14 +316,14 @@ void UIFont::DebugFunction()
             }
 
             float fontSize = mFontSize;
-            ImGui::InputFloat("FontSize",&mFontSize);
+            ImGui::InputFloat("Font Size",&mFontSize);
             if (fontSize != mFontSize)
                 NotifyFontSizeChanged();
 
-            ImGui::InputFloat("LineSpacing", &mLineSpacing);
+            ImGui::InputFloat("Line Spacing", &mLineSpacing);
 
             float blockSize = mBlockWidth;
-            ImGui::InputFloat("BlockWidth", &blockSize);
+            ImGui::InputFloat("Block Width", &blockSize);
             SetFontRectWidth(blockSize);
 
 	    }

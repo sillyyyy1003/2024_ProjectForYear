@@ -26,7 +26,6 @@ void Cylinder::Init(std::shared_ptr<Texture> tex, int slices, int stacks)
 
 void Cylinder::Update(float dt)
 {
-	WriteDefShader();
 }
 
 void Cylinder::Draw(int texSlot)

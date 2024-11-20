@@ -24,9 +24,7 @@ void InteractiveStaticObject::Init(const char* filePath, const char* _objName)
 {
 	mPBRModel = std::make_shared<PBRModel>();
 	mPBRModel->InitWithoutTex(filePath);
-	
 	mObjectName = _objName;
-
 	InitCollider();
 }
 
@@ -43,7 +41,7 @@ void InteractiveStaticObject::LoadTex(PBRConfig::PBRTexList list)
 	mPBRModel->LoadTex(list);
 }
 
-void InteractiveStaticObject::LoadShaderFile(std::shared_ptr<VertexShader> vs, std::shared_ptr<PixelShader> ps)
+void InteractiveStaticObject::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
 	mPBRModel->Primitive::LoadDefShader(vs,ps);
 }

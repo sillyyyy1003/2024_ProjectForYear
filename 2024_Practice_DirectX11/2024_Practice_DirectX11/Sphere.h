@@ -32,19 +32,13 @@ public:
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
-
+	void WriteDefShader();
 private:
 	/// @brief Mesh初期化
 	///	@param levels 垂直分割数
 	///	@param slices 水平分割数
 	void CreateMesh(UINT levels, UINT slices);
 
-	/*DefShader
-	 * 使用方向光
-	 * 使用Default Camera
-	 * todo:需要进行修改来对应实际的游戏情况...加油！
-	 */
-	/// @brief Default Shaderに使われるデータの書き込み
-	const void WriteDefShader();
+	
 };
 

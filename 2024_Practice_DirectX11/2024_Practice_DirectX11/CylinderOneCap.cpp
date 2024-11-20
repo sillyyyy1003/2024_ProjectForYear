@@ -30,7 +30,6 @@ void CylinderOneCap::Init(std::shared_ptr<Texture> tex, int slices, int stacks)
 void CylinderOneCap::Update(float dt)
 {
 
-	WriteDefShader();
 }
 
 void CylinderOneCap::Draw(int texSlot)

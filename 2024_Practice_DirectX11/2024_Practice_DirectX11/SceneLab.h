@@ -1,4 +1,5 @@
 #pragma once
+#include "Cylinder.h"
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
 #include "SceneBase.h"
@@ -19,6 +20,11 @@ class SceneLab :public SceneBase
 	std::unique_ptr<Water> mWater;
 	std::unique_ptr<MissionPaper> testPaper;
 
+	std::unique_ptr<Cube> mCube;
+	std::unique_ptr<Cylinder> mCylinder;
+	
+	bool m_isMulti;
+	int m_index;
 public:
 	/// @brief データのロードと初期化
 	void Init();
@@ -34,6 +40,9 @@ protected:
 
 	void GameObjectUpdate(float dt);
 	void TriggerListener();
+
+	void InitTestObj();
+	void DrawTestObj();
 
 };
 

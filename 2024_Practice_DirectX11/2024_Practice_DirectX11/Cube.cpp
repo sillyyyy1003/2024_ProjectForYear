@@ -19,7 +19,7 @@ void Cube::Init(const char* fileName)
 
 }
 
-void Cube::Init(std::shared_ptr<Texture> texture)
+void Cube::Init(const std::shared_ptr<Texture>& texture)
 {
 	CreateMeshes();
 	CreateMaterial();
@@ -45,12 +45,12 @@ void Cube::Draw(int texSlot)
 
 void Cube::Update(float dt)
 {
-	//Render処理
-	WriteDefShader();
+	////Render処理
+	//WriteDefShader();
 }
 
 
-const void Cube::WriteDefShader()
+void Cube::WriteDefShader()
 {
 	if (!mDefPS || !mDefVS)
 	{

@@ -11,7 +11,6 @@ Circle::Circle():Primitive(CIRCLE)
 
 void Circle::Update(float dt)
 {
-	WriteDefShader();
 }
 
 void Circle::Draw(int texSlot)

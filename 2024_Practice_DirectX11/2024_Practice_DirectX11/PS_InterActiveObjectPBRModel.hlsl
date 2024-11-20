@@ -3,8 +3,8 @@ static const float PI = 3.1415926f; // ƒÎ
 struct PS_IN
 {
 	float4 pos : SV_POSITION0;
-	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL0;
+	float2 tex : TEXCOORD0;
 	float4 tangentW : TANGENT;
 	float4 worldPos : POSITION0;
 };

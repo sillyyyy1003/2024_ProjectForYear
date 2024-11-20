@@ -6,7 +6,10 @@
 #include "RenderState.h"
 #include "ScenePotion.h"
 #include "SceneMission.h"
+#include "Sprite.h"
 
+using namespace DirectX::SimpleMath;
+using namespace DirectX;
 
 void SceneLab::Init()
 {
@@ -81,7 +84,7 @@ void SceneLab::Init()
 	mTable->Init("Assets/Texture/Lab/worn_planks_diff_1k.jpg", Vector2(1, 1));
 	mTable->LoadDefShader("Assets/Shader/VS_Primitives.cso", "Assets/Shader/PS_Primitives.cso");
 	mTable->SetScale(Vector2(30, 15));
-	mTable->SetPosition(0.f, 0.0f, 0.0f);
+	mTable->SetPosition(0.f, -0.05f, 0.0f);
 
 	mWater = std::make_unique<Water>();
 	mWater->LoadSaveData(sceneData,"water");
@@ -92,6 +95,8 @@ void SceneLab::Init()
 
 	testPaper->SetPosition({0, 3, 7.5});
 	testPaper->SetScale({2,2});
+
+	InitTestObj();
 }
 
 void SceneLab::UnInit()
@@ -116,26 +121,29 @@ void SceneLab::Update(float dt)
 {
 	TriggerListener();
 	GameObjectUpdate(dt);
+	mCube->Update(dt);
 }
 
 void SceneLab::Draw()
 {
-
+	/*
 	//Use Transparent
 	GameApp::SetCullingMode(RenderState::RSNoCull);		//裏表両面描画する
 	GameApp::SetBlendState(RenderState::BSTransparent);	//透明設定
 	mPot->Draw();
 	mWater->Draw();
-
+	*/
 	//Normal
 	GameApp::SetCullingMode(nullptr);
 	mTable->Draw();
-	for (const auto& obj : staticObjList)
-	{
-		obj.second->Draw();
-	}
+	//for (const auto& obj : staticObjList)
+	//{
+	//	obj.second->Draw();
+	//}
 
 	testPaper->Draw();
+	
+	DrawTestObj();
 }
 
 void SceneLab::GameObjectUpdate(float dt)
@@ -178,5 +186,162 @@ void SceneLab::TriggerListener()
 
 
 
+}
+
+void SceneLab::InitTestObj()
+{
+	mCube = std::make_unique<Cube>();
+	mCube->Init(nullptr);
+	mCube->LoadDefShader(GetObj<VertexShader>("VS_Primitives"),GetObj<PixelShader>("PS_Primitives"));
+	mCube->SetPosition(4,0.5f,0.0f);
+
+
+	mCylinder = std::make_unique<Cylinder>();
+	mCylinder->Init(nullptr);
+	mCylinder->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mCylinder->SetPosition(-4, 0.5f, 0.0f);
+
+
+	std::shared_ptr<VertexShader> VS_SpriteShadow = CreateObj<VertexShader>("VS_SpriteShadow");
+	std::shared_ptr<PixelShader> PS_WriteDepth = CreateObj<PixelShader>("PS_WriteDepth");
+	std::shared_ptr<PixelShader> PS_Shadow = CreateObj<PixelShader>("PS_Shadow");
+
+	VS_SpriteShadow->LoadShaderFile("Assets/Shader/VS_SpriteShadow.cso");
+	PS_WriteDepth->LoadShaderFile("Assets/Shader/PS_WriteDepth.cso");
+	PS_Shadow->LoadShaderFile("Assets/Shader/PS_Shadow.cso");
+
+
+	// レンダーターゲット作成
+	std::shared_ptr<RenderTarget> pRTV = CreateObj<RenderTarget>("DepthWriteRTV");
+	// 奥行の情報を細かく保存するために、R8G8B8A8の
+	// 各8bitではなくR32のデカい区切りで書き込みする
+	pRTV->Create(DXGI_FORMAT_R32_FLOAT, gD3D->GetWinWidth(), gD3D->GetWinHeight());
+	// 深度バッファ
+	std::shared_ptr<DepthStencil> pDSV = CreateObj<DepthStencil>("DepthWriteDSV");
+	pDSV->Create(gD3D->GetWinWidth(), gD3D->GetWinHeight(), false);
+
+	Sprite::SetVertexShader(nullptr);
+	Sprite::SetPixelShader(nullptr);
+}
+
+void SceneLab::DrawTestObj()
+{
+	
+	std::shared_ptr<RenderTarget> pDeptWriteRTV = GetObj<RenderTarget>("DepthWriteRTV");
+	std::shared_ptr<DepthStencil> pDepthWriteDSV = GetObj<DepthStencil>("DepthWriteDSV");
+
+	XMFLOAT3 shadowPos = { mCube->GetPosition().x,0.1f,mCube->GetPosition().z };
+	XMFLOAT4X4 mat[3];
+
+	//Create Shadow 
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+
+	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	mat[0] = mat[0] * scaleBaseMatrix;
+
+	XMFLOAT4X4 LMatrix[3];
+	LMatrix[0] = mat[0];
+	XMFLOAT3 LPos = GetObj<DirLight>("EnvironmentLight")->GetPosition();
+	XMFLOAT3 LDir = GetObj<DirLight>("EnvironmentLight")->GetDirection();
+
+
+	XMStoreFloat4x4(&LMatrix[1], 
+		XMMatrixTranspose(
+			XMMatrixLookAtLH(
+				XMLoadFloat3(&LPos),
+				XMLoadFloat3(&LDir),
+				XMVectorSet(0.f, 1.f, 0.f, 0.f)
+		)));
+
+	XMStoreFloat4x4(&LMatrix[2], XMMatrixTranspose(XMMatrixOrthographicLH(
+		20.f,20.f,0.1f,100.f
+	)));
+
+	float color[] = { 1,1,1,1 };
+	pDeptWriteRTV->Clear(color);
+	pDepthWriteDSV->Clear();
+
+	GameApp::SetRenderTarget(1, &pDeptWriteRTV, pDepthWriteDSV.get());
+	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+	mCube->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+	mCube->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+	mCube->Draw();
+
+	shadowPos = { mCylinder->GetPosition().x,0.1f,mCylinder->GetPosition().z };
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+	mat[0] = mat[0] * scaleBaseMatrix;
+	LMatrix[0] = mat[0];
+	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+	mCylinder->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+	mCylinder->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+	mCylinder->Draw();
+
+	shadowPos = { mPot->GetPosition().x,0.1f,mPot->GetPosition().z };
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+	scaleBaseMatrix = XMMatrixScaling(mPot->GetScale().x, mPot->GetScale().y, mPot->GetScale().z);
+	mat[0] = mat[0] * scaleBaseMatrix;
+	LMatrix[0] = mat[0];
+	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+	mPot->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+	mPot->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+	mPot->Draw();
+
+
+	for (const auto& obj : staticObjList)
+	{
+
+		shadowPos = { obj.second->GetPosition().x,0.1f,obj.second->GetPosition().z };
+		XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+			XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+		scaleBaseMatrix = XMMatrixScaling(obj.second->GetScale().x, obj.second->GetScale().y, obj.second->GetScale().z);
+		mat[0] = mat[0] * scaleBaseMatrix;
+		LMatrix[0] = mat[0];
+		GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+		obj.second->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+		obj.second->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+		obj.second->Draw();
+		
+	}
+
+
+	GameApp::SetRenderTarget();
+
+	mat[1] = GetObj<FirstPersonCamera>("DefaultCamera")->GetViewXMF();
+	mat[2] = GetObj<FirstPersonCamera>("DefaultCamera")->GetProjXMF();
+
+	mCube->SwitchToDefShader();
+	mCube->Draw();
+	mCylinder->SwitchToDefShader();
+	mCylinder->Draw();
+
+	mPot->SwitchToDefShader();
+	mPot->Draw();
+
+	for (const auto& obj : staticObjList)
+	{
+		obj.second->SwitchToDefShader();
+		obj.second->Draw();
+
+	}
+
+	
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+	XMMatrixRotationX(XM_PIDIV2) * XMMatrixScaling(20.f, 20.f, 20.f) * XMMatrixTranslation(0,0.0,0)));
+
+	Sprite::SetWorld(mat[0]);
+	Sprite::SetView(mat[1]);
+	Sprite::SetProjection(mat[2]);
+
+	LMatrix[0] = mat[0];
+	GetObj<VertexShader>("VS_SpriteShadow")->WriteShader(2, LMatrix);
+
+	Sprite::SetSize({ 3.f,3.f });
+	Sprite::SetVertexShader(GetObj<VertexShader>("VS_SpriteShadow").get());
+	Sprite::SetPixelShader(GetObj<PixelShader>("PS_Shadow").get());
+	Sprite::SetTexture(pDeptWriteRTV);
+	Sprite::Draw();
 }
 

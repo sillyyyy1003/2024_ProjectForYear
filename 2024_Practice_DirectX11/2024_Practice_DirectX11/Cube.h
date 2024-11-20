@@ -34,20 +34,21 @@ public:
 
 	void Init(const char* fileName);
 
-	void Init(std::shared_ptr<Texture>);
+	void Init(const std::shared_ptr<Texture>& tex);
 
 	/// @brief 描画
 	void Draw(int texSlot = 0);
 
 	void Update(float dt);
 
+	/// @brief Default Shaderに使われるデータの書き込み
+	void WriteDefShader();
 
 private:
 	/// @brief MeshData(頂点)作成
 	void CreateMeshes();
 
-	/// @brief Default Shaderに使われるデータの書き込み
-	const void WriteDefShader();
+
 
 };
 

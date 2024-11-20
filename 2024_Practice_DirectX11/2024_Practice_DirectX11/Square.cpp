@@ -54,12 +54,13 @@ void Square::Init(std::shared_ptr<Texture> tex, int slices)
 
 void Square::Update(float dt)
 {
-	WriteDefShader();
+
 }
 
 void Square::Draw(int texSlot)
 {
 	SetDefShader();
+
 	mPS->SetShader();
 	mVS->SetShader();
 	if (texSlot >= 0)

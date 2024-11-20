@@ -3,6 +3,8 @@
 #include "DXTrace.h"
 #include <sstream>
 #include <dxgi.h>
+#include <memory>
+
 #include "DebugLog.h"
 #include "GampApp.h"
 #include "KInput.h"
@@ -168,18 +170,29 @@ void D3DApp::OnResize()
 
     //RESET RESOURCE
     mRenderTargetView.Reset();
-    mDepthStencilView.Reset();
+	mDepthStencilView.Reset();
     mDepthStencilBuffer.Reset();
+
+    mRenderTarget.reset();
+    mDepthStencil.reset();
+    mRenderTarget = std::make_shared<RenderTarget>();
+    mDepthStencil = std::make_shared<DepthStencil>();
 
     // 重设交换链并且重新创建渲染目标视图
     ComPtr<ID3D11Texture2D> backBuffer;
     HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0));	// 注意此处DXGI_FORMAT_B8G8R8A8_UNORM
     HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
-    HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
+    HR(mRenderTarget->CreateFromScreen());
+    /*
+     *HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
+     *
+     */
+
 
     // Set Debug Name
     D3D11SetDebugObjectName(backBuffer.Get(), "BackBuffer[0]");
     backBuffer.Reset();
+
 
     //Set Depth Stencil
     D3D11_TEXTURE2D_DESC depthStencilDesc = {};
@@ -188,7 +201,6 @@ void D3DApp::OnResize()
     depthStencilDesc.MipLevels = 1;
     depthStencilDesc.ArraySize = 1;
     depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
     // if use 4X MSAA
     if (isEnable4xMsaa)
     {
@@ -200,30 +212,22 @@ void D3DApp::OnResize()
         depthStencilDesc.SampleDesc.Count = 1;
         depthStencilDesc.SampleDesc.Quality = 0;
     }
-
+	
     depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
     depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     depthStencilDesc.CPUAccessFlags = 0;
     depthStencilDesc.MiscFlags = 0;
 
-    // Create DepthStencilView &depth stencil buffer
+	/*
+	 *HR(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf()));
+	 *
+	 */
+    // Create DepthStencilView & depth stencil buffer
     HR(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, mDepthStencilBuffer.GetAddressOf()));
-    HR(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf()));
+    HR(mDepthStencil->Create(gD3D->GetWinWidth(),gD3D->GetWinHeight(),false));
 
-
-    //Set To Render Target
-    mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
-
-    // Set Viewport
-    mViewport.TopLeftX = 0;
-    mViewport.TopLeftY = 0;
-    mViewport.Width = static_cast<float>(mClientWidth);
-    mViewport.Height = static_cast<float>(mClientHeight);
-    mViewport.MinDepth = 0.0f;
-    mViewport.MaxDepth = 1.0f;
-
-    mContext->RSSetViewports(1, &mViewport);
-
+    //Set Default Render Target
+    SetRenderTarget(1, &mRenderTarget, mDepthStencil.get());
 
 }
 
@@ -481,6 +485,7 @@ bool D3DApp::InitDirect3D()
 	//******************************************
 	// Check msaa level
 	//******************************************
+    
     mDevice->CheckMultisampleQualityLevels(
         DXGI_FORMAT_B8G8R8A8_UNORM, 4, &m4xMsaaQuality); 
     assert(m4xMsaaQuality > 0);
@@ -492,7 +497,7 @@ bool D3DApp::InitDirect3D()
     HR(mDevice.As(&dxgiDevice));
     HR(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
     HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
-
+	
 
     //******************************************
     // Create swap chain
@@ -507,6 +512,9 @@ bool D3DApp::InitDirect3D()
     sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+    sd.SampleDesc.Count = 1;
+    sd.SampleDesc.Quality = 0;
+    /*
     // Check use 4x MSAA
     if (isEnable4xMsaa)
     {
@@ -517,7 +525,7 @@ bool D3DApp::InitDirect3D()
     {
         sd.SampleDesc.Count = 1;
         sd.SampleDesc.Quality = 0;
-    }
+    }*/
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.BufferCount = 1;
     sd.OutputWindow = mhMainWnd;
@@ -525,7 +533,6 @@ bool D3DApp::InitDirect3D()
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     sd.Flags = 0;
     HR(dxgiFactory1->CreateSwapChain(mDevice.Get(), &sd, mSwapChain.GetAddressOf()));
-
     dxgiFactory1->MakeWindowAssociation(mhMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
     // Set Debug Obj
@@ -615,3 +622,49 @@ void D3DApp::SetDepthTest(ComPtr<ID3D11DepthStencilState> _state)
 {
     gD3D->GetContext()->OMSetDepthStencilState(_state.Get(), 0);
 }
+
+void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, DepthStencil* pView)
+{
+    static ID3D11RenderTargetView* rtvs[4];
+
+    if (num > 4) num = 4;
+    for (UINT i = 0; i < num; ++i)
+        rtvs[i] = ppViews[i]->GetView();
+    gD3D->mContext->OMSetRenderTargets(num, rtvs, pView ? pView->GetView() : nullptr);
+
+    // ビューポートの設定
+    D3D11_VIEWPORT vp;
+    vp.TopLeftX = 0.0f;
+    vp.TopLeftY = 0.0f;
+    vp.Width = (float)ppViews[0]->GetWidth();
+    vp.Height = (float)ppViews[0]->GetHeight();
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    gD3D->mContext->RSSetViewports(1, &vp);
+}
+
+void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, ID3D11DepthStencilView* pView)
+{
+    static ID3D11RenderTargetView* rtvs[4];
+
+    if (num > 4) num = 4;
+    for (UINT i = 0; i < num; ++i)
+        rtvs[i] = ppViews[i]->GetView();
+    gD3D->mContext->OMSetRenderTargets(num, rtvs, pView ? pView : nullptr);
+
+    // ビューポートの設定
+    D3D11_VIEWPORT vp;
+    vp.TopLeftX = 0.0f;
+    vp.TopLeftY = 0.0f;
+    vp.Width = (float)ppViews[0]->GetWidth();
+    vp.Height = (float)ppViews[0]->GetHeight();
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    gD3D->mContext->RSSetViewports(1, &vp);
+}
+
+void D3DApp::SetRenderTarget()
+{
+    SetRenderTarget(1, &gD3D->mRenderTarget, gD3D->mDepthStencil.get());
+}
+

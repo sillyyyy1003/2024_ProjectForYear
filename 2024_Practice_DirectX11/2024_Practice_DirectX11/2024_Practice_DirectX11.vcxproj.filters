@@ -115,9 +115,6 @@
     <Filter Include="ソース ファイル\Scene\SubScene">
       <UniqueIdentifier>{b6ad6e7f-fc2d-4be0-9f91-03741d0268b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\BaseModel\2DGraphics">
-      <UniqueIdentifier>{da6a0e49-9ec4-4efb-a2d0-04f06e5af473}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\UI\BillboardUI">
       <UniqueIdentifier>{7d82cd8c-4ffb-4e3d-8088-f660e66ba965}</UniqueIdentifier>
     </Filter>
@@ -133,8 +130,11 @@
     <Filter Include="ソース ファイル\BaseMesh\完成形">
       <UniqueIdentifier>{ca61fe02-639d-4613-87fa-27d8e1f662eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\BaseMesh\UIMesh">
+    <Filter Include="ソース ファイル\UI\UIMesh">
       <UniqueIdentifier>{16e2af58-7db3-4161-bbca-cc570da491f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI\BillboardUI\UIMesh">
+      <UniqueIdentifier>{da6a0e49-9ec4-4efb-a2d0-04f06e5af473}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,19 +301,22 @@
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
     <ClCompile Include="UI_Capsule.cpp">
-      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+      <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
     </ClCompile>
     <ClCompile Include="UI_Primitive.cpp">
-      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+      <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
     <ClCompile Include="UI_Square.cpp">
-      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+      <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
     <ClCompile Include="CanvasUI.cpp">
-      <Filter>ソース ファイル\BaseMesh\UIMesh</Filter>
+      <Filter>ソース ファイル\UI\UIMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,9 +455,6 @@
     <ClInclude Include="ScenePotion.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
-    <ClInclude Include="PBRModel.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
     <ClInclude Include="InteractiveStaticObject.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
@@ -468,7 +468,7 @@
       <Filter>ヘッダー ファイル\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
@@ -486,16 +486,22 @@
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
     <ClInclude Include="UI_Capsule.h">
-      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="UI_Square.h">
-      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="UI_Primitive.h">
-      <Filter>ヘッダー ファイル\BaseModel\2DGraphics</Filter>
+      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="CanvasUI.h">
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRModel.h">
+      <Filter>リソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +540,21 @@
     </FxCompile>
     <FxCompile Include="PS_UIFont.hlsl">
       <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_DefaultSprite.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_DefaultSprite.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_WriteDepth.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Shadow.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_SpriteShadow.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

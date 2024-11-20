@@ -132,7 +132,7 @@ protected:
 
 	/// @brief テクスチャ作成
 	/// @param pTex 作成されているTexture pointer
-	void CreateTexture(std::shared_ptr<Texture> pTex);
+	void CreateTexture(const std::shared_ptr<Texture>& pTex);
 
 	/// @brief マテリアル作成
 	/// @param _fileName テクスチャファイル名
@@ -142,7 +142,7 @@ protected:
 	/// @param _materialData 作成されているマテリアルデータ
 	void CreateMaterial(MaterialData& _materialData);
 
-	void CreateMaterial(std::shared_ptr<Texture> tex);
+	void CreateMaterial(const std::shared_ptr<Texture>& tex);
 
 	/// @brief Load Default Shader
 	virtual void LoadShader();

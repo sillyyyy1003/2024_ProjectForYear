@@ -50,6 +50,8 @@ void Tile::Init(const char* _fileName, int slices)
 	CreateTexture(_fileName);
 }
 
+
+
 void Tile::Init(std::shared_ptr<Texture> tex, int slices)
 {
 	CreateMesh(slices);
@@ -59,7 +61,7 @@ void Tile::Init(std::shared_ptr<Texture> tex, int slices)
 
 void Tile::Update(float dt)
 {
-	WriteDefShader();
+
 }
 
 void Tile::Draw(int texSlot)

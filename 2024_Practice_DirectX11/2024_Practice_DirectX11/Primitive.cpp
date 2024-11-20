@@ -68,6 +68,18 @@ void Primitive::LoadTexture(std::shared_ptr<Texture> tex)
 	mMaterial.tex = tex;
 }
 
+void Primitive::SetPixelShader(PixelShader* ps) noexcept
+{
+	isDefShader = false;
+	mPS = ps;
+}
+
+void Primitive::SetVertexShader(VertexShader* vs) noexcept
+{
+	isDefShader = false;
+	mVS = vs;
+}
+
 void Primitive::LoadDefShader()
 {
 	mDefPS = std::make_shared<PixelShader>();
@@ -86,31 +98,37 @@ void Primitive::LoadDefShader(const char* vsPath, const char* psPath)
 
 }
 
-void Primitive::LoadDefShader(std::shared_ptr<VertexShader> vsShader, std::shared_ptr<PixelShader> psShader)
+void Primitive::LoadDefShader(const std::shared_ptr<VertexShader>& vsShader, const std::shared_ptr<PixelShader>& psShader)
 {
+	mDefPS = std::make_shared<PixelShader>();
+	mDefVS = std::make_shared<VertexShader>();
 	mDefPS = psShader;
 	mDefVS = vsShader;
 }
 
-void Primitive::ResetDefPSShader()
-{
-	mDefPS.reset();
-	mDefPS = std::make_shared<PixelShader>();
-}
 
-void Primitive::ResetDefVSShader()
+void Primitive::SwitchToDefShader()
 {
-	mDefVS.reset();
-	mDefVS = std::make_shared<VertexShader>();
+	isDefShader = true;
 }
 
 void Primitive::SetDefShader()
 {
 	if (isDefShader)
 	{
+		WriteDefShader();
 		mVS = mDefVS.get();
 		mPS = mDefPS.get();
 	}
+
+#ifdef _DEBUG
+	if (!mVS)
+		DebugLog::LogError("VertexShader is null!");
+	if (!mPS)
+		DebugLog::LogError("PixelShader is null!");
+
+#endif
+
 }
 
 void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept

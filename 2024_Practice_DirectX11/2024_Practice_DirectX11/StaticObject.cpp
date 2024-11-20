@@ -19,7 +19,7 @@ void StaticObject::LoadTex(PBRConfig::PBRTexList list)
 	mModel->LoadTex(list);
 }
 
-void StaticObject::LoadShaderFile(std::shared_ptr<VertexShader> vs, std::shared_ptr<PixelShader> ps)
+void StaticObject::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
 	mModel->Primitive::LoadDefShader(vs, ps);
 }

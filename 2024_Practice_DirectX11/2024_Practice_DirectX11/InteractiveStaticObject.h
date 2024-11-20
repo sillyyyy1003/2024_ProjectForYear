@@ -46,7 +46,7 @@ public:
 	void Init(const char* filePath,const char* _objName);
 	void Init(std::shared_ptr<PBRModel> _model, const char* _objName);
 	void LoadTex(PBRConfig::PBRTexList list);
-	void LoadShaderFile(std::shared_ptr<VertexShader> vs,std::shared_ptr<PixelShader>ps);
+	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
 	void LoadShaderFile(const char* vsFile, const char* psFile);
 
 	/// @brief 
@@ -72,7 +72,15 @@ public:
 	json SaveData();
 	void LoadSaveData(json data, const char* objName);
 
+	DirectX::XMFLOAT3 GetPosition() { return mPBRModel->GetPosition(); };
+	DirectX::XMFLOAT3 GetScale() { return mPBRModel->GetScale(); };
+	DirectX::XMFLOAT3 GetRotation() { return mPBRModel->GetRotation(); };
+	DirectX::XMFLOAT4 GetQuaternion() { return mPBRModel->GetQuaternion(); };
 
+	void SetVertexShader(VertexShader* vs) { mPBRModel->SetVertexShader(vs); };
+	void SetPixelShader(PixelShader* ps) { mPBRModel->SetPixelShader(ps); };
+
+	void SwitchToDefShader() { mPBRModel->SwitchToDefShader(); };
 
 protected:
 

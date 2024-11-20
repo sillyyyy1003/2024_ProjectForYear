@@ -147,7 +147,7 @@ void Sphere::CreateMesh(UINT levels, UINT slices)
 }
 
 
-const void Sphere::WriteDefShader()
+void Sphere::WriteDefShader()
 {
     if (!mDefPS || !mDefVS)
     {

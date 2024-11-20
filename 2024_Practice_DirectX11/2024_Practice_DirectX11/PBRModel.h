@@ -54,6 +54,7 @@ public:
 	void InitWithoutTex(const char* file);
 
 	void LoadDefShader();
+	void LoadDefShader(const std::shared_ptr<VertexShader>& vsShader, const std::shared_ptr<PixelShader>& psShader);
 
 	void Update(float dt);
 	void Draw(int texSlot=0);

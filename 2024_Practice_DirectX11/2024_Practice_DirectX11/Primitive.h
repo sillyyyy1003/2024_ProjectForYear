@@ -62,7 +62,7 @@ protected:
 
 	std::string mFilePath;
 
-	
+
 public:
 
 	/// @brief 大きさ・位置・回転などの情報
@@ -73,23 +73,23 @@ public:
 	Primitive(PrimitiveKind kind);
 	virtual ~Primitive() override;
 
-	virtual void CreateMesh(UINT levels, UINT slices){};
+	virtual void CreateMesh(UINT levels, UINT slices) {};
 	virtual void CreateMesh(UINT slices) {};
-	
 
-	virtual void Init(const char* filePath = nullptr){};
+
+	virtual void Init(const char* filePath = nullptr) {};
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
 	virtual void Init(const char* filePath, int slices) {};
-	virtual void Init(std::shared_ptr<Texture> tex) {};
-	virtual void Init(std::shared_ptr<Texture> tex, int slices) {};
-	virtual void Init(const char* filePath, int slices, int levels){};
-	virtual void Init(std::shared_ptr<Texture> tex, int slices, int levels){};
+	virtual void Init(Texture* tex) {};
+	virtual void Init(Texture* tex, int slices) {};
+	virtual void Init(Texture* tex, int slices, int levels) {};
+	virtual void Init(const char* filePath, int slices, int levels) {};
 
 	virtual void CreateMaterial();
 	virtual void CreateMaterial(Material& material) { mMaterial.material = material; };
 	virtual void CreateTexture(const char* filePath);
 
-	virtual void Update(float dt){};
+	virtual void Update(float dt) {};
 	virtual void Draw(int texSlot = 0) = 0;
 
 	virtual void SetScale(const DirectX::XMFLOAT3& scale) noexcept { mTransform.SetScale(scale); };
@@ -104,7 +104,7 @@ public:
 	virtual void SetPosition(const float* pos) noexcept { mTransform.SetPosition(pos); };
 
 
-	virtual void SetRotation(const float* rot)noexcept { mTransform.SetRotationInDegree(rot[0],rot[1],rot[2]); };
+	virtual void SetRotation(const float* rot)noexcept { mTransform.SetRotationInDegree(rot[0], rot[1], rot[2]); };
 	virtual void SetRotation(const DirectX::XMFLOAT3& rotation)noexcept { mTransform.SetRotationInDegree(rotation); };
 	virtual void SetRotation(float x, float y, float z)noexcept { mTransform.SetRotationInDegree(x, y, z); };
 
@@ -127,27 +127,27 @@ public:
 	/// @brief For Sampler Wrap
 	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept {};
 
-	/// @brief Default Shaderを使うかどうか？
-	virtual void SetIsDefShader(bool isDefShader)noexcept { this->isDefShader = isDefShader; };
-
-	virtual void SetPixelShader(PixelShader* ps) noexcept { mPS = ps; };
-	virtual void SetVertexShader(VertexShader* vs) noexcept { mVS = vs; };
+	virtual void SetPixelShader(PixelShader* ps) noexcept;
+	virtual void SetVertexShader(VertexShader* vs) noexcept;
 
 	PixelShader* GetDefPS() const { return mDefPS.get(); };
 	VertexShader* GetDefVS() const { return mDefVS.get(); };
 
 	/// @brief Default Shaderの初期化
 	virtual void LoadDefShader();
-	virtual void LoadDefShader(const char* vsPath,const char* psPath);
-	virtual void LoadDefShader(std::shared_ptr<VertexShader> vsShader, std::shared_ptr<PixelShader> psShader);
+	virtual void LoadDefShader(const char* vsPath, const char* psPath);
+	virtual void LoadDefShader(const std::shared_ptr<VertexShader>& vsShader,const std::shared_ptr<PixelShader>& psShader);
 
-
-	virtual void ResetDefPSShader();
-	virtual void ResetDefVSShader();
-	virtual void ResetDefPSShader(std::shared_ptr<PixelShader> psShader){};
-	virtual void ResetDefVSShader(std::shared_ptr<VertexShader> vsShader){};
+	virtual void SwitchToDefShader();
 
 	virtual void SetDefShader();
+	/// @brief mVS/mPSに書き込む
+	virtual void WriteShader() {};
+
+	/// @brief Def VS/PSに書き込む
+	virtual void WriteDefShader() {};
+	virtual void WritePixelShader() {};
+	virtual void WriteVertexShader() {};
 
 	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept;
 

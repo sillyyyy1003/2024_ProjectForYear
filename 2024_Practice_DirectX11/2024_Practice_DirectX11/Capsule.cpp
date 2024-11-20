@@ -25,11 +25,12 @@ void Capsule::Init(std::shared_ptr<Texture> tex,  int levels, int slices)
 
 void Capsule::Update(float dt)
 {
-	WriteDefShader();
+
 }
 
 void Capsule::Draw(int texSlot)
 {
+	
 	SetDefShader();
 
 	mPS->SetShader();
