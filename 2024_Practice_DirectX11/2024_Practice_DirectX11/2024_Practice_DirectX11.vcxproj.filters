@@ -318,6 +318,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="WaterState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StartUp.h">
@@ -500,8 +503,11 @@
     <ClInclude Include="Sprite.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="WaterState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="PBRModel.h">
-      <Filter>リソース ファイル</Filter>
+      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -521,12 +527,6 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_ButtonUI.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS_Water.hlsl">
-      <Filter>リソース ファイル\VS</Filter>
-    </FxCompile>
-    <FxCompile Include="PS_Water.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="PS_PBRModel.hlsl">
@@ -555,6 +555,12 @@
     </FxCompile>
     <FxCompile Include="VS_SpriteShadow.hlsl">
       <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_Water.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_Water.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

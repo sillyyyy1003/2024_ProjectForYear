@@ -5,6 +5,7 @@
 #include "KInput.h"
 #include "SceneManager.h"
 #include "Sprite.h"
+#include "Water.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -60,6 +61,14 @@ void GameApp::UpdateScene(float deltaTime)
 		isResized = false;
 	}
 
+	if(ImGui::Begin("Restrict"))
+	{
+		ImGui::Checkbox("Restrict frame rate", &isRestrictFrameRate);
+	}
+		
+
+	ImGui::End();
+
 	ImGui::Render();
 }
 
@@ -84,9 +93,12 @@ void GameApp::UnInit()
 	//Scene Release
 	SceneManager::Get()->UnInit();
 
+	//Sprite Release
+	Sprite::UnInit();
+
 	D3DApp::UnInit();
 
-	Sprite::UnInit();
+	
 }
 
 bool GameApp::InitResource()

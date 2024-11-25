@@ -37,6 +37,7 @@ private:
 
 	static Objects mObjects;//シーン内すべてのオブジェクト
 
+
 protected:
 	/*
 	 *How to manage the scene (CN)
@@ -54,7 +55,7 @@ public:
 	void _draw();
 
 	json LoadSceneData(const char* fileName);
-	void SaveSceneFile(const char* fileName,json sceneFile);
+	void SaveSceneFile(const char* fileName, json sceneFile);
 
 	/// @brief サブシーンの追加
 	/// @tparam T サブシーンの型
@@ -132,4 +133,3 @@ std::shared_ptr<T> SceneBase::GetObj(const char* name)
 	std::shared_ptr<SceneObject<T>> ptr = std::reinterpret_pointer_cast<SceneObject<T>>(it->second);
 	return ptr->mObj;
 }
-

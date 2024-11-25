@@ -50,6 +50,7 @@ void Ingredient::Draw()
 
 void Ingredient::UpdatePrice()
 {
+	//todo: need to fix the transform problem
 	if (mFreshness > 0)
 	{
 		mFreshness = 100.f * (1.f - GameApp::Get()->GetTimer().GetGameHourPassed() / mShelfLife);

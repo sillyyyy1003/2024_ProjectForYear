@@ -29,7 +29,6 @@ void SceneManager::Init()
 
 	//カメラ作成
 	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("DefaultCamera");
-	camera->LoadSaveData(sceneData, "DefaultCamera");
 	camera->SetPosition(0.0, 2.0, -2.0);
 	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
 	//現在のカメラをセットする
@@ -135,7 +134,6 @@ void SceneManager::InitModelTexture()
 	pbrAOTexture = CreateObj<Texture>("pbrAO");
 	HR(pbrAOTexture->Create("Assets/Model/LabAssets/mTrimSheet_Mixed_AO.png"));
 
-
 	waterTexture = CreateObj<Texture>("water");
 	HR(waterTexture->Create("Assets/Texture/water.png"));
 
@@ -149,28 +147,27 @@ void SceneManager::LoadPixelShaderFile()
 {
 	std::shared_ptr<PixelShader> buttonUI = CreateObj<PixelShader>("PS_ButtonUI");
 	buttonUI->LoadShaderFile("Assets/Shader/PS_ButtonUI.cso");
-	psList.push_back(buttonUI);
 
 	std::shared_ptr<PixelShader> defaultUI = CreateObj<PixelShader>("PS_DefaultUI");
 	defaultUI->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso");
-	psList.push_back(defaultUI);
 
 	std::shared_ptr<PixelShader> object = CreateObj<PixelShader>("PS_Object");
 	object->LoadShaderFile("Assets/Shader/PS_Object.cso");
-	psList.push_back(object);
-
-	std::shared_ptr<PixelShader> pbrModel = CreateObj<PixelShader>("PS_PBRModel");
-	pbrModel->LoadShaderFile("Assets/Shader/PS_PBRModel.cso");
-	psList.push_back(pbrModel);
 
 	std::shared_ptr<PixelShader> primitives = CreateObj<PixelShader>("PS_Primitives");
 	primitives->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
-	psList.push_back(primitives);
 
-	std::shared_ptr<PixelShader> water = CreateObj<PixelShader>("Water");
-	water->LoadShaderFile("Assets/Shader/PS_Water.cso");
-	psList.push_back(water);
+	std::shared_ptr<PixelShader> pbrModel = CreateObj<PixelShader>("PS_PBRModel");
+	pbrModel->LoadShaderFile("Assets/Shader/PS_PBRModel.cso");
 
+	std::shared_ptr<PixelShader> interactiveStaticPs = CreateObj<PixelShader>("PS_InterActiveObjectPBRModel");
+	interactiveStaticPs->LoadShaderFile("Assets/Shader/PS_InterActiveObjectPBRModel.cso");
+
+	std::shared_ptr<PixelShader> Shadow = CreateObj<PixelShader>("PS_Shadow");
+	Shadow->LoadShaderFile("Assets/Shader/PS_Shadow.cso");
+
+	std::shared_ptr<PixelShader> WriteDepth = CreateObj<PixelShader>("PS_WriteDepth");
+	WriteDepth->LoadShaderFile("Assets/Shader/PS_WriteDepth.cso");
 
 }
 
@@ -178,19 +175,15 @@ void SceneManager::LoadVertexShaderFile()
 {
 	std::shared_ptr<VertexShader> defaultUI = CreateObj<VertexShader>("VS_DefaultUI");
 	defaultUI->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso");
-	vsList.push_back(defaultUI);
 
 	std::shared_ptr<VertexShader> pbrModel = CreateObj<VertexShader>("VS_PBRModel");
 	pbrModel->LoadShaderFile("Assets/Shader/VS_PBRModel.cso");
-	vsList.push_back(pbrModel);
 
 	std::shared_ptr<VertexShader> primitives = CreateObj<VertexShader>("VS_Primitives");
 	primitives->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
-	vsList.push_back(primitives);
 
-	std::shared_ptr<VertexShader> water = CreateObj<VertexShader>("VS_Water");
-	water->LoadShaderFile("Assets/Shader/VS_Water.cso");
-	vsList.push_back(water);
+	std::shared_ptr<VertexShader> spriteShadow = CreateObj<VertexShader>("VS_SpriteShadow");
+	spriteShadow->LoadShaderFile("Assets/Shader/VS_SpriteShadow.cso");
 }
 
 void SceneManager::ChangeMainScene()

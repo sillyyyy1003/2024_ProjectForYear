@@ -61,3 +61,17 @@ void PointLight::SetAttenuation(const float* attenuation)
 {
 	mAttenuation = Vector3(attenuation[0], attenuation[1], attenuation[2]);
 }
+
+const Light::PointLight& PointLight::GetPointLight()
+{
+	Light::PointLight light;
+	light = {
+		this->GetAmbient(),
+		this->GetDiffuse(),
+		this->GetPosition(),
+		mRange,
+		this->GetAttenuation(),
+		true,
+	};
+	return light;
+}

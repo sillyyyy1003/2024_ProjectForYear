@@ -1,6 +1,8 @@
 #pragma once
 #include "Circle.h"
 #include "Square.h"
+#include "WaterState.h"
+#include "FastNoise/FastNoiseLite.h"
 
 //Water Default Parameter
 namespace WaterDefault
@@ -23,45 +25,44 @@ namespace WaterDefault
 /// @brief ポーションの規定になる
 class Water
 {
+private:
+	bool isResetVertices = false;	//すべての頂点の位置をゼロにするかどうか？
 protected:
 
-	//水の物理表現に関するパラメータ
-	struct WaterParam
-	{
-		DirectX::XMFLOAT3  center;  // 波の中心位置
-		float nowAmplitude;			// 波の幅
-		float amplitude;
-
-		float frequency;			// 波の頻度
-		float speed;				// 波のスビード
-		float sigma;				// 波の拡散範囲
-		float time = 0;					// 経過時間
-	};
-
-	WaterParam mParam = {};
+	WaterStateConfig::WaterStateParam mParam = {};
 
 	//波紋開始かどうか？
 	bool isTrigger = true;
-	float mDuration = 3.0f;		// 波の継続時間
+	float mNowAmplitude = 0.0f;
+	float mWaterTime = 0.0;		//今の波の時間
+	float mDuration =3.0f;		// 波の継続時間
+	WaterStateConfig::WaterBoilingState mBoilingState;//動きがあるかどうかの判断
+
+	std::unique_ptr<WaterState> mWaterStates = nullptr;
+
 
 	//水の描画 //todo: make the model multi kinds
 	std::unique_ptr<Primitive> mModel = nullptr;
 
 	std::string mObjectName;
+	bool isApplyParam = false;
+	
 public:
 	
 	Water();
 	virtual ~Water() = default;
 
 	/// @brief Init object & creating new texture
-	/// @param filePath 
-	/// @param objName 
-	void Init(const char* filePath,const char* objName);
-
+	/// @param filePath water texture filepath
+	/// @param objName オブジェクト名
+	///	@param slices 分割数
+	void Init(const char* filePath, const char* objName, int slices = 50);
+		
 	/// @brief Init Object with existing texture
-	/// @param tex 
-	/// @param objName 
-	void Init(std::shared_ptr<Texture> tex, const char* objName);
+	/// @param tex 既にロードされたテクスチャ
+	/// @param objName オブジェクト名
+	///	@param slices 分割数
+	void Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices = 50);
 
 
 	void Update(float dt);
@@ -74,6 +75,8 @@ public:
 	/// @brief WaterParamの内容をシェーダに書き込む
 	void WriteShader();
 
+	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
+	void LoadShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 
 
 	/// @brief Load Save Data & Init Object Data
@@ -85,9 +88,12 @@ public:
 	/// @return 
 	json SaveData();
 
-	//Circle* GetModel() { return mModel.get(); };
+	void SetTexture(std::shared_ptr<Texture> tex);
 
-	void SetTexture(std::shared_ptr<Texture> tex) { mModel->LoadTexture(tex); };
+	void RewriteVertices();
+
+	void SetWaterBoilingState(WaterStateConfig::WaterBoilingState _state);
+	void SetWaterState(WaterStateConfig::WaterState _state);
 
 protected:
 

@@ -65,6 +65,8 @@ void Primitive::SetScaleXY(const DirectX::XMFLOAT2& scale) noexcept
 
 void Primitive::LoadTexture(std::shared_ptr<Texture> tex)
 {
+	if (!tex)
+		mMaterial.material.isTexEnable = false;
 	mMaterial.tex = tex;
 }
 
@@ -134,6 +136,11 @@ void Primitive::SetDefShader()
 void Primitive::SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept
 {
 	mVertices = vertices;
+}
+
+void Primitive::SetIndices(std::vector<DWORD> indices) noexcept
+{
+	mIndices = indices;
 }
 
 const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& Primitive::GetPBRVertices()

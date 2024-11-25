@@ -309,7 +309,6 @@ struct Material
 	DirectX::XMFLOAT4 specular = { 1.0f, 0.5f, 0.5f, 0.2f }; // 鏡面反射 ks 
 	DirectX::XMFLOAT4 emission = { 0.0f, 0.0f, 0.0f, 0.0f }; // 反射 ke 自発光なし
 	BOOL isTexEnable = true;
-	float dummy[2] = {};
 };
 
 namespace Light

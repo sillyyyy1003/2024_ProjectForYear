@@ -7,7 +7,7 @@ class FirstPersonCamera : public CameraBase
 {
 private:
  
-    float mMoveSpeed = 5.0f;
+    float mMoveSpeed =5.0f;
 
     int mState = 0;
     POINT mOldPos = { 0,0 };
@@ -53,6 +53,8 @@ public:
     /// @param d ãóó£
     void MoveForward(float d);
 
+    void LookDown();
+
     /// @brief è„â∫äœé@
     /// @param rad +:UP -:DOWN
     void Pitch(float rad);
@@ -73,6 +75,7 @@ public:
 
     json SaveData();
     void LoadSaveData(json data, const char* objName);
+
 private:
     void UpdateState();
     void UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt);

@@ -527,8 +527,6 @@ void PBRModel::WriteDefShader()
 	light.lightDiffuse = dirLight->GetDiffuse();
 	light.lightDir = Vector4(dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0);
 
-
-
 	mDefVS->WriteShader(0, WVP);
 	mDefPS->WriteShader(0, &eyePos);
 	mDefPS->WriteShader(1, &light);

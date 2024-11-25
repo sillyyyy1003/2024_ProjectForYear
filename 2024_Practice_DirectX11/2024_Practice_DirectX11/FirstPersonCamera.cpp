@@ -1,4 +1,6 @@
 ﻿#include "FirstPersonCamera.h"
+
+#include "GUI.h"
 #include "KInput.h"
 using namespace DirectX;
 
@@ -15,6 +17,25 @@ enum CameraKind
 void FirstPersonCamera::Update(float dt)
 {
     UpdateState();
+
+#ifdef _DEBUG
+    if (ImGui::Begin("Camera Option"))
+    {
+        ImGui::Checkbox("isLock", &isLockPos);
+
+        ImGui::Text("Position");
+        GUI::ShowFloat3(this->GetPos());
+
+        ImGui::Text("Rotation");
+        GUI::ShowFloat3(mTransform.GetRotation());
+
+        ImGui::InputFloat("MoveSpeed", &mMoveSpeed);
+
+        
+    }
+    ImGui::End();
+#endif
+
     if (mState == CAM_NONE) return;
 
     // マウス移動量
@@ -80,6 +101,13 @@ void FirstPersonCamera::Walk(float d)
 void FirstPersonCamera::MoveForward(float d)
 {
     mTransform.Translate(mTransform.GetForwardAxis(), d);
+}
+
+void FirstPersonCamera::LookDown()
+{
+    XMFLOAT3 rotation = mTransform.GetRotation();
+	rotation.x = -XM_PI / 2;
+    mTransform.SetRotationInRadian(rotation);
 }
 
 void FirstPersonCamera::Pitch(float rad)
@@ -188,12 +216,7 @@ void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
         gD3D->SetMoveUnit(0);
     }
 
-#ifdef _DEBUG
 
-    
-
-
-	#endif
 
 }
 

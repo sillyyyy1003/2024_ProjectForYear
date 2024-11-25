@@ -1,4 +1,4 @@
-#include "Water.h"
+ï»¿#include "Water.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GampApp.h"
@@ -14,36 +14,55 @@ Water::Water()
 
 }
 
-void Water::Init(const char* filePath, const char* objName)
+void Water::Init(const char* filePath, const char* objName, int slices)
 {
 	mModel = std::make_unique<Circle>();
-	mModel->CreateMesh(50, 50);
+	mModel->CreateMesh(slices, slices);
 	mModel->CreateMaterial();
 	mModel->CreateTexture(filePath);
-	mModel->LoadDefShader("Assets/Shader/VS_Water.cso","Assets/Shader/PS_Water.cso");
 	mObjectName = objName;
+
+	mWaterStates = std::make_unique<WaterState>();
+	mWaterStates->Init();
 }
 
-void Water::Init(std::shared_ptr<Texture> tex, const char* objName)
+void Water::Init(const std::shared_ptr<Texture>& tex, const char* objName,int slices)
 {
 	mModel = std::make_unique<Circle>();
-	mModel->CreateMesh(50, 50);
+	mModel->CreateMesh(slices, slices);
 	mModel->CreateMaterial();
 	mModel->LoadTexture(tex);
-	mModel->LoadDefShader("Assets/Shader/VS_Water.cso", "Assets/Shader/PS_Water.cso");
 	mObjectName = objName;
+
+	mWaterStates = std::make_unique<WaterState>();
+	mWaterStates->Init();
 }
 
 void Water::Update(float dt)
 {
 
 #ifdef _DEBUG
-	//…‚Ì”g‚Ìİ’è‚ÆF‚Ìİ’è‚ğ‰Â‹‰»‚É‚·‚é
+	//æ°´ã®æ³¢ã®è¨­å®šã¨è‰²ã®è¨­å®šã‚’å¯è¦–åŒ–ã«ã™ã‚‹
+
+	mWaterStates->DebugFunction();
+
 	if (ImGui::Begin("Water Option"))
 	{
 		static bool isResetMaterial = false;
 		ImGui::Checkbox("Reset Material", &isResetMaterial);
 		if (isResetMaterial)ResetMaterial();
+
+		ImGui::Checkbox("Apply param", &isApplyParam);
+		if(isApplyParam)mParam = mWaterStates->GetCurrentWaterParam();
+
+		
+		const char* stateName[] = {"still","boiling","experiment"};
+		int currentState =static_cast<int>(mBoilingState);
+		// ä¸‹æ‹‰èœå•é€‰æ‹©çŠ¶æ€
+		if (ImGui::Combo("Select Water State", &currentState, stateName, IM_ARRAYSIZE(stateName)))
+		{
+			mBoilingState = static_cast<WaterStateConfig::WaterBoilingState>(currentState);
+		}
 
 		ImGui::Text("WaterPos");
 
@@ -54,28 +73,10 @@ void Water::Update(float dt)
 		float scale[3] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
 		ImGui::InputFloat3("Scale", scale);
 		mModel->SetScale(scale);
-	
 
-		ImGui::Text("Wave Option");
-		float center[3] = { mParam.center.x,mParam.center.y,mParam.center.z };
-		ImGui::SliderFloat3("Centre", center, -10.f, 10.f);
-		mParam.center = Vector3(center);
-
-		// ”g‚Ì•
-		ImGui::SliderFloat("Amplitude", &mParam.amplitude, 0.f, 3.f);
-
-		// ”g‚Ì•p“x
-		ImGui::SliderFloat("Frequency", &mParam.frequency, 0.1f, 10.f);
-
-		// ”g‚ÌƒXƒr[ƒh
-		ImGui::SliderFloat("Speed", &mParam.speed, 0.1f, 10.f);
-
-		// ”g‚ÌŠgU”ÍˆÍ
-		ImGui::SliderFloat("Sigma", &mParam.sigma, 0.1f, 10.f);
-
-		// Œp‘±ŠÔ
+		// ç¶™ç¶šæ™‚é–“
 		ImGui::SliderFloat("duration", &mDuration, 0.1f, 10.f);
-
+		
 		float ambient[4] = {
 			mModel->GetMaterial().ambient.x, mModel->GetMaterial().ambient.y,
 			mModel->GetMaterial().ambient.z, mModel->GetMaterial().ambient.w,
@@ -91,77 +92,166 @@ void Water::Update(float dt)
 		float emission[4] = { mModel->GetMaterial().emission.x, mModel->GetMaterial().emission.y, mModel->GetMaterial().emission.z, mModel->GetMaterial().emission.w };
 		ImGui::ColorEdit4("Emission", emission);
 
+		BOOL isTexEnable = mModel->GetMaterial().isTexEnable;
 		Material mat = {
 		Color(ambient),
 		Color(diffuse),
 		Color(specular),
 		Color(emission),
+			isTexEnable,
 		};
 		mModel->SetMaterial(mat);
 
 	}
 
 	ImGui::End();
+
+	
 #endif
 
-
-	if(KInput::IsKeyTrigger(VK_SPACE))
+	if(KInput::IsKeyTrigger(VK_RETURN))
 	{
+		mBoilingState = WaterStateConfig::WaterBoilingState::STATE_STILL;
 		isTrigger = true;
 	}
 
-	if (isTrigger)
+
+
+	switch(mBoilingState)
 	{
-		if (mParam.time < mDuration)
+	default:
+#ifdef _DEBUG
+	case WaterStateConfig::WaterBoilingState::STATE_EXPERIMENT:
+		break;
+#endif
+	case WaterStateConfig::WaterBoilingState::STATE_STILL:
+		mParam = mWaterStates->GetCurrentWaterParam();
+		if (KInput::IsKeyTrigger(VK_SPACE))
 		{
-			// Update Time& amplitude
-			mParam.time += dt;
-			mParam.nowAmplitude = mParam.amplitude *(1.0f - mParam.time / mDuration);
+			isTrigger = true;
 		}
-		else
+
+		if (isTrigger)
 		{
-			//Rest Water state
-			isTrigger = false; 
-			mParam.nowAmplitude = 0.0f;
-			mParam.time = 0;
+			if (mWaterTime < mDuration)
+			{
+				mWaterTime += dt;
+				mNowAmplitude = (mParam.maxAmplitude - mParam.minAmplitude) * (1.0f - mWaterTime / mDuration);
+			}
+			else
+			{
+				// æ¢å¤ä¸ºå¹³é™çŠ¶æ€
+				isTrigger = false;
+				mNowAmplitude = mParam.minAmplitude;
+				mWaterTime = 0;
+			}
+			isResetVertices = false;
 		}
+		break;
+	case WaterStateConfig::WaterBoilingState::STATE_BOILING:
+		mParam = mWaterStates->GetCurrentWaterParam();
+		mWaterTime += dt;
+		mNowAmplitude = mParam.maxAmplitude;
+		break;
 	}
 
 	RenderUpdate();	
-
 }
 
 void Water::RenderUpdate()
 {
-	
-	//‚±‚±‚Å”g‚É‚æ‚é—±q‚ÌŒvZ‚ğs‚¤
-	for(auto& vertex:mModel->mVertices)
+
+	switch(mBoilingState)
 	{
+	default:
+	case WaterStateConfig::WaterBoilingState::STATE_STILL:
 
-		Vector2 lenVec = { vertex.pos.x - mParam.center.x,vertex.pos.z - mParam.center.z };
-		float distanceToCenter = lenVec.Length();
+		//é ‚ç‚¹ã®ãƒªã‚»ãƒƒãƒˆãŒå®Œäº†ã—ãŸå ´åˆ
+		if (isResetVertices)break;
 
-		if (distanceToCenter < mParam.sigma)
+		//ãƒªã‚»ãƒƒãƒˆã™ã‚‹å ´åˆ
+		if (mNowAmplitude == 0)
 		{
-			float waveHeight = mParam.nowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * mParam.sigma * mParam.sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mParam.time - distanceToCenter / mParam.speed));
+			for (auto& vertex : mModel->mVertices)
+			{
+				vertex.pos.y = 0.0f;
+			}
+			isResetVertices = true;
 
-			vertex.pos.y = waveHeight;
+			RewriteVertices();
+			break;
 		}
+
+		// ä¸€èˆ¬ã®å ´åˆ
+		for (auto& vertex : mModel->mVertices)
+		{
+			//Transform World to Local
+			Vector2 ripplePos = { mParam.center.x,mParam.center.y };
+			ripplePos -= Vector2(mModel->GetPosition().x, mModel->GetPosition().z);
+			ripplePos = Vector2(ripplePos.x / mModel->GetScale().x, ripplePos.y / mModel->GetScale().z);
+
+			Vector2 lenVec = { vertex.pos.x - ripplePos.x,vertex.pos.z - ripplePos.y };
+			float sigma = mParam.sigma / mModel->GetScale().x;
+			float speed = mParam.speed / mModel->GetScale().x;
+			float distanceToCenter = lenVec.Length();
+			if (distanceToCenter < mParam.sigma / mModel->GetScale().x)
+			{
+				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
+				vertex.pos.y = waveHeight;
+				//float y = noise.GetNoise(vertex.pos.x, vertex.pos.y);
+				
+			}
+		}
+
+		//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«å†æ›¸ãè¾¼ã¿
+		RewriteVertices();
+		break;
+
+	case WaterStateConfig::WaterBoilingState::STATE_BOILING:
+
+		//ã“ã“ã§æ³¢ã«ã‚ˆã‚‹ç²’å­ã®è¨ˆç®—ã‚’è¡Œã†
+		for (auto& vertex : mModel->mVertices)
+		{
+			//Transform World to Local
+			Vector2 ripplePos = { mParam.center.x,mParam.center.y };
+			ripplePos -= Vector2(mModel->GetPosition().x, mModel->GetPosition().z);
+			ripplePos = Vector2(ripplePos.x / mModel->GetScale().x, ripplePos.y / mModel->GetScale().z);
+
+			Vector2 lenVec = { vertex.pos.x - ripplePos.x,vertex.pos.z - ripplePos.y };
+			float sigma = mParam.sigma / mModel->GetScale().x;
+			float speed = mParam.speed / mModel->GetScale().x;
+			float distanceToCenter = lenVec.Length();
+			if (distanceToCenter < mParam.sigma / mModel->GetScale().x)
+			{
+				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
+				vertex.pos.y = waveHeight;
+				//float y = noise.GetNoise(vertex.pos.x, vertex.pos.y);
+
+			}
+		}
+		//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«å†æ›¸ãè¾¼ã¿
+		RewriteVertices();
+		break;
 	}
 
-	//XV‚µ‚½’¸“_ƒf[ƒ^‚ğ‘‚«‚İ
-	mModel->GetMesh()->Write(mModel->mVertices.data());
-
-	WriteShader();
 }
 
 void Water::Draw()
 {
+	WriteShader();
 	mModel->Draw();
+
 }
 
 void Water::WriteShader()
 {
+	//fail safe
+	if (!mModel->GetVS() || !mModel->GetPS())
+	{
+		DebugLog::LogWarning("VertexShader/PixelShader is Null!");
+		return;
+	}
+	
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
 	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
 
@@ -190,11 +280,26 @@ void Water::WriteShader()
 		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
-	mModel->GetDefVS()->WriteShader(0, WVP);
+	mModel->GetVS()->WriteShader(0, WVP);
+	mModel->GetPS()->WriteShader(0, &mModel->GetMaterial());
+	mModel->GetPS()->WriteShader(1, &eyePos);
+	mModel->GetPS()->WriteShader(2, &light);
+}
 
-	mModel->GetDefPS()->WriteShader(0, &mModel->GetMaterial());
-	mModel->GetDefPS()->WriteShader(1, &eyePos);
-	mModel->GetDefPS()->WriteShader(2, &light);
+void Water::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+{
+	mModel->LoadDefShader(vs,ps);
+}
+
+void Water::LoadShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+{
+	mModel->SetVertexShader(vs.get());
+	mModel->SetPixelShader(ps.get());
+}
+
+void Water::SetWaterState(WaterStateConfig::WaterState _state)
+{
+	mWaterStates->SetCurrentWaterParam(_state);
 }
 
 void Water::SetCenter(DirectX::XMFLOAT3 centerPos)
@@ -214,7 +319,7 @@ void Water::SetSpeed(float speed)
 
 void Water::SetAmplitude(float amplitude)
 {
-	mParam.amplitude = amplitude;
+	mParam.maxAmplitude = amplitude;
 }
 
 void Water::SetWaveDuration(float duration)
@@ -224,16 +329,7 @@ void Water::SetWaveDuration(float duration)
 
 void Water::LoadSaveData(json data, const char* objName)
 {
-	mModel = std::make_unique<Circle>();
-
-	mObjectName = objName;
-
-	//CreateMesh
-	mModel->CreateMesh(50, 50);
-
-	//LoadShader
-	mModel->LoadDefShader("Assets/Shader/VS_Water.cso", "Assets/Shader/PS_Water.cso");
-
+	Init(nullptr, objName);
 	//Init Pos
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
 	mModel->SetPosition(pos);
@@ -255,14 +351,10 @@ void Water::LoadSaveData(json data, const char* objName)
 	};
 	mModel->SetMaterial(mat);
 
-	//Set Water Param
-	mParam.center = { data[objName]["Center"][0],data[objName]["Center"][1],data[objName]["Center"][2] };
-	mParam.amplitude = data[objName]["Amplitude"][0];
-	mParam.frequency = data[objName]["Frequency"][0];
-	mParam.speed = data[objName]["Speed"][0];
-	mParam.sigma = data[objName]["Sigma"][0];
-	mParam.time = 0;
+	mDuration = data[objName]["Duration"][0];
 
+	//Set Water Param
+	mWaterStates->LoadWaterStateData(data[objName]["WaterParam"]);
 }
 
 json Water::SaveData()
@@ -279,19 +371,60 @@ json Water::SaveData()
 	data["Material"]["Specular"] = { mModel->GetMaterial().specular.x,mModel->GetMaterial().specular.y,mModel->GetMaterial().specular.z,mModel->GetMaterial().specular.w };
 	data["Material"]["Emission"] = { mModel->GetMaterial().emission.x, mModel->GetMaterial().emission.y, mModel->GetMaterial().emission.z, mModel->GetMaterial().emission.w };
 
-	//Set Water Param
-	data["Center"] = { mParam.center.x,mParam.center.y,mParam.center.z };
-	data["Amplitude"] = { mParam.amplitude };
-	data["Frequency"] = { mParam.frequency };
-	data["Speed"] = { mParam.speed };
-	data["Sigma"] = { mParam.sigma };
+	//WaterDuration
+	data["Duration"] = {mDuration};
 
+
+	//Save water param
+	data["WaterParam"] = mWaterStates->SaveWaterParam();
 	return data;
 }
 
+void Water::SetTexture(std::shared_ptr<Texture> tex)
+{
+	mModel->LoadTexture(tex);
+
+	//todo:is not completed
+/*
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒNULLã®å ´åˆ Remake Vertex
+	if(!tex)
+	{
+		std::vector<Vertex::VtxPosNormalTexColor> newVertices;
+		newVertices.resize(mModel->mVertices.size());
+		for (int i = 0; i < newVertices.size(); i++)
+		{
+			newVertices[i].pos = mModel->mVertices[i].pos;
+			newVertices[i].normal = mModel->mVertices[i].normal;
+			newVertices[i].tex = mModel->mVertices[i].tex;
+		}
+
+
+
+
+
+
+	}
+	*/
+
+}
+
+void Water::RewriteVertices()
+{
+	//æ›´æ–°ã—ãŸé ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ãè¾¼ã¿
+	mModel->GetMesh()->Write(mModel->mVertices.data());
+}
+
+void Water::SetWaterBoilingState(WaterStateConfig::WaterBoilingState _state)
+{
+	mBoilingState = _state;
+}
+
+
 void Water::ResetMaterial()
 {
-	mModel->SetMaterial(WaterDefault::defaultMat);
+	Material mat = WaterDefault::defaultMat;
+	mat.isTexEnable = mModel->GetMaterial().isTexEnable;
+	mModel->SetMaterial(mat);
 }
 
 void Water::LateUpdate(float dt)

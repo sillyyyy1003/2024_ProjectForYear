@@ -2,7 +2,9 @@
 #include "Cylinder.h"
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
+#include "PointLight.h"
 #include "SceneBase.h"
+#include "Sphere.h"
 #include "StaticObject.h"
 #include "Tile.h"
 #include "Water.h"
@@ -12,7 +14,7 @@ class SceneLab :public SceneBase
 
 	std::unordered_map<std::string, std::shared_ptr<StaticObject>> staticObjList;
 
-	std::shared_ptr<InteractiveStaticObject> mPot;
+	std::unique_ptr<InteractiveStaticObject> mPot;
 	PBRConfig::PBRTexList pbrTexList;
 
 	std::unique_ptr<Square> mTable;
@@ -22,9 +24,12 @@ class SceneLab :public SceneBase
 
 	std::unique_ptr<Cube> mCube;
 	std::unique_ptr<Cylinder> mCylinder;
-	
-	bool m_isMulti;
-	int m_index;
+
+	std::unique_ptr<Sphere> mLightBulb1;
+	std::unique_ptr<Sphere> mLightBulb2;
+
+	std::unique_ptr<PointLight> pointLight;
+
 public:
 	/// @brief データのロードと初期化
 	void Init();
@@ -41,8 +46,8 @@ protected:
 	void GameObjectUpdate(float dt);
 	void TriggerListener();
 
-	void InitTestObj();
-	void DrawTestObj();
+	void InitShadowRenderTarget();
+	void DrawObjectsWithShadow();
 
 };
 

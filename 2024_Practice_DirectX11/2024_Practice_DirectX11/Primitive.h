@@ -69,6 +69,7 @@ public:
 	Transform mTransform = {};
 	/// @brief 頂点データの書き換え用
 	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
+	std::vector<DWORD> mIndices = {};
 public:
 	Primitive(PrimitiveKind kind);
 	virtual ~Primitive() override;
@@ -133,6 +134,9 @@ public:
 	PixelShader* GetDefPS() const { return mDefPS.get(); };
 	VertexShader* GetDefVS() const { return mDefVS.get(); };
 
+	PixelShader* GetPS() const { return mPS; };
+	VertexShader* GetVS() const { return mVS; };
+
 	/// @brief Default Shaderの初期化
 	virtual void LoadDefShader();
 	virtual void LoadDefShader(const char* vsPath, const char* psPath);
@@ -150,6 +154,7 @@ public:
 	virtual void WriteVertexShader() {};
 
 	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept;
+	virtual void SetIndices(std::vector<DWORD> indices) noexcept;
 
 	virtual std::shared_ptr<Mesh> GetMesh() { return nullptr; };
 

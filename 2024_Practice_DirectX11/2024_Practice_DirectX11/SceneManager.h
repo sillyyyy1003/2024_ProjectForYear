@@ -37,10 +37,6 @@ private:
 
 	std::shared_ptr<CameraBase> mCurrentCamera;
 	bool isSwitchScene = false;//if Switch Scene
-	
-
-	std::vector<std::shared_ptr<PixelShader>> psList;
-	std::vector<std::shared_ptr<VertexShader>> vsList;
 
 	std::unordered_map<std::string, std::shared_ptr<Texture>> mFontLib;
 

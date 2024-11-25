@@ -25,8 +25,6 @@ void Sphere::Init(std::shared_ptr<Texture> tex, int levels, int slices)
 
 void Sphere::Update(float dt)
 {
-
-    WriteDefShader();
 }
 
 void Sphere::Draw(int texSlot)

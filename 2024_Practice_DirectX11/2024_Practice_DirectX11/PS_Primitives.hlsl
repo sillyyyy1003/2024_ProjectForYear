@@ -44,8 +44,8 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
     if (material.isTexEnable)
     {
         color = myTex.Sample(mySampler, pin.tex);
-        clip(color.a-0.1f);
-    }
+		clip(color.a - 0.1f);
+	}
     else
     {
         color = material.diffuse;

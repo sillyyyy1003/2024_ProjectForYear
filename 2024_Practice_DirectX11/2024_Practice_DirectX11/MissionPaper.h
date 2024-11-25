@@ -29,12 +29,12 @@ public:
 	/// @brief Use existing texture to Init
 	/// @param tex existing tex
 	///	@param _objName mObjectName
-	void Init(std::shared_ptr<Texture> tex,const char* _objName);
+	void Init(const std::shared_ptr<Texture>& tex, const char* _objName);
 
 	/// @brief Create texture to init
 	/// @param filePath texture file path
 	/// @param _objName mObjectName
-	void Init(const char* filePath,const char* _objName);
+	void Init(const char* filePath, const char* _objName);
 
 	void Update(float dt);
 
@@ -72,4 +72,3 @@ protected:
 
 	void UpdateCollider();
 };
-

@@ -100,29 +100,33 @@ int D3DApp::Run()
 
             if (!isAppPaused)
             {
-                /*
-				mTimer.mNewTime = timeGetTime();
-                float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
-                if (diff >= 1000.0f / 60)
+                if(isRestrictFrameRate)
                 {
-					CalculateFrameStats();
-	                ImGui_ImplDX11_NewFrame();
-	                ImGui_ImplWin32_NewFrame();
-	                ImGui::NewFrame();
-	                KInput::UpdateInput();//入力
-	                UpdateScene(mTimer.DeltaTime());
-	                DrawScene();
-                    mTimer.mOldTime = mTimer.mNewTime;
-                }*/
-				
-                //todo:How to Set FrameRate?
-                CalculateFrameStats();
-                ImGui_ImplDX11_NewFrame();
-                ImGui_ImplWin32_NewFrame();
-                ImGui::NewFrame();
-                KInput::UpdateInput();//入力
-                UpdateScene(mTimer.DeltaTime());
-                DrawScene();
+                    mTimer.mNewTime = timeGetTime();
+                    float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
+                    if (diff >= 1000.0f / 60)
+                    {
+                        diff /= 1000;//transfer second to milliSec
+                        CalculateFrameStats();
+                        ImGui_ImplDX11_NewFrame();
+                        ImGui_ImplWin32_NewFrame();
+                        ImGui::NewFrame();
+                        KInput::UpdateInput();//入力
+                        UpdateScene(diff);
+                        DrawScene();
+                        mTimer.mOldTime = mTimer.mNewTime;
+                    }
+                }else
+                {
+                    CalculateFrameStats();
+	               ImGui_ImplDX11_NewFrame();
+	               ImGui_ImplWin32_NewFrame();
+	               ImGui::NewFrame();
+	               KInput::UpdateInput();//入力
+	               UpdateScene(mTimer.DeltaTime());
+	               DrawScene();
+                }
+               
             }
             else
             {
@@ -663,7 +667,7 @@ void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, I
     gD3D->mContext->RSSetViewports(1, &vp);
 }
 
-void D3DApp::SetRenderTarget()
+void D3DApp::SetDefaultRenderTarget()
 {
     SetRenderTarget(1, &gD3D->mRenderTarget, gD3D->mDepthStencil.get());
 }

@@ -36,8 +36,10 @@ void SceneBase::_update(float dt)
 
 void SceneBase::_draw()
 {
+
 	if (mpSubScene)
 		mpSubScene->_draw();
+	
 	Draw();
 }
 

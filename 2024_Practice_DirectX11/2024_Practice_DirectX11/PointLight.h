@@ -24,6 +24,8 @@ public:
 	void SetAttenuation(float x, float y, float z);
 	void SetAttenuation(const float* attenuation);
 
+	const Light::PointLight& GetPointLight();
+
 
 };
 

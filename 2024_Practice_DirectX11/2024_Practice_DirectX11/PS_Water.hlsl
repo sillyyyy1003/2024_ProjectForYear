@@ -2,34 +2,44 @@
 #include "LightHelper.hlsli"
 struct PS_IN
 {
-    float4 pos : SV_POSITION0;
-    float3 normal : NORMAL;
-    float2 tex : TEXCOORD;
-    float4 worldPos : POSITION0;
+	float4 pos : SV_POSITION0;
+	float3 normal : NORMAL;
+	float2 tex : TEXCOORD;
+	float4 worldPos : POSITION0;
+	float4 color : COLOR;
 };
 
 cbuffer Material : register(b0)
 {
-    Material material;
+	Material material;
 }
 
 cbuffer Camera : register(b1)
 {
-    float4 eyePos;
+	float4 eyePos;
 }
 
+//Ambient light
 cbuffer DirLight : register(b2)
 {
-    float4 lightAmbient;
-    float4 lightDiffuse;
-    float4 lightPos;
+	float4 lightAmbient;
+	float4 lightDiffuse;
+	float4 lightPos;
+}
+
+//追加のポイントライト
+cbuffer PointLight : register(b3)
+{
+	PointLight pointLight[MAX_NUM_POINT_LIGHT]; // Define NUM_POINT_LIGHTS as the max number
+	int actualLightNum; //actual light number
+	int dummy1, dummy2, dummy3;
 }
 
 Texture2D myTex : register(t0);
 SamplerState mySampler : register(s0);
 
 float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
-{   
+{
 	float4 color = float4(0, 0, 0, 0);
 
 	if (material.isTexEnable)
@@ -39,26 +49,22 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	}
 	else
 	{
-		color = material.diffuse;
+		//color = material.diffuse;
+		color.rgb = pin.color.rgb;
 	}
 
 
 	float3 normal = normalize(pin.normal);
 
-	if (!frontFace)
-	{
-		normal = -normal;
-	}
-
 	float3 toEye = normalize(-eyePos.xyz);
 
 	//環境光計算
-	float4 ambient = material.ambient * lightAmbient * 0.2f; //0.2f=reduce the effect of ambient
+	float4 ambient = material.ambient * lightAmbient * 0.2f;
 	float3 lightVec = normalize(lightPos.xyz);
 
     //Lambert Diffuse計算
-	float diffuseFactor = saturate(dot(lightVec, normal));
-	float4 diffuse = diffuseFactor * material.diffuse * lightDiffuse;
+	float diffuseFactor = saturate(dot(lightVec, normal)) * 0.5f + 0.5f;
+	float4 diffuse = diffuseFactor * lightDiffuse * material.diffuse;
 
     // specular 計算
 	float3 v = normalize(eyePos.xyz - pin.worldPos.xyz);
@@ -69,7 +75,7 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	litColor = saturate(litColor);
 
     //アルファ値をマテリアルに計算
-    //litColor.a = material.diffuse.a * color.a;
 	litColor.a = material.diffuse.a;
 	return litColor;
+
 }

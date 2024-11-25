@@ -62,7 +62,7 @@ void Circle::CreateMesh(UINT slices)
 		});
 
 
-	for (UINT i = 0; i <= slices; i++)
+	for (UINT i = 0; i < slices; i++)
 	{
 		theta = i * per_theta;
 		float x = radius * cosf(theta);
@@ -80,7 +80,7 @@ void Circle::CreateMesh(UINT slices)
 
 	std::vector<DWORD> indexData;
 
-	for (UINT i = 0; i <= slices; i++)
+	for (UINT i = 0; i < slices; i++)
 	{
 		indexData.push_back(0); // CENTER
 		indexData.push_back((i + 1) % (slices + 1) + 1); // Next vertex
@@ -174,6 +174,7 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 
 	//’¸“_î•ñ‚ðmVertices‚É“n‚·
 	SetVertices(vtx);
+	SetIndices(idx);
 }
 
 

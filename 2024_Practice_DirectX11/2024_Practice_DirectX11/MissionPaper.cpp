@@ -16,7 +16,7 @@ MissionPaper::MissionPaper()
 {
 }
 
-void MissionPaper::Init(std::shared_ptr<Texture> tex, const char* _objName)
+void MissionPaper::Init(const std::shared_ptr<Texture>& tex, const char* _objName)
 {
 	mModel = std::make_unique<Tile>();
 	mModel->Init(tex, 50);
@@ -69,84 +69,84 @@ void MissionPaper::PreUpdate(float dt)
 
 	int prev = static_cast<ObjectState>(mObjectState);
 
-	switch(prev)
+	switch (prev)
 	{
-		default:
-		case ObjectState::STATE_NONE:
-		{
-			//現在のカメラを取得
-			CameraBase* camera = GameApp::GetCurrentCamera();
-			//マウスの位置スクリーン座標を取得
-			POINT mousePos;
-			GetCursorPos(&mousePos);
-			//カメラからマウス位置の方向ベクトルを取得
-			XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-			//カメラの位置を取得
-			XMFLOAT3 camPos = camera->GetPos();
-			XMVECTOR startPos = XMLoadFloat3(&camPos);
-			float distance = 0;
-			GetCursorPos(&mousePos);
+	default:
+	case ObjectState::STATE_NONE:
+	{
+		//現在のカメラを取得
+		CameraBase* camera = GameApp::GetCurrentCamera();
+		//マウスの位置スクリーン座標を取得
+		POINT mousePos;
+		GetCursorPos(&mousePos);
+		//カメラからマウス位置の方向ベクトルを取得
+		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
+		//カメラの位置を取得
+		XMFLOAT3 camPos = camera->GetPos();
+		XMVECTOR startPos = XMLoadFloat3(&camPos);
+		float distance = 0;
+		GetCursorPos(&mousePos);
 
-			if (mCollider->Interacts(startPos, rayDir, distance))
+		if (mCollider->Interacts(startPos, rayDir, distance))
+		{
+			mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
+		}
+	}
+	break;
+	case ObjectState::STATE_HOVER:
+	{
+		//現在のカメラを取得
+		CameraBase* camera = GameApp::GetCurrentCamera();
+		//マウスの位置スクリーン座標を取得
+		POINT mousePos;
+		GetCursorPos(&mousePos);
+		//カメラからマウス位置の方向ベクトルを取得
+		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
+		//カメラの位置を取得
+		XMFLOAT3 camPos = camera->GetPos();
+		XMVECTOR startPos = XMLoadFloat3(&camPos);
+		float distance = 0;
+		GetCursorPos(&mousePos);
+
+		if (mCollider->Interacts(startPos, rayDir, distance))
+		{
+			if (KInput::IsKeyTrigger(VK_LBUTTON))
 			{
-				mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
+				mObjectState = ObjectState::STATE_CLICK;
 			}
 		}
-		break;
-		case ObjectState::STATE_HOVER:
+		else
 		{
-			//現在のカメラを取得
-			CameraBase* camera = GameApp::GetCurrentCamera();
-			//マウスの位置スクリーン座標を取得
-			POINT mousePos;
-			GetCursorPos(&mousePos);
-			//カメラからマウス位置の方向ベクトルを取得
-			XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-			//カメラの位置を取得
-			XMFLOAT3 camPos = camera->GetPos();
-			XMVECTOR startPos = XMLoadFloat3(&camPos);
-			float distance = 0;
-			GetCursorPos(&mousePos);
-
-			if (mCollider->Interacts(startPos, rayDir, distance))
-			{
-				if (KInput::IsKeyTrigger(VK_LBUTTON))
-				{
-					mObjectState = ObjectState::STATE_CLICK;
-				}
-			}
-			else
-			{
-				mObjectState = ObjectState::STATE_NONE;
-			}
+			mObjectState = ObjectState::STATE_NONE;
 		}
-		break;
+	}
+	break;
 
-		case ObjectState::STATE_CLICK:
+	case ObjectState::STATE_CLICK:
+	{
+		//現在のカメラを取得
+		CameraBase* camera = GameApp::GetCurrentCamera();
+		//マウスの位置スクリーン座標を取得
+		POINT mousePos;
+		GetCursorPos(&mousePos);
+
+		//カメラからマウス位置の方向ベクトルを取得
+		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
+		//カメラの位置を取得
+		XMFLOAT3 camPos = camera->GetPos();
+		XMVECTOR startPos = XMLoadFloat3(&camPos);
+		float distance = 0;
+
+		if (mCollider->Interacts(startPos, rayDir, distance))
 		{
-			//現在のカメラを取得
-			CameraBase* camera = GameApp::GetCurrentCamera();
-			//マウスの位置スクリーン座標を取得
-			POINT mousePos;
-			GetCursorPos(&mousePos);
-
-			//カメラからマウス位置の方向ベクトルを取得
-			XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-			//カメラの位置を取得
-			XMFLOAT3 camPos = camera->GetPos();
-			XMVECTOR startPos = XMLoadFloat3(&camPos);
-			float distance = 0;
-
-			if (mCollider->Interacts(startPos, rayDir, distance))
-			{
-				mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
-			}
-			else
-			{
-				mObjectState = static_cast<int>(ObjectState::STATE_NONE);
-			}
+			mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
 		}
-		break;
+		else
+		{
+			mObjectState = static_cast<int>(ObjectState::STATE_NONE);
+		}
+	}
+	break;
 	}
 
 }

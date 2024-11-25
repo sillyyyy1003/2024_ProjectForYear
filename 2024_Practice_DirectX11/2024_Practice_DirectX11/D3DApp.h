@@ -27,6 +27,8 @@ protected:
     bool      isEnable4xMsaa = false;    // is Use Multiple Anti Aliasing
     UINT      m4xMsaaQuality = 0;       //  Multiple Anti Aliasing
 
+    bool isRestrictFrameRate = true;
+
     // Direct2D 
     ComPtr<ID2D1Factory> mpD2DFactory;			    // D2DFactory
     ComPtr<ID2D1RenderTarget> mpD2DRenderTarget;    // D2DRenderTarget
@@ -123,7 +125,7 @@ public:
 
     static void SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, DepthStencil* pView);
     static void SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, ID3D11DepthStencilView* pView);
-    static void SetRenderTarget();
+    static void SetDefaultRenderTarget();
 
     bool GetResized() { return isResized; };
 

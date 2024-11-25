@@ -22,6 +22,11 @@ cbuffer DirLight : register(b1)
 	float4 lightPos;
 }
 
+cbuffer PointLights : register(b2)
+{
+	PointLight pointLight;
+}
+
 Texture2D albedoTex : register(t0);
 Texture2D metallicSmoothMap : register(t1);
 Texture2D normalMap : register(t2);

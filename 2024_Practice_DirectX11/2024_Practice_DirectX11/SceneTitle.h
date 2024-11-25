@@ -8,7 +8,6 @@ class SceneTitle:public SceneBase
 {
 private:
 
-
 	std::unordered_map<std::string, std::vector<std::shared_ptr<CanvasUI>>> objManager;
 	std::vector<std::string> mUiOrder = {};
 
