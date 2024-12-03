@@ -1,9 +1,76 @@
-﻿  D3DApp.cpp
+﻿  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_Paper.cso
+  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_PBRModel.cso
+  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_Primitives.cso
+  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_DefaultUI.cso
+  compilation object save succeeded; see C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_Water.cso
+  CandleLight.cpp
+  Circle.cpp
+  Cube.cpp
+  CameraBase.cpp
+  Capsule.cpp
+  Collider.cpp
+  CylinderOneCap.cpp
+  ScreenOverlay.cpp
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\ScreenOverlay.cpp(19,80): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\ScreenOverlay.cpp(19,48): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  InteractiveStaticObject.cpp
+  MissionPaper.cpp
+  Object.cpp
+  Cylinder.cpp
+  D2DBrush.cpp
+  D3DApp.cpp
+  D3DUtil.cpp
+  DirLight.cpp
+  FirstPersonCamera.cpp
+  GampApp.cpp
+  GUI.cpp
+  Ingredient.cpp
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Ingredient.cpp(56,22): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在编译...
+  Mesh.cpp
+  Model.cpp
+  PBRModel.cpp
+  SceneInGameOption.cpp
+  SceneLab.cpp
+  SceneMission.cpp
+  SceneOption.cpp
+  ScenePotion.cpp
+  Sprite.cpp
+  Square.cpp
+  Player.cpp
+  PointLight.cpp
+  Primitive.cpp
+  RigidBody.cpp
+  SceneBase.cpp
+  SceneGame.cpp
+  SceneManager.cpp
+  SceneTitle.cpp
+  Shader.cpp
+  Sphere.cpp
+  正在编译...
+  StartUp.cpp
+  StaticObject.cpp
+  Texture.cpp
+  ThirdPersonCamera.cpp
+  Tile.cpp
+  Timer.cpp
+  Transform.cpp
+  UI2D.cpp
+  UIFont.cpp
+  UIButton.cpp
+  UIStackContainer.cpp
+  UIStackContainerManager.cpp
+  UI_Capsule.cpp
+  UI_Primitive.cpp
+  UI_Square.cpp
+  UVAnimation.cpp
+  Water.cpp
+  WaterState.cpp
     正在创建库 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.lib 和对象 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exp
   正在生成代码
-  7 of 8729 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    41 functions had inline decision re-evaluated but remain unchanged
+  522 of 8586 functions ( 6.1%) were compiled, the rest were copied from previous compilation.
+    47 functions were new in current compilation
+    492 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
 imgui.lib(imgui_impl_dx11.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_impl_dx11.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 imgui.lib(imgui_impl_win32.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_impl_win32.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样

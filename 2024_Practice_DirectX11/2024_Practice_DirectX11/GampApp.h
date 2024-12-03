@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <memory>
+#include <FastNoise/FastNoiseLite.h>
 #include "d3dApp.h"
 #include "SceneManager.h"
 #include "UI2D.h"
@@ -8,21 +9,25 @@ class GameApp : public D3DApp
 {
 private:
 
-	//========= ゲーム用変数 ============
-
+    //========= ゲーム用変数 ============
+    static FastNoiseLite GameNoise;//One Instance is enough
+    int mCurrentRenderIndex;//Using Double Buffer
     //========= ゲーム用変数 ============
 private:
-    GameApp(){};
+    GameApp() {};
     ~GameApp();
 
 public:
 
-    static GameApp* Get(){ static GameApp instance; return &instance; }
+    static GameApp* Get() { static GameApp instance; return &instance; }
 
     template<class T>
     static std::shared_ptr<T> GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
 
     static CameraBase* GetCurrentCamera() { return SceneManager::Get()->GetCurrentCamera(); };
+    static FastNoiseLite& GetNoise() { return GameNoise; };
+
+    static int GetCurrentRenderIndex() { return Get()->mCurrentRenderIndex; };
 
     /// @brief Timerを取得する
 	Timer& GetTimer() { return Get()->mTimer; };

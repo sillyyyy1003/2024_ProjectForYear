@@ -2,12 +2,11 @@
 #include "Primitive.h"
 #include "UI_Primitive.h"
 
-
+//todo: need to fix uv animation problem which is not implement in the UI_Capsule
 class UI_Capsule : public UI_Primitive
 {
 protected:
 	std::unique_ptr<Mesh> mMesh = nullptr;
-
 	DirectX::XMFLOAT2 mSquareSize = { 1,1 };
 
 public:

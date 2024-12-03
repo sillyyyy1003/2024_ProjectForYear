@@ -14,7 +14,7 @@ namespace SceneConfig
 		SCENE_TITLE,
 		SCENE_OPTION,
 		SCENE_LAB,
-		EXIT,
+		SCENE_EXIT,
 
 		SCENE_MISSION,
 		SCENE_POTION,
@@ -42,26 +42,48 @@ private:
 
 
 protected:
-
+	//Font Texture
 	std::shared_ptr<Texture> UIFont_StringLiteral;
 	std::shared_ptr<Texture> UIFont_OCRA_Extend;
 	std::shared_ptr<Texture> UIFont_Courier_New_Regular;
 	std::shared_ptr<Texture> UIFont_Courier_New_Bold;
 	std::shared_ptr<Texture> UIFont_Courier_New_It;
-
 	std::shared_ptr<Texture> UIFont_Source_Code_Pro_It;
-	
-	//These are resources & data for the sub scene
-	std::shared_ptr<Texture> pbrAlbedoTexture;
-	std::shared_ptr<Texture> pbrNormalTexture;
-	std::shared_ptr<Texture> pbrMetallicTexture;
-	std::shared_ptr<Texture> pbrAOTexture;
-	//PlayerData
 
-	//TestData
+	//Texture
+	std::shared_ptr<Texture> fantasyHousePropsAlbedoTexture;
+	std::shared_ptr<Texture> fantasyHousePropsNormalTexture;
+	std::shared_ptr<Texture> fantasyHousePropsMetallicTexture;
+
 	std::shared_ptr<Texture> waterTexture;
 	std::shared_ptr<Texture> paperTexture;
 
+	std::shared_ptr<Texture> closeBookRedAlbedoTexture;
+	std::shared_ptr<Texture> closeBookBlueAlbedoTexture;
+	std::shared_ptr<Texture> closeBookNormalTexture;
+	std::shared_ptr<Texture> closeBookMetallicTexture;
+
+	std::shared_ptr<Texture> openBookRedAlbedoTexture;
+	std::shared_ptr<Texture> openBookBlueAlbedoTexture;
+	std::shared_ptr<Texture> openBookNormalTexture;
+	std::shared_ptr<Texture> openBookMetallicTexture;
+
+	std::shared_ptr<Texture> tableTexture;
+
+	std::shared_ptr<PixelShader> PS_buttonUI;
+	std::shared_ptr<PixelShader> PS_defaultUI;
+	std::shared_ptr<PixelShader> PS_primitives;
+	std::shared_ptr<PixelShader> PS_pbrModel;
+	std::shared_ptr<PixelShader> PS_interactiveStaticPBR;
+	std::shared_ptr<PixelShader> PS_interactiveStaticNormal;
+	std::shared_ptr<PixelShader> PS_Shadow;
+	std::shared_ptr<PixelShader> PS_WriteDepth;
+	std::shared_ptr<PixelShader> PS_pbrBaseColor;
+	
+	std::shared_ptr<VertexShader> VS_defaultUI;
+	std::shared_ptr<VertexShader> VS_pbrModel;
+	std::shared_ptr<VertexShader> VS_primitives;
+	std::shared_ptr<VertexShader> VS_spriteShadow;
 private:
 
 	SceneManager() {};
@@ -108,9 +130,6 @@ public:
 	void SetSwitchScene(bool isSwitchScene) { this->isSwitchScene = isSwitchScene; };
 
 	void SetMainScene(const std::string& sceneName);
-
-
-
 
 private:
 

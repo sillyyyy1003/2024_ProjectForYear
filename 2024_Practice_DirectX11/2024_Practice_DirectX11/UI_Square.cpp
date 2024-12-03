@@ -1,5 +1,7 @@
 #include "UI_Square.h"
 
+#include "GampApp.h"
+
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
@@ -8,46 +10,26 @@ UI_Square::UI_Square():UI_Primitive(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE)
 
 }
 
-void UI_Square::Init(const char* _fileName, int slices, DirectX::XMINT2 _split)
-{	//UV Animation ‚ğg‚¤‚©
-	if (_split.x == 1 && _split.y == 1)
-	{
-		isUseUVAnimation = false;
-	}
-	else
-	{
-		isUseUVAnimation = true;
-	}
-	//UV Animation‚Ì‰Šú‰»
-	mUvAnimation = std::make_unique<UVAnimation>();
-	mUvAnimation->Init(_split);
-
-	if(slices)
-	{
-		CreateMesh(slices);
-	}else
+void UI_Square::Init(const char* _fileName, int slices, DirectX::XMINT2 _UVSplit)
+{
+	//UV Animation ‚ğg‚¤‚©
+	InitAnimation(_UVSplit);
+	if (slices == 0)
 	{
 		CreateMesh();
 	}
-
+	else
+	{
+		CreateMesh(slices);
+	}
 	CreateMaterial();
 	CreateTexture(_fileName);
 	
 }
 
-void UI_Square::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMINT2 _split)
-{//UV Animation ‚ğg‚¤‚©
-	if (_split.x == 1 && _split.y == 1)
-	{
-		isUseUVAnimation = false;
-	}
-	else
-	{
-		isUseUVAnimation = true;
-	}
-	//UV Animation‚Ì‰Šú‰»
-	mUvAnimation = std::make_unique<UVAnimation>();
-	mUvAnimation->Init(_split);
+void UI_Square::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMINT2 _UVSplit)
+{
+	InitAnimation(_UVSplit);
 
 	if (slices == 0)
 	{
@@ -60,6 +42,9 @@ void UI_Square::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::X
 	CreateMaterial();
 	CreateTexture(tex);
 }
+
+
+
 
 void UI_Square::CreateMesh(int slices)
 {
@@ -150,12 +135,9 @@ void UI_Square::CreateMesh()
 	SetVertices(vtx);
 }
 
-
 void UI_Square::Update()
 {
 	UI_Primitive::Update();
-
-	WriteDefShader();
 }
 
 void UI_Square::Draw(int texSlot)
@@ -198,5 +180,20 @@ void UI_Square::WriteDefShader()
 	mDefVS->WriteShader(0, WVP);
 	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &(mMaterial.material));
+}
+
+void UI_Square::InitAnimation(DirectX::XMINT2 _split)
+{
+	if (_split.x == 1 && _split.y == 1)
+	{
+		isUseUVAnimation = false;
+	}
+	else
+	{
+		isUseUVAnimation = true;
+	}
+	//UV Animation‚Ì‰Šú‰»
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_split);
 }
 

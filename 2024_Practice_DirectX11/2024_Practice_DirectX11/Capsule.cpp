@@ -11,12 +11,12 @@ Capsule::Capsule() :Primitive(CAPSULE)
 
 void Capsule::Init(const char* filePath, int levels, int slices)
 {
-	CreateMesh(64, 64,1);
+	CreateMesh(levels, slices,1);
 	CreateMaterial();
 	CreateTexture(filePath);
 }
 
-void Capsule::Init(std::shared_ptr<Texture> tex,  int levels, int slices)
+void Capsule::Init(const std::shared_ptr<Texture>& tex, int levels, int slices)
 {
 	CreateMesh(levels, slices, 1);
 	CreateMaterial();
@@ -257,10 +257,18 @@ void Capsule::WriteDefShader()
 		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
 	};
 
+	NormalConstantBuffer cb = {
+
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mMaterial.material,
+	};
+
+
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &mMaterial.material);
-	mDefPS->WriteShader(1, &eyePos);
-	mDefPS->WriteShader(2, &light);
+	mDefPS->WriteShader(0, &cb);
 }
 
 

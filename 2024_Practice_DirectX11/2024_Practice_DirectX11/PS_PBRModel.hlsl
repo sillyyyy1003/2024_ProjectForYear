@@ -11,26 +11,23 @@ struct PS_IN
 
 cbuffer Camera : register(b0)
 {
+	//Camera Position
 	float4 eyePos;
-}
 
-//Ambient light
-cbuffer DirLight : register(b1)
-{
+	//Environment light
 	float4 lightAmbient;
 	float4 lightDiffuse;
 	float4 lightPos;
 }
 
-cbuffer PointLights : register(b2)
+cbuffer PointLights : register(b1)
 {
-	PointLight pointLight;
+	PointLight pointLight[2];
 }
 
 Texture2D albedoTex : register(t0);
-Texture2D metallicSmoothMap : register(t1);
-Texture2D normalMap : register(t2);
-Texture2D aoMap : register(t3);
+Texture2D normalMap : register(t1);
+Texture2D metallicSmoothMap : register(t2);
 SamplerState mySampler : register(s0);
 
 
@@ -100,8 +97,18 @@ float3 LambertDiffuse(float3 Ks, float3 albedo, float metallic)
 	return (Kd * albedo / PI);
 }
 
-// íºê⁄åıè∆ìIPBR
-float3 DirectPBR(float lightIntensity, float3 lightColor, float3 toLight, float3 normal, float3 toEyeW_Unit, float roughness, float metallic, float3 albedo, float shadowAmount)
+// Environment Light PBR
+float3 EnvironmentPBR(float lightIntensity, float3 lightColor, float3 toLight, float3 normal, float3 toEyeW_Unit, float roughness, float metallic, float3 albedo, float shadowAmount)
+{
+	float3 f0 = lerp(F0_NON_METAL.rrr, albedo.rgb, metallic);
+	float3 kS = float3(0.f, 0.f, 0.f);
+	float3 specularBRDF = CookTorranceSpecular(normal, toLight, toEyeW_Unit, roughness, f0, kS);
+	float3 diffuseBRDF = LambertDiffuse(kS, albedo, metallic);
+	return (diffuseBRDF + specularBRDF) * lightIntensity * lightColor.rgb * shadowAmount;
+}
+
+// Directional Light PBR
+float3 DirectionLightPBR(float lightIntensity, float3 lightColor, float3 toLight, float3 normal, float3 toEyeW_Unit, float roughness, float metallic, float3 albedo, float shadowAmount)
 {
 	float3 f0 = lerp(F0_NON_METAL.rrr, albedo.rgb, metallic);
 	float3 kS = float3(0.f, 0.f, 0.f);
@@ -109,34 +116,57 @@ float3 DirectPBR(float lightIntensity, float3 lightColor, float3 toLight, float3
 	float3 diffuseBRDF = LambertDiffuse(kS, albedo, metallic);
 
 	float NdotL = max(dot(normal, toLight), 0.0);
-
-	return (diffuseBRDF + specularBRDF) * NdotL * lightIntensity * lightColor.rgb * shadowAmount;
+	return (diffuseBRDF + specularBRDF) * lightIntensity * lightColor.rgb * shadowAmount;
 }
+
+float3 PointLightPBR(PointLight pointLight, float3 pos, float3 normal, float3 toEyeW_Unit)
+{
+	float3 color = { 0,0,0 };
+	if (pointLight.isEnable == 0)
+		return color;
+
+	//calculate vertex to pointLight vector
+	float3 toLightVec = pointLight.position - pos;
+	float3 V = normalize(toLightVec);
+	float3 toLightLen = length(toLightVec);
+
+	float3 N = normalize(normal);
+	float dotNV = saturate(dot(N,V));
+	float3 attenuation = saturate(1.0f - toLightLen / pointLight.range);
+	attenuation *= pointLight.att.x;
+	attenuation = pow(attenuation, 2.f);
+
+	color = pointLight.diffuse.rgb * dotNV * attenuation;
+	return color;
+}
+
 float4 main(PS_IN pin) : SV_TARGET
 {
 
 	float4 albedoColor = albedoTex.Sample(mySampler, pin.tex);
-
 	float metallic = metallicSmoothMap.Sample(mySampler, pin.tex).r;
 	float smooth = metallicSmoothMap.Sample(mySampler, pin.tex).a;
 	float roughness = 1.0f - smooth;
-	float ao = aoMap.Sample(mySampler, pin.tex).r;
 
 	float3 normalW = normalize(pin.normal);
 	float4 tangentW = normalize(pin.tangentW);
 
 	float3 normalMapSample = normalMap.Sample(mySampler, pin.tex).xyz;
 	float3 N = NormalSampleToWorldSpace(normalMapSample, normalW, tangentW);
+	//float3 N = normalize(normalW);
 	float3 V = normalize(eyePos - pin.worldPos).xyz;
-	float3 L = normalize(lightPos.xyz-pin.worldPos.xyz);
+	float3 L = normalize(lightPos.xyz - pin.worldPos.xyz);
 
-
-	
+	//Environment Light
 	float lightIntensity = 10.f;
-	float3 color = DirectPBR(lightIntensity, lightDiffuse.rgb, L, N, V, roughness, metallic, albedoColor.xyz, 1.0f);
+	float3 pbrColor = EnvironmentPBR(lightIntensity, lightDiffuse.rgb, L, N, V, roughness, metallic, albedoColor.xyz, 1.0f);
 
-	color *= ao;
+	//PointLight process
+	float3 pointLightColor = { 0, 0, 0 };
+	for (int i = 0; i < 2;i++)
+		pointLightColor += PointLightPBR(pointLight[i], pin.worldPos.xyz, N, V);
 
+	float3 color = albedoColor.rgb * (pointLightColor + pbrColor);
 	return float4(color, 1.0f);
 
 

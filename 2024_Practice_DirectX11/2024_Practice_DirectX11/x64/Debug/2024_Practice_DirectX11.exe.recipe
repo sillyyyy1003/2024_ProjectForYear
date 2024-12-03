@@ -10,13 +10,10 @@
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_DefaultSprite.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_InteractiveObjectNormal.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_InterActiveObjectPBRModel.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Object.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_ButtonUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_PBRModel.cso</FullPath>
@@ -29,9 +26,6 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Shadow.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_UIFont.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Water.cso</FullPath>

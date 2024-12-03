@@ -4,7 +4,7 @@
 
 class PointLight : public LightBase
 {
-
+protected:
 	float mRange = 0.0f;					//Light‚Ì”ÍˆÍ
 	DirectX::XMFLOAT3  mAttenuation = {};	//Œ¸Š
 
@@ -24,7 +24,11 @@ public:
 	void SetAttenuation(float x, float y, float z);
 	void SetAttenuation(const float* attenuation);
 
-	const Light::PointLight& GetPointLight();
+	Light::PointLight& GetPointLight();
+	json SaveData();
+
+	void LoadSaveData(json data, const char* objName);
+
 
 
 };

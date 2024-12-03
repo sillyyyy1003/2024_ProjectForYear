@@ -17,7 +17,7 @@ void Cylinder::Init(const char* filePath, int slices, int stacks)
 
 }
 
-void Cylinder::Init(std::shared_ptr<Texture> tex, int slices, int stacks)
+void Cylinder::Init(const std::shared_ptr<Texture>& tex, int slices, int stacks)
 {
 	CreateMesh(slices, stacks);
 	CreateMaterial();
@@ -190,21 +190,17 @@ void Cylinder::WriteDefShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
-	{
-		XMFLOAT4 lightAmbient;
-		XMFLOAT4 lightDiffuse;
-		XMFLOAT4 lightDir;
+	NormalConstantBuffer cb = {
+
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mMaterial.material,
+
 	};
 
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
-	};
 
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &mMaterial.material);
-	mDefPS->WriteShader(1, &eyePos);
-	mDefPS->WriteShader(2, &light);
+	mDefPS->WriteShader(0, &cb);
 }

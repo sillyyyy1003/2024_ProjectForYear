@@ -17,63 +17,71 @@ void SceneLab::Init()
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_lab.json");
 	
 	//Init Lab Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0, 7, -7);
-	GetObj<FirstPersonCamera>("DefaultCamera")->LookAt({ 0,0,7.5 });
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0.f,8.5f,-10.f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->LookAt({ 0.f,0.f,7.5f });
 
 	//Init Light
 	GetObj<DirLight>("EnvironmentLight")->LoadSaveData(sceneData,"EnvironmentLight");
-	pointLight = std::make_unique<PointLight>();
-	pointLight->SetPosition({7.0f, 2.f, 4.f});
+	mCandleLight = std::make_unique<CandleLight>();
+	mCandleLight->Init();
+	mCandleLight->LoadSaveData(sceneData, "CandleLight");
 
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
 	pbrTexList[PBRConfig::PBRTex::METALLIC] = GetObj<Texture>("pbrMetallic");
 	pbrTexList[PBRConfig::PBRTex::NORMAL] = GetObj<Texture>("pbrNormal");
-	pbrTexList[PBRConfig::PBRTex::AO] = GetObj<Texture>("pbrAO");
 
 	//Init Model & Objects
 	mPot = std::make_unique<InteractiveStaticObject>();
-	mPot->Init("Assets/Model/LabAssets/Pot.obj", "pot");
+	mPot->InitPBRModel("Assets/Model/LabAssets/Pot.obj", "pot");
 	mPot->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
 	mPot->LoadTex(pbrTexList);
 	mPot->LoadSaveData(sceneData,"Pot");
 
-	std::shared_ptr<StaticObject> Candle1 = CreateObj<StaticObject>("Candle1");
+	mRedBook = std::make_unique<InteractiveStaticObject>();
+	mRedBook->InitPBRModel("Assets/Model/Book/book_close.obj", "redBook");
+	mRedBook->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
+	mRedBook->LoadSaveData(sceneData, "RedBook");
+	mRedBook->SetModelRotation({0, 30.f, 0 });
+	mRedBook->LoadAlbedoTex(GetObj<Texture>("closeBookRedAlbedo"));
+	mRedBook->LoadNormalMapTex(GetObj<Texture>("closeBookNormal"));
+	mRedBook->LoadMetallicMapTex(GetObj<Texture>("closeBookMetallic"));
+
+	StaticObject* Candle1 = CreateObj<StaticObject>("Candle1").get();
 	Candle1->Init("Assets/Model/LabAssets/Candle.obj", "Candle1");
 	Candle1->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	Candle1->LoadTex(pbrTexList);
 	Candle1->LoadSaveData(sceneData);
 
-	std::shared_ptr<StaticObject>	FryingStand = std::make_shared<StaticObject>();
+	StaticObject* FryingStand = CreateObj<StaticObject>("FryingStand").get();
 	FryingStand->Init("Assets/Model/LabAssets/FryingStand.obj", "FryingStand");
 	FryingStand->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	FryingStand->LoadTex(pbrTexList);
 	FryingStand->LoadSaveData(sceneData);
 
-	std::shared_ptr<StaticObject> Candle2 = CreateObj<StaticObject>("Candle2");
+	StaticObject* Candle2 = CreateObj<StaticObject>("Candle2").get();
 	Candle2->Init("Assets/Model/LabAssets/Candle.obj", "Candle2");
 	Candle2->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	Candle2->LoadTex(pbrTexList);
 	Candle2->LoadSaveData(sceneData);
 
-	std::shared_ptr<StaticObject> Bottle = CreateObj<StaticObject>("Bottle");
+	StaticObject* Bottle = CreateObj<StaticObject>("Bottle").get();
 	Bottle->Init("Assets/Model/LabAssets/Bottle.obj", "Bottle");
 	Bottle->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	Bottle->LoadTex(pbrTexList);
 	Bottle->LoadSaveData(sceneData);
 
-	std::shared_ptr<StaticObject> Jug = CreateObj<StaticObject>("Jug");
+	StaticObject* Jug = CreateObj<StaticObject>("Jug").get();
 	Jug->Init("Assets/Model/LabAssets/Jug.obj", "Jug");
 	Jug->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	Jug->LoadTex(pbrTexList);
 	Jug->LoadSaveData(sceneData);
 
-	std::shared_ptr<StaticObject> Candle3 = CreateObj<StaticObject>("Candle3");
+	StaticObject* Candle3 = CreateObj<StaticObject>("Candle3").get();
 	Candle3->Init("Assets/Model/LabAssets/Candle.obj", "Candle3");
 	Candle3->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
 	Candle3->LoadTex(pbrTexList);
 	Candle3->LoadSaveData(sceneData);
-
 
 	staticObjList[Candle1->GetObjectName()] = Candle1;
 	staticObjList[Candle2->GetObjectName()] = Candle2;
@@ -83,41 +91,31 @@ void SceneLab::Init()
 	staticObjList[Jug->GetObjectName()] = Jug;
 
 	mTable = std::make_unique<Square>();
-	//mTable->Init("Assets/Texture/Lab/worn_planks_diff_1k.jpg", Vector2(1, 1));
-	mTable->Init(nullptr,{1,1});
+	mTable->Init(GetObj<Texture>("table"), 0);
 	mTable->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-	mTable->SetScale(Vector2(30, 15));
-	mTable->SetPosition(0.f, -0.05f, 0.0f);
+	mTable->SetScale(Vector2(30.f, 15.f));
+	mTable->SetPosition(0.f, -0.1f, 0.0f);
 
 	mWater = std::make_unique<Water>();
 	mWater->LoadSaveData(sceneData,"water");
-	mWater->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mWater->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Water"));
 	mWater->SetTexture(GetObj<Texture>("water"));
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_BOILING);
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
 	
-	testPaper = std::make_unique<MissionPaper>();
-	testPaper->Init(GetObj<Texture>("paper"),"paper");
-
-	testPaper->SetPosition({0, 3, 7.5});
-	testPaper->SetScale({2,2});
+	mMissionPaper = std::make_unique<MissionPaper>();
+	mMissionPaper->Init(GetObj<Texture>("paper"),"paper");
+	mMissionPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"),GetObj<PixelShader>("PS_InteractiveObjectNormal"));
+	mMissionPaper->SetPosition({0.f, 3.f, 12.f});
+	mMissionPaper->SetScale({2,2});
 
 	//Init Point Light
-	mLightBulb1 = std::make_unique<Sphere>();
+	
 	mLightBulb2 = std::make_unique<Sphere>();
-
-	mLightBulb1->Init(nullptr,32,32);
 	mLightBulb2->Init(nullptr, 32, 32);
-
-	mLightBulb1->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-	mLightBulb2->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-
-
-	mLightBulb1->SetScale(0.5f, 0.5, 0.5f);
+	mLightBulb2->LoadDefShader();
 	mLightBulb2->SetScale(0.5f, 0.5, 0.5f);
-	mLightBulb1->SetPosition(7.0f, 2.f, 4.f);
 	mLightBulb2->SetPosition(7.f, 1.5f, 3.f);
-
 
 	InitShadowRenderTarget();
 }
@@ -134,9 +132,13 @@ void SceneLab::UnInit()
 	sceneData["Pot"] = mPot->SaveData();
 
 	//Save EnvironmentLight
+	//todo:Environment Config should be saved as a set
 	sceneData["EnvironmentLight"] = GetObj<DirLight>("EnvironmentLight")->SaveData();
-	sceneData["water"] = mWater->SaveData();
 
+	sceneData["water"] = mWater->SaveData();
+	sceneData["RedBook"] = mRedBook->SaveData();
+
+	sceneData["CandleLight"] = mCandleLight->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json",sceneData);
 }
 
@@ -144,30 +146,29 @@ void SceneLab::Update(float dt)
 {
 	TriggerListener();
 	GameObjectUpdate(dt);
+	
 }
 
 void SceneLab::Draw()
 {
-	testPaper->Draw();
+	mCandleLight->Draw();
 	DrawObjectsWithShadow();
 }
 
 void SceneLab::GameObjectUpdate(float dt)
 {
-	mPot->Update(dt);
+	mWater->Update(dt);
+	mMissionPaper->Update(dt);
 
-	for (const auto& obj : staticObjList)
+	mPot->Update(dt);
+	mRedBook->Update(dt);
+	mCandleLight->Update(dt);
+
+	for(const auto& staticObj:staticObjList)
 	{
-		obj.second->Update(dt);
+		staticObj.second->Update(dt);
 	}
 
-	mTable->Update(dt);
-
-	mWater->Update(dt);
-	
-	testPaper->Update(dt);
-
-	pointLight->Update(dt);
 }
 
 void SceneLab::TriggerListener()
@@ -186,13 +187,11 @@ void SceneLab::TriggerListener()
 		SceneManager::Get()->SetMainScene("Potion");
 	}
 
-	if(testPaper->GetClicked())
+	if(mMissionPaper->GetClicked())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Mission");
 	}
-
-
 
 }
 
@@ -201,13 +200,16 @@ void SceneLab::InitShadowRenderTarget()
 	mCube = std::make_unique<Cube>();
 	mCube->Init(nullptr);
 	mCube->LoadDefShader(GetObj<VertexShader>("VS_Primitives"),GetObj<PixelShader>("PS_Primitives"));
-	mCube->SetPosition(4,0.5f,0.0f);
-
+	mCube->SetPosition(2.5f,0.15f,-1.f);
+	mCube->SetScale(1.0f, .3f, 1.f);
+	mCube->SetDiffuse({ 0.5f,0.2f,0.1f,1.0f });
 
 	mCylinder = std::make_unique<Cylinder>();
 	mCylinder->Init(nullptr);
 	mCylinder->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-	mCylinder->SetPosition(-4, 0.5f, 0.0f);
+	mCylinder->SetPosition(3.3f,0.75f, 0.6f);
+	mCylinder->SetScale(1.f, 1.5f, 1.f);
+	mCylinder->SetDiffuse({ 0.4f,0.2f,0.7f,1.0f });
 
 	// レンダーターゲット作成
 	std::shared_ptr<RenderTarget> pRTV = CreateObj<RenderTarget>("DepthWriteRTV");
@@ -224,27 +226,22 @@ void SceneLab::InitShadowRenderTarget()
 
 void SceneLab::DrawObjectsWithShadow()
 {
+	
 	std::shared_ptr<RenderTarget> pDeptWriteRTV = GetObj<RenderTarget>("DepthWriteRTV");
-	std::shared_ptr<DepthStencil> pDepthWriteDSV = GetObj<DepthStencil>("DepthWriteDSV");
+	DepthStencil* pDepthWriteDSV = GetObj<DepthStencil>("DepthWriteDSV").get();
+	float color[] = { 1,1,1,1 };
+	pDeptWriteRTV->Clear(color);
+	pDepthWriteDSV->Clear();
+	GameApp::SetRenderTarget(1, &pDeptWriteRTV, pDepthWriteDSV);
 
-	XMFLOAT3 shadowPos = { mCube->GetPosition().x,0.1f,mCube->GetPosition().z };
+	XMFLOAT3 shadowPos = { 0,0,0 };
 	XMFLOAT4X4 mat[3];
-
-	//Create Shadow 
-	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
-		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
-
-	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-	mat[0] = mat[0] * scaleBaseMatrix;
-
 	XMFLOAT4X4 LMatrix[3];
-	LMatrix[0] = mat[0];
-	XMFLOAT3 LPos = GetObj<DirLight>("EnvironmentLight")->GetPosition();
-	XMFLOAT3 LDir = GetObj<DirLight>("EnvironmentLight")->GetDirection();
-
-	//XMFLOAT3 LPos = pointLight->GetPosition();
-	//XMFLOAT3 LDir = mCube->GetPosition();
-
+	//Create Shadow 
+	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	// Create Light View Matrix
+	XMFLOAT3 LPos = mCandleLight->GetCastShadowLightPos();
+	XMFLOAT3 LDir = { 0,0,0 };
 	XMStoreFloat4x4(&LMatrix[1],
 		XMMatrixTranspose(
 			XMMatrixLookAtLH(
@@ -252,119 +249,112 @@ void SceneLab::DrawObjectsWithShadow()
 				XMLoadFloat3(&LDir),
 				XMVectorSet(0.f, 1.f, 0.f, 0.f)
 			)));
-
+	// Create Light Projection Matrix
 	XMStoreFloat4x4(&LMatrix[2], XMMatrixTranspose(XMMatrixOrthographicLH(
 		20.f, 20.f, 0.1f, 100.f
 	)));
 
-	//XMStoreFloat4x4(&LMatrix[2], XMMatrixTranspose(XMMatrixPerspectiveFovLH(
-	//	XM_PIDIV2,	//45° 
-	//	1.0f,     
-	//	0.1f,       
-	//	100.f 
-	//)));
-
-	float color[] = { 1,1,1,1 };
-	pDeptWriteRTV->Clear(color);
-	pDepthWriteDSV->Clear();
-
-	GameApp::SetRenderTarget(1, &pDeptWriteRTV, pDepthWriteDSV.get());
+	//Set WVP Matrix
+	shadowPos = { mCube->GetPosition().x,0.0f,mCube->GetPosition().z };
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+	scaleBaseMatrix = XMMatrixScaling(mCube->GetScale().x, mCube->GetScale().y, mCube->GetScale().z);
+	mat[0] = mat[0] * scaleBaseMatrix;
+	LMatrix[0] = mat[0];
 	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
 	mCube->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
 	mCube->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
 	mCube->Draw();
 
-	shadowPos = { mCylinder->GetPosition().x,0.1f,mCylinder->GetPosition().z };
+	shadowPos = { mCylinder->GetPosition().x,0.0f,mCylinder->GetPosition().z };
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+	scaleBaseMatrix = XMMatrixScaling(mCylinder->GetScale().x, mCylinder->GetScale().y, mCylinder->GetScale().z);
 	mat[0] = mat[0] * scaleBaseMatrix;
 	LMatrix[0] = mat[0];
-	//
-	//LDir = mCylinder->GetPosition();
-	//XMStoreFloat4x4(&LMatrix[1],
-	//	XMMatrixTranspose(
-	//		XMMatrixLookAtLH(
-	//			XMLoadFloat3(&LPos),
-	//			XMLoadFloat3(&LDir),
-	//			XMVectorSet(0.f, 1.f, 0.f, 0.f)
-	//		)));
-	//
 	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
 	mCylinder->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
 	mCylinder->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
 	mCylinder->Draw();
 
-	shadowPos = { mPot->GetPosition().x,0.1f,mPot->GetPosition().z };
+	/*	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
+	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
+	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
+	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
+	return World;*/
+	
+	shadowPos = { mPot->GetPosition().x,0.0f,mPot->GetPosition().z };
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
 	scaleBaseMatrix = XMMatrixScaling(mPot->GetScale().x, mPot->GetScale().y, mPot->GetScale().z);
 	mat[0] = mat[0] * scaleBaseMatrix;
 	LMatrix[0] = mat[0];
-	//
-	/*LDir = mPot->GetPosition();
-	XMStoreFloat4x4(&LMatrix[1],
-		XMMatrixTranspose(
-			XMMatrixLookAtLH(
-				XMLoadFloat3(&LPos),
-				XMLoadFloat3(&LDir),
-				XMVectorSet(0.f, 1.f, 0.f, 0.f)
-			)));*/
-	//
 	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
 	mPot->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
 	mPot->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
 	mPot->Draw();
 
+	
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(mRedBook->GetTransform().GetLocalToWorldMatrixXM()));
+	LMatrix[0] = mat[0];
+	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+	mRedBook->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+	mRedBook->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+	mRedBook->Draw();
 
 	for (const auto& obj : staticObjList)
 	{
-		shadowPos = { obj.second->GetPosition().x,0.1f,obj.second->GetPosition().z };
-		XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
-			XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
-		scaleBaseMatrix = XMMatrixScaling(obj.second->GetScale().x, obj.second->GetScale().y, obj.second->GetScale().z);
-		mat[0] = mat[0] * scaleBaseMatrix;
+		XMStoreFloat4x4(&mat[0], XMMatrixTranspose(obj.second->GetTransform().GetLocalToWorldMatrixXM()));
 		LMatrix[0] = mat[0];
-	/*	LDir = obj.second->GetPosition();
-		XMStoreFloat4x4(&LMatrix[1],
-			XMMatrixTranspose(
-				XMMatrixLookAtLH(
-					XMLoadFloat3(&LPos),
-					XMLoadFloat3(&LDir),
-					XMVectorSet(0.f, 1.f, 0.f, 0.f)
-				)));*/
 		GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
 		obj.second->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
 		obj.second->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
 		obj.second->Draw();
-
 	}
-
-
+	
 	GameApp::SetDefaultRenderTarget();
 
+	//Insert PointLight;
+	Light::PointLight pl[2] = {
+		mCandleLight->GetPointLight(),
+		{}
+	};
+
+	
+
+	//Set PointLight to pbr shader
+	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	mCube->SwitchToDefShader();
 	mCube->Draw();
 	mCylinder->SwitchToDefShader();
 	mCylinder->Draw();
+	mTable->Draw();
+	mMissionPaper->Draw();
+	mLightBulb2->Draw();
 
+
+	//Set PointLight to pbr shader
+	GetObj<PixelShader>("PS_InterActiveObjectPBRModel")->WriteShader(1, pl);
+	mRedBook->SwitchToDefShader();
+	mRedBook->Draw();
 	mPot->SwitchToDefShader();
 	mPot->Draw();
 	mWater->Draw();
 
-	mLightBulb1->Draw();
-	mLightBulb2->Draw();
-
+	//Set PointLight to pbr shader
 	for (const auto& obj : staticObjList)
 	{
 		obj.second->SwitchToDefShader();
+		obj.second->GetDefPS()->WriteShader(1, pl);
 		obj.second->Draw();
 
 	}
-
+	
+	
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixRotationX(XM_PIDIV2) * XMMatrixScaling(20.f, 20.f, 20.f) * XMMatrixTranslation(0, 0.0, 0)));
-	mat[1] = GetObj<FirstPersonCamera>("DefaultCamera")->GetViewXMF();
-	mat[2] = GetObj<FirstPersonCamera>("DefaultCamera")->GetProjXMF();
+	mat[1] = GameApp::GetCurrentCamera()->GetViewXMF();
+	mat[2] = GameApp::GetCurrentCamera()->GetProjXMF();
 	Sprite::SetWorld(mat[0]);
 	Sprite::SetView(mat[1]);
 	Sprite::SetProjection(mat[2]);
@@ -377,5 +367,6 @@ void SceneLab::DrawObjectsWithShadow()
 	Sprite::SetPixelShader(GetObj<PixelShader>("PS_Shadow").get());
 	Sprite::SetTexture(pDeptWriteRTV);
 	Sprite::Draw();
+	
 }
 

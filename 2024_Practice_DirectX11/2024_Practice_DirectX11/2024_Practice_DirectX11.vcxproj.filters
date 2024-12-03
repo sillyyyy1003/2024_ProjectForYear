@@ -133,7 +133,22 @@
     <Filter Include="ソース ファイル\UI\UIMesh">
       <UniqueIdentifier>{16e2af58-7db3-4161-bbca-cc570da491f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\UI\BillboardUI\UIMesh">
+    <Filter Include="ソース ファイル\BaseMesh\MeshWithBone">
+      <UniqueIdentifier>{ba0d20ea-f1bf-416e-bb87-ab68707ae439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\BaseModel\MeshWithBone">
+      <UniqueIdentifier>{6d341a8e-ed46-416a-8749-29c5e943c613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\BaseModel\Mesh">
+      <UniqueIdentifier>{b5ea6371-4179-4c56-81ee-6c0bcfc80edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameFunction">
+      <UniqueIdentifier>{8278c5e1-8eb4-4cd2-8a1d-870c171bdffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameFunction">
+      <UniqueIdentifier>{bf7e4bdb-21b3-4c9c-8e39-b264d010ed56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI\UIMesh">
       <UniqueIdentifier>{da6a0e49-9ec4-4efb-a2d0-04f06e5af473}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -240,9 +255,6 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>ソース ファイル\UI\BillboardUI</Filter>
-    </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>ソース ファイル\RigidBody</Filter>
     </ClCompile>
@@ -254,9 +266,6 @@
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>ソース ファイル\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="UIFont.cpp">
       <Filter>ソース ファイル\UI\BillboardUI</Filter>
@@ -279,9 +288,6 @@
     <ClCompile Include="InteractiveStaticObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="MissionPaper.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="StaticObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
@@ -303,22 +309,37 @@
     <ClCompile Include="UI_Capsule.cpp">
       <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>ソース ファイル\BaseMesh\描画部分</Filter>
-    </ClCompile>
     <ClCompile Include="UI_Primitive.cpp">
       <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
     <ClCompile Include="UI_Square.cpp">
       <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
-    <ClCompile Include="CanvasUI.cpp">
-      <Filter>ソース ファイル\UI\UIMesh</Filter>
+    <ClCompile Include="ScreenOverlay.cpp">
+      <Filter>ソース ファイル\GameFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="CandleLight.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="MissionPaper.cpp">
+      <Filter>ソース ファイル\GameFunction</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\GameFunction</Filter>
     </ClCompile>
     <ClCompile Include="WaterState.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Button.cpp">
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIStackContainerManager.cpp">
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_RoundSquare.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -352,9 +373,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
@@ -401,15 +419,6 @@
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylinder.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="Capsule.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル\Collider</Filter>
     </ClInclude>
@@ -425,23 +434,14 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
     </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
-    </ClInclude>
     <ClInclude Include="RigidBody.h">
       <Filter>ヘッダー ファイル\RigidBody</Filter>
-    </ClInclude>
-    <ClInclude Include="CylinderOneCap.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="Water.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
       <Filter>ヘッダー ファイル\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="UIFont.h">
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
@@ -461,26 +461,11 @@
     <ClInclude Include="InteractiveStaticObject.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="MissionPaper.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="StaticObject.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="UVAnimation.h">
       <Filter>ヘッダー ファイル\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="Square.h">
-      <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="SceneOption.h">
       <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
@@ -489,31 +474,70 @@
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
     <ClInclude Include="UI_Capsule.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
+      <Filter>ヘッダー ファイル\UI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="UI_Square.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
+      <Filter>ヘッダー ファイル\UI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="UI_Primitive.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI\UIMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasUI.h">
-      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WaterState.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\UI\UIMesh</Filter>
     </ClInclude>
     <ClInclude Include="PBRModel.h">
       <Filter>ヘッダー ファイル\BaseModel</Filter>
     </ClInclude>
+    <ClInclude Include="Capsule.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderOneCap.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="MissionPaper.h">
+      <Filter>ヘッダー ファイル\GameFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenOverlay.h">
+      <Filter>ヘッダー ファイル\GameFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\GameFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterState.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CandleLight.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="UIStackContainerManager.h">
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Button.h">
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_RoundSquare.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PS_Object.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
     <FxCompile Include="PS_DefaultUI.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
@@ -526,9 +550,6 @@
     <FxCompile Include="VS_Primitives.hlsl">
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
-    <FxCompile Include="PS_ButtonUI.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
     <FxCompile Include="PS_PBRModel.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
@@ -536,9 +557,6 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_InterActiveObjectPBRModel.hlsl">
-      <Filter>リソース ファイル\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="PS_UIFont.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
     <FxCompile Include="PS_DefaultSprite.hlsl">
@@ -560,6 +578,9 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Water.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_InteractiveObjectNormal.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>

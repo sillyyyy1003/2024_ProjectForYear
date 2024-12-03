@@ -13,7 +13,7 @@ void UI_Primitive::CreateMaterial()
 {
 	mMaterial.material =
 	{
-		Color(0.5f, 0.5f, 0.5f, 1.0f),		// ä¬ã´åı
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ä¬ã´åı
 		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ï\ñ êF
 		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ãæñ îΩéÀ: specular power 1
 		Color(0.0f, 0.0f, 0.0f, 0.0f)		// é©î≠åıÇ»Çµ};
@@ -36,17 +36,19 @@ void UI_Primitive::CreateTexture(const char* filePath)
 		mMaterial.tex = nullptr;
 		mMaterial.material.isTexEnable = false;
 	}
-	mFilePath = filePath;
 }
 
-//void UI_Primitive::CreateTexture(std::shared_ptr<Texture> texture)
-//{
-//	mMaterial.tex = texture;
-//}
 
 void UI_Primitive::CreateTexture(const std::shared_ptr<Texture>& texture)
 {
+	if (!texture)mMaterial.material.isTexEnable = false;
 	mMaterial.tex = texture;
+}
+
+void UI_Primitive::CreateTexture(const std::shared_ptr<Texture>* pTex)
+{
+	if (*pTex == nullptr)mMaterial.material.isTexEnable = false;
+	mMaterial.tex = *pTex;
 }
 
 void UI_Primitive::Update()
@@ -130,6 +132,11 @@ void UI_Primitive::SetDiffuseColor(const float* color)
 
 }
 
+void UI_Primitive::SetAmbientColor(const DirectX::XMFLOAT4& color)
+{
+	mMaterial.material.ambient = color;
+}
+
 void UI_Primitive::SetTexture(const std::shared_ptr<Texture>& texture)
 {
 	mMaterial.tex.reset();
@@ -158,9 +165,19 @@ void UI_Primitive::LoadVSShader(const char* vsShader)
 
 void UI_Primitive::LoadDefShader(const char* vsShader, const char* psShader)
 {
-
 	LoadVSShader(vsShader);
 	LoadPSShader(psShader);
+}
+
+void UI_Primitive::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+{
+	mDefVS.reset();
+	mDefVS = std::make_shared<VertexShader>();
+	mDefVS = vs;
+
+	mDefPS.reset();
+	mDefPS = std::make_shared<PixelShader>();
+	mDefPS = ps;
 }
 
 void UI_Primitive::LoadDefShader()
@@ -182,19 +199,10 @@ void UI_Primitive::SetDefShader()
 {
 	if (isDefShader)
 	{
+		WriteDefShader();
 		mVS = mDefVS.get();
 		mPS = mDefPS.get();
 	}
-}
-
-void UI_Primitive::ResetVerticesData()
-{
-	isResetVertex = true;
-}
-
-void UI_Primitive::ClearResetVertices()
-{
-	isResetVertex = false;
 }
 
 void UI_Primitive::UpdateScale()

@@ -1,0 +1,59 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.41.34120.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/lightbase.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "605f81b7b6a02f707dc2c80f8ead97ce0e8c5a8a7fae40b58a9d3e19e8a85ba6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/lightbase.h"
+          },
+          "hashes": {
+            "sha-256": "afe876f9acf20eb3690190e3c6819d93aaa59b7cc3f146d2e21ccb11692619b3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/directxtk/include/simplemath.h"
+          },
+          "hashes": {
+            "sha-256": "e1c5251c756c7e955e6af8b866b6b5737e7844198c8ff4cf289246dcfccae1a9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/directxtk/include/simplemath.inl"
+          },
+          "hashes": {
+            "sha-256": "14c14568ccdfe82efe78abf3acb3a6c57a01da0015833a8394988b6a558bb092"
+          }
+        }
+      ]
+    }
+  ]
+}

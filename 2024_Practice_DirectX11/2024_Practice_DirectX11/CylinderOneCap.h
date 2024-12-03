@@ -21,7 +21,7 @@ public:
 	///	@param tex
 	/// @param slices ‚’¼•ªŠ„”
 	/// @param stacks …•½•ªŠ„”
-	void Init(std::shared_ptr<Texture> tex, int slices = 64, int stacks = 64);
+	void Init(const std::shared_ptr<Texture>& tex, int slices = 64, int stacks = 64);
 
 
 	void Update(float dt);

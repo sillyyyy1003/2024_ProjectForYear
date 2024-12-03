@@ -3,13 +3,13 @@
 #include "d3dUtil.h"
 #include "GUI.h"
 #include "KInput.h"
-#include "SceneManager.h"
 #include "Sprite.h"
 #include "Water.h"
 
+FastNoiseLite GameApp::GameNoise;
+
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
-
 
 GameApp::~GameApp()
 {
@@ -52,6 +52,9 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float deltaTime)
 {
+	//UpdateCurrent render index
+	mCurrentRenderIndex = (mCurrentRenderIndex + 1) % 2;
+
 	//Game update
 	SceneManager::Get()->_update(deltaTime);
 
@@ -60,14 +63,6 @@ void GameApp::UpdateScene(float deltaTime)
 	{
 		isResized = false;
 	}
-
-	if(ImGui::Begin("Restrict"))
-	{
-		ImGui::Checkbox("Restrict frame rate", &isRestrictFrameRate);
-	}
-		
-
-	ImGui::End();
 
 	ImGui::Render();
 }
@@ -106,7 +101,10 @@ bool GameApp::InitResource()
 	//シーン管理の初期化を行う
 	SceneManager::Get()->Init();
 
+	//Sprite Init
 	Sprite::Init();
+
+	mCurrentRenderIndex = 0;
 
 	return true;
 }

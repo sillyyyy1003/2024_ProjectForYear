@@ -3,7 +3,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-CameraBase::CameraBase():mFovY(DirectX::XM_PI/3), mAspect(GameApp::Get()->AspectRatio()), mNearZ(0.1f), mFarZ(1000.0f)
+CameraBase::CameraBase():mFovY(XM_PIDIV4), mAspect(GameApp::Get()->AspectRatio()), mNearZ(0.1f), mFarZ(1000.0f)
 {
 }
 
@@ -56,6 +56,17 @@ DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos) noexcept
 	DirectX::XMFLOAT3 worldPos={};
 	XMVECTOR screenPos;
 
+	if(IsIconic(gD3D->MainWnd()))
+		screenPos = { 0.0,0.0f,0.0f, 1.0f };
+	else if (ScreenToClient(gD3D->MainWnd(), &mousePos))
+		screenPos = XMVectorSet((float)mousePos.x, (float)mousePos.y, 0.0f, 1.0f);
+	else
+		screenPos = { 0.0,0.0f,0.0f, 1.0f };
+
+
+
+
+		/*
 	//To avoid error that mouse cursor is out of the client
 	if(ScreenToClient(gD3D->MainWnd(), &mousePos))
 	{
@@ -63,7 +74,7 @@ DirectX::XMVECTOR CameraBase::MousePosToWorld(POINT mousePos) noexcept
 	}else
 	{
 		screenPos = { 0.0,0.0f,0.0f, 1.0f };
-	}
+	}*/
 	
 
 	XMVECTOR worldPosVec = XMVector3Unproject(

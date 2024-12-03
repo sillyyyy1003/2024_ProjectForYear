@@ -25,7 +25,6 @@ private:
 		Material material = {};
 		std::shared_ptr<Texture> albedoTex = nullptr;
 		std::shared_ptr<Texture> metallicTex = nullptr;
-		std::shared_ptr<Texture> aoTex = nullptr;
 		std::shared_ptr<Texture> normalMap = nullptr;
 	};
 
@@ -39,9 +38,7 @@ private:
 	};
 	using Meshes = std::vector<MeshBuffer>;
 
-	/// @brief 頂点データの書き換え用
-	std::vector<std::vector<Vertex::VtxPosNormalTangentTex>> mPBRVertices = {};
-
+	bool isUpdateTextureResource = false;
 public:
 
 	PBRModel();
@@ -63,11 +60,9 @@ public:
 	void LoadAlbedoTex(std::shared_ptr<Texture> tex);
 	void LoadNormalMapTex(std::shared_ptr<Texture> tex);
 	void LoadMetallicMapTex(std::shared_ptr<Texture> tex);
-	void LoadAOTex(std::shared_ptr<Texture> tex);
 
 	void LoadTex(PBRConfig::PBRTexList list);
 
-	const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& GetPBRVertices() { return mPBRVertices; }
 
 protected:
 

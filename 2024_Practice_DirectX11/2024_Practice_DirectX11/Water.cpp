@@ -92,13 +92,14 @@ void Water::Update(float dt)
 		float emission[4] = { mModel->GetMaterial().emission.x, mModel->GetMaterial().emission.y, mModel->GetMaterial().emission.z, mModel->GetMaterial().emission.w };
 		ImGui::ColorEdit4("Emission", emission);
 
-		BOOL isTexEnable = mModel->GetMaterial().isTexEnable;
+		float isTexEnable = mModel->GetMaterial().isTexEnable;
 		Material mat = {
 		Color(ambient),
 		Color(diffuse),
 		Color(specular),
 		Color(emission),
 			isTexEnable,
+			0,0,0
 		};
 		mModel->SetMaterial(mat);
 
@@ -198,7 +199,7 @@ void Water::RenderUpdate()
 			{
 				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
 				vertex.pos.y = waveHeight;
-				//float y = noise.GetNoise(vertex.pos.x, vertex.pos.y);
+			
 				
 			}
 		}
@@ -267,23 +268,18 @@ void Water::WriteShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
-	{
-		XMFLOAT4 lightAmbient;
-		XMFLOAT4 lightDiffuse;
-		XMFLOAT4 lightDir;
+	NormalConstantBuffer cb = {
+
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mModel->GetMaterial()
 	};
 
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
-	};
 
 	mModel->GetVS()->WriteShader(0, WVP);
-	mModel->GetPS()->WriteShader(0, &mModel->GetMaterial());
-	mModel->GetPS()->WriteShader(1, &eyePos);
-	mModel->GetPS()->WriteShader(2, &light);
+	mModel->GetPS()->WriteShader(0, &cb);
 }
 
 void Water::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
@@ -295,6 +291,11 @@ void Water::LoadShader(const std::shared_ptr<VertexShader>& vs, const std::share
 {
 	mModel->SetVertexShader(vs.get());
 	mModel->SetPixelShader(ps.get());
+}
+
+void Water::LoadDefShader(const char* vsPath, const char* psPath)
+{
+	mModel->LoadDefShader(vsPath, psPath);
 }
 
 void Water::SetWaterState(WaterStateConfig::WaterState _state)

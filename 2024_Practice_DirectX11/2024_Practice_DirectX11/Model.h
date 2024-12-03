@@ -12,9 +12,6 @@
 
 class Model :public Primitive
 {
-public:
-
-	Transform mTransform = {};
 
 private:
 
@@ -37,8 +34,7 @@ private:
 		unsigned int materialID;
 	};
 	using Meshes = std::vector<MeshBuffer>;
-	/// @brief 頂点データの書き換え用
-	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
+
 
 public:
 	Model();

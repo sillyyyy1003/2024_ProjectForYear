@@ -1,10 +1,11 @@
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\CanvasUI.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\CanvasUI.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\CandleLight.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\CandleLight.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Circle.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\Circle.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Cube.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\Cube.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\CameraBase.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\CameraBase.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Capsule.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\Capsule.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Collider.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\Collider.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\CylinderOneCap.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\CylinderOneCap.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\ScreenOverlay.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\ScreenOverlay.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\InteractiveStaticObject.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\InteractiveStaticObject.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\MissionPaper.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\MissionPaper.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Object.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\Object.obj
@@ -53,6 +54,7 @@ C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_Direct
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIFont.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UIFont.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIButton.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UIButton.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIStackContainer.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UIStackContainer.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIStackContainerManager.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UIStackContainerManager.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Capsule.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UI_Capsule.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Primitive.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UI_Primitive.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Square.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Release\UI_Square.obj

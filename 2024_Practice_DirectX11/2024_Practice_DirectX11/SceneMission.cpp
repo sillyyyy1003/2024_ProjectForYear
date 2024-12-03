@@ -6,21 +6,23 @@
 
 void SceneMission::Init()
 {
+	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_mission.json");
 	testContainer = std::make_unique<UIStackContainer>();
-	testContainer->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE);
+	testContainer->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
 	testContainer->LoadBackgroundTex(GetObj<Texture>("paper"),{200,50});
-	testContainer->LoadFontTexture(GetObj<Texture>("UIFont_Courier_New_Regular"), UITextOption::fontDefaultSize);
+	testContainer->LoadFontTexture(GetObj<Texture>("UIFont_Courier_New_It"), UITextOption::fontDefaultSize);
 
-
-	testContainer->SetText("So this is another test");
-
-	testContainer->InitPosition(0, 0);
-	testContainer->SetPosZ(0.4f);
+	testContainer->LoadSaveData(sceneData,"Test");
 
 }
 
 void SceneMission::UnInit()
 {
+	json sceneData;
+
+	sceneData["Test"] = testContainer->SaveData("Test");
+	SaveSceneFile("Assets/Data/SaveDat/scene_mission.json", sceneData);
+	
 }
 
 void SceneMission::Update(float dt)

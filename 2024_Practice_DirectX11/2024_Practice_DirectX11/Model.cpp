@@ -62,6 +62,7 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 
 	// メッシュの作成
 	aiVector3D zero(0.0f, 0.0f, 0.0f);
+	std::vector<Vertex::VtxPosNormalTex> vtxGroup;
 	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
 	{
 		MeshBuffer mesh = {};
@@ -84,8 +85,12 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 				DirectX::XMFLOAT3(pos.x, pos.y, pos.z),
 				DirectX::XMFLOAT3(normal.x, normal.y, normal.z),
 				DirectX::XMFLOAT2(uv.x, uv.y),
+				
 			};
+			vtxGroup.push_back(vtx[j]);
 		}
+
+		
 
 		// インデックスの作成
 		std::vector<unsigned int> idx;
@@ -116,6 +121,8 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 		// メッシュ追加
 		mMeshes.push_back(mesh);
 	}
+
+	this->SetVertices(vtxGroup);
 
 	//--- マテリアルの作成
 	// ファイルの探索
@@ -205,7 +212,7 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 
 void Model::Update(float dt)
 {
-	WriteDefShader();
+	
 }
 
 void Model::Draw(int texSlot)
@@ -216,7 +223,7 @@ void Model::Draw(int texSlot)
 	auto it = mMeshes.begin();
 	while (it != mMeshes.end())
 	{
-		mPS->WriteShader(0, &mMaterials[it->materialID]);
+		
 		mVS->SetShader();
 		mPS->SetShader();
 
@@ -245,21 +252,15 @@ void Model::WriteDefShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
-	{
-		DirectX::XMFLOAT4 lightAmbient;
-		DirectX::XMFLOAT4 lightDiffuse;
-		DirectX::XMFLOAT4 lightDir;
+	NormalConstantBuffer cb = {
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mMaterial.material,
 	};
 
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
-	};
 
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &mMaterials[0].material);
-	mDefPS->WriteShader(1, &eyePos);
-	mDefPS->WriteShader(2, &light);
+	mDefPS->WriteShader(0, &cb);
 }

@@ -35,7 +35,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    // Forward hwnd on because we can get messages (e.g., WmCREATE)
+    // Forward hWnd on because we can get messages (e.g., WmCREATE)
     // before CreateWindow returns, and thus before mhMainWnd is valid.
     return GameApp::Get()->MsgProc(hwnd, msg, wParam, lParam);
 }
@@ -85,7 +85,7 @@ int D3DApp::Run()
     MSG msg = {};
     mTimer.Reset();
     timeBeginPeriod(1);
-    //mTimer.mOldTime = timeGetTime();
+    mTimer.mOldTime = timeGetTime();
 
     while (msg.message != WM_QUIT)
     {
@@ -100,24 +100,21 @@ int D3DApp::Run()
 
             if (!isAppPaused)
             {
-                if(isRestrictFrameRate)
+                mTimer.mNewTime = timeGetTime();
+                float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
+                if (diff >= 1000.0f / 60)
                 {
-                    mTimer.mNewTime = timeGetTime();
-                    float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
-                    if (diff >= 1000.0f / 60)
-                    {
-                        diff /= 1000;//transfer second to milliSec
-                        CalculateFrameStats();
-                        ImGui_ImplDX11_NewFrame();
-                        ImGui_ImplWin32_NewFrame();
-                        ImGui::NewFrame();
-                        KInput::UpdateInput();//入力
-                        UpdateScene(diff);
-                        DrawScene();
-                        mTimer.mOldTime = mTimer.mNewTime;
-                    }
-                }else
-                {
+                    diff /= 1000;//transfer second to milliSec
+                    CalculateFrameStats();
+                    ImGui_ImplDX11_NewFrame();
+                    ImGui_ImplWin32_NewFrame();
+                    ImGui::NewFrame();
+                    KInput::UpdateInput();//入力
+                    UpdateScene(diff);
+                    DrawScene();
+                    mTimer.mOldTime = mTimer.mNewTime;
+                }          
+                /*
                     CalculateFrameStats();
 	               ImGui_ImplDX11_NewFrame();
 	               ImGui_ImplWin32_NewFrame();
@@ -125,8 +122,7 @@ int D3DApp::Run()
 	               KInput::UpdateInput();//入力
 	               UpdateScene(mTimer.DeltaTime());
 	               DrawScene();
-                }
-               
+                */
             }
             else
             {
@@ -134,7 +130,7 @@ int D3DApp::Run()
             }
         }
     }
-
+    timeEndPeriod(1);
     UnInit();
     fclose(fp);
     return (int)msg.wParam;
@@ -187,11 +183,6 @@ void D3DApp::OnResize()
     HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_B8G8R8A8_UNORM, 0));	// 注意此处DXGI_FORMAT_B8G8R8A8_UNORM
     HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
     HR(mRenderTarget->CreateFromScreen());
-    /*
-     *HR(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, mRenderTargetView.GetAddressOf()));
-     *
-     */
-
 
     // Set Debug Name
     D3D11SetDebugObjectName(backBuffer.Get(), "BackBuffer[0]");
@@ -222,10 +213,6 @@ void D3DApp::OnResize()
     depthStencilDesc.CPUAccessFlags = 0;
     depthStencilDesc.MiscFlags = 0;
 
-	/*
-	 *HR(mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), nullptr, mDepthStencilView.GetAddressOf()));
-	 *
-	 */
     // Create DepthStencilView & depth stencil buffer
     HR(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, mDepthStencilBuffer.GetAddressOf()));
     HR(mDepthStencil->Create(gD3D->GetWinWidth(),gD3D->GetWinHeight(),false));
@@ -376,6 +363,20 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+int D3DApp::GetWinWidth()
+{
+    if (mClientWidth <= 0)
+        return 1;
+	return mClientWidth;
+}
+
+int D3DApp::GetWinHeight()
+{
+    if (mClientHeight <= 0)
+        return 1;
+	return mClientHeight;
+}
+
 
 bool D3DApp::InitMainWindow()
 {
@@ -429,97 +430,89 @@ bool D3DApp::InitDirect2D()
 
 bool D3DApp::InitDirect3D()
 {
-    HRESULT hr = S_OK;
 
-	//******************************************
-	// Create D3D device& D3D context
-	//******************************************
-    UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUGGABLE;	// Direct2D需要支持BGRA格式
-#if defined(DEBUG) || defined(_DEBUG)  
-    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-    // drive type
-    D3D_DRIVER_TYPE driverTypes[] =
-    {
-        D3D_DRIVER_TYPE_HARDWARE,
-        D3D_DRIVER_TYPE_WARP,
-        D3D_DRIVER_TYPE_REFERENCE,
-    };
-    UINT numDriverTypes = ARRAYSIZE(driverTypes);
+	HRESULT hr = S_OK;
 
-    // feature level
-    D3D_FEATURE_LEVEL featureLevels[] =
-    {
-        D3D_FEATURE_LEVEL_11_1,
-        D3D_FEATURE_LEVEL_11_0,
-    };
-    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+// 创建D3D设备 和 D3D设备上下文
+	UINT createDeviceFlags = 0;
+	#ifndef USE_IMGUI
+	createDeviceFlags |= D3D11_CREATE_DEVICE_BGRA_SUPPORT;	// Direct2D需要支持BGRA格式
+	#endif
+	#if defined(DEBUG) || defined(_DEBUG)  
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	#endif
+// 驱动类型数组
+	D3D_DRIVER_TYPE driverTypes[] =
+	{
+	    D3D_DRIVER_TYPE_HARDWARE,
+	    D3D_DRIVER_TYPE_WARP,
+	    D3D_DRIVER_TYPE_REFERENCE,
+	};
+	UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-    D3D_FEATURE_LEVEL featureLevel;
-    D3D_DRIVER_TYPE d3dDriverType;
-    for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
-    {
-        d3dDriverType = driverTypes[driverTypeIndex];
-        hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
-            D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mContext.GetAddressOf());
+	// 特性等级数组
+	D3D_FEATURE_LEVEL featureLevels[] =
+	{
+	    D3D_FEATURE_LEVEL_11_1,
+	    D3D_FEATURE_LEVEL_11_0,
+	};
+	UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
-        if (hr == E_INVALIDARG)
-        {
-            hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
-                D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mContext.GetAddressOf());
-        }
+	D3D_FEATURE_LEVEL featureLevel;
+	D3D_DRIVER_TYPE d3dDriverType;
+	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
+	{
+	    d3dDriverType = driverTypes[driverTypeIndex];
+	    hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
+	        D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mContext.GetAddressOf());
 
-        if (SUCCEEDED(hr))
-            break;
-    }
+	    if (hr == E_INVALIDARG)
+	    {
+	        // Direct3D 11.0 的API不承认D3D_FEATURE_LEVEL_11_1，所以我们需要尝试特性等级11.0以及以下的版本
+	        hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
+	            D3D11_SDK_VERSION, mDevice.GetAddressOf(), &featureLevel, mContext.GetAddressOf());
+	    }
 
-    if (FAILED(hr))
-    {
-        MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
-        return false;
-    }
+	    if (SUCCEEDED(hr))
+	        break;
+	}
 
-    // Check if support 11.0/11.1
-    if (featureLevel != D3D_FEATURE_LEVEL_11_0 && featureLevel != D3D_FEATURE_LEVEL_11_1)
-    {
-        MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-        return false;
-    }
+	if (FAILED(hr))
+	{
+	    MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
+	    return false;
+	}
 
-	//******************************************
-	// Check msaa level
-	//******************************************
-    
-    mDevice->CheckMultisampleQualityLevels(
-        DXGI_FORMAT_B8G8R8A8_UNORM, 4, &m4xMsaaQuality); 
-    assert(m4xMsaaQuality > 0);
+	// 检测是否支持特性等级11.0或11.1
+	if (featureLevel != D3D_FEATURE_LEVEL_11_0 && featureLevel != D3D_FEATURE_LEVEL_11_1)
+	{
+	    MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
+	    return false;
+	}
 
     ComPtr<IDXGIDevice> dxgiDevice = nullptr;
     ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
-    ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;	
+    ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;	// D3D11.0(包含DXGI1.1)的接口类
+    ComPtr<IDXGIFactory2> dxgiFactory2 = nullptr;	// D3D11.1(包含DXGI1.2)特有的接口类
 
+    // 为了正确创建 DXGI交换链，首先我们需要获取创建 D3D设备 的 DXGI工厂，否则会引发报错：
+    // "IDXGIFactory::CreateSwapChain: This function is being called with a device from a different IDXGIFactory."
     HR(mDevice.As(&dxgiDevice));
     HR(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
     HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
-	
 
-    //******************************************
-    // Create swap chain
-	//******************************************
-    
+	// 填充DXGI_SWAP_CHAIN_DESC用以描述交换链
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferDesc.Width = mClientWidth;
     sd.BufferDesc.Height = mClientHeight;
     sd.BufferDesc.RefreshRate.Numerator = 60;
     sd.BufferDesc.RefreshRate.Denominator = 1;
-    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;	
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.SampleDesc.Count = 1;
-    sd.SampleDesc.Quality = 0;
-    /*
-    // Check use 4x MSAA
+
+	//If is Enable 4xMsaa
     if (isEnable4xMsaa)
     {
         sd.SampleDesc.Count = 4;
@@ -529,7 +522,7 @@ bool D3DApp::InitDirect3D()
     {
         sd.SampleDesc.Count = 1;
         sd.SampleDesc.Quality = 0;
-    }*/
+    }
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.BufferCount = 1;
     sd.OutputWindow = mhMainWnd;
@@ -537,7 +530,12 @@ bool D3DApp::InitDirect3D()
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     sd.Flags = 0;
     HR(dxgiFactory1->CreateSwapChain(mDevice.Get(), &sd, mSwapChain.GetAddressOf()));
+    
+
+    // 可以禁止alt+enter全屏
     dxgiFactory1->MakeWindowAssociation(mhMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
+
+
 
     // Set Debug Obj
     D3D11SetDebugObjectName(mContext.Get(), "ImmediateContext");
@@ -627,6 +625,26 @@ void D3DApp::SetDepthTest(ComPtr<ID3D11DepthStencilState> _state)
     gD3D->GetContext()->OMSetDepthStencilState(_state.Get(), 0);
 }
 
+void D3DApp::SetRenderTarget(UINT num, RenderTarget** ppViews, DepthStencil* pView)
+{
+    static ID3D11RenderTargetView* rtvs[4];
+
+    if (num > 4) num = 4;
+    for (UINT i = 0; i < num; ++i)
+        rtvs[i] = ppViews[i]->GetView();
+    gD3D->mContext->OMSetRenderTargets(num, rtvs, pView ? pView->GetView() : nullptr);
+
+    // ビューポートの設定
+    D3D11_VIEWPORT vp;
+    vp.TopLeftX = 0.0f;
+    vp.TopLeftY = 0.0f;
+    vp.Width = (float)ppViews[0]->GetWidth();
+    vp.Height = (float)ppViews[0]->GetHeight();
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    gD3D->mContext->RSSetViewports(1, &vp);
+}
+
 void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, DepthStencil* pView)
 {
     static ID3D11RenderTargetView* rtvs[4];
@@ -647,25 +665,6 @@ void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, D
     gD3D->mContext->RSSetViewports(1, &vp);
 }
 
-void D3DApp::SetRenderTarget(UINT num, std::shared_ptr<RenderTarget>* ppViews, ID3D11DepthStencilView* pView)
-{
-    static ID3D11RenderTargetView* rtvs[4];
-
-    if (num > 4) num = 4;
-    for (UINT i = 0; i < num; ++i)
-        rtvs[i] = ppViews[i]->GetView();
-    gD3D->mContext->OMSetRenderTargets(num, rtvs, pView ? pView : nullptr);
-
-    // ビューポートの設定
-    D3D11_VIEWPORT vp;
-    vp.TopLeftX = 0.0f;
-    vp.TopLeftY = 0.0f;
-    vp.Width = (float)ppViews[0]->GetWidth();
-    vp.Height = (float)ppViews[0]->GetHeight();
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    gD3D->mContext->RSSetViewports(1, &vp);
-}
 
 void D3DApp::SetDefaultRenderTarget()
 {

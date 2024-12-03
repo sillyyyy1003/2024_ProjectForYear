@@ -1,4 +1,5 @@
 #pragma once
+#include "CandleLight.h"
 #include "Cylinder.h"
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
@@ -6,29 +7,36 @@
 #include "SceneBase.h"
 #include "Sphere.h"
 #include "StaticObject.h"
-#include "Tile.h"
+
 #include "Water.h"
 
 class SceneLab :public SceneBase
 {
 
-	std::unordered_map<std::string, std::shared_ptr<StaticObject>> staticObjList;
+	//Texture List
+	PBRConfig::PBRTexList pbrTexList;
+
+
+	std::unordered_map<std::string, StaticObject*> staticObjList;
 
 	std::unique_ptr<InteractiveStaticObject> mPot;
-	PBRConfig::PBRTexList pbrTexList;
+	std::unique_ptr<InteractiveStaticObject> mRedBook;
+	std::unique_ptr<InteractiveStaticObject> mBlueBook;
+
 
 	std::unique_ptr<Square> mTable;
 
 	std::unique_ptr<Water> mWater;
-	std::unique_ptr<MissionPaper> testPaper;
+	std::unique_ptr<MissionPaper> mMissionPaper;
 
 	std::unique_ptr<Cube> mCube;
 	std::unique_ptr<Cylinder> mCylinder;
 
-	std::unique_ptr<Sphere> mLightBulb1;
 	std::unique_ptr<Sphere> mLightBulb2;
 
-	std::unique_ptr<PointLight> pointLight;
+	//std::unique_ptr<PointLight> pointLight;
+
+	std::unique_ptr<CandleLight> mCandleLight;
 
 public:
 	/// @brief データのロードと初期化

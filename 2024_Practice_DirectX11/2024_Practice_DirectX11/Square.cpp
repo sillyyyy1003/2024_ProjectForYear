@@ -8,14 +8,9 @@ using namespace DirectX;
 using namespace SimpleMath;
 
 
-Square::Square() :Primitive(PLANE)
+Square::Square() :Primitive(SQUARE)
 {
 
-}
-
-void Square::SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept
-{
-	mTexUV = _texUV;
 }
 
 void Square::SetScale(const DirectX::XMFLOAT2& scale)  noexcept
@@ -29,25 +24,34 @@ void Square::Init(const char* _fileName)
 	CreateMesh();
 	CreateMaterial();
 	CreateTexture(_fileName);
-	LoadDefShader();
 }
 
-void Square::Init(const char* _fileName, DirectX::XMFLOAT2 _texUV)
+void Square::Init(const std::shared_ptr<Texture>& tex)
 {
-	SetTexUV(_texUV);
-	Init(_fileName);
+	CreateMesh();
+	CreateMaterial();
+	LoadTexture(tex);
 }
+
 
 void Square::Init(const char* _fileName, int slices)
 {
-	CreateMesh(slices);
+	if (slices)
+		CreateMesh(slices);
+	else
+		CreateMesh();
+
 	CreateMaterial();
 	CreateTexture(_fileName);
 }
 
-void Square::Init(std::shared_ptr<Texture> tex, int slices)
+void Square::Init(const std::shared_ptr<Texture>& tex, int slices)
 {
-	CreateMesh(slices);
+	if (slices)
+		CreateMesh(slices);
+	else
+		CreateMesh();
+
 	CreateMaterial();
 	LoadTexture(tex);
 }
@@ -90,9 +94,9 @@ void Square::CreateMesh()
 	vtx = {
 
 		{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
-		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(mTexUV.x,0.f)},
-		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(mTexUV.x,mTexUV.y)},
-		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,mTexUV.y)},
+		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(1.0,0.f)},
+		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(1.0,1.0)},
+		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,1.0)},
 
 	};
 	
@@ -161,7 +165,6 @@ void Square::CreateMesh(UINT slices)
 	desc.pIndex = indexData.data();
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
-	//desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 	mMesh = std::make_unique<Mesh>(desc);
 }
 
@@ -187,23 +190,18 @@ void Square::WriteDefShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
-	{
-		XMFLOAT4 lightAmbient;
-		XMFLOAT4 lightDiffuse;
-		XMFLOAT4 lightDir;
+	NormalConstantBuffer cb = {
+
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
+		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mMaterial.material,
 	};
 
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
-	};
 
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &mMaterial.material);
-	mDefPS->WriteShader(1, &eyePos);
-	mDefPS->WriteShader(2, &light);
+	mDefPS->WriteShader(0, &cb);
 }
 
 

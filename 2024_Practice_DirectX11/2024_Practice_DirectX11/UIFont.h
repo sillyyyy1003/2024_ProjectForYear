@@ -8,23 +8,23 @@ namespace UITextOption
 	/// @brief Text Alignment
 	enum class TextAlign
 	{
-		Left = 0 ,
-		Center,
-		Right,
+		Left = 0,
+		Center = 1,
+		Right = 2 ,
 	};
 
 	/// @brief Text Anchor Pos
 	enum class AnchorAlign
 	{
 		TopLeft = 0,
-		TopCenter,   
-		TopRight,    
-		CenterLeft,  
-		Center,      
-		CenterRight, 
-		BottomLeft,
-		BottomCenter,
-		BottomRight
+		TopCenter = 1,
+		TopRight = 2,
+		CenterLeft = 3,
+		Center = 4,
+		CenterRight = 5,
+		BottomLeft = 6,
+		BottomCenter = 7,
+		BottomRight = 8
 
 	};
 
@@ -71,7 +71,7 @@ namespace UITextOption
 		}
 	}
 
-	constexpr int defaultMaxChar = 128;
+	constexpr int defaultMaxChar = 256;
 	constexpr DirectX::XMINT2 defaultSplit = { 12,8 };
 
 	constexpr float defaultFontRectWidth = 300.0f;
@@ -94,10 +94,10 @@ private:
 	float startX, startY, endX, endY = 0;
 
 
+
 protected:
 
 	std::vector<std::shared_ptr<UI_Square>> mText;	//描画する文字列
-
 
 	MaterialData mTexData;	//すべての文字が使う文字テクスチャ
 
@@ -109,7 +109,6 @@ protected:
 	///	Use char width as unit
 	float mFontSize = 1.0f;		
 	float mLineSpacing = 0.0f;	//行間 Use Pixel as unit
-	
 
 	bool isSetWidth = false;
 	float mBlockWidth = UITextOption::defaultFontRectWidth;		//文字ボロックの幅
@@ -121,10 +120,12 @@ protected:
 
 	float posZ = UITextOption::defaultFontLayerPosZ;
 
-
+#ifdef _DEBUG
 	//Debug用表示
 	std::unique_ptr<UI_Square> mDebugAnchorPos = nullptr;
 	std::unique_ptr<UI_Square> mDebugRect = nullptr;
+	bool isShowDebugRect = false;
+#endif
 
 	/// @brief 
 	bool isFontSizeChanged = false;
@@ -143,7 +144,7 @@ public:
 	/// @brief Font Libを読み込み
 	/// @param fontTex 既にロードされたTex
 	///	@param charSize font サイズを設定する
-	void Init(std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize);
+	void Init(const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize);
 
 	void SetFont(std::shared_ptr<Texture> fontTex);
 
@@ -174,16 +175,17 @@ public:
 	/// @param align 
 	void SetTextAlign(UITextOption::TextAlign align);
 
-	/// @brief 文字揃えの設定 Fontの大きさを直接変更する
-	void SetFontSize(DirectX::XMFLOAT2 _size)noexcept;
+	/// @brief CharSize変更する
+	void SetCharSize(DirectX::XMFLOAT2 _size)noexcept;
+
+	/// @brief FontSizeを変更（等比率）
+	/// @param _fontSize 
+	void SetFontSize(float _fontSize)noexcept { mFontSize = _fontSize; };
+
+	void SetLineSpacing(float _lineSpacing)noexcept { mLineSpacing = _lineSpacing; };
 
 	/// @brief フォントのサイズをWindowによって変換する
 	void UpdateCharSize() noexcept;
-
-	/// @brief 表示する内容を書き換える
-	/// @param str 書き換える内容
-	void UpdateContents(const char* str) noexcept;
-	void UpdateContents(std::string str) noexcept;
 
 	/// @brief UIのAnchor位置を設定する
 	void SetAnchorPos(float x, float y);
@@ -196,16 +198,19 @@ public:
 	const DirectX::XMFLOAT4& GetFontColor() { return mText[0]->GetDiffuseColor(); };
 
 	void SetPosZ(float posZ) { this->posZ = posZ; };
+	UITextOption::TextAlign GetTextAlign()const { return mTextAlign; };
+	UITextOption::AnchorAlign GetAnchorAlign() const { return mAnchorAlign; };
+	DirectX::XMFLOAT3 GetAnchorPos() const { return DirectX::XMFLOAT3{ mAnchorPos.x,mAnchorPos.y,posZ }; };
 
-	UITextOption::AnchorAlign GetAnchorAlign() { return mAnchorAlign; };
-
-	DirectX::XMFLOAT3 GetAnchorPos() { return DirectX::XMFLOAT3{ mAnchorPos.x,mAnchorPos.y,posZ }; };
-
-protected:
-	void InitDebugFunction();
 	void DebugFunction();
 
+	std::string GetContext() const { return mContent; };
 
+	float GetFontSize()const { return mFontSize; };
+	float GetLineSpacing()const { return mLineSpacing; };
+
+
+	void InitDebugFunction();
 	void NotifyFontSizeChanged() { isFontSizeChanged = true; };
 	void ClearFontSizeChanged() { isFontSizeChanged = false; };
 	bool GetFontSizeChanged() { return isFontSizeChanged; };

@@ -16,20 +16,39 @@ namespace UIContainerConfig
 //todo: make this contain more than one UI
 class UIStackContainer:public Component
 {
-protected:
-	std::unique_ptr<UIFont> mText;
-	std::unique_ptr<UI_Primitive> mBackGround;
-	
-	DirectX::XMFLOAT3 mPosition = { 0,0,0.4f };//ˆÊ’u
-	float mPadding[4] = {};
+private:
 
-	DirectX::XMFLOAT2 mUIContainerSize = { 0.0f,0.0f };	//Container Size
+#ifdef _DEBUG
+	char mInputText[UITextOption::defaultMaxChar] = "";
+#endif
+
+	struct UISet
+	{
+		std::unique_ptr<UIFont> mText;
+		std::unique_ptr<UI_Primitive> mBackGround;
+	};
 
 	bool isContainerSizeChange = false;		//ContainerŽ©‘Ì‚Ì‘å‚«‚³‚ª•Ï‚í‚Á‚½‚©
 	bool isContainerPosChange = false;		//Container‚ÌˆÊ’u‚ª•Ï‚í‚Á‚½‚©
 
 	bool isWordBoxChange = false;
 	bool isWordAdaptive = false;
+#ifdef _DEBUG
+	std::string mObjName;
+#endif
+
+public:
+
+	UISet mUiSet;
+
+protected:
+	
+	DirectX::XMFLOAT3 mPosition = { 0,0,0.9f };//ˆÊ’u
+	float mPadding[4] = {};
+
+	DirectX::XMFLOAT2 mUIContainerSize = { 0.0f,0.0f };	//Container Size
+
+	bool isUseText = false;
 
 	UIPrimitiveConfig::UI_PrimitiveKind mKind;
 public:
@@ -40,10 +59,10 @@ public:
 	void InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind kind);
 
 	void LoadBackgroundTex(const char* filePath, DirectX::XMFLOAT2 size);
-	void LoadBackgroundTex(std::shared_ptr<Texture> backgroundTex, DirectX::XMFLOAT2 size);
+	void LoadBackgroundTex(const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 texSize);
 
 	void LoadFontTexture(const char* filePath, DirectX::XMFLOAT2 fontSize);
-	void LoadFontTexture(std::shared_ptr<Texture> fontTex, DirectX::XMFLOAT2 fontSize);
+	void LoadFontTexture(const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 fontSize);
 
 	void SetContainerSize(float width, float height);
 	void SetContainerSize(DirectX::XMFLOAT2 size);
@@ -58,7 +77,6 @@ public:
 	void Update();
 
 	void Draw();
-
 
 	/// @brief Set mPadding param
 	/// @param padding mPadding position
@@ -79,7 +97,14 @@ public:
 	/// @param color diffuse color
 	void SetFontColor(DirectX::XMFLOAT4 color);
 
+	void DebugFunction();
 
+
+	json SaveData(const char* objName);
+	void LoadSaveData(json data, const char* objName);
+	const DirectX::XMFLOAT2& GetContainerSize() const { return mUIContainerSize; };
+
+	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; };
 protected:
 
 	void NotifyWordBoxChangeListener();

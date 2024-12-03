@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\</FILEPATH>
+      <FILENAME>Sprite.h</FILENAME>
+      <LINE>21</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>未初始化变量 Sprite::Data::PS。始终初始化成员变量(type.6)。</DESCRIPTION>
+    <FUNCTION>Sprite::Data::{ctor}</FUNCTION>
+    <DECORATED>??0Data@Sprite@@QEAA@XZ</DECORATED>
+    <FUNCLINE>21</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Sprite::Data::PS</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\</FILEPATH>
+      <FILENAME>Sprite.h</FILENAME>
+      <LINE>21</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>未初始化变量 Sprite::Data::WVP。始终初始化成员变量(type.6)。</DESCRIPTION>
+    <FUNCTION>Sprite::Data::{ctor}</FUNCTION>
+    <DECORATED>??0Data@Sprite@@QEAA@XZ</DECORATED>
+    <FUNCLINE>21</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Sprite::Data::WVP</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\</FILEPATH>
+      <FILENAME>Sprite.h</FILENAME>
+      <LINE>21</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>未初始化变量 Sprite::Data::Param。始终初始化成员变量(type.6)。</DESCRIPTION>
+    <FUNCTION>Sprite::Data::{ctor}</FUNCTION>
+    <DECORATED>??0Data@Sprite@@QEAA@XZ</DECORATED>
+    <FUNCLINE>21</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Sprite::Data::Param</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\</FILEPATH>
+      <FILENAME>Sprite.h</FILENAME>
+      <LINE>21</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>未初始化变量 Sprite::Data::VS。始终初始化成员变量(type.6)。</DESCRIPTION>
+    <FUNCTION>Sprite::Data::{ctor}</FUNCTION>
+    <DECORATED>??0Data@Sprite@@QEAA@XZ</DECORATED>
+    <FUNCLINE>21</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Sprite::Data::VS</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\nlohmann\detail\input\</FILEPATH>
+      <FILENAME>lexer.hpp</FILENAME>
+      <LINE>869</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26819</DEFECTCODE>
+    <DESCRIPTION>switch 标签之间的尾随 fallthrough (es.78)。</DESCRIPTION>
+    <FUNCTION>nlohmann::json_abi_v3_11_3::detail::lexer&lt;nlohmann::json_abi_v3_11_3::basic_json&lt;std::map,std::vector,std::basic_string&lt;char,std::char_traits&lt;char&gt;,std::allocator&lt;char&gt; &gt;,bool,__int64,unsigned __int64,double,std::allocator,nlohmann::json_abi_v3_11_3::adl_serializer,std::vector&lt;unsigned char,std::allocator&lt;unsigned char&gt; &gt;,void&gt;,nlohmann::json_abi_v3_11_3::detail::iterator_input_adapter&lt;char const *&gt; &gt;::scan_comment</FUNCTION>
+    <DECORATED>?scan_comment@?$lexer@V?$basic_json@Vmap@std@@Vvector@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@_N_J_KNVallocator@2@Uadl_serializer@json_abi_v3_11_3@nlohmann@@V?$vector@EV?$allocator@E@std@@@2@X@json_abi_v3_11_3@nlohmann@@V?$iterator_input_adapter@PEBD@detail@23@@detail@json_abi_v3_11_3@nlohmann@@AEAA_NXZ</DECORATED>
+    <FUNCLINE>845</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\nlohmann\detail\input\</FILEPATH>
+      <FILENAME>lexer.hpp</FILENAME>
+      <LINE>906</LINE>
+      <COLUMN>30</COLUMN>
+    </SFA>
+    <DEFECTCODE>26819</DEFECTCODE>
+    <DESCRIPTION>switch 标签之间的尾随 fallthrough (es.78)。</DESCRIPTION>
+    <FUNCTION>nlohmann::json_abi_v3_11_3::detail::lexer&lt;nlohmann::json_abi_v3_11_3::basic_json&lt;std::map,std::vector,std::basic_string&lt;char,std::char_traits&lt;char&gt;,std::allocator&lt;char&gt; &gt;,bool,__int64,unsigned __int64,double,std::allocator,nlohmann::json_abi_v3_11_3::adl_serializer,std::vector&lt;unsigned char,std::allocator&lt;unsigned char&gt; &gt;,void&gt;,nlohmann::json_abi_v3_11_3::detail::iterator_input_adapter&lt;char const *&gt; &gt;::scan_comment</FUNCTION>
+    <DECORATED>?scan_comment@?$lexer@V?$basic_json@Vmap@std@@Vvector@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@_N_J_KNVallocator@2@Uadl_serializer@json_abi_v3_11_3@nlohmann@@V?$vector@EV?$allocator@E@std@@@2@X@json_abi_v3_11_3@nlohmann@@V?$iterator_input_adapter@PEBD@detail@23@@detail@json_abi_v3_11_3@nlohmann@@AEAA_NXZ</DECORATED>
+    <FUNCLINE>845</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

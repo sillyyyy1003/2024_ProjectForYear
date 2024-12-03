@@ -18,8 +18,17 @@ namespace UIPrimitiveConfig
 	constexpr UINT defaultSlices = 16;
 }
 
+class UIComponent: public Component
+{
+public:
+	virtual void Update() {};
+	virtual void Draw(int texSlot = 0) {};
+	virtual void SetPosZ(float Z) {};
+};
+
+
 //For UI Graphics Base class
-class UI_Primitive :Component
+class UI_Primitive : public UIComponent
 {
 public:
 	Transform mTransform;
@@ -48,13 +57,13 @@ protected:
 	bool isDefShader = true;
 	bool isUseUVAnimation = false;//UVAnimation‚ðŽg‚¤‚©
 
-	std::string mFilePath = {};
-	std::string mObjectName = {};
 
 	std::unique_ptr<UVAnimation> mUvAnimation = nullptr;
 	std::vector<Vertex::VtxPosNormalTex> mVertices;
 
-	bool isResetVertex = false;
+#ifdef _DEBUG
+	std::string mObjectName = {};
+#endif
 
 public:
 	UI_Primitive(UIPrimitiveConfig::UI_PrimitiveKind kind);
@@ -65,16 +74,31 @@ public:
 	virtual void Init(const char* filePath, int slices = 0, DirectX::XMINT2 _split = { 1,1 }) {};
 	virtual void Init(const char* filePath, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
 
-	
+	/// @brief Virtual Init Function for square
+	/// @param tex Texture
+	/// @param slices Slices
+	/// @param _split UVAnimation Split
 	virtual void Init(const std::shared_ptr<Texture>& tex, int slices = 0, DirectX::XMINT2 _split = { 1,1 }) {};
+
+	/// @brief Virtual Init Function for capsule
+	/// @param tex Texture
+	///	@param _squareSize x:Capsule radius y:Square width
+	/// @param slices Slices 
+	/// @param _split UVAnimation Split
 	virtual void Init(const std::shared_ptr<Texture>& tex, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
+
+
+	virtual void Init(const std::shared_ptr<Texture>* tex, int slices = 0, DirectX::XMINT2 _split = { 1,1 }) {};
+	virtual void Init(const std::shared_ptr<Texture>* tex, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
 	
 	virtual void CreateMesh(){};
 	virtual void CreateMesh(int slices){};
+	virtual void CreateMesh(int slices, int _noiseSeed){};
 
 	virtual void CreateMaterial();
 	virtual void CreateTexture(const char* filePath);
 	virtual void CreateTexture(const std::shared_ptr<Texture>& texture);
+	virtual void CreateTexture(const std::shared_ptr<Texture>* pTex);
 
 	virtual void Update();
 	virtual void Draw(int texSlot = 0){};
@@ -89,16 +113,17 @@ public:
 
 	/// @brief Ž©“®•À‚Ñ‘Ö‚¦•`‰æ
 	/// @param z layer depth
-	virtual void SetPosZ(float z) noexcept;
+	virtual void SetPosZ(float z) noexcept override;
 
 	/// @brief Set UI Position
 	virtual void SetPosition(float x, float y) noexcept;
 	/// @brief Set UI Position
 	virtual void SetPosition(const DirectX::XMFLOAT2& pos) noexcept;
 
-	virtual DirectX::XMFLOAT3 GetPosition() { return mTransform.GetPosition(); }
-	virtual DirectX::XMFLOAT3 GetScale() { return mTransform.GetScale(); }
-	virtual DirectX::XMFLOAT4 GetQuaternion() { return mTransform.GetQuaternion(); };
+	virtual DirectX::XMFLOAT3 GetPosition()const { return mTransform.GetPosition(); }
+	virtual DirectX::XMFLOAT3 GetScale()const { return mTransform.GetScale(); }
+	virtual DirectX::XMFLOAT4 GetQuaternion() const { return mTransform.GetQuaternion(); };
+	virtual DirectX::XMFLOAT3 GetRotation()const { return mTransform.GetRotation(); };
 	/// @brief return UI width/Height
 	virtual DirectX::XMFLOAT2 GetUIScale();
 	virtual DirectX::XMFLOAT2 GetUIPosition();
@@ -108,6 +133,7 @@ public:
 
 	virtual void SetDiffuseColor(const DirectX::XMFLOAT4& color);
 	virtual void SetDiffuseColor(const float* color);
+	virtual void SetAmbientColor(const DirectX::XMFLOAT4& color);
 	virtual void SetTexture(const std::shared_ptr<Texture>& texture);
 
 	virtual void SetTransparency(float _transparency);
@@ -116,6 +142,7 @@ public:
 	virtual void LoadVSShader(const char* vsShader);
 
 	virtual void LoadDefShader(const char* vsShader, const char* psShader);
+	virtual void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 	virtual void LoadDefShader();
 
 	virtual void SetVertices(const std::vector<Vertex::VtxPosNormalTex>& vertices) noexcept;
@@ -127,11 +154,14 @@ public:
 	virtual void WriteDefShader(){};
 
 	UVAnimation* GetAnimation() { return mUvAnimation.get(); };
+	PixelShader* GetDefPS() const { return mDefPS.get(); };
 
-	void ResetVerticesData();
-	void ClearResetVertices();
-	bool GetVerticesChange() { return isResetVertex; };
-	void SetResetVerticesData(bool isResetVerticesData) { this->isResetVertex = isResetVerticesData; };
+
+#ifdef _DEBUG
+	virtual void SetObjectName(const char* name) { mObjectName = name; };
+	std::string GetObjectName() { return mObjectName; };
+#endif
+
 protected:
 
 	virtual void UpdateScale();

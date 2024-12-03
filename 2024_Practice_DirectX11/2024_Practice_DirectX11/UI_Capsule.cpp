@@ -72,9 +72,7 @@ void UI_Capsule::Draw(int texSlot)
 
 void UI_Capsule::SetScale(const DirectX::XMFLOAT2& size)
 {
-    if (!isResetVertex) return;
-
-	mSquareSize = size;
+   	mSquareSize = size;
 	mVertices.clear();
 
     mSquareSize = size;

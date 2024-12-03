@@ -1,0 +1,79 @@
+{
+    "Test": {
+        "AnchorAlign": [
+            1
+        ],
+        "AnchorPosition": [
+            -0.0,
+            405.0
+        ],
+        "ContainerSize": [
+            1200.0,
+            600.0
+        ],
+        "Context": "Dear Player,\n  Hello! This is Witch Q.\n  I want you to make Red Potion for me.\n  I will give 200 gold as reward.\n  Here are ingredients.\n  Thanke you.",
+        "FontBlockWidth": [
+            1120.0
+        ],
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": [
+            15.0
+        ],
+        "IsUseText": [
+            1
+        ],
+        "LineSpacing": [
+            15.0
+        ],
+        "Material": {
+            "Ambient": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Specular": [
+                1.0,
+                0.5,
+                0.5,
+                0.20000000298023224
+            ]
+        },
+        "Padding": [
+            40.0,
+            40.0,
+            0.0,
+            40.0
+        ],
+        "Position": [
+            -0.0,
+            145.0,
+            0.8999999761581421
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "TextAlign": [
+            0
+        ]
+    }
+}

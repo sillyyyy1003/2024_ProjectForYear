@@ -19,7 +19,7 @@ public:
 
 	virtual void Update(float dt) = 0;
 
-	DirectX::XMFLOAT3 GetPosition() const { return mPos; };	//ˆÊ’u
+	DirectX::XMFLOAT3 GetPosition() const  { return mPos; };	//ˆÊ’u
 	DirectX::XMFLOAT3 GetDirection() const { return mDir; };	//•ûŒü
 	DirectX::XMFLOAT4 GetAmbient() const { return mAmbient; }; //ŠÂ‹«Œõ
 	DirectX::XMFLOAT4 GetDiffuse() const { return mDiffuse; }; //ŠgŽU”½ŽË

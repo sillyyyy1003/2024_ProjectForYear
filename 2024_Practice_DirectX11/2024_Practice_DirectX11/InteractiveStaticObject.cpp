@@ -4,6 +4,7 @@
 #include "GampApp.h"
 #include "GUI.h"
 #include "KInput.h"
+#include "Model.h"
 
 enum ObjectState 
 {
@@ -20,41 +21,53 @@ InteractiveStaticObject::InteractiveStaticObject()
 {
 }
 
-void InteractiveStaticObject::Init(const char* filePath, const char* _objName)
+void InteractiveStaticObject::InitPBRModel(const char* filePath, const char* _objName)
 {
-	mPBRModel = std::make_shared<PBRModel>();
-	mPBRModel->InitWithoutTex(filePath);
+	mModel = std::make_shared<PBRModel>();
+	mModel->InitWithoutTex(filePath);
 	mObjectName = _objName;
+	isUsePBRModel = true;
 	InitCollider();
 }
 
 
-void InteractiveStaticObject::Init(std::shared_ptr<PBRModel> _model, const char* _objName)
+void InteractiveStaticObject::InitPBRModel(std::shared_ptr<PBRModel> _model, const char* _objName)
 {
-	mPBRModel = _model;
+	mModel = _model;
 	mObjectName = _objName;
+	isUsePBRModel = true;
+	InitCollider();
+}
+
+void InteractiveStaticObject::InitModel(const char* filePath, const char* _objName)
+{
+	mModel = std::make_unique<Model>();
+	mModel->Init(filePath);
+	mObjectName = _objName;
+	isUsePBRModel = false;
 	InitCollider();
 }
 
 void InteractiveStaticObject::LoadTex(PBRConfig::PBRTexList list)
 {
-	mPBRModel->LoadTex(list);
+	mModel->LoadTex(list);
+	
 }
 
 void InteractiveStaticObject::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
-	mPBRModel->Primitive::LoadDefShader(vs,ps);
+	mModel->Primitive::LoadDefShader(vs,ps);
 }
 
 void InteractiveStaticObject::LoadShaderFile(const char* vsFile, const char* psFile)
 {
-	mPBRModel->Primitive::LoadDefShader(vsFile, psFile);
+	mModel->Primitive::LoadDefShader(vsFile, psFile);
 }
 
 
 void InteractiveStaticObject::InitCollider()
 {
-	if (!mPBRModel)
+	if (!mModel)
 	{
 		DebugLog::LogError("{} Assimpモデルロード失敗", mObjectName);
 		return;
@@ -71,20 +84,17 @@ void InteractiveStaticObject::InitCollider()
 		std::numeric_limits<float>::lowest()
 	};
 
-	std::vector<std::vector<Vertex::VtxPosNormalTangentTex>> vtxGroups = mPBRModel->GetPBRVertices();
 
-	for (const auto& vtxGroup : vtxGroups)
+	for (const auto& vtx : mModel->mVertices)
 	{
-		for (const auto& v : vtxGroup)
-		{
-			min.x = std::min(min.x, v.pos.x);
-			min.y = std::min(min.y, v.pos.y);
-			min.z = std::min(min.z, v.pos.z);
+			min.x = std::min(min.x, vtx.pos.x);
+			min.y = std::min(min.y, vtx.pos.y);
+			min.z = std::min(min.z, vtx.pos.z);
 
-			max.x = std::max(max.x, v.pos.x);
-			max.y = std::max(max.y, v.pos.y);
-			max.z = std::max(max.z, v.pos.z);
-		}
+			max.x = std::max(max.x, vtx.pos.x);
+			max.y = std::max(max.y, vtx.pos.y);
+			max.z = std::max(max.z, vtx.pos.z);
+		
 	}
 
 	Vector3 center = {
@@ -102,12 +112,13 @@ void InteractiveStaticObject::InitCollider()
 	mCollider = std::make_unique<BoxCollider>();
 	mCollider->SetCenter(center);
 	mCollider->SetExtents(extents);
+	mColliderExtents = extents;
 
 #ifdef _DEBUG
 	mDebugColliderMesh = std::make_unique<Cube>();
 	mDebugColliderMesh->Init(nullptr);
 	mDebugColliderMesh->LoadDefShader();
-	mDebugColliderMesh->SetDiffuse(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f));
+	mDebugColliderMesh->SetDiffuse(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.4f));
 #endif
 }
 
@@ -123,7 +134,9 @@ void InteractiveStaticObject::Update(float dt)
 
 void InteractiveStaticObject::Draw()
 {
-	mPBRModel->Draw();
+	mModel->GetDefPS()->WriteShader(2, &mEffect);
+
+	mModel->Draw();
 
 #ifdef _DEBUG
 	if(isShowCollider)
@@ -133,60 +146,60 @@ void InteractiveStaticObject::Draw()
 
 void InteractiveStaticObject::SetModelPosition(DirectX::XMFLOAT3 pos)
 {
-	Vector3 modelPos = mPBRModel->GetPosition();
+	Vector3 modelPos = mModel->GetPosition();
 	if (modelPos != pos)
 		NotifyModelStateChangeListener();
-	mPBRModel->SetPosition(pos);
+	mModel->mTransform.SetPosition(pos);
 }
 
 void InteractiveStaticObject::SetModelRotation(DirectX::XMFLOAT3 rot)
 {
-	Vector3 modelRot = mPBRModel->GetRotation();
+	Vector3 modelRot = mModel->GetRotation();
 	if (modelRot != rot)
 	{
 		NotifyModelStateChangeListener();
-		mPBRModel->mTransform.SetRotationInDegree(rot);
+		mModel->mTransform.SetRotationInDegree(rot);
 	}
 	
 }
 
 void InteractiveStaticObject::SetModelScale(DirectX::XMFLOAT3 scale)
 {
-	Vector3 modelScale = mPBRModel->GetScale();
+	Vector3 modelScale = mModel->GetScale();
 
 	if (modelScale != scale)
 		NotifyModelStateChangeListener();
 
-	mPBRModel->SetScale(scale);
+	mModel->mTransform.SetScale(scale);
 
 }
 
 void InteractiveStaticObject::SetModelRotation(const float* rot)
 {
-	Vector3 modelRot = mPBRModel->GetRotation();
+	Vector3 modelRot = mModel->GetRotation();
 	if (modelRot != Vector3(rot[0],rot[1],rot[2]))
 	{
 		NotifyModelStateChangeListener();
-		mPBRModel->mTransform.SetRotationInDegree(rot[0], rot[1], rot[2]);
+		mModel->mTransform.SetRotationInDegree(rot[0], rot[1], rot[2]);
 	}
 
 }
 
 void InteractiveStaticObject::SetModelScale(const float* scale)
 {
-	Vector3 modelScale = mPBRModel->GetScale();
+	Vector3 modelScale = mModel->GetScale();
 
 	if (modelScale != Vector3(scale[0],scale[1],scale[2]))
 		NotifyModelStateChangeListener();
 
-	mPBRModel->SetScale(scale);
+	mModel->mTransform.SetScale(scale);
 }
 
 json InteractiveStaticObject::SaveData()
 {
 	json data;
-	data["Position"] = { mPBRModel->GetPosition().x,mPBRModel->GetPosition().y,mPBRModel->GetPosition().z };
-	data["Scale"] = { mPBRModel->GetScale().x,mPBRModel->GetScale().y,mPBRModel->GetScale().z };
+	data["Position"] = { mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
+	data["Scale"] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
 
 	return data;
 }
@@ -196,24 +209,25 @@ void InteractiveStaticObject::LoadSaveData(json data, const char* objName)
 	//Init Model
 	//std::string filePath = data[objName]["Filepath"].get<std::string>();
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
-	mPBRModel->SetPosition(pos);
+	mModel->mTransform.SetPosition(pos);
+	//SetModelPosition(pos);
 
 	//Init Scale
 	Vector3 scale = Vector3(data[objName]["Scale"][0], data[objName]["Scale"][1], data[objName]["Scale"][2]);
-	mPBRModel->SetScale(scale);
+	SetModelScale(scale);
 
 	mObjectName = objName;
 
-	UpdateCollider();
+	NotifyModelStateChangeListener();
 }
 
 void InteractiveStaticObject::SetModelPosition(const float* position)
 {
-	Vector3 modelPos = mPBRModel->GetPosition();
+	Vector3 modelPos = mModel->GetPosition();
 	if (modelPos != Vector3(position[0],position[1],position[2]))
 		NotifyModelStateChangeListener();
 
-	mPBRModel->SetPosition(position);
+	mModel->SetPosition(position);
 }
 
 void InteractiveStaticObject::TriggerListener()
@@ -279,7 +293,9 @@ void InteractiveStaticObject::PreUpdate(float dt)
 				{
 					mObjectState = ObjectState::STATE_CLICK;
 				}
-			}else
+				
+			}
+			else
 			{
 				mObjectState = ObjectState::STATE_NONE;
 			}
@@ -319,20 +335,20 @@ void InteractiveStaticObject::PreUpdate(float dt)
 	//================================
 	if (ImGui::Begin(mObjectName.c_str()))
 	{
-		float scale[3] = { mPBRModel->GetScale().x,mPBRModel->GetScale().y,mPBRModel->GetScale().z };
+		float scale[3] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
 		ImGui::InputFloat3("Scale", scale);
 		SetModelScale(scale);
 
-		float pos[3] = { mPBRModel->GetPosition().x,mPBRModel->GetPosition().y,mPBRModel->GetPosition().z };
+		float pos[3] = { mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
 		ImGui::InputFloat3("Position", pos);
 		SetModelPosition(pos);
 
-		/*float rotation[3] = { mPBRModel->GetRotation().x,mPBRModel->GetRotation().y,mPBRModel->GetRotation().z };
+		/*float rotation[3] = { mModel->GetRotation().x,mModel->GetRotation().y,mModel->GetRotation().z };
 		ImGui::InputFloat3("Rotation", rotation);
 		SetModelRotation(rotation);*/
 
 		
-		ImGui::Checkbox("Reset Material", &isShowCollider);
+		ImGui::Checkbox("ShowCollider", &isShowCollider);
 
 	}
 	ImGui::End();
@@ -361,29 +377,34 @@ void InteractiveStaticObject::GameUpdate(float dt)
 
 void InteractiveStaticObject::LateUpdate(float dt)
 {
-#ifdef _DEBUG
-	mDebugColliderMesh->Update(dt);
-#endif
-	mPBRModel->Update(dt);
+	mModel->Update(dt);
 
-	mPBRModel->GetDefPS()->WriteShader(2, &mEffect);
 }
 
 void InteractiveStaticObject::UpdateCollider()
 {
 	//Update Collider Scale
-	static const Vector3 Extents = mCollider->GetExtents();
-	Vector3 newScale = mPBRModel->GetScale();
+	const Vector3 Extents = mColliderExtents;
+	Vector3 newScale = mModel->GetScale();
 	newScale *= Extents;
 	mCollider->SetExtents(newScale);
 
 	//Update Rotation
-	mCollider->SetOrientation(mPBRModel->GetQuaternion());
+	mCollider->SetOrientation(mModel->GetQuaternion());
 
 	//Update Position
-	Vector3 newCenter = mPBRModel->GetPosition();
+	Vector3 newCenter = mModel->GetPosition();
 	newCenter.y += mCollider->GetExtents().y;
 	mCollider->SetCenter(newCenter);
+
+#ifdef _DEBUG
+	mDebugColliderMesh->SetScale(newScale * 2.f);
+	mDebugColliderMesh->SetPosition(newCenter);
+	Vector3 rot = mModel->GetRotation();
+	mDebugColliderMesh->mTransform.SetRotationInRadian(rot);
+#endif
+
+
 }
 
 void InteractiveStaticObject::NotifyModelStateChangeListener()
@@ -403,7 +424,7 @@ void InteractiveStaticObject::OnStateNone()
 
 void InteractiveStaticObject::OnStateHover()
 {
-	mEffect.rimIntensity = 2.0f;
+	mEffect.rimIntensity = 1.0f;
 }
 
 void InteractiveStaticObject::OnStateClicked()
@@ -412,5 +433,5 @@ void InteractiveStaticObject::OnStateClicked()
 	isClicked = true;
 
 	// Set Rim Intensity
-	mEffect.rimIntensity = 0.0f;
+	mEffect.rimIntensity = 1.0f;
 }

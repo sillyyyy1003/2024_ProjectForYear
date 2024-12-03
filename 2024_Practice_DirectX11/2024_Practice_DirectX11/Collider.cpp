@@ -60,6 +60,7 @@ DirectX::XMFLOAT3 BoxCollider::GetScale()
 
 bool BoxCollider::Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance)
 {
+	
 	return mCollider.Intersects(start, des, distance);
 }
 

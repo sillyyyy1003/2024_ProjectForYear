@@ -2,7 +2,6 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "Geometry.h"
-#include "Model.h"
 #include "PBRModel.h"
 #include "SceneGame.h"
 #include "SceneLab.h"
@@ -88,7 +87,7 @@ void SceneManager::InitSceneMap()
 	mSceneMap["Title"] = SceneConfig::SceneIndex::SCENE_TITLE;
 	mSceneMap["Lab"] = SceneConfig::SceneIndex::SCENE_LAB;
 	mSceneMap["Option"] = SceneConfig::SceneIndex::SCENE_OPTION;
-
+	mSceneMap["Exit"] = SceneConfig::SceneIndex::SCENE_EXIT;
 	//Set SubSceneMap
 	mSceneMap["Potion"] = SceneConfig::SceneIndex::SCENE_POTION;
 	mSceneMap["Mission"] = SceneConfig::SceneIndex::SCENE_MISSION;
@@ -108,82 +107,119 @@ void SceneManager::InitFontLib()
 	UIFont_Courier_New_Regular = CreateObj<Texture>("UIFont_Courier_New_Regular");
 	HR(UIFont_Courier_New_Regular->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_Regular.png"));
 
-	//UIFont_Courier_New_Bold = CreateObj<Texture>("UIFont_Courier_New_Bold");
-	//HR(UIFont_Courier_New_Bold->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_Bold.png"));
+	UIFont_Courier_New_Bold = CreateObj<Texture>("UIFont_Courier_New_Bold");
+	HR(UIFont_Courier_New_Bold->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_Bold.png"));
 
-	//UIFont_Courier_New_It = CreateObj<Texture>("UIFont_Courier_New_It");
-	//HR(UIFont_Courier_New_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_It.png"));
+	UIFont_Courier_New_It = CreateObj<Texture>("UIFont_Courier_New_It");
+	HR(UIFont_Courier_New_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_It.png"));
 
-	//UIFont_Source_Code_Pro_It = CreateObj<Texture>("UIFont_SourceCodeProIt");
-	//HR(UIFont_Source_Code_Pro_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_SourceCodeProIt.png"));
+	UIFont_Source_Code_Pro_It = CreateObj<Texture>("UIFont_SourceCodeProIt");
+	HR(UIFont_Source_Code_Pro_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_SourceCodeProIt.png"));
 
 
 }
 
 void SceneManager::InitModelTexture()
 {
-	pbrAlbedoTexture = CreateObj<Texture>("pbrAlbedo");
-	HR(pbrAlbedoTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_AlbedoTransparency.png"));
+	fantasyHousePropsAlbedoTexture = CreateObj<Texture>("pbrAlbedo");
+	HR(fantasyHousePropsAlbedoTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_AlbedoTransparency.png"));
 
-	pbrMetallicTexture = CreateObj<Texture>("pbrMetallic");
-	HR(pbrMetallicTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_MetallicSmoothness.png"));
+	fantasyHousePropsMetallicTexture = CreateObj<Texture>("pbrMetallic");
+	HR(fantasyHousePropsMetallicTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_MetallicSmoothness.png"));
 
-	pbrNormalTexture = CreateObj<Texture>("pbrNormal");
-	HR(pbrNormalTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_Normal.png"));
+	fantasyHousePropsNormalTexture = CreateObj<Texture>("pbrNormal");
+	HR(fantasyHousePropsNormalTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_Normal.png"));
 
-	pbrAOTexture = CreateObj<Texture>("pbrAO");
-	HR(pbrAOTexture->Create("Assets/Model/LabAssets/mTrimSheet_Mixed_AO.png"));
+
 
 	waterTexture = CreateObj<Texture>("water");
 	HR(waterTexture->Create("Assets/Texture/water.png"));
 
 	paperTexture = CreateObj<Texture>("paper");
-	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture.jpg"));
+	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture.png"));
+
+
+	//Close Book
+	closeBookRedAlbedoTexture = CreateObj<Texture>("closeBookRedAlbedo");
+	HR(closeBookRedAlbedoTexture->Create("Assets/Model/Book/book_close_book_close_BaseColor.1001_00.png"));
+
+	closeBookBlueAlbedoTexture = CreateObj<Texture>("closeBookBlueAlbedo");
+	HR(closeBookBlueAlbedoTexture->Create("Assets/Model/Book/book_close_book_close_BaseColor.1001.png"));
+
+	closeBookNormalTexture = CreateObj<Texture>("closeBookNormal");
+	HR(closeBookNormalTexture->Create("Assets/Model/Book/book_close_book_close_Normal.1001.png"));
+
+	closeBookMetallicTexture = CreateObj<Texture>("closeBookMetallic");
+	HR(closeBookMetallicTexture->Create("Assets/Model/Book/book_close_book_close_Roughness.1001.png"));
+
+	//Open Book
+	//openBookRedAlbedoTexture = CreateObj<Texture>("openBookRedAlbedo");
+	//HR(openBookRedAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_BaseColor.1001_00.png"));
+
+	//openBookBlueAlbedoTexture = CreateObj<Texture>("openBookBlueAlbedo");
+	//HR(openBookBlueAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_BaseColor.1001_01.png"));
+
+	//openBookNormalTexture = CreateObj<Texture>("openBookNormal");
+	//HR(openBookBlueAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_Normal.1001.png"));
+
+	//openBookMetallicTexture = CreateObj<Texture>("openBookMetallic");
+	//HR(openBookMetallicTexture->Create("Assets/Model/Book/book_open_book_open_Roughness.1001.png"));
+
+	tableTexture = CreateObj<Texture>("table");
+	HR(tableTexture->Create("Assets/Texture/Lab/worn_planks_diff_1k.jpg"));
 
 }
 
 
 void SceneManager::LoadPixelShaderFile()
 {
-	std::shared_ptr<PixelShader> buttonUI = CreateObj<PixelShader>("PS_ButtonUI");
-	buttonUI->LoadShaderFile("Assets/Shader/PS_ButtonUI.cso");
+	PS_buttonUI = CreateObj<PixelShader>("PS_ButtonUI");
+	PS_buttonUI->LoadShaderFile("Assets/Shader/PS_ButtonUI.cso");
 
-	std::shared_ptr<PixelShader> defaultUI = CreateObj<PixelShader>("PS_DefaultUI");
-	defaultUI->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso");
+	PS_defaultUI = CreateObj<PixelShader>("PS_DefaultUI");
+	PS_defaultUI->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso");
 
-	std::shared_ptr<PixelShader> object = CreateObj<PixelShader>("PS_Object");
-	object->LoadShaderFile("Assets/Shader/PS_Object.cso");
+	PS_primitives = CreateObj<PixelShader>("PS_Primitives");
+	PS_primitives->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
 
-	std::shared_ptr<PixelShader> primitives = CreateObj<PixelShader>("PS_Primitives");
-	primitives->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
+	PS_pbrModel = CreateObj<PixelShader>("PS_PBRModel");
+	PS_pbrModel->LoadShaderFile("Assets/Shader/PS_PBRModel.cso");
 
-	std::shared_ptr<PixelShader> pbrModel = CreateObj<PixelShader>("PS_PBRModel");
-	pbrModel->LoadShaderFile("Assets/Shader/PS_PBRModel.cso");
+	PS_interactiveStaticPBR = CreateObj<PixelShader>("PS_InterActiveObjectPBRModel");
+	PS_interactiveStaticPBR->LoadShaderFile("Assets/Shader/PS_InterActiveObjectPBRModel.cso");
 
-	std::shared_ptr<PixelShader> interactiveStaticPs = CreateObj<PixelShader>("PS_InterActiveObjectPBRModel");
-	interactiveStaticPs->LoadShaderFile("Assets/Shader/PS_InterActiveObjectPBRModel.cso");
+	PS_interactiveStaticNormal = CreateObj<PixelShader>("PS_InteractiveObjectNormal");
+	PS_interactiveStaticNormal->LoadShaderFile("Assets/Shader/PS_InteractiveObjectNormal.cso");
 
-	std::shared_ptr<PixelShader> Shadow = CreateObj<PixelShader>("PS_Shadow");
-	Shadow->LoadShaderFile("Assets/Shader/PS_Shadow.cso");
+	PS_Shadow = CreateObj<PixelShader>("PS_Shadow");
+	PS_Shadow->LoadShaderFile("Assets/Shader/PS_Shadow.cso");
 
-	std::shared_ptr<PixelShader> WriteDepth = CreateObj<PixelShader>("PS_WriteDepth");
-	WriteDepth->LoadShaderFile("Assets/Shader/PS_WriteDepth.cso");
+	PS_WriteDepth = CreateObj<PixelShader>("PS_WriteDepth");
+	PS_WriteDepth->LoadShaderFile("Assets/Shader/PS_WriteDepth.cso");
+
+	PS_pbrBaseColor = CreateObj<PixelShader>("PS_OpenGLBaseColorModel");
+	PS_pbrBaseColor->LoadShaderFile("Assets/Shader/PS_OpenGLBaseColorModel.cso");
+
+	PixelShader* PS_water = CreateObj<PixelShader>("PS_Water").get();
+	PS_water->LoadShaderFile("Assets/Shader/PS_Water.cso");
+
+
 
 }
 
 void SceneManager::LoadVertexShaderFile()
 {
-	std::shared_ptr<VertexShader> defaultUI = CreateObj<VertexShader>("VS_DefaultUI");
-	defaultUI->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso");
+	VS_defaultUI = CreateObj<VertexShader>("VS_DefaultUI");
+	VS_defaultUI->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso");
 
-	std::shared_ptr<VertexShader> pbrModel = CreateObj<VertexShader>("VS_PBRModel");
-	pbrModel->LoadShaderFile("Assets/Shader/VS_PBRModel.cso");
+	VS_pbrModel = CreateObj<VertexShader>("VS_PBRModel");
+	VS_pbrModel->LoadShaderFile("Assets/Shader/VS_PBRModel.cso");
 
-	std::shared_ptr<VertexShader> primitives = CreateObj<VertexShader>("VS_Primitives");
-	primitives->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
+	VS_primitives = CreateObj<VertexShader>("VS_Primitives");
+	VS_primitives->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
 
-	std::shared_ptr<VertexShader> spriteShadow = CreateObj<VertexShader>("VS_SpriteShadow");
-	spriteShadow->LoadShaderFile("Assets/Shader/VS_SpriteShadow.cso");
+	VS_spriteShadow = CreateObj<VertexShader>("VS_SpriteShadow");
+	VS_spriteShadow->LoadShaderFile("Assets/Shader/VS_SpriteShadow.cso");
 }
 
 void SceneManager::ChangeMainScene()
@@ -219,7 +255,7 @@ void SceneManager::MainSceneChangeListener()
 		case SceneConfig::SceneIndex::SCENE_POTION:AddSubScene<ScenePotion>();
 			DebugLog::Log("SceneName = ScenePotion");
 			break;
-		case SceneConfig::SceneIndex::EXIT:
+		case SceneConfig::SceneIndex::SCENE_EXIT:
 			DebugLog::Log("Exiting the application...");
 			PostQuitMessage(0);
 			break;

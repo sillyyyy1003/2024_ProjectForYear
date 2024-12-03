@@ -74,6 +74,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 
 	// メッシュの作成
 	aiVector3D zero(0.0f, 0.0f, 0.0f);
+	std::vector<Vertex::VtxPosNormalTex> vtxGroup;
 	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
 	{
 		MeshBuffer mesh = {};
@@ -98,10 +99,15 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 				XMFLOAT2(uv.x, 1-uv.y),
 				XMFLOAT3(tangent.x,tangent.y,tangent.z),
 			};
-			//todo:need to check
+		
+			vtxGroup.push_back({
+				XMFLOAT3(pos.x, pos.y, pos.z),
+				XMFLOAT3(normal.x, normal.y, normal.z),
+				XMFLOAT2(uv.x, 1 - uv.y),
+				});
 		}
 	
-		mPBRVertices.push_back(vtx);
+	
 
 		// インデックスの作成
 		std::vector<unsigned int> idx;
@@ -132,6 +138,8 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		// メッシュ追加
 		mMeshes.push_back(mesh);
 	}
+
+	this->SetVertices(vtxGroup);
 
 	//--- マテリアルの作成
 	// ファイルの探索
@@ -366,12 +374,13 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 
 	// メッシュの作成
 	aiVector3D zero(0.0f, 0.0f, 0.0f);
+	std::vector<Vertex::VtxPosNormalTex> vtxGroup;
 	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
 	{
 		MeshBuffer mesh = {};
 
 		// 頂点の作成
-		//std::vector<Vertex::VtxPosNormalTex> vtx;
+		
 		std::vector<Vertex::VtxPosNormalTangentTex> vtx;
 		vtx.resize(mScene->mMeshes[i]->mNumVertices);
 		for (unsigned int j = 0; j < vtx.size(); ++j)
@@ -392,8 +401,14 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 				XMFLOAT3(tangent.x,tangent.y,tangent.z),
 			
 			};
+			vtxGroup.push_back(
+				{
+					XMFLOAT3(pos.x, pos.y, pos.z),
+					XMFLOAT3(normal.x, normal.y, normal.z),
+					XMFLOAT2(uv.x, 1 - uv.y),
+				});
 		}
-		mPBRVertices.push_back(vtx);
+	
 
 		// インデックスの作成
 		std::vector<unsigned int> idx;
@@ -425,6 +440,7 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 		mMeshes.push_back(mesh);
 	}
 
+	this->SetVertices(vtxGroup);
 	//--- マテリアルの作成
 	// ファイルの探索
 	std::string dir = file;
@@ -459,8 +475,8 @@ void PBRModel::LoadDefShader()
 	mDefPS = std::make_shared<PixelShader>();
 	mDefVS = std::make_shared<VertexShader>();
 
-	mDefPS->LoadShaderFile("Assets/Shader/PS_PBRModel.cso");
-	mDefVS->LoadShaderFile("Assets/Shader/VS_PBRModel.cso");
+	mDefPS = GameApp::GetComponent<PixelShader>("PS_PBRModel");
+	mDefVS = GameApp::GetComponent<VertexShader>("VS_PBRModel");
 }
 
 void PBRModel::LoadDefShader(const std::shared_ptr<VertexShader>& vsShader,
@@ -482,11 +498,13 @@ void PBRModel::Draw(int texSlot)
 	{
 		mVS->SetShader();
 		mPS->SetShader();
-		
-		mPS->SetTexture(0, mMaterials[it->materialID].albedoTex.get());
-		mPS->SetTexture(1, mMaterials[it->materialID].metallicTex.get());
-		mPS->SetTexture(2, mMaterials[it->materialID].normalMap.get());
-		mPS->SetTexture(3, mMaterials[it->materialID].albedoTex.get());
+
+		if(mMaterials[it->materialID].albedoTex)
+			mPS->SetTexture(0, mMaterials[it->materialID].albedoTex.get());
+		if (mMaterials[it->materialID].normalMap)
+			mPS->SetTexture(1, mMaterials[it->materialID].normalMap.get());
+		if (mMaterials[it->materialID].normalMap)
+			mPS->SetTexture(2, mMaterials[it->materialID].metallicTex.get());
 		it->mesh->Draw();
 		++it;
 	}
@@ -515,21 +533,23 @@ void PBRModel::WriteDefShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
+	struct constantBuffer
 	{
+		Vector4 eyePos;
 		DirectX::XMFLOAT4 lightAmbient;
 		DirectX::XMFLOAT4 lightDiffuse;
 		DirectX::XMFLOAT4 lightDir;
 	};
 
-	Light light;
-	light.lightAmbient = dirLight->GetAmbient();
-	light.lightDiffuse = dirLight->GetDiffuse();
-	light.lightDir = Vector4(dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0);
-
+	constantBuffer cb = {
+		eyePos,
+		dirLight->GetAmbient(),
+		dirLight->GetDiffuse(),
+	Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+	};
+	
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &eyePos);
-	mDefPS->WriteShader(1, &light);
+	mDefPS->WriteShader(0, &cb);
 }
 
 void PBRModel::LoadAlbedoTex(std::shared_ptr<Texture> tex)
@@ -556,20 +576,13 @@ void PBRModel::LoadMetallicMapTex(std::shared_ptr<Texture> tex)
 	}
 }
 
-void PBRModel::LoadAOTex(std::shared_ptr<Texture> tex)
-{
-	if (mMaterials.size() == 1)
-	{
-		mMaterials[0].aoTex = tex;
-	}
-}
+
 
 void PBRModel::LoadTex(PBRConfig::PBRTexList list)
 {
 	LoadAlbedoTex(list[PBRConfig::PBRTex::ALBEDO]);
 	LoadNormalMapTex(list[PBRConfig::PBRTex::NORMAL]);
 	LoadMetallicMapTex(list[PBRConfig::PBRTex::METALLIC]);
-	LoadAOTex(list[PBRConfig::PBRTex::AO]);
 }
 
 

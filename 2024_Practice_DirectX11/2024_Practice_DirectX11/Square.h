@@ -9,39 +9,33 @@ class Square :public Primitive
 public:
 
 	std::unique_ptr<Mesh> mMesh = nullptr;
-	DirectX::XMFLOAT2 mTexUV = { 1,1 };
-
-
 public:
 
 	Square();
 	~Square() override = default;
 
-	/// @brief Create 4 vertices square with wrap UV
+	/// @brief Create 4 vertices square
 	/// @param _fileName texture filepath
 	/// @param _texUV sampler wrap UV
-	void Init(const char* _fileName, DirectX::XMFLOAT2 _texUV);
+	void Init(const char* _fileName);
+
+	void Init(const std::shared_ptr<Texture>& tex);
 
 	/// @brief ï™äÑÇ™Ç‡Ç¡Ç∆ç◊Ç©Ç¢ïΩñ 
 	/// @param _fileName 
 	/// @param slices ï™äÑêî
-	void Init(const char* _fileName, int slices);
+	void Init(const char* _fileName, int slices = 0);
 
-	/// @brief Create square with existing;
+	/// @brief Create square with existing tex;
 	/// @param slices
 	///	@param tex
-	void Init(std::shared_ptr<Texture> tex, int slices);
-	
+	void Init(const std::shared_ptr<Texture>& tex, int slices = 0);
+
 	void Update(float dt);
 	void Draw(int texSlot = 0);
 
 
-	void SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept override;
 	void SetScale(const DirectX::XMFLOAT2& scale) noexcept  override;
-
-	/// @brief Create the 4 vertices square with tex
-	/// @param _fileName Tex file path
-	void Init(const char* _fileName);
 
 	/// @brief Square with 4 vertices
 	void CreateMesh();

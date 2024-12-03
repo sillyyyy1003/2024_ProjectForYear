@@ -50,6 +50,10 @@ void DirLight::LoadSaveData(json data, const char* objName)
 	Color ambient = Color(data[objName]["Ambient"][0], data[objName]["Ambient"][1], data[objName]["Ambient"][2], data[objName]["Ambient"][3]);
 	SetAmbient(ambient);
 
+	//Init Diffuse
+	Color diffuse = Color(data[objName]["Diffuse"][0], data[objName]["Diffuse"][1], data[objName]["Diffuse"][2], data[objName]["Diffuse"][3]);
+	SetDiffuse(diffuse);
+
 }
 
 json DirLight::SaveData()
@@ -57,8 +61,9 @@ json DirLight::SaveData()
 	json data;
 	data["Position"] = { GetPosition().x,GetPosition().y,GetPosition().z };
 	data["Direction"] = { GetDirection().x,GetDirection().y,GetDirection().z };
-
 	data["Ambient"] = { GetAmbient().x, GetAmbient().y, GetAmbient().z, GetAmbient().w };
+	data["Diffuse"] = { GetDiffuse().x,GetDiffuse().y, GetDiffuse().z, GetDiffuse().w };
+
 
 	return data;
 }

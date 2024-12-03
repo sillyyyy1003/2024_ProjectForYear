@@ -59,6 +59,8 @@ void Sprite::UnInit()
 
 void Sprite::Draw()
 {
+	if (!mData.VS && !mData.PS)
+		isDefShader = true;
 	if(isDefShader)
 	{
 		mData.VS = mDefVS.get();

@@ -20,7 +20,7 @@ public:
 
 
 	void Init(const char* _fileName, int slices = 64);
-	void Init(std::shared_ptr<Texture> tex, int slices = 64);
+	void Init(const std::shared_ptr<Texture>& tex, int slices = 64);
 
 
 

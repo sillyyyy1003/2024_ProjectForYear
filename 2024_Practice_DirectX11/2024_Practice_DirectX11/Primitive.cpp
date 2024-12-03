@@ -1,4 +1,6 @@
 ﻿#include "Primitive.h"
+
+#include "GampApp.h"
 #include "KInput.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -63,7 +65,7 @@ void Primitive::SetScaleXY(const DirectX::XMFLOAT2& scale) noexcept
 	mTransform.SetScale(scale.x, scale.y, 1.0f);
 }
 
-void Primitive::LoadTexture(std::shared_ptr<Texture> tex)
+void Primitive::LoadTexture(const std::shared_ptr<Texture>& tex)
 {
 	if (!tex)
 		mMaterial.material.isTexEnable = false;
@@ -87,8 +89,8 @@ void Primitive::LoadDefShader()
 	mDefPS = std::make_shared<PixelShader>();
 	mDefVS = std::make_shared<VertexShader>();
 
-	mDefPS->LoadShaderFile("Assets/Shader/PS_Primitives.cso");
-	mDefVS->LoadShaderFile("Assets/Shader/VS_Primitives.cso");
+	mDefPS = GameApp::GetComponent<PixelShader>("PS_Primitives");
+	mDefVS = GameApp::GetComponent<VertexShader>("VS_Primitives");
 }
 
 void Primitive::LoadDefShader(const char* vsPath, const char* psPath)
@@ -143,10 +145,6 @@ void Primitive::SetIndices(std::vector<DWORD> indices) noexcept
 	mIndices = indices;
 }
 
-const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& Primitive::GetPBRVertices()
-{
-	const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>> empty;
-	return empty;
-}
+
 
 

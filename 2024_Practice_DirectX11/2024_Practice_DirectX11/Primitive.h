@@ -15,7 +15,6 @@ enum PrimitiveKind
 	CYLINDER,
 	CYLINDER_ONECAP,
 	SQUARE,
-	PLANE,
 	CIRCLE,
 	MULTI,
 };
@@ -34,7 +33,7 @@ namespace PBRConfig
 		ALBEDO,
 		METALLIC,
 		NORMAL,
-		AO,
+		//AO,
 	};
 
 	using PBRTexList = std::unordered_map<PBRTex, std::shared_ptr<Texture>>;
@@ -62,14 +61,14 @@ protected:
 
 	std::string mFilePath;
 
-
 public:
 
 	/// @brief 大きさ・位置・回転などの情報
 	Transform mTransform = {};
 	/// @brief 頂点データの書き換え用
-	std::vector<Vertex::VtxPosNormalTex> mVertices = {};
-	std::vector<DWORD> mIndices = {};
+	std::vector<Vertex::VtxPosNormalTex> mVertices;
+	std::vector<DWORD> mIndices;
+
 public:
 	Primitive(PrimitiveKind kind);
 	virtual ~Primitive() override;
@@ -79,12 +78,14 @@ public:
 
 
 	virtual void Init(const char* filePath = nullptr) {};
-	virtual void Init(const char* filePath, DirectX::XMFLOAT2) {};
 	virtual void Init(const char* filePath, int slices) {};
-	virtual void Init(Texture* tex) {};
-	virtual void Init(Texture* tex, int slices) {};
-	virtual void Init(Texture* tex, int slices, int levels) {};
 	virtual void Init(const char* filePath, int slices, int levels) {};
+	virtual void Init(const std::shared_ptr<Texture>& tex) {};
+	virtual void Init(const std::shared_ptr<Texture>& tex, int slices) {};
+	virtual void Init(const std::shared_ptr<Texture>& tex, int slices, int levels) {};
+
+
+
 
 	virtual void CreateMaterial();
 	virtual void CreateMaterial(Material& material) { mMaterial.material = material; };
@@ -118,8 +119,9 @@ public:
 	virtual Material& GetMaterial() noexcept { return mMaterial.material; };
 
 	virtual void SetMaterial(Material _material) noexcept { mMaterial.material = _material; };
+	virtual void SetAmbient(const DirectX::XMFLOAT4& _ambient) noexcept { mMaterial.material.ambient = _ambient; };
 	virtual	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse) noexcept { mMaterial.material.diffuse = _diffuse; };
-	virtual void LoadTexture(std::shared_ptr<Texture> tex);
+	virtual void LoadTexture(const std::shared_ptr<Texture>& tex);
 
 	/// @brief テクスチャのファイルパスを取得
 	const std::string GetFilePath() noexcept { return mFilePath; };
@@ -162,13 +164,13 @@ public:
 	//=====================================
 	// Used in PBR Model
 	//=====================================
-	virtual void LoadAlbedoTex(std::shared_ptr<Texture> tex){};
-	virtual void LoadNormalMapTex(std::shared_ptr<Texture> tex){};
-	virtual void LoadMetallicMapTex(std::shared_ptr<Texture> tex){};
-	virtual void LoadAOTex(std::shared_ptr<Texture> tex){};
+	virtual void LoadAlbedoTex(std::shared_ptr<Texture> tex) {};
+	virtual void LoadNormalMapTex(std::shared_ptr<Texture> tex) {};
+	virtual void LoadMetallicMapTex(std::shared_ptr<Texture> tex) {};
 	virtual void InitWithoutTex(const char* file){};
 	
 	virtual void LoadTex(PBRConfig::PBRTexList list) {};
-	virtual const std::vector<std::vector<Vertex::VtxPosNormalTangentTex>>& GetPBRVertices();
+
+
 };
 

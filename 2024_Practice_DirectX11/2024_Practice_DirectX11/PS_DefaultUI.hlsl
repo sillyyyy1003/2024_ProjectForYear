@@ -30,7 +30,8 @@ float4 main (PS_IN pin) : SV_TARGET
     }
 
 	clip(color.a - 0.1f);
-
+	color *= material.diffuse;
+	color *= material.ambient;
     return color;
 
 }

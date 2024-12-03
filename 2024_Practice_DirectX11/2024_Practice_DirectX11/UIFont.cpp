@@ -27,16 +27,14 @@ void UIFont::Init(const char* filePath,DirectX::XMFLOAT2 charSize)
 		mText[i] = std::make_shared<UI_Square>();
         mText[i]->Init(filePath,0, UITextOption::defaultSplit);
         mText[i]->SetScale(mCharSize.x, mCharSize.y);
-        mText[i]->LoadDefShader("Assets/Shader/VS_DefaultUI.cso", "Assets/Shader/PS_UIFont.cso");
+        mText[i]->LoadDefShader(GameApp::GetComponent<VertexShader>("VS_DefaultUI"), GameApp::GetComponent<PixelShader>("PS_DefaultUI"));
 	}
 #ifdef _DEBUG
     InitDebugFunction();
 #endif
-
-
 }
 
-void UIFont::Init(std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize)
+void UIFont::Init(const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize)
 {
     mCharSize = charSize;
     mOriginalCharSize = mCharSize;
@@ -48,7 +46,7 @@ void UIFont::Init(std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize)
         mText[i] = std::make_shared<UI_Square>();
         mText[i]->Init(fontTex, 0, UITextOption::defaultSplit);
         mText[i]->SetScale(mCharSize.x, mCharSize.y);
-        mText[i]->LoadDefShader("Assets/Shader/VS_DefaultUI.cso","Assets/Shader/PS_UIFont.cso");
+        mText[i]->LoadDefShader(GameApp::GetComponent<VertexShader>("VS_DefaultUI"), GameApp::GetComponent<PixelShader>("PS_DefaultUI"));
     }
 
 #ifdef _DEBUG
@@ -64,7 +62,6 @@ void UIFont::SetFont(std::shared_ptr<Texture> fontTex)
     {
         mText[i]->SetTexture(fontTex);
     }
-
 
 }
 
@@ -98,17 +95,6 @@ void UIFont::UpdateCharSize() noexcept
     }
 }
 
-void UIFont::UpdateContents(const char* str) noexcept
-{
-    mContent.erase();
-    mContent = str;
-}
-
-void UIFont::UpdateContents(std::string str) noexcept
-{
-    mContent.erase();
-    mContent = str;
-}
 
 void UIFont::UpdatePosition()
 {
@@ -293,7 +279,7 @@ void UIFont::DebugFunction()
 {
 	#ifdef _DEBUG
 
-	    if (ImGui::Begin("FontSet"))
+	    if (ImGui::BeginChild("FontSet"))
 	    {
             //Text Align
 	    	const char* textAlignItems[] = { "Left", "Center", "Right" };
@@ -302,7 +288,7 @@ void UIFont::DebugFunction()
             {
                 mTextAlign = static_cast<UITextOption::TextAlign>(selectedTextAlign);
             }
-
+            
             // Anchor Align
             const char* anchorAlignItems[] = {
                 "Top Left", "Top Center", "Top Right",
@@ -315,31 +301,38 @@ void UIFont::DebugFunction()
                 mAnchorAlign = static_cast<UITextOption::AnchorAlign>(selectedAnchorAlign);
             }
 
+            //Font Size
             float fontSize = mFontSize;
             ImGui::InputFloat("Font Size",&mFontSize);
             if (fontSize != mFontSize)
                 NotifyFontSizeChanged();
 
+            //Line spacing
             ImGui::InputFloat("Line Spacing", &mLineSpacing);
 
+            //Word box
             float blockSize = mBlockWidth;
             ImGui::InputFloat("Block Width", &blockSize);
             SetFontRectWidth(blockSize);
 
+            //
+            ImGui::Checkbox("IsUseDebugRect", &isShowDebugRect);
+
 	    }
 
-	    ImGui::End();
+	    ImGui::EndChild();
 	#endif
 }
 
 
 void UIFont::Update()
 {
-    DebugFunction();
     UpdateCharSize();
     UpdatePosition();
 
 #ifdef _DEBUG
+    if (!isShowDebugRect)return;
+
     mDebugAnchorPos->SetPosition({ mAnchorPos.x,mAnchorPos.y,0.1f });
     mDebugAnchorPos->Update();
 
@@ -358,12 +351,14 @@ void UIFont::Update()
 
 void UIFont::Draw()
 {
-    for (int i = 0; i < mText.size(); i++)
+
+    for (int i = 0; i < mContent.size(); i++)
     {
         mText[i]->Draw();
     }
 
 #ifdef _DEBUG
+    if (!isShowDebugRect)return;
     GameApp::SetBlendState(RenderState::BSTransparent);
     mDebugAnchorPos->Draw();
     mDebugRect->Draw();
@@ -384,6 +379,7 @@ void UIFont::SetAnchorPos(DirectX::XMFLOAT2 anchorPos)
 
 void UIFont::SetContent(const char* str)
 {
+    mContent.erase();
     mContent = str;
 }
 
@@ -398,7 +394,7 @@ void UIFont::SetTextAlign(UITextOption::TextAlign align)
     mTextAlign = align;
 }
 
-void UIFont::SetFontSize(DirectX::XMFLOAT2 _size)noexcept
+void UIFont::SetCharSize(DirectX::XMFLOAT2 _size)noexcept
 {
     mCharSize = _size;
     mOriginalCharSize = mCharSize;

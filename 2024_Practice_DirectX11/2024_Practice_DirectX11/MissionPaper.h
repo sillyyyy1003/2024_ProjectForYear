@@ -1,15 +1,22 @@
 #pragma once
 #include "Collider.h"
 #include "SceneBase.h"
-#include "Tile.h"
+#include "Square.h"
 
 class MissionPaper :public Component
 {
 private:
+	struct RimLightEffect
+	{
+		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
+		float rimIntensity = 0.0f;
+	};
 
+	// Used for clicked or Hover
+	RimLightEffect mEffect;
 protected:
 
-	std::unique_ptr<Tile> mModel = nullptr;//•`‰æ‚·‚é•”•ª
+	std::unique_ptr<Square> mModel = nullptr;//•`‰æ‚·‚é•”•ª
 	std::unique_ptr<BoxCollider> mCollider = nullptr; //“–‚½‚è”»’è
 
 	bool isClicked = false;
@@ -18,8 +25,6 @@ protected:
 	bool isModelStateChange = false;
 
 	int mObjectState = 0;
-	// Used for clicked or Hover
-	DirectX::XMFLOAT4 mEffect = { 1,1,1,1 };
 
 public:
 
@@ -46,6 +51,7 @@ public:
 
 	bool GetClicked() { return this->isClicked; };
 
+	void LoadDefShader(const std::shared_ptr<VertexShader>& pVS,const std::shared_ptr<PixelShader>& mPS);
 protected:
 
 	void PreUpdate(float dt);

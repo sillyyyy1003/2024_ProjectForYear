@@ -63,7 +63,6 @@ void StaticObject::Draw()
 void StaticObject::LoadSaveData(json data, const char* objName)
 {
 	//Init Model
-	//std::string filePath = data[objName]["Filepath"].get<std::string>();
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
 	mModel->SetPosition(pos);
 

@@ -1,7 +1,6 @@
 #pragma once
 #include <wrl/client.h>
 #include <vector>
-#include "D3DApp.h" 
 #include "SceneBase.h"
 #include "Texture.h"
 
@@ -22,6 +21,7 @@ public:
 protected:
 
 	ShaderKind mShader;
+	
 	std::vector<ComPtr<ID3D11Buffer>> mBuffers;
 	std::vector<ComPtr<ID3D11ShaderResourceView>> mTextures;
 
@@ -48,7 +48,7 @@ public:
 	/// @param _texture 
 	void SetTexture(UINT slot, Texture* _texture);
 
-	std::vector<ComPtr<ID3D11Buffer>> GetBuffers() { return mBuffers; };
+	/*std::vector<ComPtr<ID3D11Buffer>> GetBuffers() { int bufferIndex = GameApp::GetRenderIndex(); return mBuffers[bufferIndex]; };*/
 
 protected:
 	/// @brief シェーダを作成

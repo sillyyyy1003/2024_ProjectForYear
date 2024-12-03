@@ -43,8 +43,8 @@
 #endif
 
 #define SAFE_RELEASE(p) { if ((p)) { (p)->Release(); (p) = nullptr; } }
-#define WIN_WIDTH	(1280.0f)
-#define WIN_HEIGHT	(720.0f)
+#define WIN_WIDTH	(1920.0f)
+#define WIN_HEIGHT	(1080.0f)
 #define UI_NEARZ	(0.0f)
 #define UI_FARZ		(3.0f)
 //
@@ -308,7 +308,8 @@ struct Material
 	DirectX::XMFLOAT4 diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };	// 拡散反射 kd
 	DirectX::XMFLOAT4 specular = { 1.0f, 0.5f, 0.5f, 0.2f }; // 鏡面反射 ks 
 	DirectX::XMFLOAT4 emission = { 0.0f, 0.0f, 0.0f, 0.0f }; // 反射 ke 自発光なし
-	BOOL isTexEnable = true;
+	float isTexEnable = true;
+	float pad1, pad2, pad3 = 0.f;
 };
 
 namespace Light
@@ -326,13 +327,13 @@ namespace Light
 	/// @brief 点光源
 	struct PointLight
 	{
-		DirectX::XMFLOAT4 ambient;	// 環境光 
-		DirectX::XMFLOAT4 diffuse;	// 拡散反射
-		DirectX::XMFLOAT3 position;
-		float range;
+		DirectX::XMFLOAT4 ambient = { 0.5f,0.5f,0.5f,1.0f };	// 環境光 
+		DirectX::XMFLOAT4 diffuse = { 1.f,1.f,1.f,1.f };	// 拡散反射
+		DirectX::XMFLOAT3 position = {};
+		float range = 1;
 
-		DirectX::XMFLOAT3  attenuation;//減衰
-		float isEnable;//起動するかどうか
+		DirectX::XMFLOAT3  attenuation = { 1,0,0 };//減衰
+		float isEnable = false;//起動するかどうか
 	};
 
 	/// @brief スポットライト
@@ -354,27 +355,17 @@ namespace Light
 
 }
 
-
-/// @brief 射線当たり判定用
-struct Ray
+struct NormalConstantBuffer
 {
-	DirectX::XMFLOAT3 startPos;
-	DirectX::XMFLOAT3 direction;
 
-	/// @brief 射線始点の四元数を求める
-	/// @return XMVector
-	DirectX::XMVECTOR GetStartVector()
-	{
-		DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&startPos);
-		return vec;
-	}
+	//CameraPos
+	DirectX::XMFLOAT4 cameraPos={};
 
-	/// @brief 射線終点の四元数を求める
-	/// @return XMVector
-	DirectX::XMVECTOR GetDirVector()
-	{
-		DirectX::XMVECTOR vec = DirectX::XMLoadFloat3(&direction);
-		return vec;
-	}
+	//Environment Light
+	DirectX::XMFLOAT4 lightAmbient={};
+	DirectX::XMFLOAT4 lightDiffuse={};
+	DirectX::XMFLOAT4 lightDir={};
 
+	//Material
+	Material mat = {};
 };

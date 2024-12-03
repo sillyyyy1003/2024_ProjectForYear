@@ -45,11 +45,11 @@ struct Material
     float4 diffuse;
     float4 specular; // w = SpecPower
     float4 emission;
-    bool isTexEnable;
-    float Dummy[2];
+    float isTexEnable;
+    float Dummy[3];
 };
 
-#define MAX_NUM_POINT_LIGHT (1)
+#define MAX_NUM_POINT_LIGHT (2)
 
 //todo:Œã‚ÅŒõ‚ÌŠÑ’Ê–â‘è‚ð‰ðŒˆ‚·‚é
 /// @brief “_ŒõŒ¹‚ÌŒvŽZ

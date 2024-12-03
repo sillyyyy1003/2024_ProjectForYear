@@ -12,10 +12,14 @@ private:
 		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
 		float rimIntensity = 0.0f;
 	};
+
+	// Used for clicked or Hover
+	RimLightEffect mEffect;
+
+	DirectX::XMFLOAT3 mColliderExtents = { 0,0,0 };
 protected:
-	
-	//std::shared_ptr<PBRModel> mPBRModel = nullptr;
-	std::shared_ptr<Primitive> mPBRModel = nullptr;
+
+	std::shared_ptr<Primitive> mModel = nullptr;
 	std::unique_ptr<BoxCollider> mCollider = nullptr;
 	std::string mObjectName;	//オブジェクト名
 
@@ -25,8 +29,6 @@ protected:
 	// object state
 	int mObjectState = 0;
 
-	// Used for clicked or Hover
-	RimLightEffect mEffect;
 
 	bool isClicked = false;
 
@@ -34,7 +36,8 @@ protected:
 	std::unique_ptr<Cube> mDebugColliderMesh = nullptr;
 	bool isShowCollider = false;
 
-
+	bool isUsePBRModel = true;
+	
 
 public:
 	InteractiveStaticObject();
@@ -43,8 +46,12 @@ public:
 	/// @brief 
 	/// @param filePath
 	///	@param _objName
-	void Init(const char* filePath,const char* _objName);
-	void Init(std::shared_ptr<PBRModel> _model, const char* _objName);
+	void InitPBRModel(const char* filePath,const char* _objName);
+	void InitPBRModel(std::shared_ptr<PBRModel> _model, const char* _objName);
+
+	void InitModel(const char* filePath, const char* _objName);
+
+
 	void LoadTex(PBRConfig::PBRTexList list);
 	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
 	void LoadShaderFile(const char* vsFile, const char* psFile);
@@ -72,15 +79,22 @@ public:
 	json SaveData();
 	void LoadSaveData(json data, const char* objName);
 
-	DirectX::XMFLOAT3 GetPosition() { return mPBRModel->GetPosition(); };
-	DirectX::XMFLOAT3 GetScale() { return mPBRModel->GetScale(); };
-	DirectX::XMFLOAT3 GetRotation() { return mPBRModel->GetRotation(); };
-	DirectX::XMFLOAT4 GetQuaternion() { return mPBRModel->GetQuaternion(); };
+	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
+	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
+	DirectX::XMFLOAT3 GetRotation() { return mModel->GetRotation(); };
+	DirectX::XMFLOAT4 GetQuaternion() { return mModel->GetQuaternion(); };
 
-	void SetVertexShader(VertexShader* vs) { mPBRModel->SetVertexShader(vs); };
-	void SetPixelShader(PixelShader* ps) { mPBRModel->SetPixelShader(ps); };
+	void SetVertexShader(VertexShader* vs) { mModel->SetVertexShader(vs); };
+	void SetPixelShader(PixelShader* ps) { mModel->SetPixelShader(ps); };
 
-	void SwitchToDefShader() { mPBRModel->SwitchToDefShader(); };
+	void SwitchToDefShader() { mModel->SwitchToDefShader(); };
+
+	void LoadAlbedoTex(std::shared_ptr<Texture> tex) { mModel->LoadAlbedoTex(tex); };
+	void LoadNormalMapTex(std::shared_ptr<Texture> tex) { mModel->LoadNormalMapTex(tex); };
+	void LoadMetallicMapTex(std::shared_ptr<Texture> tex) { mModel->LoadMetallicMapTex(tex); };
+	const Transform& GetTransform() const { return mModel->mTransform; };
+	
+	PixelShader* GetDefPS() const { return mModel->GetDefPS(); };
 
 protected:
 

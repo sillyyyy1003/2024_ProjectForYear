@@ -1,9 +1,8 @@
 ﻿#include "Shader.h"
 #include <cstdio>
-#include "D3DUtil.h"
 #include "DebugLog.h"
+#include "D3DUtil.h"
 #include "GampApp.h"
-
 #pragma comment(lib, "d3dcompiler.lib")
 
 Shader::Shader(ShaderKind kind) :mShader(kind)
@@ -79,6 +78,7 @@ void Shader::WriteShader(UINT slot, void* pData)
 	//大きさを超えないよう
 	if (slot < mBuffers.size())
 	{
+		int bufferIndex = GameApp::GetCurrentRenderIndex();
 		if (mBuffers[slot] == nullptr)
 		{
 			DebugLog::LogError("nullptr");
@@ -122,8 +122,9 @@ HRESULT Shader::Create(void* pData, UINT size)
 	pReflection->GetDesc(&shaderDesc);
 	//mBufferを調整、シェーダによるコンストバッファを全部読み込み、大きさを調整
 	//shaderDesc.ConstantBuffers:ConstBufferの数
-	mBuffers.resize(shaderDesc.ConstantBuffers, nullptr);
-	
+	//mBuffers.resize(shaderDesc.ConstantBuffers, nullptr);
+	mBuffers.resize(shaderDesc.ConstantBuffers);
+
 	for (UINT i = 0; i < shaderDesc.ConstantBuffers; ++i)
 	{
 		// シェーダーの定数バッファの情報を取得
@@ -168,7 +169,6 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 {
 	HRESULT hr;
 	ID3D11Device* pDevice = gD3D->GetDevice();
-	//ID3D11VertexShader* vs;
 
 	// シェーダー作成
 	hr = pDevice->CreateVertexShader(pData, size, nullptr, mVertexShader.GetAddressOf());
@@ -298,6 +298,7 @@ void PixelShader::SetShader()
 {
 	ID3D11DeviceContext* pContext = gD3D->GetContext();
 	pContext->PSSetShader(mPixelShader.Get(), nullptr, 0);
+
 	for (int i = 0; i < mBuffers.size(); ++i)
 		pContext->PSSetConstantBuffers(i, 1, mBuffers[i].GetAddressOf());
 	for (int i = 0; i < mTextures.size(); ++i)

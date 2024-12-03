@@ -72,24 +72,18 @@ void Cube::WriteDefShader()
 	WVP[2] = firstCamera->GetProjXMF();
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
+	NormalConstantBuffer cb = {
 
-	struct Light
-	{
-		DirectX::XMFLOAT4 lightAmbient;
-		DirectX::XMFLOAT4 lightDiffuse;
-		DirectX::XMFLOAT4 lightDir;
-	};
-
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
+			eyePos,
+			Vector4{dirLight->GetAmbient().x,dirLight->GetAmbient().y,dirLight->GetAmbient().z,dirLight->GetAmbient().w},
+		   Vector4{ dirLight->GetDiffuse().x,dirLight->GetDiffuse().y,dirLight->GetDiffuse().z,dirLight->GetDiffuse().w},
 		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
+		mMaterial.material,
 	};
+
 
 	mDefVS->WriteShader(0, WVP);
-	mDefPS->WriteShader(0, &mMaterial.material);
-	mDefPS->WriteShader(1, &eyePos);
-	mDefPS->WriteShader(2, &light);
+	mDefPS->WriteShader(0, &cb);
 
 }
 

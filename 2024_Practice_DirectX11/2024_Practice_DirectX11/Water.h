@@ -77,7 +77,7 @@ public:
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 	void LoadShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
-
+	void LoadDefShader(const char* vsPath, const char* psPath);
 
 	/// @brief Load Save Data & Init Object Data
 	/// @param data json fileData

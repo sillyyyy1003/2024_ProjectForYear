@@ -16,6 +16,7 @@ public:
 	/// @param filePath
 	///	@param _objName
 	void Init(const char* filePath, const char* _objName);
+
 	void LoadTex(PBRConfig::PBRTexList list);
 	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 	void LoadShaderFile(const char* vsFile, const char* psFile);
@@ -44,7 +45,13 @@ public:
 
 	void SwitchToDefShader() { mModel->SwitchToDefShader(); };
 
+	void LoadAlbedoTex(std::shared_ptr<Texture> tex) { mModel->LoadAlbedoTex(tex); };
+	void LoadNormalMapTex(std::shared_ptr<Texture> tex) { mModel->LoadNormalMapTex(tex); };
+	void LoadMetallicMapTex(std::shared_ptr<Texture> tex) { mModel->LoadMetallicMapTex(tex); };
 
+	const Transform& GetTransform() const { return mModel->mTransform; };
 
+	PixelShader* GetDefPS() { return this->mModel->GetDefPS(); };
+	VertexShader* GetDefVS() { return this->mModel->GetDefVS(); };
 };
 

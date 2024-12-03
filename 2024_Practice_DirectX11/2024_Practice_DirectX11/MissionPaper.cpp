@@ -1,6 +1,8 @@
 #include "MissionPaper.h"
+#include "DirLight.h"
 #include "GampApp.h"
 #include "KInput.h"
+
 
 enum ObjectState
 {
@@ -18,17 +20,17 @@ MissionPaper::MissionPaper()
 
 void MissionPaper::Init(const std::shared_ptr<Texture>& tex, const char* _objName)
 {
-	mModel = std::make_unique<Tile>();
-	mModel->Init(tex, 50);
+	mModel = std::make_unique<Square>();
+	mModel->Init(tex,0);
+	mModel->SetRotation(-90, 0, 0);
 	InitCollider();
-
-	mModel->LoadDefShader("Assets/Shader/VS_Primitives.cso", "Assets/Shader/PS_Object.cso");
 }
 
 void MissionPaper::Init(const char* filePath, const char* _objName)
 {
-	mModel = std::make_unique<Tile>();
-	mModel->Init(filePath, 50);
+	mModel = std::make_unique<Square>();
+	mModel->Init(filePath, 0);
+	mModel->SetRotation(-90, 0, 0);
 	InitCollider();
 }
 
@@ -44,6 +46,7 @@ void MissionPaper::Update(float dt)
 
 void MissionPaper::Draw()
 {
+	mModel->GetDefPS()->WriteShader(2,&mEffect);
 	mModel->Draw();
 }
 
@@ -57,6 +60,11 @@ void MissionPaper::SetScale(const DirectX::XMFLOAT2& scale)
 {
 	mModel->SetScale(scale);
 	NotifyModelStateChangeListener();
+}
+
+void MissionPaper::LoadDefShader(const std::shared_ptr<VertexShader>& mVS, const std::shared_ptr<PixelShader>& mPS)
+{
+	mModel->LoadDefShader(mVS,mPS);
 }
 
 void MissionPaper::PreUpdate(float dt)
@@ -171,7 +179,7 @@ void MissionPaper::GameUpdate(float dt)
 void MissionPaper::LateUpdate(float dt)
 {
 	mModel->Update(dt);
-	mModel->GetDefPS()->WriteShader(3, &mEffect);
+
 }
 
 void MissionPaper::InitCollider()
@@ -197,19 +205,26 @@ void MissionPaper::ClearModelStateChangeListener()
 
 void MissionPaper::OnStateNone()
 {
-	mEffect = { 0.85f,0.85f,0.85f,1.0f };
+	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+	mModel->SetAmbient(ambient * 0.75f);
+	mEffect.rimIntensity = 0.0f;
 }
 
 void MissionPaper::OnStateHover()
 {
-	mEffect = { 1.0f,1.0f,1.0f,1.0f };
+	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+	mModel->SetAmbient(ambient);
+	mEffect.rimIntensity = 0.4f;
+
 }
 
 void MissionPaper::OnStateClicked()
 {
 	// Output Trigger
 	isClicked = true;
-	mEffect = { 1.0f,1.0f,1.0f,1.0f };
+	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+	mModel->SetAmbient(ambient * 0.75f);
+	mEffect.rimIntensity = 0.4f;
 }
 
 void MissionPaper::UpdateCollider()

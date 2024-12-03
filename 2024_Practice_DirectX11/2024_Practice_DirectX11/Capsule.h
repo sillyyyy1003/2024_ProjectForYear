@@ -21,7 +21,7 @@ public:
 	/// @param tex 
 	///	@param levels 球体垂直分割数
 	///	@param slices 球体・シリンダー水平分割数
-	void Init(std::shared_ptr<Texture>tex, int levels = 64, int slices = 64);
+	void Init(const std::shared_ptr<Texture>& tex, int levels = 64, int slices = 64);
 	
 
 	void Update(float dt);

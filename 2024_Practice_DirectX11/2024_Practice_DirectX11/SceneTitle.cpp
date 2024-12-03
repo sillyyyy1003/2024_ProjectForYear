@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "FirstPersonCamera.h"
+#include "GampApp.h"
 #include "Model.h"
 #include "PBRModel.h"
 #include "UIFont.h"
@@ -27,47 +28,47 @@ void SceneTitle::Init()
 {
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title_default.json");
 
-	uiBg = std::make_shared<CanvasUI>();
-	uiBg->LoadSaveData(sceneData, "title_bg");
+	std::shared_ptr<Texture> uiBgTex = CreateObj<Texture>("uiBg");
+	uiBgTex->Create("Assets/Texture/UI/main_title_background_1920x1080.png");
 
-	uiStart = std::make_shared<UIButton>();
-	uiStart->LoadSaveData(sceneData, "title_start");
+	std::shared_ptr<Texture> uiStartTex = CreateObj<Texture>("uiStart");
+	uiStartTex->Create("Assets/Texture/UI/main_title_startbutton_700x140.png");
 
-	uiOption = std::make_shared<UIButton>();
-	uiOption->LoadSaveData(sceneData, "title_option");
+	std::shared_ptr<Texture> uiOptionTex = CreateObj<Texture>("uiOption");
+	uiOptionTex->Create("Assets/Texture/UI/main_title_optionbutton_700x140.png");
 
-	uiExit = std::make_shared<UIButton>();
-	uiExit->LoadSaveData(sceneData, "title_exit");
+	std::shared_ptr<Texture> uiExitTex = CreateObj<Texture>("uiExit");
+	uiExitTex->Create("Assets/Texture/UI/main_title_exitbutton_700x140.png");
 
-	//Set data to map
-	objManager["background"].push_back(uiBg);  
-	objManager["button"].push_back(uiStart);   
-	objManager["button"].push_back(uiOption);  
-	objManager["button"].push_back(uiExit);
+	uiBg = std::make_shared<UI_Square>();
+	uiBg->Init(uiBgTex);
+	uiBg->SetScale(WIN_WIDTH, WIN_HEIGHT);
+	uiBg->LoadDefShader(GetObj<VertexShader>("VS_DefaultUI"), GetObj<PixelShader>("PS_DefaultUI"));
+	uiBg->SetPosZ(2.7f);
 
-	//描画順番の設定
-	mUiOrder = { "background", "button" ,"effect" };
+	uiStart = std::make_unique<UI_Button>();
+	uiStart->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE, uiStartTex, nullptr);
+	uiStart->LoadSaveData(sceneData, "uiStart");
 
+	uiOption = std::make_unique<UI_Button>();
+	uiOption->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE, uiOptionTex, nullptr);
+	uiOption->LoadSaveData(sceneData, "uiOption");
+
+	uiExit = std::make_unique<UI_Button>();
+	uiExit->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE,uiExitTex,  nullptr);
+	uiExit->LoadSaveData(sceneData, "uiExit");
 	
 }
 
 void SceneTitle::UnInit()
 {
-	if(isEditable)
-	{
-		// Create scene Data
-		json sceneData;
-
-		for (auto it = objManager.begin(); it != objManager.end(); ++it)
-		{
-			for (auto& element : it->second)
-			{
-				sceneData[element->GetObjectName().c_str()] = element->SaveData(element->GetFilePath().c_str());
-			}
-
-		}
-		SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
-	}
+	/*
+	json sceneData;
+	sceneData["uiStart"]=uiStart->SaveData("uiStart");
+	sceneData["uiOption"] = uiOption->SaveData("uiOption");
+	sceneData["uiExit"] = uiExit->SaveData("uiExit");
+	SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
+	*/
 }
 
 void SceneTitle::Update(float dt)
@@ -104,53 +105,19 @@ void SceneTitle::TriggerListener()
 void SceneTitle::ObjectUpdate(float dt)
 {
 
-	
-
-
-#ifdef _DEBUG
-
-	if (ImGui::Begin("EditCheck"))
-	{
-		ImGui::Checkbox("isEditable", &isEditable);
-	}
-
-	ImGui::End();
-#endif
-
-	//ボタンの状態変更
-	for (const std::string& category : mUiOrder)
-	{
-		if (objManager.contains(category))
-		{
-			for (auto obj : objManager[category])
-			{
-				obj->Update(dt);
-			}
-		}
-	}
-
-
-
+	uiBg->Update();
+	uiStart->Update();
+	uiOption->Update();
+	uiExit->Update();
 
 }
 
 void SceneTitle::Draw()
 {
-	float currentZ = UI_FARZ - 0.1f;
 
-	for (const std::string& category : mUiOrder)
-	{
-		// 获取该类别下的所有 UI 对象
-		if (objManager.contains(category))
-		{
-			for (auto& obj : objManager[category])
-			{
-				obj->SetPosZ(currentZ);
-				obj->Draw();          
-				currentZ -= 0.1f;      
-			}
-		}
-	}
-	
+	uiBg->Draw();
+	uiStart->Draw();
+	uiOption->Draw();
+	uiExit->Draw();
 }
 
