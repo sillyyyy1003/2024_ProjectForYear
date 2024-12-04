@@ -1,23 +1,43 @@
 ﻿#include "Sphere.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-Sphere::Sphere() :Primitive(SPHERE)
+Sphere::Sphere() :Primitive(PrimitiveConfig::SPHERE)
 {
 }
 
-void Sphere::Init(const char* _fileName, int levels, int slices)
+void Sphere::Init(const char* _fileName, int levels, int slices,DirectX::XMINT2 _UVSplit)
 {
+    //UV Animation を使うか
+    if (_UVSplit.x == 1 && _UVSplit.y == 1)
+        isUseUVAnimation = false;
+    else
+        isUseUVAnimation = true;
+
+    //UV Animationの初期化
+    mUvAnimation = std::make_unique<UVAnimation>();
+    mUvAnimation->Init(_UVSplit);
+
     CreateMesh(levels, slices);
 	CreateMaterial();
     CreateTexture(_fileName);
 }
 
-void Sphere::Init(const std::shared_ptr<Texture>& tex, int levels, int slices)
+void Sphere::Init(const std::shared_ptr<Texture>& tex, int levels, int slices, DirectX::XMINT2 _UVSplit)
 {
+    //UV Animation を使うか
+    if (_UVSplit.x == 1 && _UVSplit.y == 1)
+        isUseUVAnimation = false;
+    else
+        isUseUVAnimation = true;
+
+    //UV Animationの初期化
+    mUvAnimation = std::make_unique<UVAnimation>();
+    mUvAnimation->Init(_UVSplit);
+
     CreateMesh(levels, slices);
     CreateMaterial();
     LoadTexture(tex);
@@ -25,7 +45,10 @@ void Sphere::Init(const std::shared_ptr<Texture>& tex, int levels, int slices)
 
 void Sphere::Update(float dt)
 {
+    if (!isUseUVAnimation) { return; }
+    mUvAnimation->UpdateUV();
 }
+
 
 void Sphere::Draw(int texSlot)
 {
@@ -78,7 +101,7 @@ void Sphere::CreateMesh(UINT levels, UINT slices)
             vtx.push_back({
                 pos,
                 normal,
-                XMFLOAT2(theta / XM_2PI, phi / XM_PI)
+                XMFLOAT2(theta / (XM_2PI*mUvAnimation->GetSplit().x), phi / (XM_PI*mUvAnimation->GetSplit().y))
             });
         }
     }
@@ -154,7 +177,7 @@ void Sphere::WriteDefShader()
     }
 
     CameraBase* firstCamera = GameApp::GetCurrentCamera();
-    DirLight* dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight").get();
+    DirLight* dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight").get();
 
     XMFLOAT4X4 WVP[3] = {};
     //WORLD
@@ -178,7 +201,17 @@ void Sphere::WriteDefShader()
     };
 
 
+    UVConstantBuffer uvBuffer;
+    uvBuffer.useUV = isUseUVAnimation;
+    //UV MATRIX 作成
+    if (isUseUVAnimation)
+    {
+        uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+        uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+    }
+
     mDefVS->WriteShader(0, WVP);
+    mDefVS->WriteShader(1, &uvBuffer);
     mDefPS->WriteShader(0, &cb);
 }
 

@@ -7,13 +7,12 @@
 
 void SceneOption::Init()
 {
-	test = std::make_shared<UI_Square>();
-	test->Init(nullptr, 20, DirectX::XMINT2(1, 1));
-	test->LoadDefShader("Assets/Shader/VS_DefaultUI.cso", "Assets/Shader/PS_DefaultUI.cso");
-	test->SetScale({ 300,300 });
-
-    container = std::make_unique<UIStackContainer>();
-
+	//test = std::make_shared<UI_Square>();
+	//test->Init(nullptr, 20, DirectX::XMINT2(1, 1));
+	//test->LoadDefShader("Assets/Shader/VS_DefaultUI.cso", "Assets/Shader/PS_DefaultUI.cso");
+    testOutline = std::make_unique<Square>();
+    testOutline->Init(nullptr,10);
+    testOutline->LoadDefShader();
 }
 
 void SceneOption::UnInit()
@@ -22,11 +21,9 @@ void SceneOption::UnInit()
 
 void SceneOption::Update(float dt)
 {
-    static int count;\
+    static int count;
 	if (KInput::IsKeyTrigger(VK_ESCAPE))
 		SceneManager::Get()->SetMainScene("Title");
-
-	test->Update();
 
     ImGui::Begin("Counter Window");
 
@@ -47,11 +44,13 @@ void SceneOption::Update(float dt)
 
     ImGui::End();
 
+    testOutline->Update(dt);
+
 	
 }
 
 void SceneOption::Draw()
 {
+    testOutline->Draw();
 	
-	test->Draw();
 }

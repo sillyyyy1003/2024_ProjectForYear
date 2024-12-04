@@ -3,12 +3,12 @@
 #include "FirstPersonCamera.h"
 #include "Geometry.h"
 #include "PBRModel.h"
-#include "SceneGame.h"
 #include "SceneLab.h"
 #include "SceneMission.h"
 #include "SceneOption.h"
 #include "ScenePotion.h"
 #include "SceneTitle.h"
+#include "ScreenOverlay.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -43,8 +43,12 @@ void SceneManager::Init()
 	InitFontLib();
 	InitModelTexture();
 
+	//Load PS/VS file
 	LoadPixelShaderFile();
 	LoadVertexShaderFile();
+
+	//Init Fade Tool
+	ScreenOverlay::Get()->Init();
 
 	SetMainScene("Title");
 
@@ -65,6 +69,7 @@ void SceneManager::Update(float dt)
 	GetObj<FirstPersonCamera>("DefaultCamera")->Update(dt);
 	GetObj<DirLight>("EnvironmentLight")->Update(dt);
 
+	ScreenOverlay::Get()->Update();
 	MainSceneChangeListener();
 }
 
@@ -97,7 +102,7 @@ void SceneManager::InitSceneMap()
 
 void SceneManager::InitFontLib()
 {
-	//UIFont
+	//UI_Font
 	UIFont_StringLiteral = CreateObj<Texture>("UIFont_StringLiteral");
 	HR(UIFont_StringLiteral->Create("Assets/Texture/UI/UIFontLib/ASCIILib_StringLiteral_Regular.png"));
 
@@ -137,6 +142,9 @@ void SceneManager::InitModelTexture()
 
 	paperTexture = CreateObj<Texture>("paper");
 	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture.png"));
+
+	blackOverlay=CreateObj<Texture>("BlackOverlay");
+	HR(blackOverlay->Create("Assets/Texture/Fade.png"))
 
 
 	//Close Book
@@ -203,6 +211,9 @@ void SceneManager::LoadPixelShaderFile()
 	PixelShader* PS_water = CreateObj<PixelShader>("PS_Water").get();
 	PS_water->LoadShaderFile("Assets/Shader/PS_Water.cso");
 
+	PixelShader* PS_Outline = CreateObj<PixelShader>("PS_Outline").get();
+	PS_Outline->LoadShaderFile("Assets/Shader/PS_Outline.cso");
+
 
 
 }
@@ -220,6 +231,7 @@ void SceneManager::LoadVertexShaderFile()
 
 	VS_spriteShadow = CreateObj<VertexShader>("VS_SpriteShadow");
 	VS_spriteShadow->LoadShaderFile("Assets/Shader/VS_SpriteShadow.cso");
+
 }
 
 void SceneManager::ChangeMainScene()

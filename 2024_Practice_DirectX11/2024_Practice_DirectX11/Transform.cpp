@@ -42,7 +42,7 @@ const DirectX::XMMATRIX Transform::GetIdentityMatrix()
 	return World;
 }
 
-DirectX::XMFLOAT3 Transform::GetRotation() const
+DirectX::XMFLOAT3 Transform::GetRotationInRadian() const
 {
 	float sinX = 2 * (mRotation.w * mRotation.x - mRotation.y * mRotation.z);
 	float sinY_cosX = 2 * (mRotation.w * mRotation.y + mRotation.x * mRotation.z);
@@ -68,6 +68,13 @@ DirectX::XMFLOAT3 Transform::GetRotation() const
 	//return rotation;
 	return rotation;
 
+}
+
+DirectX::XMFLOAT3 Transform::GetRotation() const
+{
+	Vector3 rotation = GetRotationInRadian();
+	rotation *= 180.0f / DirectX::XM_PI;
+	return rotation;
 }
 
 DirectX::XMFLOAT3 Transform::GetRightAxis() const

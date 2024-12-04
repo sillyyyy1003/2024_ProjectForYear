@@ -1,6 +1,6 @@
 #include "Ingredient.h"
 
-#include "GampApp.h"
+#include "GameApp.h"
 
 enum IngredientState
 {
@@ -12,7 +12,7 @@ Ingredient::Ingredient()
 {
 }
 
-void Ingredient::Init(PrimitiveKind _kind, const char* _fileName)
+void Ingredient::Init(PrimitiveConfig::PrimitiveKind _kind, const char* _fileName)
 {
 	//todo Change Shader loading
 	Object::Init(_kind, _fileName);

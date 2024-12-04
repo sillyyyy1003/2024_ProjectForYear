@@ -4,7 +4,7 @@
 #include "Cylinder.h"
 #include "CylinderOneCap.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "GUI.h"
 #include "KInput.h"
 #include "PointLight.h"
@@ -30,27 +30,27 @@ Object::~Object()
 {
 }
 
-void Object::Init(PrimitiveKind kind)
+void Object::Init(PrimitiveConfig::PrimitiveKind kind)
 {
 	switch(kind)
 	{
-	case CUBE:
+	case PrimitiveConfig::CUBE:
 		mModel = std::make_unique<Cube>();
 		mCollider = std::make_unique<BoxCollider>();
 		break;
-	case SPHERE:
+	case PrimitiveConfig::SPHERE:
 		mModel = std::make_unique<Sphere>();
 		mCollider = std::make_unique<SphereCollider>();
 		break;
-	case CYLINDER:
+	case PrimitiveConfig::CYLINDER:
 		mModel = std::make_unique<Cylinder>();
 		mCollider = std::make_unique<BoxCollider>();
 		break;
-	case CAPSULE:
+	case PrimitiveConfig::CAPSULE:
 		mModel = std::make_unique<Capsule>();
 		mCollider = std::make_unique<BoxCollider>();
 		break;
-	case CYLINDER_ONECAP:
+	case PrimitiveConfig::CYLINDER_ONECAP:
 		mModel = std::make_unique<CylinderOneCap>();
 		mCollider = std::make_unique<BoxCollider>();
 	default:;
@@ -58,7 +58,7 @@ void Object::Init(PrimitiveKind kind)
 
 }
 
-void Object::Init(PrimitiveKind kind, const char* filePath)
+void Object::Init(PrimitiveConfig::PrimitiveKind kind, const char* filePath)
 {
 	Init(kind);
 	InitModel(filePath);
@@ -67,8 +67,8 @@ void Object::Init(PrimitiveKind kind, const char* filePath)
 
 void Object::InitModel(const char* filePath)
 {
-	mModel->Init(filePath);
-	mModel->LoadDefShader("Assets/Shader/VS_Primitives.cso", "Assets/Shader/PS_Object.cso");
+	mModel->Init(filePath, { 1,1 });
+	mModel->LoadDefShader(SceneManager::Get()->GetObj<VertexShader>("VS_Primitives"), SceneManager::Get()->GetObj<PixelShader>("PS_Primitives"));
 }
 
 void Object::LoadSaveData(json data, const char* objName)
@@ -135,7 +135,6 @@ json Object::SaveData()
 	data["Position"] = {GetPosition().x,GetPosition().y,GetPosition().z };
 	data["Scale"] = { GetScale().x,GetScale().y,GetScale().z };
 	data["Rotation"] = { GetRotation().x,GetRotation().y,GetRotation().z };
-	data["Filepath"] = GetFilePath();
 
 	//Set Material
 	data["Material"]["Ambient"] = { GetMaterial().ambient.x,GetMaterial().ambient.y, GetMaterial().ambient.z, GetMaterial().ambient.w };
@@ -295,7 +294,7 @@ void Object::LateUpdate(float dt)
 	mModel->GetDefPS()->WriteShader(3, &mEffect);
 	/*
 	//PointLightを取得し、データをPSに書き込み
-	PointLight* pointLight = GameApp::GetComponent<PointLight>("PointLight");
+	PointLight* pointLight = SceneManager::Get()->GetObj<PointLight>("PointLight");
 
 	if(pointLight)
 	{

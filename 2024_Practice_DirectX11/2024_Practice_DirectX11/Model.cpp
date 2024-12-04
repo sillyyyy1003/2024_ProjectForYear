@@ -6,7 +6,7 @@
 
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "assimp-vc143-mtd.lib")
@@ -17,7 +17,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Model::Model() :Primitive(MULTI)
+Model::Model() :Primitive(PrimitiveConfig::MULTI)
 {
 	importer = std::make_unique<Assimp::Importer>();
 }
@@ -238,7 +238,7 @@ void Model::Draw(int texSlot)
 void Model::WriteDefShader()
 {
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD

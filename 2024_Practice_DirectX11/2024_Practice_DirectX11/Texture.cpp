@@ -1,6 +1,6 @@
 ﻿#include "Texture.h"
 
-#include "GampApp.h"
+#include "GameApp.h"
 
 Texture::Texture()
 {

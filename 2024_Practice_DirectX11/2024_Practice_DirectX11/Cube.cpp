@@ -2,25 +2,45 @@
 #include "DebugLog.h"
 #include "KInput.h"
 #include "DirLight.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Cube::Cube():Primitive(CUBE)
+Cube::Cube():Primitive(PrimitiveConfig::CUBE)
 {
 }
 
-void Cube::Init(const char* fileName)
+void Cube::Init(const char* fileName, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMeshes();
 	CreateMaterial();
 	CreateTexture(fileName);
 
 }
 
-void Cube::Init(const std::shared_ptr<Texture>& texture)
+void Cube::Init(const std::shared_ptr<Texture>& texture, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMeshes();
 	CreateMaterial();
 	LoadTexture(texture);
@@ -45,8 +65,8 @@ void Cube::Draw(int texSlot)
 
 void Cube::Update(float dt)
 {
-	////Render処理
-	//WriteDefShader();
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 
@@ -59,7 +79,7 @@ void Cube::WriteDefShader()
 	}
 
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -82,7 +102,17 @@ void Cube::WriteDefShader()
 	};
 
 
+	UVConstantBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+	//UV MATRIX 作成
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
+
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &cb);
 
 }
@@ -137,10 +167,10 @@ void Cube::CreateMeshes()
 
 	std::vector<Vector2> texCoord(4);
 	texCoord = {
-		Vector2(0.0f, 1.0f),
+		Vector2(0.0f, 1.0f/mUvAnimation->GetSplit().y),
 		Vector2(0.0f, 0.0f),
-		Vector2(1.0f, 0.0f),
-		Vector2(1.0f, 1.0f),
+		Vector2(1.f/mUvAnimation->GetSplit().x, 0.0f),
+		Vector2(1.0f/mUvAnimation->GetSplit().x, 1.0f/mUvAnimation->GetSplit().y),
 	};
 
 	//VERTEX List

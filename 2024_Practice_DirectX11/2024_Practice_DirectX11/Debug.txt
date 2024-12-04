@@ -1,3 +1,41 @@
 Game Init Completed
 SceneName = SceneTitle
-Exiting the application...
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+SceneName = SceneLab
+WARNING::VertexShader/PixelShader is Null!
+モデル読み込み開始
+モデル読み込み完了
+SceneName = ScenePotion
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+モデル読み込み開始
+モデル読み込み完了
+SceneName = SceneLab
+WARNING::VertexShader/PixelShader is Null!

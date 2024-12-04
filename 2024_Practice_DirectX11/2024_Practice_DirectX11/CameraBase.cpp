@@ -1,5 +1,5 @@
 ﻿#include "CameraBase.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 

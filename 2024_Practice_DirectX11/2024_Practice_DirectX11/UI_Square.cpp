@@ -1,6 +1,6 @@
 #include "UI_Square.h"
 
-#include "GampApp.h"
+#include "GameApp.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -161,14 +161,8 @@ void UI_Square::WriteDefShader()
 	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
 	WVP[2] = XMMatrixTranspose(WVP[2]);
 
-	struct UVBuffer
-	{
-		XMMATRIX uv;
-		int useUV;
-	};
-	UVBuffer uvBuffer;
+	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-
 	//UV MATRIX çÏê¨
 	if (isUseUVAnimation)
 	{

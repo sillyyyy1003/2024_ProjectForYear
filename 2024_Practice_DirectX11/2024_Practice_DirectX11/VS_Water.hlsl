@@ -22,6 +22,7 @@ cbuffer WVP : register(b0)
 	float4x4 proj;
 }
 
+//todo: Water Wave calculation move into pixel shader
 VS_OUT main(VS_IN vin)
 {
 	VS_OUT vOut;

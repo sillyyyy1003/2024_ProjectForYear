@@ -69,6 +69,7 @@ protected:
 	std::shared_ptr<Texture> openBookMetallicTexture;
 
 	std::shared_ptr<Texture> tableTexture;
+	std::shared_ptr<Texture> blackOverlay;
 
 	std::shared_ptr<PixelShader> PS_buttonUI;
 	std::shared_ptr<PixelShader> PS_defaultUI;
@@ -79,11 +80,12 @@ protected:
 	std::shared_ptr<PixelShader> PS_Shadow;
 	std::shared_ptr<PixelShader> PS_WriteDepth;
 	std::shared_ptr<PixelShader> PS_pbrBaseColor;
-	
+
 	std::shared_ptr<VertexShader> VS_defaultUI;
 	std::shared_ptr<VertexShader> VS_pbrModel;
 	std::shared_ptr<VertexShader> VS_primitives;
 	std::shared_ptr<VertexShader> VS_spriteShadow;
+
 private:
 
 	SceneManager() {};

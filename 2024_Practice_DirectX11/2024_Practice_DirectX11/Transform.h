@@ -34,7 +34,10 @@ public:
 	
 	/// @brief Angle in Radian
 	/// @return Radian
-	DirectX::XMFLOAT3 GetRotation() const;
+	DirectX::XMFLOAT3 GetRotationInRadian() const;
+	/// @brief Angle in Degree
+	// @return Degree
+	DirectX::XMFLOAT3 GetRotation()const;
 
 	/// @brief 回転の四元数を返す
 	/// @return 四元数　Pitch:x  Yaw:y  Roll:z

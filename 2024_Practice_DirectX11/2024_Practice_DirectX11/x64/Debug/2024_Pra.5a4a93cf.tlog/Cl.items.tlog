@@ -17,7 +17,7 @@ C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_Direct
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\DirLight.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\DirLight.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\DXTrace.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\DXTrace.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\FirstPersonCamera.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\FirstPersonCamera.obj
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\GampApp.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\GampApp.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\GameApp.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\GameApp.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\GUI.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\GUI.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Ingredient.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\Ingredient.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\KInput.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\KInput.obj
@@ -38,7 +38,6 @@ C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_Direct
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\RenderState.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\RenderState.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\RigidBody.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\RigidBody.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\SceneBase.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\SceneBase.obj
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\SceneGame.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\SceneGame.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\SceneManager.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\SceneManager.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\SceneTitle.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\SceneTitle.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Shader.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\Shader.obj
@@ -50,13 +49,14 @@ C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_Direct
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Timer.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\Timer.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Transform.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\Transform.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI2D.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI2D.obj
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIFont.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UIFont.obj
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIButton.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UIButton.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Font.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_Font.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIStackContainer.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UIStackContainer.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UIStackContainerManager.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UIStackContainerManager.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Button.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_Button.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Capsule.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_Capsule.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_IngameFont.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_IngameFont.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Primitive.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_Primitive.obj
+C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_RoundSquare.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_RoundSquare.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UI_Square.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UI_Square.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\UVAnimation.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\UVAnimation.obj
 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Water.cpp;C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\x64\Debug\Water.obj

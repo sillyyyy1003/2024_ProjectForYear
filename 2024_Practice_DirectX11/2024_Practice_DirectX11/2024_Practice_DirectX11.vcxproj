@@ -168,7 +168,7 @@
     <ClCompile Include="DirLight.cpp" />
     <ClCompile Include="DXTrace.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
-    <ClCompile Include="GampApp.cpp" />
+    <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="KInput.cpp" />
@@ -189,7 +189,6 @@
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SceneBase.cpp" />
-    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -201,11 +200,12 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UI2D.cpp" />
-    <ClCompile Include="UIFont.cpp" />
+    <ClCompile Include="UI_Font.cpp" />
     <ClCompile Include="UIStackContainer.cpp" />
     <ClCompile Include="UIStackContainerManager.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Capsule.cpp" />
+    <ClCompile Include="UI_IngameFont.cpp" />
     <ClCompile Include="UI_Primitive.cpp" />
     <ClCompile Include="UI_RoundSquare.cpp" />
     <ClCompile Include="UI_Square.cpp" />
@@ -233,7 +233,7 @@
     <ClInclude Include="DirLight.h" />
     <ClInclude Include="DXTrace.h" />
     <ClInclude Include="FirstPersonCamera.h" />
-    <ClInclude Include="GampApp.h" />
+    <ClInclude Include="GameApp.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="KInput.h" />
@@ -255,7 +255,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneBase.h" />
-    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Shader.h" />
@@ -267,11 +266,12 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI2D.h" />
-    <ClInclude Include="UIFont.h" />
+    <ClInclude Include="UI_Font.h" />
     <ClInclude Include="UIStackContainer.h" />
     <ClInclude Include="UIStackContainerManager.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Capsule.h" />
+    <ClInclude Include="UI_IngameFont.h" />
     <ClInclude Include="UI_Primitive.h" />
     <ClInclude Include="UI_RoundSquare.h" />
     <ClInclude Include="UI_Square.h" />
@@ -299,6 +299,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="PS_Outline.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -347,6 +355,13 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="VS_DefaultSprite.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="VS_Outline.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

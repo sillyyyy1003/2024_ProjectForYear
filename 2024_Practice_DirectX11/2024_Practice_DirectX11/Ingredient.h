@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Object.h"
 #include "Primitive.h"
-#include "UIButton.h"
+
 
 /// Potionを構成する素材
 class Ingredient :public Object
@@ -27,7 +27,7 @@ public:
 	/// @brief Init Ingredient outline
 	/// @param _kind 
 	/// @param _fileName 
-	void Init(PrimitiveKind _kind,const char* _fileName);
+	void Init(PrimitiveConfig::PrimitiveKind _kind,const char* _fileName);
 
 	/// @brief 金額を設定する
 	void SetPrice(float _price);

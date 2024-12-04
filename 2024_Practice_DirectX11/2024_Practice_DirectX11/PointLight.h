@@ -16,7 +16,7 @@ public:
 	void Update(float dt) override;
 
 	float GetRange() { return mRange; };
-	const DirectX::XMFLOAT3& GetAttenuation()noexcept { return mAttenuation; };
+	const DirectX::XMFLOAT3& GetAttenuation() const noexcept { return mAttenuation; };
 
 
 	void SetRange(float _range);
@@ -24,7 +24,7 @@ public:
 	void SetAttenuation(float x, float y, float z);
 	void SetAttenuation(const float* attenuation);
 
-	Light::PointLight& GetPointLight();
+	const Light::PointLight& GetPointLight() const;
 	json SaveData();
 
 	void LoadSaveData(json data, const char* objName);

@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include "DebugLog.h"
 #include "DXTrace.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 Mesh::Mesh(const MeshData& _data)
 {

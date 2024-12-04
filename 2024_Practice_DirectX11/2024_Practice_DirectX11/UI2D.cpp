@@ -3,7 +3,7 @@
 #include <string>
 #include <locale>
 #include <codecvt>
-#include "GampApp.h"
+#include "GameApp.h"
 
 UI2D::UI2D()
 {

@@ -1,7 +1,7 @@
 ﻿#include "Water.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "KInput.h"
 #include "Square.h"
 #include "RenderState.h"
@@ -17,21 +17,20 @@ Water::Water()
 void Water::Init(const char* filePath, const char* objName, int slices)
 {
 	mModel = std::make_unique<Circle>();
-	mModel->CreateMesh(slices, slices);
-	mModel->CreateMaterial();
-	mModel->CreateTexture(filePath);
+	mModel->Init(filePath, slices, slices,{1,1});
+	mModel->LoadDefShader();
+
 	mObjectName = objName;
 
 	mWaterStates = std::make_unique<WaterState>();
 	mWaterStates->Init();
 }
 
-void Water::Init(const std::shared_ptr<Texture>& tex, const char* objName,int slices)
+void Water::Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices)
 {
 	mModel = std::make_unique<Circle>();
-	mModel->CreateMesh(slices, slices);
-	mModel->CreateMaterial();
-	mModel->LoadTexture(tex);
+	mModel->Init(tex, slices, slices, { 1,1 });
+	mModel->LoadDefShader();
 	mObjectName = objName;
 
 	mWaterStates = std::make_unique<WaterState>();
@@ -254,7 +253,7 @@ void Water::WriteShader()
 	}
 	
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -384,29 +383,6 @@ json Water::SaveData()
 void Water::SetTexture(std::shared_ptr<Texture> tex)
 {
 	mModel->LoadTexture(tex);
-
-	//todo:is not completed
-/*
-	//テクスチャがNULLの場合 Remake Vertex
-	if(!tex)
-	{
-		std::vector<Vertex::VtxPosNormalTexColor> newVertices;
-		newVertices.resize(mModel->mVertices.size());
-		for (int i = 0; i < newVertices.size(); i++)
-		{
-			newVertices[i].pos = mModel->mVertices[i].pos;
-			newVertices[i].normal = mModel->mVertices[i].normal;
-			newVertices[i].tex = mModel->mVertices[i].tex;
-		}
-
-
-
-
-
-
-	}
-	*/
-
 }
 
 void Water::RewriteVertices()

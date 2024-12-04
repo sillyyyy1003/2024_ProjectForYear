@@ -15,17 +15,18 @@ public:
 	/// @param filePath 
 	///	@param levels 球体垂直分割数
 	///	@param slices 球体・シリンダー水平分割数
-	void Init(const char* filePath, int levels = 64 , int slices = 64);
-
+	///	@param _UVSplit UVAnimation
+	void Init(const char* filePath, int levels = 16 , int slices = 16, DirectX::XMINT2 _UVSplit={1,1}) override;
+	
 	/// @brief 
 	/// @param tex 
 	///	@param levels 球体垂直分割数
 	///	@param slices 球体・シリンダー水平分割数
-	void Init(const std::shared_ptr<Texture>& tex, int levels = 64, int slices = 64);
-	
+	///	@param _UVSplit UVAnimation
+	void Init(const std::shared_ptr<Texture>& tex, int levels = 16, int slices = 16, DirectX::XMINT2 _UVSplit={1,1}) override;
 
-	void Update(float dt);
-	void Draw(int texSlot);
+	void Update(float dt) override;
+	void Draw(int texSlot = 0) override;
 
 private:
 
@@ -35,7 +36,7 @@ private:
 	/// @param stacks シリンダー垂直分割数
 	void CreateMesh(UINT levels, UINT slices, UINT stacks);
 
-	void WriteDefShader();
+	void WriteDefShader() override;
 
 };
 

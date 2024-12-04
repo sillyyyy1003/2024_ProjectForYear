@@ -8,7 +8,7 @@
 
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "assimp-vc143-mtd.lib")
@@ -19,7 +19,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-PBRModel::PBRModel() :Primitive(MULTI)
+PBRModel::PBRModel() :Primitive(PrimitiveConfig::MULTI)
 {
 	importer = std::make_unique<Assimp::Importer>();
 }
@@ -475,8 +475,8 @@ void PBRModel::LoadDefShader()
 	mDefPS = std::make_shared<PixelShader>();
 	mDefVS = std::make_shared<VertexShader>();
 
-	mDefPS = GameApp::GetComponent<PixelShader>("PS_PBRModel");
-	mDefVS = GameApp::GetComponent<VertexShader>("VS_PBRModel");
+	mDefPS = SceneManager::Get()->GetObj<PixelShader>("PS_PBRModel");
+	mDefVS = SceneManager::Get()->GetObj<VertexShader>("VS_PBRModel");
 }
 
 void PBRModel::LoadDefShader(const std::shared_ptr<VertexShader>& vsShader,
@@ -519,7 +519,7 @@ void PBRModel::WriteDefShader()
 	}
 
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD

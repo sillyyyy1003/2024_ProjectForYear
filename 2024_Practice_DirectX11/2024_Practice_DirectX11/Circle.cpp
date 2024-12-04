@@ -1,16 +1,18 @@
 #include "Circle.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Circle::Circle():Primitive(CIRCLE)
+Circle::Circle():Primitive(PrimitiveConfig::CIRCLE)
 {
 }
 
 void Circle::Update(float dt)
 {
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 void Circle::Draw(int texSlot)
@@ -24,21 +26,72 @@ void Circle::Draw(int texSlot)
 	mMesh->Draw();
 }
 
-void Circle::SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept
-{
-	Primitive::SetTexUV(_texUV);
-}
 
-void Circle::Init(const char* _fileName, int slices)
+void Circle::Init(const char* _fileName, int slices, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(slices);
 	CreateMaterial();
 	CreateTexture(_fileName);
 }
 
-void Circle::Init(const std::shared_ptr<Texture>& tex, int slices)
+void Circle::Init(const char* _fileName, int slices, int levels, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
+	CreateMesh(levels, slices);
+	CreateMaterial();
+	CreateTexture(_fileName);
+
+}
+
+void Circle::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMINT2 _UVSplit)
+{
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(slices);
+	CreateMaterial();
+	LoadTexture(tex);
+}
+
+void Circle::Init(const std::shared_ptr<Texture>& tex,int slices, int levels, DirectX::XMINT2 _UVSplit)
+{
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
+	CreateMesh(levels,slices);
 	CreateMaterial();
 	LoadTexture(tex);
 }
@@ -68,8 +121,8 @@ void Circle::CreateMesh(UINT slices)
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 
-		float u = (x / radius + 1.0f) * 0.5f; // Set X [-radius, radius] to [0, 1]
-		float v = (z / radius + 1.0f) * 0.5f; // Set Z [-radius, radius] to [0, 1]
+		float u = (x / (radius*mUvAnimation->GetSplit().x) + 1.0f) * 0.5f; // Set X [-radius, radius] to [0, 1]
+		float v = (z / (radius * mUvAnimation->GetSplit().y) + 1.0f) * 0.5f; // Set Z [-radius, radius] to [0, 1]
 
 		vtx.push_back({
 			Vector3(x, 0, z),
@@ -95,7 +148,7 @@ void Circle::CreateMesh(UINT slices)
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	mMesh = std::make_shared<Mesh>(desc);
+	mMesh = std::make_unique<Mesh>(desc);
 
 }
 
@@ -124,8 +177,8 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 			x = r * cosf(theta); // x 
 			z = r * sinf(theta); // z 
 
-			float u = (x / radius + 1.0f) * 0.5f;
-			float v = (z / radius + 1.0f) * 0.5f;
+			float u = (x / (radius*mUvAnimation->GetSplit().x) + 1.0f) * 0.5f;
+			float v = (z / (radius* mUvAnimation->GetSplit().y) + 1.0f) * 0.5f;
 
 			vtx.push_back({
 				Vector3(x, 0.0f, z),
@@ -188,7 +241,7 @@ void Circle::WriteDefShader()
 	}
 
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -212,7 +265,16 @@ void Circle::WriteDefShader()
 		mMaterial.material,
 	};
 
+	UVConstantBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+	//UV MATRIX 作成
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
 
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &cb);
 }

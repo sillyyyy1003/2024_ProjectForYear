@@ -20,6 +20,13 @@ cbuffer WVP : register(b0)
     float4x4 proj;
 }
 
+cbuffer UVMatrix : register(b1)
+{
+	float4x4 uv;
+	int isUseUV;
+	int dum1, dum2, dum3;
+}
+
 VS_OUT main (VS_IN vin)
 {
     VS_OUT vOut;
@@ -33,6 +40,19 @@ VS_OUT main (VS_IN vin)
     vOut.pos = mul(vOut.pos, proj);
 
     vOut.normal = mul(vin.normal, (float3x3) world);
-    vOut.tex = vin.tex;
+
+	if (isUseUV == 0)
+	{
+		vOut.tex = vin.tex;
+	}
+	else
+	{
+		float4 tex4;
+		tex4.xy = vin.tex;
+		tex4.z = 0;
+		tex4.w = 1;
+		vOut.tex = mul(tex4, uv).xy;
+	}
+
     return vOut;
 }

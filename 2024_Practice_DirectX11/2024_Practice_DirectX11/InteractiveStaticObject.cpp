@@ -1,7 +1,7 @@
 ﻿#include "InteractiveStaticObject.h"
 #include <memory>
 
-#include "GampApp.h"
+#include "GameApp.h"
 #include "GUI.h"
 #include "KInput.h"
 #include "Model.h"
@@ -42,7 +42,7 @@ void InteractiveStaticObject::InitPBRModel(std::shared_ptr<PBRModel> _model, con
 void InteractiveStaticObject::InitModel(const char* filePath, const char* _objName)
 {
 	mModel = std::make_unique<Model>();
-	mModel->Init(filePath);
+	mModel->Init(filePath,{1,1});
 	mObjectName = _objName;
 	isUsePBRModel = false;
 	InitCollider();
@@ -200,14 +200,13 @@ json InteractiveStaticObject::SaveData()
 	json data;
 	data["Position"] = { mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
 	data["Scale"] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
-
+	data["Rotation"] = { mModel->GetRotation().x,mModel->GetRotation().y,mModel->GetRotation().z };
 	return data;
 }
 
 void InteractiveStaticObject::LoadSaveData(json data, const char* objName)
 {
 	//Init Model
-	//std::string filePath = data[objName]["Filepath"].get<std::string>();
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
 	mModel->mTransform.SetPosition(pos);
 	//SetModelPosition(pos);
@@ -215,6 +214,9 @@ void InteractiveStaticObject::LoadSaveData(json data, const char* objName)
 	//Init Scale
 	Vector3 scale = Vector3(data[objName]["Scale"][0], data[objName]["Scale"][1], data[objName]["Scale"][2]);
 	SetModelScale(scale);
+
+	Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
+	SetModelRotation(rotation);
 
 	mObjectName = objName;
 
@@ -419,11 +421,13 @@ void InteractiveStaticObject::ClearModelStateChangeListener()
 
 void InteractiveStaticObject::OnStateNone()
 {
+	isClicked = false;
 	mEffect.rimIntensity = 0.0f;
 }
 
 void InteractiveStaticObject::OnStateHover()
 {
+	isClicked = false;
 	mEffect.rimIntensity = 1.0f;
 }
 

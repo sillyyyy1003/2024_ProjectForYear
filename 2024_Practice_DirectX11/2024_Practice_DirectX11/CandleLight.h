@@ -5,11 +5,14 @@
 class CandleLight :public PointLight
 {
 private:
-
+#ifdef _DEBUG
 	std::unique_ptr<Sphere> mDebugMesh;
+	
+#endif
 	bool isShaking = true;
-	Light::PointLight mCandleLight;		//
-	DirectX::XMFLOAT3 mCastShadowLightPos={0,1,0};	//CastLightPos
+	Light::PointLight mCandleLight;		//オブジェクトを照らす用
+	DirectX::XMFLOAT3 mCastShadowLightPos = { 0,1,0 };	//Cast Shadow用の
+	float mCastShadowHeight = 0.0f;
 public:
 
 	CandleLight();

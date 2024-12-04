@@ -32,12 +32,12 @@ public:
 
 	/// @brief オブジェクト実態の初期化
 	/// @param kind オブジェクトの形状
-	virtual void Init(PrimitiveKind kind);
+	virtual void Init(PrimitiveConfig::PrimitiveKind kind);
 
 	/// @brief 設定データからオブジェクトを初期化
 	/// @param kind オブジェクトの形状
 	/// @param filePath テクスチャファイルパス
-	virtual void Init(PrimitiveKind kind, const char* filePath);
+	virtual void Init(PrimitiveConfig::PrimitiveKind kind, const char* filePath);
 
 	/// @brief モデルの初期化(Mesh/Transform..)
 	/// @param filePath テクスチャファイルパス
@@ -56,8 +56,6 @@ public:
 	DirectX::XMFLOAT3 GetScale() const { return mModel->GetScale(); };
 	DirectX::XMFLOAT4 GetQuaternion() const { return mModel->GetQuaternion(); };
 	DirectX::XMFLOAT3 GetRotation()const { return mModel->GetRotation(); }
-
-	std::string GetFilePath() const { return mModel->GetFilePath(); };
 	const Material& GetMaterial() { return mModel->GetMaterial(); };
 
 	void SetScale(const DirectX::XMFLOAT3& scale) { mModel->SetScale(scale); };

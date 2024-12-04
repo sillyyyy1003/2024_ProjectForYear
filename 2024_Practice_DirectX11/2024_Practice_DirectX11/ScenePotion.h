@@ -1,6 +1,7 @@
 #pragma once
-#include "InteractiveStaticObject.h"
+#include "CandleLight.h"
 #include "SceneBase.h"
+#include "StaticObject.h"
 #include "Water.h"
 
 class ScenePotion :public SceneBase
@@ -12,9 +13,12 @@ class ScenePotion :public SceneBase
 	std::unique_ptr<Water> mWater;
 
 	//Pot
-	std::unique_ptr<InteractiveStaticObject> mPot;
+	std::unique_ptr<StaticObject> mPot;
+	//Table
+	std::unique_ptr<StaticObject> mTable;
 
-	
+	//PointLight;
+	std::unique_ptr<CandleLight> mCandleLight;
 public:
 	/// @brief データのロードと初期化
 	void Init();
@@ -25,5 +29,9 @@ public:
 	void Update(float dt);
 
 	void Draw();
+
+private:
+	void GameObjectUpdate(float dt);
+	void TriggerListener();
 };
 

@@ -1,5 +1,8 @@
 #include "UI_Primitive.h"
 
+#include "GameApp.h"
+#include "SceneManager.h"
+
 UI_Primitive::UI_Primitive(UIPrimitiveConfig::UI_PrimitiveKind kind)
 {
 	mKind = kind;
@@ -185,8 +188,8 @@ void UI_Primitive::LoadDefShader()
 	mDefPS = std::make_shared<PixelShader>();
 	mDefVS = std::make_shared<VertexShader>();
 
-	HR(mDefPS->LoadShaderFile("Assets/Shader/PS_DefaultUI.cso"));
-	HR(mDefVS->LoadShaderFile("Assets/Shader/VS_DefaultUI.cso"));
+	mDefPS = SceneManager::Get()->GetObj<PixelShader>("PS_DefaultUI");
+	mDefVS = SceneManager::Get()->GetObj<VertexShader>("VS_DefaultUI");
 
 }
 

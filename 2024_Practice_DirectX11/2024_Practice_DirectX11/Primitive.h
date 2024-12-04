@@ -2,22 +2,30 @@
 #include "SceneBase.h"
 #include "Transform.h"
 #include "Shader.h"
+#include "UVAnimation.h"
 
 /// <summary>
 /// メッシュの種類
 /// </summary>
-enum PrimitiveKind
+namespace PrimitiveConfig
 {
-	PRIMITIVE_DEFAULT,
-	CUBE,
-	CAPSULE,
-	SPHERE,
-	CYLINDER,
-	CYLINDER_ONECAP,
-	SQUARE,
-	CIRCLE,
-	MULTI,
-};
+	constexpr int DEFAULT_MESH_SLICES = 16;
+	enum PrimitiveKind
+	{
+		PRIMITIVE_DEFAULT,
+		CUBE,
+		CAPSULE,
+		SPHERE,
+		CYLINDER,
+		CYLINDER_ONECAP,
+		SQUARE,
+		CIRCLE,
+		MULTI,
+		PBR,
+	};
+
+
+}
 
 struct MaterialData
 {
@@ -47,20 +55,19 @@ class Primitive :public Component
 {
 
 protected:
+	PrimitiveConfig::PrimitiveKind mKind = PrimitiveConfig::PRIMITIVE_DEFAULT;
 
+	//Material
+	MaterialData mMaterial = {};
+	//SHADER
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
-
 	std::shared_ptr<VertexShader> mDefVS = nullptr;
 	std::shared_ptr<PixelShader> mDefPS = nullptr;
-
 	bool isDefShader = true;
-
-	PrimitiveKind mKind = PRIMITIVE_DEFAULT;
-	MaterialData mMaterial = {};
-
-	std::string mFilePath;
-
+	//UVAnimation
+	std::unique_ptr<UVAnimation> mUvAnimation = nullptr;
+	bool isUseUVAnimation = false;
 public:
 
 	/// @brief 大きさ・位置・回転などの情報
@@ -70,21 +77,27 @@ public:
 	std::vector<DWORD> mIndices;
 
 public:
-	Primitive(PrimitiveKind kind);
+	Primitive(PrimitiveConfig::PrimitiveKind kind);
 	virtual ~Primitive() override;
 
 	virtual void CreateMesh(UINT levels, UINT slices) {};
 	virtual void CreateMesh(UINT slices) {};
 
+	/// @brief Model
+	virtual void Init(const char* filePath){};
+	///@brief Cube
+	virtual void Init(const char* filePath,DirectX::XMINT2 _UVSplit) {};
+	///@brief Square, Circle
+	virtual void Init(const char* filePath, int slices, DirectX::XMINT2 _UVSplit) {};
+	///@brief Capsule, Cylinder, Sphere, Circle
+	virtual void Init(const char* filePath, int slices, int levels, DirectX::XMINT2 _UVSplit) {};
 
-	virtual void Init(const char* filePath = nullptr) {};
-	virtual void Init(const char* filePath, int slices) {};
-	virtual void Init(const char* filePath, int slices, int levels) {};
-	virtual void Init(const std::shared_ptr<Texture>& tex) {};
-	virtual void Init(const std::shared_ptr<Texture>& tex, int slices) {};
-	virtual void Init(const std::shared_ptr<Texture>& tex, int slices, int levels) {};
-
-
+	///@brief Cube
+	virtual void Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSplit) {};
+	///@brief Square, Circle
+	virtual void Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMINT2 _UVSplit) {};
+	///@brief Capsule, Cylinder, Sphere, Circle
+	virtual void Init(const std::shared_ptr<Texture>& tex, int slices, int levels, DirectX::XMINT2 _UVSplit) {};
 
 
 	virtual void CreateMaterial();
@@ -113,7 +126,7 @@ public:
 
 	virtual const DirectX::XMFLOAT3 GetPosition() noexcept { return mTransform.GetPosition(); };
 	virtual const DirectX::XMFLOAT4 GetQuaternion()noexcept { return mTransform.GetQuaternion(); };
-	virtual const DirectX::XMFLOAT3 GetRotation()noexcept { return mTransform.GetRotation(); };
+	virtual const DirectX::XMFLOAT3 GetRotation()noexcept { return mTransform.GetRotationInRadian(); };
 	virtual const DirectX::XMFLOAT3 GetScale()noexcept { return mTransform.GetScale(); };
 
 	virtual Material& GetMaterial() noexcept { return mMaterial.material; };
@@ -122,13 +135,6 @@ public:
 	virtual void SetAmbient(const DirectX::XMFLOAT4& _ambient) noexcept { mMaterial.material.ambient = _ambient; };
 	virtual	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse) noexcept { mMaterial.material.diffuse = _diffuse; };
 	virtual void LoadTexture(const std::shared_ptr<Texture>& tex);
-
-	/// @brief テクスチャのファイルパスを取得
-	const std::string GetFilePath() noexcept { return mFilePath; };
-	void SetFilePath(const char* filePath) noexcept { mFilePath = filePath; };
-
-	/// @brief For Sampler Wrap
-	virtual void SetTexUV(DirectX::XMFLOAT2 _texUV) noexcept {};
 
 	virtual void SetPixelShader(PixelShader* ps) noexcept;
 	virtual void SetVertexShader(VertexShader* vs) noexcept;
@@ -158,7 +164,7 @@ public:
 	virtual void SetVertices(std::vector<Vertex::VtxPosNormalTex> vertices) noexcept;
 	virtual void SetIndices(std::vector<DWORD> indices) noexcept;
 
-	virtual std::shared_ptr<Mesh> GetMesh() { return nullptr; };
+	virtual Mesh* GetMesh() const { return nullptr; };
 
 
 	//=====================================

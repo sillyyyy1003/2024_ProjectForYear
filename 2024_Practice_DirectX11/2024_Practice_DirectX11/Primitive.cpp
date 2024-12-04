@@ -1,6 +1,6 @@
 ﻿#include "Primitive.h"
 
-#include "GampApp.h"
+#include "GameApp.h"
 #include "KInput.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -13,7 +13,7 @@ enum DebugState
 	//todo:追加物体移动
 };
 
-Primitive::Primitive(PrimitiveKind kind) :mKind(kind)
+Primitive::Primitive(PrimitiveConfig::PrimitiveKind kind) :mKind(kind)
 {
 }
 
@@ -51,7 +51,6 @@ void Primitive::CreateTexture(const char* filePath)
 		mMaterial.tex = nullptr;
 		mMaterial.material.isTexEnable = false;
 	}
-	mFilePath = filePath;
 }
 
 
@@ -89,8 +88,8 @@ void Primitive::LoadDefShader()
 	mDefPS = std::make_shared<PixelShader>();
 	mDefVS = std::make_shared<VertexShader>();
 
-	mDefPS = GameApp::GetComponent<PixelShader>("PS_Primitives");
-	mDefVS = GameApp::GetComponent<VertexShader>("VS_Primitives");
+	mDefPS = SceneManager::Get()->GetObj<PixelShader>("PS_Primitives");
+	mDefVS = SceneManager::Get()->GetObj<VertexShader>("VS_Primitives");
 }
 
 void Primitive::LoadDefShader(const char* vsPath, const char* psPath)

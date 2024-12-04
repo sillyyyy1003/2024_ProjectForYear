@@ -1,7 +1,8 @@
 #include "MissionPaper.h"
 #include "DirLight.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "KInput.h"
+#include "RenderState.h"
 
 
 enum ObjectState
@@ -46,8 +47,12 @@ void MissionPaper::Update(float dt)
 
 void MissionPaper::Draw()
 {
-	mModel->GetDefPS()->WriteShader(2,&mEffect);
+	mModel->SwitchToDefShader();
+	mModel->GetDefPS()->WriteShader(2, &mEffect);
 	mModel->Draw();
+
+	//DrawOutline
+
 }
 
 void MissionPaper::SetPosition(DirectX::XMFLOAT3 pos)
@@ -60,6 +65,11 @@ void MissionPaper::SetScale(const DirectX::XMFLOAT2& scale)
 {
 	mModel->SetScale(scale);
 	NotifyModelStateChangeListener();
+}
+
+bool MissionPaper::GetClicked()
+{
+	return this->isClicked;
 }
 
 void MissionPaper::LoadDefShader(const std::shared_ptr<VertexShader>& mVS, const std::shared_ptr<PixelShader>& mPS)
@@ -153,6 +163,7 @@ void MissionPaper::PreUpdate(float dt)
 		{
 			mObjectState = static_cast<int>(ObjectState::STATE_NONE);
 		}
+	
 	}
 	break;
 	}
@@ -205,14 +216,20 @@ void MissionPaper::ClearModelStateChangeListener()
 
 void MissionPaper::OnStateNone()
 {
-	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+	//Reset Click
+	isClicked = false;
+
+	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
 	mModel->SetAmbient(ambient * 0.75f);
 	mEffect.rimIntensity = 0.0f;
 }
 
 void MissionPaper::OnStateHover()
 {
-	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+	//Reset Click
+	isClicked = false;
+
+	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
 	mModel->SetAmbient(ambient);
 	mEffect.rimIntensity = 0.4f;
 
@@ -222,7 +239,8 @@ void MissionPaper::OnStateClicked()
 {
 	// Output Trigger
 	isClicked = true;
-	Color ambient = GameApp::GetComponent<DirLight>("EnvironmentLight")->GetAmbient();
+
+	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
 	mModel->SetAmbient(ambient * 0.75f);
 	mEffect.rimIntensity = 0.4f;
 }

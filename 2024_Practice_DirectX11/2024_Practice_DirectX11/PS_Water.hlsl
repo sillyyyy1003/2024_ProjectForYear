@@ -61,8 +61,6 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	color = myTex.Sample(mySampler, pin.tex);
 	clip(color.a - 0.1f);
 
-
-	
 	float3 N = normalize(pin.normal);
 	float3 toEye = normalize(-cameraPos.xyz);
 
@@ -83,7 +81,7 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	for (int i = 0; i < MAX_NUM_POINT_LIGHT; i++)
 		diffuse.rgb += PointLightCal(pointLight[i], pin.worldPos.xyz, N, toEye);
 
-	float4 litColor = color * (ambient + diffuse * 2.0f);
+	float4 litColor = color * (ambient + diffuse * 2.0f) + spec;
 
     //アルファ値をマテリアルに計算
 	litColor.a = material.diffuse.a;

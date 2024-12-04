@@ -1,7 +1,7 @@
 ﻿#include "UI_Capsule.h"
 
 #include "DirLight.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -25,6 +25,7 @@ void UI_Capsule::Init(const std::shared_ptr<Texture>& tex, DirectX::XMFLOAT2 _sq
     mUvAnimation = std::make_unique<UVAnimation>();
     mUvAnimation->Init(_split);
     mSquareSize = _squareSize;
+    //Init mesh/material/Texture
     CreateMesh(slices);
     CreateMaterial();
     CreateTexture(tex);
@@ -34,13 +35,10 @@ void UI_Capsule::Init(const char* filePath, DirectX::XMFLOAT2 _squareSize, int s
 {
     //UV Animation を使うか
     if (_split.x == 1 && _split.y == 1)
-    {
         isUseUVAnimation = false;
-    }
     else
-    {
         isUseUVAnimation = true;
-    }
+    
     //UV Animationの初期化
     mUvAnimation = std::make_unique<UVAnimation>();
     mUvAnimation->Init(_split);
@@ -56,8 +54,6 @@ void UI_Capsule::Update()
     //Update size & pos
     UI_Primitive::Update();
 
-    //Render Update
-    WriteDefShader();
 }
 
 void UI_Capsule::Draw(int texSlot)
@@ -184,14 +180,8 @@ void UI_Capsule::WriteDefShader()
     WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
     WVP[2] = XMMatrixTranspose(WVP[2]);
 
-    struct UVBuffer
-    {
-        XMMATRIX uv;
-        int useUV;
-    };
-    UVBuffer uvBuffer;
+	UVConstantBuffer uvBuffer;
     uvBuffer.useUV = isUseUVAnimation;
-
     //UV MATRIX 作成
     if (isUseUVAnimation)
     {

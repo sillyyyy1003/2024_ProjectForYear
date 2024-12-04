@@ -15,8 +15,6 @@ class SceneLab :public SceneBase
 
 	//Texture List
 	PBRConfig::PBRTexList pbrTexList;
-
-
 	std::unordered_map<std::string, StaticObject*> staticObjList;
 
 	std::unique_ptr<InteractiveStaticObject> mPot;
@@ -25,18 +23,15 @@ class SceneLab :public SceneBase
 
 
 	std::unique_ptr<Square> mTable;
-
 	std::unique_ptr<Water> mWater;
 	std::unique_ptr<MissionPaper> mMissionPaper;
 
-	std::unique_ptr<Cube> mCube;
-	std::unique_ptr<Cylinder> mCylinder;
-
-	std::unique_ptr<Sphere> mLightBulb2;
-
-	//std::unique_ptr<PointLight> pointLight;
+	std::unique_ptr<StaticObject> mWall;
+	std::unique_ptr<StaticObject> mPaperOnTable;///todo:make this into a new class for 
 
 	std::unique_ptr<CandleLight> mCandleLight;
+
+	bool isSubScene = false;
 
 public:
 	/// @brief データのロードと初期化

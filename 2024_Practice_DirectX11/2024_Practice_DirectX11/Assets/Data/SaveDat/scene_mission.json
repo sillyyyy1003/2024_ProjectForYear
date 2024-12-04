@@ -1,17 +1,216 @@
 {
+    "Accept": {
+        "AnchorAlign": [
+            4
+        ],
+        "AnchorPosition": [
+            -330.0,
+            -300.0
+        ],
+        "ContainerSize": [
+            300.0,
+            100.0
+        ],
+        "Context": "ACCEPT",
+        "FontBlockWidth": [
+            300.0
+        ],
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": [
+            22.0
+        ],
+        "IsUseText": [
+            1
+        ],
+        "LineSpacing": [
+            0.0
+        ],
+        "Material": {
+            "Ambient": [
+                0.8500000238418579,
+                0.8500000238418579,
+                0.8500000238418579,
+                1.0
+            ],
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Specular": [
+                1.0,
+                0.5,
+                0.5,
+                0.20000000298023224
+            ]
+        },
+        "Padding": [
+            40.0,
+            40.0,
+            0.0,
+            40.0
+        ],
+        "Position": [
+            -330.0,
+            -300.0,
+            0.20000000298023224
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "TextAlign": [
+            1
+        ]
+    },
+    "MissionOwner": {
+        "ContainerSize": [
+            180.0,
+            180.0
+        ],
+        "IsUseText": [
+            0
+        ],
+        "Material": {
+            "Ambient": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Specular": [
+                1.0,
+                0.5,
+                0.5,
+                0.20000000298023224
+            ]
+        },
+        "Position": [
+            440.0,
+            400.0,
+            1.7999999523162842
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Reject": {
+        "AnchorAlign": [
+            4
+        ],
+        "AnchorPosition": [
+            330.0,
+            -300.0
+        ],
+        "ContainerSize": [
+            300.0,
+            100.0
+        ],
+        "Context": "REJECT",
+        "FontBlockWidth": [
+            300.0
+        ],
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": [
+            22.0
+        ],
+        "IsUseText": [
+            1
+        ],
+        "LineSpacing": [
+            0.0
+        ],
+        "Material": {
+            "Ambient": [
+                0.8500000238418579,
+                0.8500000238418579,
+                0.8500000238418579,
+                1.0
+            ],
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Specular": [
+                1.0,
+                0.5,
+                0.5,
+                0.20000000298023224
+            ]
+        },
+        "Padding": [
+            40.0,
+            40.0,
+            0.0,
+            40.0
+        ],
+        "Position": [
+            330.0,
+            -300.0,
+            0.20000000298023224
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "TextAlign": [
+            1
+        ]
+    },
     "Test": {
         "AnchorAlign": [
             1
         ],
         "AnchorPosition": [
-            -0.0,
+            0.0,
             405.0
         ],
         "ContainerSize": [
             1200.0,
             600.0
         ],
-        "Context": "Dear Player,\n  Hello! This is Witch Q.\n  I want you to make Red Potion for me.\n  I will give 200 gold as reward.\n  Here are ingredients.\n  Thanke you.",
+        "Context": "Dear Player,\n  Hello! This is Witch Q.\n  I want you to make Purple Potion for me.\n  I will give 200 gold as reward.\n  Here are ingredients.\n  Thanke you.",
         "FontBlockWidth": [
             1120.0
         ],
@@ -63,9 +262,9 @@
             40.0
         ],
         "Position": [
-            -0.0,
+            0.0,
             145.0,
-            0.8999999761581421
+            2.0
         ],
         "Rotation": [
             0.0,

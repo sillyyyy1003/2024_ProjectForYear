@@ -369,3 +369,17 @@ struct NormalConstantBuffer
 	//Material
 	Material mat = {};
 };
+
+struct UVConstantBuffer
+{
+	DirectX::XMMATRIX uv;
+	int useUV;
+	int dum1, dum2, dum3 = 0;
+};
+
+struct WVPConstantBuffer
+{
+	DirectX::XMFLOAT4X4 world;
+	DirectX::XMFLOAT4X4 view;
+	DirectX::XMFLOAT4X4 proj;
+};

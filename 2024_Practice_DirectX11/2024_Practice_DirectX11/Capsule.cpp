@@ -1,23 +1,43 @@
 #include "Capsule.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-Capsule::Capsule() :Primitive(CAPSULE)
+Capsule::Capsule() :Primitive(PrimitiveConfig::CAPSULE)
 {
 }
 
-void Capsule::Init(const char* filePath, int levels, int slices)
+void Capsule::Init(const char* filePath, int levels, int slices, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation ÇégÇ§Ç©
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+	
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(levels, slices,1);
 	CreateMaterial();
 	CreateTexture(filePath);
 }
 
-void Capsule::Init(const std::shared_ptr<Texture>& tex, int levels, int slices)
+void Capsule::Init(const std::shared_ptr<Texture>& tex, int levels, int slices, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation ÇégÇ§Ç©
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(levels, slices, 1);
 	CreateMaterial();
 	LoadTexture(tex);
@@ -25,7 +45,8 @@ void Capsule::Init(const std::shared_ptr<Texture>& tex, int levels, int slices)
 
 void Capsule::Update(float dt)
 {
-
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 void Capsule::Draw(int texSlot)
@@ -65,8 +86,8 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 			float x = radius * cosf(theta);
 			float z = radius * sinf(theta);
 
-			float u = theta / XM_2PI;
-			float v = 1.0f - static_cast<float>(i) / stacks;
+			float u = theta / (XM_2PI * mUvAnimation->GetSplit().x);
+			float v = 1.0f - static_cast<float>(i) / (stacks * mUvAnimation->GetSplit().y);
 
 			vtx.push_back({
 				Vector3(x, y, z),
@@ -103,7 +124,7 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 			vtx.push_back({
 				pos,
 				normal,
-				XMFLOAT2(theta / XM_2PI, phi / XM_PI)
+				XMFLOAT2(theta / (XM_2PI * mUvAnimation->GetSplit().x), phi / (XM_PI * mUvAnimation->GetSplit().y))
 				});
 		}
 	}
@@ -128,7 +149,7 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 			vtx.push_back({
 				pos,
 				normal,
-				XMFLOAT2(theta / XM_2PI, phi / XM_PI)
+				XMFLOAT2(theta / (XM_2PI * mUvAnimation->GetSplit().x), phi / (XM_PI * mUvAnimation->GetSplit().y))
 				});
 		}
 	}
@@ -230,7 +251,7 @@ void Capsule::WriteDefShader()
 		return;
 	}
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -244,19 +265,6 @@ void Capsule::WriteDefShader()
 
 	XMFLOAT4 eyePos = { firstCamera->GetPos().x,firstCamera->GetPos().y ,firstCamera->GetPos().z ,0.0f };
 
-	struct Light
-	{
-		XMFLOAT4 lightAmbient;
-		XMFLOAT4 lightDiffuse;
-		XMFLOAT4 lightDir;
-	};
-
-	Light light = {
-		dirLight->GetAmbient(),
-		dirLight->GetDiffuse(),
-		Vector4{dirLight->GetPosition().x,dirLight->GetPosition().y,dirLight->GetPosition().z,0},
-	};
-
 	NormalConstantBuffer cb = {
 
 			eyePos,
@@ -266,8 +274,17 @@ void Capsule::WriteDefShader()
 		mMaterial.material,
 	};
 
+	UVConstantBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+	//UV MATRIX çÏê¨
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
 
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &cb);
 }
 

@@ -1,5 +1,5 @@
 #include "UI_Button.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "KInput.h"
 #include "Sprite.h"
 
@@ -9,7 +9,7 @@ using namespace DirectX;
 enum ButtonState
 {
 	STATE_NONE,		// Default State
-	STATE_TOUCH,	// マウスがボタンに置く
+	STATE_HOVER,	// マウスがボタンに置く
 	STATE_TRIGGER,	// マウスがリリースされてる
 	STATE_PRESS,	// マウスが押したら
 
@@ -56,6 +56,12 @@ void UI_Button::Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const st
 	mContainer->InitUIStackContainer(primitiveKind);
 	mContainer->LoadBackgroundTex(bgTex, containerSize);
 	mContainer->LoadFontTexture(fontTex, charSize);
+
+	//Init StateColor
+	for (int i = 0; i < UIButton::STATE_MAX; i++)
+	{
+		mStateColor[i] = UIButton::DEFAULT_BUTTON_STATE_COLOR[i];
+	}
 }
 
 void UI_Button::Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex,
@@ -65,6 +71,15 @@ void UI_Button::Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const st
 	mContainer->InitUIStackContainer(primitiveKind);
 	mContainer->LoadBackgroundTex(bgTex, { 1,1 });
 	mContainer->LoadFontTexture(fontTex, { 1,1 });
+	for (int i = 0; i < UIButton::STATE_MAX; i++)
+	{
+		mStateColor[i] = UIButton::DEFAULT_BUTTON_STATE_COLOR[i];
+	}
+}
+
+void UI_Button::SetStateColor(DirectX::XMFLOAT4 color, UIButton::ButtonState state)
+{
+	mStateColor[state] = color;
 }
 
 void UI_Button::Update()
@@ -108,7 +123,7 @@ void UI_Button::PreUpdate()
 	}
 	else
 	{
-		mState = STATE_TOUCH;
+		mState = STATE_HOVER;
 		//クリックしたら
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
@@ -130,13 +145,13 @@ void UI_Button::GameUpdate()
 	{
 	default:
 	case STATE_NONE:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(Color(0.85f, 0.85f, 0.85f, 1.0f));
+		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_NONE]);
 		break;
 	case STATE_PRESS:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(Color(1.f, 0.4f, 0.2f, 1.0f));
+		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_PRESS]);
 		break;
-	case STATE_TOUCH:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(Color(1.f, 1.f, 1.f, 1.0f));
+	case STATE_HOVER:
+		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_HOVER]);
 		break;
 	}
 

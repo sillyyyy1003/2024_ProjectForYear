@@ -1,7 +1,25 @@
 #pragma once
 #include "UIStackContainer.h"
 #include "UI_Primitive.h"
-#include "UI_Square.h"
+
+
+namespace UIButton
+{
+	enum ButtonState
+	{
+		STATE_NONE,
+		STATE_HOVER,
+		STATE_PRESS,
+		STATE_MAX,
+	};
+
+	constexpr DirectX::XMFLOAT4 DEFAULT_BUTTON_STATE_COLOR[STATE_MAX] = {
+		{0.85f, 0.85f, 0.85f, 1.0f},
+		{1.f, 1.f, 1.f, 1.0f},
+		{1.f, 0.0f, 0.0f, 1.0f},
+	};
+	
+}
 
 
 class UI_Button :public UIComponent
@@ -11,6 +29,8 @@ private:
 	// 背景
 	std::unique_ptr<UIStackContainer> mContainer = nullptr;
 	int mState = 0;
+
+	DirectX::XMFLOAT4 mStateColor[UIButton::STATE_MAX]={};
 
 public:
 
@@ -22,6 +42,9 @@ public:
 	void Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex, DirectX::XMFLOAT2 containerSize, const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize);
 
 	void Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex, const std::shared_ptr<Texture>& fontTex);
+
+	void SetStateColor(DirectX::XMFLOAT4 color, UIButton::ButtonState state);
+
 
 
 	void Update();
@@ -38,7 +61,7 @@ public:
 	void LoadSaveData(json data, const char* objName);
 	json SaveData(const char* objName);
 
-
+	void SetObjName(const char* objName) { mContainer->SetObjName(objName); };
 protected:
 	/// @brief マウスの入力処理を行う
 	void PreUpdate();

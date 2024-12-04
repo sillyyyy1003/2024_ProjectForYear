@@ -76,9 +76,11 @@ public:
     json SaveData();
     void LoadSaveData(json data, const char* objName);
 
+    void LockCamera();
 private:
     void UpdateState();
     void UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt);
+
 
 };
 

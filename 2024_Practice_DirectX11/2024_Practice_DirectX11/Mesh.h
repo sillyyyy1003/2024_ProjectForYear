@@ -2,6 +2,7 @@
 #include "D3DApp.h"
 #include <wrl/client.h>
 
+//todo:this doesn't support draw instanced. Need fixing
 /// @brief Šî’ê 
 class Mesh
 {

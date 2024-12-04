@@ -15,25 +15,26 @@ public:
 	/// @param filePath 
 	/// @param slices ‚’¼•ªŠ„”
 	/// @param stacks …•½•ªŠ„”
-	void Init(const char* filePath, int slices = 64, int stacks = 64);
+	///	@param _UVSplit UVAnimation
+	void Init(const char* filePath, int slices = 64, int stacks = 64, DirectX::XMINT2 _UVSplit = { 1,1 })override;
 
 	/// @brief Create square with existing;
 	///	@param tex
 	/// @param slices ‚’¼•ªŠ„”
 	/// @param stacks …•½•ªŠ„”
-	void Init(const std::shared_ptr<Texture>& tex, int slices = 64, int stacks = 64);
+	///	@param _UVSplit UVAnimation
+	void Init(const std::shared_ptr<Texture>& tex, int slices = 64, int stacks = 64,DirectX::XMINT2 _UVSplit = { 1,1 })override;
 
-
-	void Update(float dt);
-	void Draw(int texSlot = 0);
+	void Draw(int texSlot = 0) override;
+	void Update(float dt) override;
 
 private:
 
 	/// @brief ‰~’ŒƒƒbƒVƒ…ì¬
 	/// @param slices ‚’¼•ªŠ„”
 	/// @param stacks …•½•ªŠ„”
-	void CreateMesh(UINT slices, UINT stacks);
+	void CreateMesh(UINT slices, UINT stacks)override;
 
-	void WriteDefShader();
+	void WriteDefShader() override;
 };
 

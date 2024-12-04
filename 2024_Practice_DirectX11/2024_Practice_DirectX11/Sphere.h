@@ -20,16 +20,14 @@ public:
 	/// @param filePath 
 	///	@param levels 球体垂直分割数
 	///	@param slices 球体・シリンダー水平分割数
-	void Init(const char* filePath, int levels = 64, int slices = 64)override;
-
+	void Init(const char* filePath, int levels = 64, int slices = 64, DirectX::XMINT2 _UVSplit = { 1,1 }) override;
 	/// @brief 
 	/// @param tex 
 	///	@param levels 球体垂直分割数
 	///	@param slices 球体・シリンダー水平分割数
-	void Init(const std::shared_ptr<Texture>& tex, int levels = 64, int slices = 64) override;
+	void Init(const std::shared_ptr<Texture>& tex, int levels = 64, int slices = 64, DirectX::XMINT2 _UVSplit = { 1,1 }) override;
 
-
-	void Update(float dt)override;
+	void Update(float dt) override;
 	void Draw(int texSlot = 0)override;
 
 	void WriteDefShader()override;

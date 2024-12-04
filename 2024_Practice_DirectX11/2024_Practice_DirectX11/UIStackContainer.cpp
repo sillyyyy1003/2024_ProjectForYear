@@ -1,8 +1,9 @@
 #include "UIStackContainer.h"
 #include <memory>
-
 #include "GUI.h"
 #include "UI_Capsule.h"
+#include "UI_Font.h"
+
 
 UIStackContainer::UIStackContainer()
 {
@@ -21,6 +22,7 @@ void UIStackContainer::InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind 
 		mUiSet.mBackGround = std::make_unique<UI_Capsule>();
 		break;
 	}
+
 }
 
 void UIStackContainer::LoadBackgroundTex(const char* filePath, DirectX::XMFLOAT2 size)
@@ -29,14 +31,14 @@ void UIStackContainer::LoadBackgroundTex(const char* filePath, DirectX::XMFLOAT2
 	{
 	case UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE:
 		mUiSet.mBackGround->Init(filePath, size);
-		SetContainerSize(1);
+		SetContainerSize(1.0f);
 		break;
 	case UIPrimitiveConfig::UI_PrimitiveKind::SQUARE:
 		mUiSet.mBackGround->Init(filePath);
 		SetContainerSize(size);
 		break;
 	}
-
+	mUIContainerSize = size;
 	mUiSet.mBackGround->LoadDefShader();
 }
 
@@ -54,14 +56,15 @@ void UIStackContainer::LoadBackgroundTex(const std::shared_ptr<Texture>& backgro
 		SetContainerSize(size);
 		break;
 	}
-	mUiSet.mBackGround->LoadDefShader();
+	
 	mUIContainerSize = size;
+	mUiSet.mBackGround->LoadDefShader();
 }
 
 
 void UIStackContainer::LoadFontTexture(const char* filePath,DirectX::XMFLOAT2 fontSize)
 {
-	mUiSet.mText = std::make_unique<UIFont>();
+	mUiSet.mText = std::make_unique<UI_Font>();
 	mUiSet.mText->Init(filePath, fontSize);
 	isUseText = true;
 }
@@ -74,7 +77,7 @@ void UIStackContainer::LoadFontTexture(const std::shared_ptr<Texture>& fontTex, 
 		return;
 	}
 
-	mUiSet.mText = std::make_unique<UIFont>();
+	mUiSet.mText = std::make_unique<UI_Font>();
 	mUiSet.mText->Init(fontTex,fontSize);
 	isUseText = true;
 }
@@ -82,7 +85,6 @@ void UIStackContainer::LoadFontTexture(const std::shared_ptr<Texture>& fontTex, 
 void UIStackContainer::Update()
 {
 	DebugFunction();
-
 	if(isUseText)
 	{
 		UITextOption::AnchorAlign prevAlign = mUiSet.mText->GetAnchorAlign();
@@ -91,8 +93,8 @@ void UIStackContainer::Update()
 			NotifyWordBoxChangeListener();
 	}
 
-
 	mUiSet.mBackGround->Update();
+
 	UpdateContainerSize();
 	UpdateContainerPosition();
 	UpdateWordBox();
@@ -267,8 +269,8 @@ void UIStackContainer::DebugFunction()
 			ImGui::Text("AnchorPos");
 			GUI::ShowFloat3(mUiSet.mText->GetAnchorPos());
 
-
 			ImGui::InputTextMultiline("Input your Text", mInputText, IM_ARRAYSIZE(mInputText));
+
 
 			if (ImGui::Button("UpdateString"))
 			{
@@ -277,7 +279,24 @@ void UIStackContainer::DebugFunction()
 
 			mUiSet.mText->DebugFunction();
 		}
-		
+
+		ImGui::InputText("Input template Name", mTemplateName, IM_ARRAYSIZE(mTemplateName));
+
+		if(ImGui::Button("Save the template"))
+		{
+			json data;
+			data[mTemplateName] = SaveData(mTemplateName);
+			std::ofstream file("Assets/Data/SaveDat/UITemplate/UITemplate.json");
+			if (file.is_open())
+			{
+				file << data.dump(4);
+				file.close();
+			}
+			else
+			{
+				DebugLog::Log("Failed to open jsonFile for writing.");
+			}
+		}
 
 	}
 	ImGui::End();

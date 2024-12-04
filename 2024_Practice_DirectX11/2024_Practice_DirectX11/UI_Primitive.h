@@ -87,13 +87,21 @@ public:
 	/// @param _split UVAnimation Split
 	virtual void Init(const std::shared_ptr<Texture>& tex, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
 
+	/// @brief Virtual Init Function for roundSquare
+	/// @param pTex Texture
+	///	@param _squareSize x:InnerSquare Height y:InnerSquare width
+	///	@param radius ‰~Šp”¼Œa
+	/// @param slices Slices 
+	/// @param _UVSplit UVAnimation Split
+	virtual void Init(const std::shared_ptr<Texture>& pTex, DirectX::XMFLOAT2 _squareSize, float radius, int slices, DirectX::XMINT2 _UVSplit){};
 
+	/*ˆø—p??Test
 	virtual void Init(const std::shared_ptr<Texture>* tex, int slices = 0, DirectX::XMINT2 _split = { 1,1 }) {};
 	virtual void Init(const std::shared_ptr<Texture>* tex, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
-	
+	*/
+
 	virtual void CreateMesh(){};
 	virtual void CreateMesh(int slices){};
-	virtual void CreateMesh(int slices, int _noiseSeed){};
 
 	virtual void CreateMaterial();
 	virtual void CreateTexture(const char* filePath);
@@ -123,7 +131,7 @@ public:
 	virtual DirectX::XMFLOAT3 GetPosition()const { return mTransform.GetPosition(); }
 	virtual DirectX::XMFLOAT3 GetScale()const { return mTransform.GetScale(); }
 	virtual DirectX::XMFLOAT4 GetQuaternion() const { return mTransform.GetQuaternion(); };
-	virtual DirectX::XMFLOAT3 GetRotation()const { return mTransform.GetRotation(); };
+	virtual DirectX::XMFLOAT3 GetRotation()const { return mTransform.GetRotationInRadian(); };
 	/// @brief return UI width/Height
 	virtual DirectX::XMFLOAT2 GetUIScale();
 	virtual DirectX::XMFLOAT2 GetUIPosition();

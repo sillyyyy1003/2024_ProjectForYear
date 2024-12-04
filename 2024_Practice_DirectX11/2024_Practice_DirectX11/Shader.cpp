@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "DebugLog.h"
 #include "D3DUtil.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 Shader::Shader(ShaderKind kind) :mShader(kind)

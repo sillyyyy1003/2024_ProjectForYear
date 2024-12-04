@@ -5,7 +5,7 @@
 
 class Mesh;
 
-/// @brief 基本形状の描画　TEX/Material情報を含まれない
+///todo: Change as effect base!!!!!
 class Geometry
 {
 private:

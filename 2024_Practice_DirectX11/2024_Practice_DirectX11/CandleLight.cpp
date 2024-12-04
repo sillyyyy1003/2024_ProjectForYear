@@ -1,6 +1,6 @@
 ﻿#include "CandleLight.h"
 
-#include "GampApp.h"
+#include "GameApp.h"
 
 CandleLight::CandleLight()
 {
@@ -54,6 +54,8 @@ void CandleLight::Update(float dt)
 
 		//範囲設定
 		ImGui::SliderFloat("Range", &mRange, 0, 40.f);
+
+		ImGui::InputFloat("CastShadowHeight", &mCastShadowHeight);
 	}
 
 	ImGui::End();
@@ -77,16 +79,16 @@ void CandleLight::CandleLightShaking(float dt)
 
     // 动态调整亮度
     float baseIntensity = GetAttenuation().x;
-    float intensityFlicker = GameApp::GetNoise().GetNoise(time, 4.0f) * 0.25f; // 添加轻微变化
+    float intensityFlicker = GameApp::GetNoise().GetNoise(time, 4.0f) * 0.15f; // 添加轻微变化
   
     mCandleLight.ambient = GetAmbient();
     mCandleLight.diffuse = GetDiffuse();
     mCandleLight.position= basePos + Vector3(flickerX, 0, flickerZ);
-    mCandleLight.range = baseRange + GameApp::GetNoise().GetNoise(time, 3.0f) * 2.f;
+    mCandleLight.range = baseRange + GameApp::GetNoise().GetNoise(time, 3.0f) * 1.f;
     mCandleLight.attenuation = { baseIntensity + intensityFlicker, 0, 0 };
     mCandleLight.isEnable = true;
     mCastShadowLightPos = mCandleLight.position;
-    mCastShadowLightPos.y = mCandleLight.position.y + 6.f;
+    mCastShadowLightPos.y = mCandleLight.position.y + mCastShadowHeight;
 
 
     mDebugMesh->SetPosition(mCandleLight.position);

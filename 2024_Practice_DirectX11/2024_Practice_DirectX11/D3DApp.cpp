@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "DebugLog.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "KInput.h"
 #include "RenderState.h"
 

@@ -1,0 +1,79 @@
+{
+    "": {
+        "AnchorAlign": [
+            0
+        ],
+        "AnchorPosition": [
+            0.0,
+            0.0
+        ],
+        "ContainerSize": [
+            300.0,
+            50.0
+        ],
+        "Context": "",
+        "FontBlockWidth": [
+            300.0
+        ],
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "FontSize": [
+            1.0
+        ],
+        "IsUseText": [
+            1
+        ],
+        "LineSpacing": [
+            0.0
+        ],
+        "Material": {
+            "Ambient": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Specular": [
+                1.0,
+                0.5,
+                0.5,
+                0.20000000298023224
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            0.0,
+            0.8999999761581421
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "TextAlign": [
+            0
+        ]
+    }
+}

@@ -1,31 +1,47 @@
 #include "Cylinder.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-Cylinder::Cylinder() :Primitive(CYLINDER)
+Cylinder::Cylinder() :Primitive(PrimitiveConfig::CYLINDER)
 {
 }
 
-void Cylinder::Init(const char* filePath, int slices, int stacks)
+void Cylinder::Init(const char* filePath, int slices, int stacks, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation ÇégÇ§Ç©
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(slices, stacks);
 	CreateMaterial();
 	CreateTexture(filePath);
 
 }
 
-void Cylinder::Init(const std::shared_ptr<Texture>& tex, int slices, int stacks)
+void Cylinder::Init(const std::shared_ptr<Texture>& tex, int slices, int stacks, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation ÇégÇ§Ç©
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV AnimationÇÃèâä˙âª
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh(slices, stacks);
 	CreateMaterial();
 	LoadTexture(tex);
-}
-
-void Cylinder::Update(float dt)
-{
 }
 
 void Cylinder::Draw(int texSlot)
@@ -39,6 +55,12 @@ void Cylinder::Draw(int texSlot)
 		mPS->SetTexture(texSlot, mMaterial.tex.get());
 
 	mMesh->Draw();
+}
+
+void Cylinder::Update(float dt)
+{
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 void Cylinder::CreateMesh(UINT slices, UINT stacks)
@@ -66,8 +88,8 @@ void Cylinder::CreateMesh(UINT slices, UINT stacks)
 			float x = radius * cosf(theta);
 			float z = radius * sinf(theta);
 
-			float u = theta / XM_2PI;
-			float v = 1.0f - (float)i / stacks;
+			float u = theta / (XM_2PI * mUvAnimation->GetSplit().x);
+			float v = 1.0f - (float)i / (stacks * mUvAnimation->GetSplit().y);
 
 			vtx.push_back({
 				Vector3(x, y, z),
@@ -87,8 +109,8 @@ void Cylinder::CreateMesh(UINT slices, UINT stacks)
 	for (UINT i = 0; i <= slices; i++)
 	{
 		theta = i * per_theta;
-		float u = cosf(theta) * radius / height + 0.5f;
-		float v = sinf(theta) * radius / height + 0.5f;
+		float u = cosf(theta) * radius / (height * mUvAnimation->GetSplit().x) + 0.5f;
+		float v = sinf(theta) * radius / (height* mUvAnimation->GetSplit().y) + 0.5f;
 
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
@@ -110,8 +132,8 @@ void Cylinder::CreateMesh(UINT slices, UINT stacks)
 	for (UINT i = 0; i <= slices; i++)
 	{
 		theta = i * per_theta;
-		float u = cosf(theta) * radius / height + 0.5f;
-		float v = sinf(theta) * radius / height + 0.5f;
+		float u = cosf(theta) * radius / (height * mUvAnimation->GetSplit().x) + 0.5f;
+		float v = sinf(theta) * radius / (height * mUvAnimation->GetSplit().y) + 0.5f;
 		float x = radius * cosf(theta);
 		float z = radius * sinf(theta);
 		vtx.push_back({
@@ -176,7 +198,7 @@ void Cylinder::WriteDefShader()
 	}
 
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
@@ -201,6 +223,16 @@ void Cylinder::WriteDefShader()
 	};
 
 
+	UVConstantBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+	//UV MATRIX çÏê¨
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
+
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &cb);
 }

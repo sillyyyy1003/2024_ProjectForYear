@@ -1,7 +1,7 @@
 #include "Collider.h"
 #include "Cube.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 

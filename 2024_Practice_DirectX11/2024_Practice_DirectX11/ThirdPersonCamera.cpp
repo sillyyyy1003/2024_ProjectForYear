@@ -49,7 +49,7 @@ float ThirdPersonCamera::GetDistance() const
 
 void ThirdPersonCamera::RotateX(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     rotation.x += rad;
     if (rotation.x < 0.0f)
         rotation.x = 0.0f;
@@ -63,7 +63,7 @@ void ThirdPersonCamera::RotateX(float rad)
 
 void ThirdPersonCamera::RotateY(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     rotation.y = XMScalarModAngle(rotation.y + rad);
 
     mTransform.SetRotationInRadian(rotation);
@@ -86,7 +86,7 @@ void ThirdPersonCamera::Approach(float dist)
 
 void ThirdPersonCamera::SetRotationX(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     // Limit the angel to (0~pi/3)
     rotation.x = rad;
     if (rotation.x < 0.0f)
@@ -101,7 +101,7 @@ void ThirdPersonCamera::SetRotationX(float rad)
 
 void ThirdPersonCamera::SetRotationY(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     rotation.y = XMScalarModAngle(rad);
     mTransform.SetRotationInRadian(rotation);
     mTransform.SetPosition(mTarget);

@@ -27,7 +27,7 @@ void FirstPersonCamera::Update(float dt)
         GUI::ShowFloat3(this->GetPos());
 
         ImGui::Text("Rotation");
-        GUI::ShowFloat3(mTransform.GetRotation());
+        GUI::ShowFloat3(mTransform.GetRotationInRadian());
 
         ImGui::InputFloat("MoveSpeed", &mMoveSpeed);
 
@@ -105,14 +105,14 @@ void FirstPersonCamera::MoveForward(float d)
 
 void FirstPersonCamera::LookDown()
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
 	rotation.x = -XM_PI / 2;
     mTransform.SetRotationInRadian(rotation);
 }
 
 void FirstPersonCamera::Pitch(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     // LIMIT ROTATE DEGREE TO ±75°
     rotation.x += rad;
     if (rotation.x > XM_PI * 75 / 18)
@@ -125,7 +125,7 @@ void FirstPersonCamera::Pitch(float rad)
 
 void FirstPersonCamera::RotateY(float rad)
 {
-    XMFLOAT3 rotation = mTransform.GetRotation();
+    XMFLOAT3 rotation = mTransform.GetRotationInRadian();
     rotation.y = XMScalarModAngle(rotation.y + rad);
     mTransform.SetRotationInRadian(rotation);
 }
@@ -139,7 +139,7 @@ json FirstPersonCamera::SaveData()
 {
     json data;
     data["Position"]={mTransform.GetPosition().x,mTransform.GetPosition().y,mTransform.GetPosition().z};
-    data["Rotation"] = { mTransform.GetRotation().x,mTransform.GetRotation().y,mTransform.GetRotation().z };
+    data["Rotation"] = { mTransform.GetRotationInRadian().x,mTransform.GetRotationInRadian().y,mTransform.GetRotationInRadian().z };
 
 	return data;
 }
@@ -153,6 +153,12 @@ void FirstPersonCamera::LoadSaveData(json data, const char* objName)
     Vector3 rotation = Vector3(data[objName]["Rotation"][0], data[objName]["Rotation"][1], data[objName]["Rotation"][2]);
     mTransform.SetRotationInDegree(rotation);
 
+}
+
+void FirstPersonCamera::LockCamera()
+{
+    isLockAngle = true;
+    isLockPos = true;
 }
 
 void FirstPersonCamera::UpdateState()

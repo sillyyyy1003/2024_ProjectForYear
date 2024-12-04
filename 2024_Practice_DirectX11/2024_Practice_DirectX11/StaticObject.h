@@ -5,24 +5,36 @@
 //This Object can't be interacted only for display
 class StaticObject :public Component
 {
-	std::shared_ptr<Primitive> mModel = nullptr;
+#ifdef _DEBUG
+	float rot[3] = {};
+#endif
+	std::unique_ptr<Primitive> mModel = nullptr;
 	std::string mObjectName;	//オブジェクト名
 
 public:
 	StaticObject();
 	~StaticObject() override = default;
 
-	/// @brief 
-	/// @param filePath
+	/// @brief PBRModelの初期化
+	/// @param filePath 3Dモデルのファルパス
 	///	@param _objName
-	void Init(const char* filePath, const char* _objName);
+	void InitPBR(const char* filePath, const char* _objName);
+
+	/// @brief 一般のモデルの初期化
+	/// @param filePath テクスチャのファイルパス
+	/// @param _objName 
+	/// @param _kind モデルの種類
+	///	@param _UVSplit 
+	void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
+
+	void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
+
 
 	void LoadTex(PBRConfig::PBRTexList list);
 	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 	void LoadShaderFile(const char* vsFile, const char* psFile);
 
-	void Init(std::shared_ptr<PBRModel> _model, const char* _objName);
-
+	void SetMaterial(const Material& mat) { mModel->SetMaterial(mat); };
 
 	/// @brief 
 	/// @param dt delta time
@@ -30,15 +42,10 @@ public:
 
 	void Draw();
 
-	void LoadSaveData(json data, const char* objName);
 	void LoadSaveData(json data);
 	json SaveData();
 
 	std::string GetObjectName() { return mObjectName; };
-
-	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
-	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
-	DirectX::XMFLOAT3 GetRotation() { return mModel->GetRotation(); };
 
 	void SetVertexShader(VertexShader* vs) { mModel->SetVertexShader(vs); };
 	void SetPixelShader(PixelShader* ps) { mModel->SetPixelShader(ps); };
@@ -49,9 +56,19 @@ public:
 	void LoadNormalMapTex(std::shared_ptr<Texture> tex) { mModel->LoadNormalMapTex(tex); };
 	void LoadMetallicMapTex(std::shared_ptr<Texture> tex) { mModel->LoadMetallicMapTex(tex); };
 
-	const Transform& GetTransform() const { return mModel->mTransform; };
+	const Transform& GetTransform(){ return mModel->mTransform; };
 
 	PixelShader* GetDefPS() { return this->mModel->GetDefPS(); };
 	VertexShader* GetDefVS() { return this->mModel->GetDefVS(); };
+	
+
+	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
+	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
+	DirectX::XMFLOAT3 GetRotation() { return mModel->GetRotation(); };
+
+	void SetPosition(DirectX::XMFLOAT3 pos) { mModel->SetPosition(pos); };
+	void SetRotation(DirectX::XMFLOAT3 rot) { mModel->SetRotation(rot); };
+	void SetScale(DirectX::XMFLOAT3 scale) { mModel->SetScale(scale); };
+
 };
 

@@ -1,28 +1,20 @@
 ﻿#include <nlohmann/json.hpp>
 #include <fstream>
 #include "SceneTitle.h"
-
 #include <memory>
-
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 #include "Model.h"
 #include "PBRModel.h"
-#include "UIFont.h"
-#include "SceneGame.h"
+#include "UI_Font.h"
 #include "SceneManager.h"
-using json = nlohmann::json;
 
+
+using json = nlohmann::json;
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-enum SceneList
-{
-	SCENE_NONE = 0 ,
-	SCENE_MAIN,
-	SCENE_OPTION,
-	EXIT,
-};
+
 
 void SceneTitle::Init()
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "SceneBase.h"
-#include "UIFont.h"
+#include "UI_Font.h"
 
 namespace UIContainerConfig
 {
@@ -20,11 +20,12 @@ private:
 
 #ifdef _DEBUG
 	char mInputText[UITextOption::defaultMaxChar] = "";
+	char mTemplateName[32] = "";
 #endif
 
 	struct UISet
 	{
-		std::unique_ptr<UIFont> mText;
+		std::unique_ptr<UI_Font> mText;
 		std::unique_ptr<UI_Primitive> mBackGround;
 	};
 
@@ -33,6 +34,7 @@ private:
 
 	bool isWordBoxChange = false;
 	bool isWordAdaptive = false;
+
 #ifdef _DEBUG
 	std::string mObjName;
 #endif
@@ -86,7 +88,6 @@ public:
 	/// @brief Set All Padding
 	/// @param param 
 	void SetPadding(float param);
-
 	void SetPadding(const float* param);
 
 	/// @brief テクスチャなしの時の色設定
@@ -103,8 +104,12 @@ public:
 	json SaveData(const char* objName);
 	void LoadSaveData(json data, const char* objName);
 	const DirectX::XMFLOAT2& GetContainerSize() const { return mUIContainerSize; };
-
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; };
+
+#ifdef _DEBUG
+	void SetObjName(const char* name) { mObjName = name; };
+#endif
+
 protected:
 
 	void NotifyWordBoxChangeListener();

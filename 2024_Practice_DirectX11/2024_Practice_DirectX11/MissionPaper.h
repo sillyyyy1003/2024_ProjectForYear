@@ -49,7 +49,7 @@ public:
 	void SetPosition(DirectX::XMFLOAT3 pos);
 	void SetScale(const DirectX::XMFLOAT2& scale);
 
-	bool GetClicked() { return this->isClicked; };
+	bool GetClicked();;
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& pVS,const std::shared_ptr<PixelShader>& mPS);
 protected:

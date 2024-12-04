@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include "UI_Primitive.h"
 
 class UI_RoundSquare:public UI_Primitive
 {
 protected:
 	std::unique_ptr<Mesh> mMesh = nullptr;
-	float mRoundRadius;	//‰~Šp‚Ì”¼Œa
+	float mRoundRadius;	//å††è§’ã®åŠå¾„
 	/// @brief
 	/// mSquareSize.x
-	/// mSquareSize.y ’†S‚É‚ ‚élŠpŒ`‚ÌƒTƒCƒY
+	/// mSquareSize.y ä¸­å¿ƒã«ã‚ã‚‹å››è§’å½¢ã®ã‚µã‚¤ã‚º
 	DirectX::XMFLOAT2 mSquareSize;
 public:
 	UI_RoundSquare();
@@ -17,10 +17,10 @@ public:
 	void Init(const std::shared_ptr<Texture>& pTex, DirectX::XMFLOAT2 _squareSize, float radius, int slices, DirectX::XMINT2 _UVSplit);
 
 	void Update() override;
-	void Draw(int texSlot) override;
+	void Draw(int texSlot=0) override;
 
 protected:
-	void CreateMesh() override;
+	void CreateMesh(int slices) override;
 	void WriteDefShader() override;
 };
 

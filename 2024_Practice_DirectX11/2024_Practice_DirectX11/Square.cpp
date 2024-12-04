@@ -2,13 +2,13 @@
 #include "D3DUtil.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
-#include "GampApp.h"
+#include "GameApp.h"
 
 using namespace DirectX;
 using namespace SimpleMath;
 
 
-Square::Square() :Primitive(SQUARE)
+Square::Square() :Primitive(PrimitiveConfig::SQUARE)
 {
 
 }
@@ -19,23 +19,53 @@ void Square::SetScale(const DirectX::XMFLOAT2& scale)  noexcept
 }
 
 
-void Square::Init(const char* _fileName)
+void Square::Init(const char* _fileName, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh();
 	CreateMaterial();
 	CreateTexture(_fileName);
 }
 
-void Square::Init(const std::shared_ptr<Texture>& tex)
+void Square::Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	CreateMesh();
 	CreateMaterial();
 	LoadTexture(tex);
 }
 
 
-void Square::Init(const char* _fileName, int slices)
+void Square::Init(const char* _fileName, int slices,  DirectX::XMINT2 _UVSplit) 
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	if (slices)
 		CreateMesh(slices);
 	else
@@ -45,8 +75,18 @@ void Square::Init(const char* _fileName, int slices)
 	CreateTexture(_fileName);
 }
 
-void Square::Init(const std::shared_ptr<Texture>& tex, int slices)
+void Square::Init(const std::shared_ptr<Texture>& tex, int slices,DirectX::XMINT2 _UVSplit)
 {
+	//UV Animation を使うか
+	if (_UVSplit.x == 1 && _UVSplit.y == 1)
+		isUseUVAnimation = false;
+	else
+		isUseUVAnimation = true;
+
+	//UV Animationの初期化
+	mUvAnimation = std::make_unique<UVAnimation>();
+	mUvAnimation->Init(_UVSplit);
+
 	if (slices)
 		CreateMesh(slices);
 	else
@@ -58,7 +98,8 @@ void Square::Init(const std::shared_ptr<Texture>& tex, int slices)
 
 void Square::Update(float dt)
 {
-
+	if (!isUseUVAnimation) { return; }
+	mUvAnimation->UpdateUV();
 }
 
 void Square::Draw(int texSlot)
@@ -94,9 +135,9 @@ void Square::CreateMesh()
 	vtx = {
 
 		{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
-		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(1.0,0.f)},
-		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(1.0,1.0)},
-		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,1.0)},
+		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f/mUvAnimation->GetSplit().x,0.f)},
+		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f / mUvAnimation->GetSplit().x,1.0f / mUvAnimation->GetSplit().y)},
+		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,1.0f / mUvAnimation->GetSplit().y)},
 
 	};
 	
@@ -135,8 +176,8 @@ void Square::CreateMesh(UINT slices)
 		{
 			float x = -halfSize + j * step; // x 
 			float z = -halfSize + i * step; // z 
-			float u = static_cast<float>(j) / slices; // u
-			float v = static_cast<float>(i) / slices; // v
+			float u = static_cast<float>(j) / (slices*mUvAnimation->GetSplit().x); // u
+			float v = static_cast<float>(i) / (slices*mUvAnimation->GetSplit().y); // v
 
 			vtx.push_back({ XMFLOAT3(x, 0, z), Vector3(0.0f, 1.0f, 0.0f), Vector2(u, v) });
 		}
@@ -165,6 +206,7 @@ void Square::CreateMesh(UINT slices)
 	desc.pIndex = indexData.data();
 	desc.indexSize = sizeof(DWORD);
 	desc.indexCount = static_cast<UINT>(indexData.size());
+	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
 }
 
@@ -177,7 +219,7 @@ void Square::WriteDefShader()
 	}
 
 	CameraBase* firstCamera = GameApp::GetCurrentCamera();
-	std::shared_ptr<DirLight> dirLight = GameApp::GetComponent<DirLight>("EnvironmentLight");
+	std::shared_ptr<DirLight> dirLight = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight");
 	XMFLOAT4X4 WVP[3] = {};
 	//WORLD
 	WVP[0] = mTransform.GetMatrixFX4();
@@ -200,7 +242,17 @@ void Square::WriteDefShader()
 	};
 
 
+	UVConstantBuffer uvBuffer;
+	uvBuffer.useUV = isUseUVAnimation;
+	//UV MATRIX 作成
+	if (isUseUVAnimation)
+	{
+		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
+		uvBuffer.uv = XMMatrixTranspose(uvBuffer.uv);
+	}
+
 	mDefVS->WriteShader(0, WVP);
+	mDefVS->WriteShader(1, &uvBuffer);
 	mDefPS->WriteShader(0, &cb);
 }
 
