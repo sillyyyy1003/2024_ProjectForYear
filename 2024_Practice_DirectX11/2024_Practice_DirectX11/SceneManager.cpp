@@ -144,7 +144,7 @@ void SceneManager::InitModelTexture()
 	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture.png"));
 
 	blackOverlay=CreateObj<Texture>("BlackOverlay");
-	HR(blackOverlay->Create("Assets/Texture/Fade.png"))
+	HR(blackOverlay->Create("Assets/Texture/Fade.png"));
 
 
 	//Close Book

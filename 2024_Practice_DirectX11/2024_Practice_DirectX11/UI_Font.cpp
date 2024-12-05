@@ -78,6 +78,9 @@ void UI_Font::UpdateCharSize() noexcept
     //When the screen is resized
     if(gD3D->GetResized()||GetFontSizeChanged())
     {
+        if (gD3D->GetWinWidth() == 1 || gD3D->GetWinHeight() == 1)
+            return;
+
         Vector2 ratio={0,0};
         //Get Change Ratio
         ratio.x = gD3D->GetWinWidth() / WIN_WIDTH;
@@ -128,7 +131,7 @@ void UI_Font::UpdatePosition()
 
 	lineWidth = std::min(mBlockWidth, lineWidth); // last line width
 	lines.push_back(lineWidth); // store the last line width
-    float totalHeight = lines.size() * mCharSize.y + lines.size() * mLineSpacing;
+    float totalHeight = lines.size() * mCharSize.y + (lines.size()) *mLineSpacing;
 
 
 	// Set Anchor position
@@ -262,6 +265,7 @@ void UI_Font::SetFontColor(DirectX::XMFLOAT4 color)
 
 void UI_Font::InitDebugFunction()
 {
+#ifdef _DEBUG
     mDebugAnchorPos = std::make_unique<UI_Square>();
     mDebugAnchorPos->Init(nullptr);
     mDebugAnchorPos->SetScale(10, 10);
@@ -273,6 +277,7 @@ void UI_Font::InitDebugFunction()
     mDebugRect->SetScale(UITextOption::defaultFontRectWidth, UITextOption::defaultFontRectWidth);
     mDebugRect->SetDiffuseColor(Color(0.2f, 0.2f, 0.2f, 0.4f));
     mDebugRect->LoadDefShader();
+#endif
 }
 
 void UI_Font::DebugFunction()

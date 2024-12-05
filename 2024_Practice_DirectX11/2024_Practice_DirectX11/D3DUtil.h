@@ -383,3 +383,10 @@ struct WVPConstantBuffer
 	DirectX::XMFLOAT4X4 view;
 	DirectX::XMFLOAT4X4 proj;
 };
+
+struct CircleParam
+{
+	
+
+
+};

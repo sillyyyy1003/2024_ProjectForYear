@@ -5,10 +5,9 @@
 class CandleLight :public PointLight
 {
 private:
-#ifdef _DEBUG
+
 	std::unique_ptr<Sphere> mDebugMesh;
 	
-#endif
 	bool isShaking = true;
 	Light::PointLight mCandleLight;		//オブジェクトを照らす用
 	DirectX::XMFLOAT3 mCastShadowLightPos = { 0,1,0 };	//Cast Shadow用の
@@ -25,5 +24,9 @@ public:
 
 	const Light::PointLight& GetPointLight();
 	const DirectX::XMFLOAT3& GetCastShadowLightPos() const { return mCastShadowLightPos; };
+
+	json SaveData() override;
+	void LoadSaveData(json data, const char* objName) override;
+
 };
 

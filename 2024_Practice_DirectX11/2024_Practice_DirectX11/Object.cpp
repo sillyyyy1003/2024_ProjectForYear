@@ -18,8 +18,8 @@ enum ObjectState
 	STATE_NONE,
 	STATE_DRAG,
 	STATE_SELECTED,
-	STATE_ROTATE,
-	//STATE_MOVE,
+	
+
 };
 
 Object::Object()
@@ -34,6 +34,7 @@ void Object::Init(PrimitiveConfig::PrimitiveKind kind)
 {
 	switch(kind)
 	{
+	default:
 	case PrimitiveConfig::CUBE:
 		mModel = std::make_unique<Cube>();
 		mCollider = std::make_unique<BoxCollider>();
@@ -53,7 +54,6 @@ void Object::Init(PrimitiveConfig::PrimitiveKind kind)
 	case PrimitiveConfig::CYLINDER_ONECAP:
 		mModel = std::make_unique<CylinderOneCap>();
 		mCollider = std::make_unique<BoxCollider>();
-	default:;
 	}
 
 }
@@ -73,11 +73,7 @@ void Object::InitModel(const char* filePath)
 
 void Object::LoadSaveData(json data, const char* objName)
 {
-	//Init Model
-	std::string filePath = data[objName]["Filepath"].get<std::string>();
-
-	InitModel(filePath.c_str());
-
+	
 	//Init Pos
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
 	mModel->SetPosition(pos);
@@ -103,7 +99,7 @@ void Object::LoadSaveData(json data, const char* objName)
 	};
 	SetMaterial(mat);
 
-	mObjectName = objName;
+	//mObjectName = objName;
 }
 
 
@@ -291,32 +287,6 @@ void Object::LateUpdate(float dt)
 	//Render
 	mModel->Update(dt);
 
-	mModel->GetDefPS()->WriteShader(3, &mEffect);
-	/*
-	//PointLightを取得し、データをPSに書き込み
-	PointLight* pointLight = SceneManager::Get()->GetObj<PointLight>("PointLight");
-
-	if(pointLight)
-	{
-		struct BindData
-		{
-			Light::PointLight pointLight;
-			int num = 1;
-		};
-
-		BindData data;
-		data.pointLight = {
-			Color(pointLight->GetAmbient()),
-			Color(pointLight->GetDiffuse()),
-			Vector3(pointLight->GetPos()),
-			float(pointLight->GetRange()),
-			Vector3(pointLight->GetAttenuation()),
-			static_cast<float>(pointLight->GetEnable()),
-		};
-
-		mModel->GetDefPS()->WriteShader(3, &data);
-	}
-	*/
 }
 
 void Object::OnStateDrag(float dt)

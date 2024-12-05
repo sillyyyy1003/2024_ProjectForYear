@@ -35,9 +35,8 @@ private:
 	bool isWordBoxChange = false;
 	bool isWordAdaptive = false;
 
-#ifdef _DEBUG
 	std::string mObjName;
-#endif
+
 
 public:
 
@@ -106,9 +105,9 @@ public:
 	const DirectX::XMFLOAT2& GetContainerSize() const { return mUIContainerSize; };
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; };
 
-#ifdef _DEBUG
+
 	void SetObjName(const char* name) { mObjName = name; };
-#endif
+
 
 protected:
 

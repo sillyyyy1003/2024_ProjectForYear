@@ -149,6 +149,7 @@ void Circle::CreateMesh(UINT slices)
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
+	SetVertices(vtx);
 
 }
 

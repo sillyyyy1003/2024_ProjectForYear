@@ -156,6 +156,7 @@
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CylinderOneCap.cpp" />
+    <ClCompile Include="Potion.cpp" />
     <ClCompile Include="ScreenOverlay.cpp" />
     <ClCompile Include="InteractiveStaticObject.cpp" />
     <ClCompile Include="MissionPaper.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CylinderOneCap.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="ScreenOverlay.h" />
     <ClInclude Include="InteractiveStaticObject.h" />
     <ClInclude Include="MissionPaper.h" />
@@ -293,6 +295,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_InterActiveObjectPBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -300,6 +303,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_Outline.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

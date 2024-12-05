@@ -13,13 +13,10 @@ protected:
 
 	int mState = 0;//オブジェクトの状態を司る
 	bool isStateChange = false;//状態変更判定
-
-	bool isEditable = false;	//編集できるか？
-	bool isToBeDestroyed = false;	//
-
 	DirectX::XMFLOAT4 mEffect = { 1,1,1,1 };//オブジェクトに色効果をつける
-
+#ifdef _DEBUG
 	std::string mObjectName;
+#endif
 
 public:
 	
@@ -76,8 +73,9 @@ public:
 	void SetMaterial(const Material& mat);
 
 	json SaveData();
-
-	bool GetDestroy() { return isToBeDestroyed;};
+#ifdef _DEBUG
+	void SetObjectName(const char* name) { mObjectName = name; };
+#endif
 
 protected:
 

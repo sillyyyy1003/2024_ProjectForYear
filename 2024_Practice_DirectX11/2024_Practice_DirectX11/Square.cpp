@@ -182,6 +182,7 @@ void Square::CreateMesh(UINT slices)
 			vtx.push_back({ XMFLOAT3(x, 0, z), Vector3(0.0f, 1.0f, 0.0f), Vector2(u, v) });
 		}
 	}
+	SetVertices(vtx);
 
 	std::vector<DWORD> indexData;
 	for (UINT i = 0; i < slices; i++)

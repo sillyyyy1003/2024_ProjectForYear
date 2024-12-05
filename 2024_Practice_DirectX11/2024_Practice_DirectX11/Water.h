@@ -11,7 +11,7 @@ namespace WaterDefault
 	const Material defaultMat =
 	{
 		Color(0.8f, 0.8f, 0.8f, 1.0f),
-		Color(0.2f, 0.3f, 0.6f, 0.3f),
+		Color(0.3f, 0.3f, 0.3f, 0.3f),
 		Color(0.8f, 0.8f, 0.8f, 32.0f),
 		Color(0.0f, 0.0f, 0.0f, 1.0f),
 	};
@@ -65,7 +65,7 @@ public:
 	void Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices = 50);
 
 
-	void Update(float dt);
+	virtual void Update(float dt);
 
 	/// @brief アップデートの最後で行う 描画の頂点の更新とシェーダにデータ書き込む
 	void RenderUpdate();
@@ -84,6 +84,8 @@ public:
 	/// @param objName dataName
 	void LoadSaveData(json data, const char* objName);
 
+	void UpdatColor(DirectX::XMFLOAT4 color);
+
 	/// @brief オブジェクトのデータをjsonファイルに書き込み
 	/// @return 
 	json SaveData();
@@ -95,7 +97,8 @@ public:
 	void SetWaterBoilingState(WaterStateConfig::WaterBoilingState _state);
 	void SetWaterState(WaterStateConfig::WaterState _state);
 
-protected:
+	float GetRadius() { return mModel->GetScale().x / 2.f; };
+	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
 
 
 	/// @brief 波の中心点を設定する

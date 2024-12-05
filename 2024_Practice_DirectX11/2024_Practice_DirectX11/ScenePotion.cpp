@@ -12,7 +12,7 @@ void ScenePotion::Init()
 {	//Load Save Data
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_potion.json");
 	//Init Potion Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0,7.5,0);
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0,10,0);
 	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInDegree(90,0,0);
 
 	//Init Light
@@ -20,11 +20,11 @@ void ScenePotion::Init()
 
 
 	//Init object
-	mWater = std::make_unique<Water>();
+	mWater = CreateObj<Water>("PotionSceneWater");
 	mWater->LoadSaveData(sceneData, "ScenePotionWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mWater->SetTexture(GetObj<Texture>("water"));
-	
+	mWater->ResetMaterial();
 
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
@@ -43,6 +43,15 @@ void ScenePotion::Init()
 	mTable->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mTable->LoadSaveData(sceneData);
 
+	testIngredientBlue = std::make_unique<Ingredient>();
+	testIngredientBlue->Init(nullptr,"Blue",PrimitiveConfig::CIRCLE,{1,1});
+	testIngredientBlue->SetColor({ 0,0,1,1 });
+	testIngredientBlue->SetPosition({ 3,0.5,0 });
+
+	testIngredientRed = std::make_unique<Ingredient>();
+	testIngredientRed->Init(nullptr, "Red", PrimitiveConfig::SQUARE, { 1,1 });
+	testIngredientRed->SetColor({ 1,0,0,1 });
+	testIngredientRed->SetPosition({ -3,0.5,0 });
 
 	//Set Water
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
@@ -58,6 +67,8 @@ void ScenePotion::UnInit()
 	sceneData["ScenePotionWater"] = mWater->SaveData();
 	sceneData["Pot"] = mPot->SaveData();
 	sceneData["Table"] = mTable->SaveData();
+	//sceneData["Red"] = testIngredientRed->SaveData();
+	sceneData["Blue"] = testIngredientBlue->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_potion.json", sceneData);
 }
 
@@ -71,6 +82,8 @@ void ScenePotion::Update(float dt)
 void ScenePotion::Draw()
 {
 	mTable->Draw();
+	testIngredientRed->Draw();
+	testIngredientBlue->Draw();
 
 	GameApp::SetBlendState(RenderState::BSTransparent);
 	mPot->Draw();
@@ -83,6 +96,9 @@ void ScenePotion::GameObjectUpdate(float dt)
 	mWater->Update(dt);
 	mPot->Update(dt);
 	mTable->Update(dt);
+
+	testIngredientBlue->Update(dt);
+	testIngredientRed->Update(dt);
 }
 
 void ScenePotion::TriggerListener()

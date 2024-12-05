@@ -1,14 +1,14 @@
 {
     "Accept": {
         "AnchorAlign": [
-            4
+            7
         ],
         "AnchorPosition": [
             -330.0,
-            -300.0
+            -350.0
         ],
         "ContainerSize": [
-            300.0,
+            320.0,
             100.0
         ],
         "Context": "ACCEPT",
@@ -22,13 +22,13 @@
             1.0
         ],
         "FontSize": [
-            22.0
+            20.0
         ],
         "IsUseText": [
             1
         ],
         "LineSpacing": [
-            0.0
+            10.0
         ],
         "Material": {
             "Ambient": [
@@ -144,13 +144,13 @@
             1.0
         ],
         "FontSize": [
-            22.0
+            20.0
         ],
         "IsUseText": [
             1
         ],
         "LineSpacing": [
-            0.0
+            -10.0
         ],
         "Material": {
             "Ambient": [
@@ -200,10 +200,10 @@
     },
     "Test": {
         "AnchorAlign": [
-            1
+            0
         ],
         "AnchorPosition": [
-            0.0,
+            -510.0,
             405.0
         ],
         "ContainerSize": [
@@ -212,7 +212,7 @@
         ],
         "Context": "Dear Player,\n  Hello! This is Witch Q.\n  I want you to make Purple Potion for me.\n  I will give 200 gold as reward.\n  Here are ingredients.\n  Thanke you.",
         "FontBlockWidth": [
-            1120.0
+            1050.0
         ],
         "FontColor": [
             0.0,
@@ -227,7 +227,7 @@
             1
         ],
         "LineSpacing": [
-            15.0
+            10.0
         ],
         "Material": {
             "Ambient": [
@@ -259,7 +259,7 @@
             40.0,
             40.0,
             0.0,
-            40.0
+            90.0
         ],
         "Position": [
             0.0,

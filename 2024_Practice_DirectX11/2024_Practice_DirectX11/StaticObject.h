@@ -8,6 +8,7 @@ class StaticObject :public Component
 #ifdef _DEBUG
 	float rot[3] = {};
 #endif
+protected:
 	std::unique_ptr<Primitive> mModel = nullptr;
 	std::string mObjectName;	//オブジェクト名
 
@@ -38,12 +39,12 @@ public:
 
 	/// @brief 
 	/// @param dt delta time
-	void Update(float dt);
+	virtual void Update(float dt);
 
-	void Draw();
+	virtual void Draw();
 
-	void LoadSaveData(json data);
-	json SaveData();
+	virtual void LoadSaveData(json data);
+	virtual json SaveData();
 
 	std::string GetObjectName() { return mObjectName; };
 
@@ -66,9 +67,9 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
 	DirectX::XMFLOAT3 GetRotation() { return mModel->GetRotation(); };
 
-	void SetPosition(DirectX::XMFLOAT3 pos) { mModel->SetPosition(pos); };
-	void SetRotation(DirectX::XMFLOAT3 rot) { mModel->SetRotation(rot); };
-	void SetScale(DirectX::XMFLOAT3 scale) { mModel->SetScale(scale); };
+	virtual void SetPosition(DirectX::XMFLOAT3 pos) { mModel->SetPosition(pos); };
+	virtual void SetRotation(DirectX::XMFLOAT3 rot) { mModel->SetRotation(rot); };
+	virtual void SetScale(DirectX::XMFLOAT3 scale) { mModel->SetScale(scale); };
 
 };
 

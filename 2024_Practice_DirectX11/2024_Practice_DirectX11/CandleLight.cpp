@@ -93,7 +93,6 @@ void CandleLight::CandleLightShaking(float dt)
 
     mDebugMesh->SetPosition(mCandleLight.position);
 
-
 }
 
 void CandleLight::Draw()
@@ -104,4 +103,42 @@ void CandleLight::Draw()
 const Light::PointLight& CandleLight::GetPointLight()
 {
     return mCandleLight;
+}
+
+json CandleLight::SaveData()
+{
+	json data;
+	data["Position"] = { GetPosition().x,GetPosition().y,GetPosition().z };
+	data["Direction"] = { GetDirection().x,GetDirection().y,GetDirection().z };
+
+	data["Ambient"] = { GetAmbient().x, GetAmbient().y, GetAmbient().z, GetAmbient().w };
+	data["Diffuse"] = { GetDiffuse().x,GetDiffuse().y, GetDiffuse().z, GetDiffuse().w };
+
+	data["Attenuation"] = { GetAttenuation().x,GetAttenuation().y,GetAttenuation().z };
+	data["Range"] = { GetRange() };
+	data["CastHeight"] = { mCastShadowHeight };
+	return data;
+}
+
+void CandleLight::LoadSaveData(json data, const char* objName)
+{
+	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
+	SetPosition(pos);
+
+	//Init Ambient
+	Color ambient = Color(data[objName]["Ambient"][0], data[objName]["Ambient"][1], data[objName]["Ambient"][2], data[objName]["Ambient"][3]);
+	SetAmbient(ambient);
+
+	//Init Diffuse
+	Color diffuse = Color(data[objName]["Diffuse"][0], data[objName]["Diffuse"][1], data[objName]["Diffuse"][2], data[objName]["Diffuse"][3]);
+	SetDiffuse(diffuse);
+
+	//Init Attenuation
+	Vector3 attenuation = Vector3(data[objName]["Attenuation"][0], data[objName]["Attenuation"][1], data[objName]["Attenuation"][2]);
+	SetAttenuation(attenuation);
+
+	float range = data[objName]["Range"][0];
+	SetRange(range);
+
+	mCastShadowHeight = data[objName]["CastHeight"][0];
 }

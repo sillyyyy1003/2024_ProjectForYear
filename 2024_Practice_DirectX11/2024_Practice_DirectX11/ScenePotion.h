@@ -1,5 +1,6 @@
 #pragma once
 #include "CandleLight.h"
+#include "Ingredient.h"
 #include "SceneBase.h"
 #include "StaticObject.h"
 #include "Water.h"
@@ -10,7 +11,7 @@ class ScenePotion :public SceneBase
 	PBRConfig::PBRTexList pbrTexList;
 
 	//Water
-	std::unique_ptr<Water> mWater;
+	std::shared_ptr<Water> mWater;
 
 	//Pot
 	std::unique_ptr<StaticObject> mPot;
@@ -19,6 +20,9 @@ class ScenePotion :public SceneBase
 
 	//PointLight;
 	std::unique_ptr<CandleLight> mCandleLight;
+
+	std::unique_ptr<Ingredient> testIngredientRed;
+	std::unique_ptr<Ingredient> testIngredientBlue;
 public:
 	/// @brief データのロードと初期化
 	void Init();

@@ -1,7 +1,5 @@
 ﻿#include "StaticObject.h"
-
 #include <memory>
-
 #include "Capsule.h"
 #include "Circle.h"
 #include "Cylinder.h"
@@ -18,7 +16,6 @@ StaticObject::StaticObject()
 void StaticObject::InitPBR(const char* filePath, const char* _objName)
 {
 	mModel = std::make_unique<PBRModel>();
-
 	mModel->InitWithoutTex(filePath);
 	mObjectName = _objName;
 }
@@ -169,6 +166,7 @@ json StaticObject::SaveData()
 	data["Position"] = { mModel->GetPosition().x,mModel->GetPosition().y,mModel->GetPosition().z };
 	data["Scale"] = { mModel->GetScale().x,mModel->GetScale().y,mModel->GetScale().z };
 	data["Rotation"] = { mModel->GetRotation().x,mModel->GetRotation().y,mModel->GetRotation().z };
+	
 	return data;
 
 }

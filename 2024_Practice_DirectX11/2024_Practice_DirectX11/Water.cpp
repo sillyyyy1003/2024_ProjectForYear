@@ -357,6 +357,13 @@ void Water::LoadSaveData(json data, const char* objName)
 	mWaterStates->LoadWaterStateData(data[objName]["WaterParam"]);
 }
 
+void Water::UpdatColor(DirectX::XMFLOAT4 color)
+{
+	Vector4 waterColor = mModel->GetMaterial().diffuse;
+	waterColor += color;
+	mModel->SetDiffuse(waterColor);
+}
+
 json Water::SaveData()
 {
 	json data;

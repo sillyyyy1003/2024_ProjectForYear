@@ -167,7 +167,7 @@ void Cube::CreateMeshes()
 
 	std::vector<Vector2> texCoord(4);
 	texCoord = {
-		Vector2(0.0f, 1.0f/mUvAnimation->GetSplit().y),
+		Vector2(0.0f, 1.0f / mUvAnimation->GetSplit().y),
 		Vector2(0.0f, 0.0f),
 		Vector2(1.f/mUvAnimation->GetSplit().x, 0.0f),
 		Vector2(1.0f/mUvAnimation->GetSplit().x, 1.0f/mUvAnimation->GetSplit().y),
@@ -184,6 +184,7 @@ void Cube::CreateMeshes()
 			vtxData[i * 4 + j] = { pos[i * 4 + j], faceNormal[i], texCoord[j] };
 		}
 	}
+	SetVertices(vtxData);
 
 	for (UINT i = 0; i < mMeshes.size(); ++i)
 	{

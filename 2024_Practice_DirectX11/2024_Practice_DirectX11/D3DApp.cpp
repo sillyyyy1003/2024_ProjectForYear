@@ -281,7 +281,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if (isMinimized)
                 {
                     isAppPaused = false;
-                    isMinimized = false;
+                	isMinimized = false;
                     OnResize();
                 }
 
@@ -289,7 +289,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 else if (isMaximized)
                 {
                     isAppPaused = false;
-                    isMaximized = false;
+                	isMaximized = false;
                     OnResize();
                 }
                 else if (isResizing)

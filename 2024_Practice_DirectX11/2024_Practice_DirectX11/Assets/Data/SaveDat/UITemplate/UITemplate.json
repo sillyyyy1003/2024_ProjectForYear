@@ -1,28 +1,28 @@
 {
-    "": {
+    "test": {
         "AnchorAlign": [
-            0
+            4
         ],
         "AnchorPosition": [
             0.0,
             0.0
         ],
         "ContainerSize": [
-            300.0,
-            50.0
+            500.0,
+            500.0
         ],
-        "Context": "",
+        "Context": "This is test\nI want test more",
         "FontBlockWidth": [
             300.0
         ],
         "FontColor": [
-            1.0,
-            1.0,
-            1.0,
+            0.0,
+            0.0,
+            0.0,
             1.0
         ],
         "FontSize": [
-            1.0
+            22.0
         ],
         "IsUseText": [
             1
@@ -73,7 +73,7 @@
             0.0
         ],
         "TextAlign": [
-            0
+            1
         ]
     }
 }

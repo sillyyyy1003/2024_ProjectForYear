@@ -9,7 +9,7 @@
 /// </summary>
 namespace PrimitiveConfig
 {
-	constexpr int DEFAULT_MESH_SLICES = 16;
+	constexpr int DEFAULT_MESH_SLICES = 32;
 	enum PrimitiveKind
 	{
 		PRIMITIVE_DEFAULT,

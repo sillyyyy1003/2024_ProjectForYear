@@ -10,10 +10,13 @@
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_DefaultSprite.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_InteractiveObjectNormal.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_InterActiveObjectPBRModel.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_Paper.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_Outline.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\PS_PBRModel.cso</FullPath>
@@ -35,6 +38,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\VS_DefaultSprite.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\VS_Outline.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\VS_PBRModel.cso</FullPath>

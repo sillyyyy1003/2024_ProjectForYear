@@ -1,2 +1,17 @@
-﻿  ScenePotion.cpp
+﻿  CandleLight.cpp
+  GameApp.cpp
+  Ingredient.cpp
+  Object.cpp
+  Potion.cpp
+  SceneLab.cpp
+  SceneManager.cpp
+  SceneMission.cpp
+  SceneOption.cpp
+  ScenePotion.cpp
+  SceneTitle.cpp
+  UIStackContainer.cpp
+  UI_Button.cpp
+  UI_Font.cpp
+  Water.cpp
+  正在生成代码...
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

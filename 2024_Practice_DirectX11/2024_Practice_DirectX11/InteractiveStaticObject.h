@@ -33,8 +33,10 @@ protected:
 	bool isClicked = false;
 
 	//Debug—p
+#ifdef _DEBUG
 	std::unique_ptr<Cube> mDebugColliderMesh = nullptr;
 	bool isShowCollider = false;
+#endif
 
 	bool isUsePBRModel = true;
 	
