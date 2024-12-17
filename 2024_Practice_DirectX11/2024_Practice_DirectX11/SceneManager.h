@@ -2,6 +2,7 @@
 #include <unordered_map>
 
 #include "CameraBase.h"
+#include "Player.h"
 #include "SceneBase.h"
 #include "Shader.h"
 #include "Texture.h"
@@ -86,6 +87,8 @@ protected:
 	std::shared_ptr<VertexShader> VS_primitives;
 	std::shared_ptr<VertexShader> VS_spriteShadow;
 
+	std::shared_ptr<Player> mPlayer;
+
 private:
 
 	SceneManager() {};
@@ -153,5 +156,7 @@ private:
 	void InitFontLib();
 
 	void InitModelTexture();
+
+	void InitPlayer(){};
 };
 

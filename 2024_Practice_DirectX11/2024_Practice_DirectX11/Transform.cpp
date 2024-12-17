@@ -64,8 +64,6 @@ DirectX::XMFLOAT3 Transform::GetRotationInRadian() const
 		rotation.y = atan2f(sinY_cosX, cosY_cosX);
 		rotation.z = atan2f(sinZ_cosX, cosZ_cosX);
 	}
-
-	//return rotation;
 	return rotation;
 
 }

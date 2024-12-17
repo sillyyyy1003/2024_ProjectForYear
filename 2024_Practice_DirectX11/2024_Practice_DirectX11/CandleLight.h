@@ -5,8 +5,9 @@
 class CandleLight :public PointLight
 {
 private:
-
+#ifdef _DEBUG
 	std::unique_ptr<Sphere> mDebugMesh;
+#endif
 	
 	bool isShaking = true;
 	Light::PointLight mCandleLight;		//オブジェクトを照らす用

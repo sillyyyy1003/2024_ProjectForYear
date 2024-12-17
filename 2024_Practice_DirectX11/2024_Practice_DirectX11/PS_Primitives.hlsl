@@ -70,6 +70,7 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
     }
 
 
+
     float3 N = normalize(pin.normal);
 
 	float3 toEye = normalize(-cameraPos.xyz);

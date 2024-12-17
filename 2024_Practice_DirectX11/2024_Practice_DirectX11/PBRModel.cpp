@@ -503,7 +503,7 @@ void PBRModel::Draw(int texSlot)
 			mPS->SetTexture(0, mMaterials[it->materialID].albedoTex.get());
 		if (mMaterials[it->materialID].normalMap)
 			mPS->SetTexture(1, mMaterials[it->materialID].normalMap.get());
-		if (mMaterials[it->materialID].normalMap)
+		if (mMaterials[it->materialID].metallicTex)
 			mPS->SetTexture(2, mMaterials[it->materialID].metallicTex.get());
 		it->mesh->Draw();
 		++it;

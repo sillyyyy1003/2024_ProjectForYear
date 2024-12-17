@@ -1,4 +1,6 @@
 #pragma once
+#include "CandleLight.h"
+#include "Potion.h"
 #include "SceneBase.h"
 #include "UI_Font.h"
 #include "UI_Button.h"
@@ -13,11 +15,17 @@ private:
 	//	シーン中で使われているオブジェクトリスト
 	//======================================
 
-	std::shared_ptr<UI_Square> uiBg;		//Title Background
 	std::shared_ptr<UI_Button> uiStart;		//Start Button
 	std::unique_ptr<UI_Button> uiOption;
 	std::unique_ptr<UI_Button>  uiExit;
+	std::unique_ptr<UIStackContainer> uiTitle;	//Title
 
+
+
+
+
+	std::unique_ptr<Potion> mWater;
+	std::unique_ptr<CandleLight> mCandleLight;
 
 public:
 	/// @brief データのロードと初期化

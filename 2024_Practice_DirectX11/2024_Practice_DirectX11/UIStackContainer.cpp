@@ -1,5 +1,7 @@
 #include "UIStackContainer.h"
 #include <memory>
+
+#include "D2DFont.h"
 #include "GUI.h"
 #include "UI_Capsule.h"
 #include "UI_Font.h"
@@ -15,11 +17,13 @@ void UIStackContainer::InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind 
 	switch (mKind)
 	{
 	case UIPrimitiveConfig::UI_PrimitiveKind::SQUARE:
-		mUiSet.mBackGround = std::make_unique<UI_Square>();
+		mUiSet.background = std::make_unique<UI_Square>();
+		mUiSet.outline = std::make_unique<UI_Square>();
 		break;
 
 	case UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE:
-		mUiSet.mBackGround = std::make_unique<UI_Capsule>();
+		mUiSet.background = std::make_unique<UI_Capsule>();
+		mUiSet.outline = std::make_unique<UI_Capsule>();
 		break;
 	}
 
@@ -30,16 +34,19 @@ void UIStackContainer::LoadBackgroundTex(const char* filePath, DirectX::XMFLOAT2
 	switch (mKind)
 	{
 	case UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE:
-		mUiSet.mBackGround->Init(filePath, size);
+		mUiSet.background->Init(filePath, size);
+		mUiSet.outline->Init(nullptr, size);
 		SetContainerSize(1.0f);
 		break;
 	case UIPrimitiveConfig::UI_PrimitiveKind::SQUARE:
-		mUiSet.mBackGround->Init(filePath);
+		mUiSet.background->Init(filePath);
+		mUiSet.outline->Init(nullptr);
 		SetContainerSize(size);
 		break;
 	}
 	mUIContainerSize = size;
-	mUiSet.mBackGround->LoadDefShader();
+	mUiSet.background->LoadDefShader();
+	mUiSet.outline->LoadDefShader();
 }
 
 void UIStackContainer::LoadBackgroundTex(const std::shared_ptr<Texture>& backgroundTex, DirectX::XMFLOAT2 size)
@@ -47,25 +54,29 @@ void UIStackContainer::LoadBackgroundTex(const std::shared_ptr<Texture>& backgro
 
 	switch(mKind)
 	{
+		default:
 	case UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE:
-		mUiSet.mBackGround->Init(backgroundTex, size);
+		mUiSet.background->Init(backgroundTex, size);
+		mUiSet.outline->Init(nullptr, size);
 		SetContainerSize(1.0f);//Capsule‚Ìê‡ Scale‚Å‚Í‚È‚­’¸“_‚ð•ÏX‚µ‚Ä‚¢‚é
 		break;
 	case UIPrimitiveConfig::UI_PrimitiveKind::SQUARE:
-		mUiSet.mBackGround->Init(backgroundTex, 0, { 1,1 });
+		mUiSet.background->Init(backgroundTex, 0, { 1,1 });
+		mUiSet.outline->Init(nullptr, 0, { 1,1 });
 		SetContainerSize(size);
 		break;
 	}
 	
 	mUIContainerSize = size;
-	mUiSet.mBackGround->LoadDefShader();
+	mUiSet.background->LoadDefShader();
+	mUiSet.outline->LoadDefShader();
 }
 
 
 void UIStackContainer::LoadFontTexture(const char* filePath,DirectX::XMFLOAT2 fontSize)
 {
-	mUiSet.mText = std::make_unique<UI_Font>();
-	mUiSet.mText->Init(filePath, fontSize);
+	mUiSet.text = std::make_unique<UI_Font>();
+	mUiSet.text->Init(filePath, fontSize);
 	isUseText = true;
 }
 
@@ -77,23 +88,36 @@ void UIStackContainer::LoadFontTexture(const std::shared_ptr<Texture>& fontTex, 
 		return;
 	}
 
-	mUiSet.mText = std::make_unique<UI_Font>();
-	mUiSet.mText->Init(fontTex,fontSize);
+	mUiSet.text = std::make_unique<UI_Font>();
+	mUiSet.text->Init(fontTex,fontSize);
 	isUseText = true;
+}
+
+void UIStackContainer::LoadFile(const std::shared_ptr<Texture>& bgTex,
+	const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 texSize, DirectX::XMFLOAT2 fontSize)
+{
+	LoadBackgroundTex(bgTex, texSize);
+	LoadFontTexture(fontTex, fontSize);
+
 }
 
 void UIStackContainer::Update()
 {
-	DebugFunction();
+#ifdef _DEBUG
+	if(isEditable)
+		DebugFunction();
+#endif
+
 	if(isUseText)
 	{
-		UITextOption::AnchorAlign prevAlign = mUiSet.mText->GetAnchorAlign();
-		mUiSet.mText->Update();
-		if (prevAlign != mUiSet.mText->GetAnchorAlign())
+		UITextOption::AnchorAlign prevAlign = mUiSet.text->GetAnchorAlign();
+		if (prevAlign != mUiSet.text->GetAnchorAlign())
 			NotifyWordBoxChangeListener();
+		mUiSet.text->Update();
 	}
 
-	mUiSet.mBackGround->Update();
+	mUiSet.background->Update();
+	if(mOutline>0)mUiSet.outline->Update();
 
 	UpdateContainerSize();
 	UpdateContainerPosition();
@@ -102,40 +126,54 @@ void UIStackContainer::Update()
 
 void UIStackContainer::Draw()
 {
-	if (!mUiSet.mBackGround)
-		DebugLog::LogWarning("pBackground is nullptr");
-	else
-		mUiSet.mBackGround->Draw();
+	if (!mUiSet.background)DebugLog::LogWarning("pBackground is nullptr");
+	else mUiSet.background->Draw();
 
 
-	if (!mUiSet.mText)
-	{
-		if (isUseText)
-			DebugLog::LogWarning("pText is nullptr");
-	}
-	else
-	{
-		mUiSet.mText->Draw();
-	}
-	
-	
+	//if (!mUiSet.outline)
+	//{
+	//	DebugLog::LogWarning("pOutline is nullptr");
+	//}
+	//else
+	//{
+	//	if (mOutline > 0)mUiSet.outline->Draw();
+	//}
+
+
+	//if (!mUiSet.text)
+	//{
+	//	if (isUseText)
+	//		DebugLog::LogWarning("pText is nullptr");
+	//}
+	//else
+	//{
+	//	mUiSet.text->Draw();
+	//}
+
+	D2DFont::Get()->DrawSolidText(D2DUIConfig::FontSize::NORMAL_SIZE, D2D1::ColorF{ 1,1,1,1 }, mUiSet.text->GetContext().c_str(), { mPosition.x, mPosition.y }, mUIContainerSize);
+
 }
 
 void UIStackContainer::SetText(const char* text)
 {
-	if(!mUiSet.mText)
+	if(!mUiSet.text)
 		DebugLog::LogWarning("pText is nullptr");
 	else
-		mUiSet.mText->SetContent(text);
+		mUiSet.text->SetContent(text);
 }
 
 void UIStackContainer::SetPosZ(float posZ)
 {
+	//Background
 	mPosition.z = posZ;
-	mUiSet.mBackGround->SetPosZ(mPosition.z);
+	mUiSet.background->SetPosZ(mPosition.z);
 
+	//Outline
+	mUiSet.outline->SetPosZ(mPosition.z + 0.1f);
+
+	//Text
 	if(isUseText)
-		mUiSet.mText->SetPosZ(mPosition.z - 0.1f);
+		mUiSet.text->SetPosZ(mPosition.z - 0.2f);
 }
 
 void UIStackContainer::SetPosition(float x, float y)
@@ -158,6 +196,7 @@ void UIStackContainer::InitPosition(float x, float y)
 
 void UIStackContainer::SetContainerSize(float width, float height)
 {
+
 	if (mUIContainerSize.x == width && mUIContainerSize.y == height)
 		return;
 
@@ -174,8 +213,6 @@ void UIStackContainer::SetContainerSize(DirectX::XMFLOAT2 size)
 	NotifySizeChangeListener();
 	NotifyWordBoxChangeListener();
 	mUIContainerSize = size;
-	
-
 }
 
 void UIStackContainer::SetContainerSize(float size)
@@ -225,13 +262,17 @@ void UIStackContainer::SetPadding(const float* param)
 
 void UIStackContainer::SetBackgroundColor(DirectX::XMFLOAT4 color)
 {
+	mUiSet.background->SetDiffuseColor(color);
+}
 
-	mUiSet.mBackGround->SetDiffuseColor(color);
+void UIStackContainer::SetOutlineColor(DirectX::XMFLOAT4 color)
+{
+	mUiSet.outline->SetDiffuseColor(color);
 }
 
 void UIStackContainer::SetFontColor(DirectX::XMFLOAT4 color)
 {
-	mUiSet.mText->SetFontColor(color);
+	mUiSet.text->SetFontColor(color);
 }
 
 void UIStackContainer::DebugFunction()
@@ -255,29 +296,41 @@ void UIStackContainer::DebugFunction()
 		ImGui::InputFloat4("Padding", padding);
 		SetPadding(padding);
 
-		float bgColor[4] = { mUiSet.mBackGround->GetDiffuseColor().x,mUiSet.mBackGround->GetDiffuseColor().y,mUiSet.mBackGround->GetDiffuseColor().z,mUiSet.mBackGround->GetDiffuseColor().w };
+		float bgColor[4] = { mUiSet.background->GetDiffuseColor().x,mUiSet.background->GetDiffuseColor().y,mUiSet.background->GetDiffuseColor().z,mUiSet.background->GetDiffuseColor().w };
 		ImGui::ColorEdit4("Background", bgColor);
-		mUiSet.mBackGround->SetDiffuseColor(Color(bgColor[0], bgColor[1], bgColor[2], bgColor[3]));
+		mUiSet.background->SetDiffuseColor(Color(bgColor));
+
+
+		float outlineColor[4] = { mUiSet.outline->GetDiffuseColor().x,mUiSet.outline->GetDiffuseColor().y,mUiSet.outline->GetDiffuseColor().z,mUiSet.outline->GetDiffuseColor().w };
+		ImGui::ColorEdit4("OutlineColor", outlineColor);
+		mUiSet.outline->SetDiffuseColor(Color(outlineColor));
+
+		ImGui::InputFloat("Outline", &mOutline);
+		mUiSet.outline->SetScale({ mUIContainerSize.x + mOutline,mUIContainerSize.y + mOutline });
 
 		//TextŽg‚í‚È‚¢Žž‚Íì“®‚µ‚È‚¢‚æ‚¤‚É
 		if (isUseText)
 		{
-			float textColor[4] = { mUiSet.mText->GetFontColor().x,mUiSet.mText->GetFontColor().y,mUiSet.mText->GetFontColor().z,mUiSet.mText->GetFontColor().w };
+			float textColor[4] = { mUiSet.text->GetFontColor().x,mUiSet.text->GetFontColor().y,mUiSet.text->GetFontColor().z,mUiSet.text->GetFontColor().w };
 			ImGui::ColorEdit4("TextColor", textColor);
-			mUiSet.mText->SetFontColor(Color(textColor[0], textColor[1], textColor[2], textColor[3]));
+			mUiSet.text->SetFontColor(Color(textColor[0], textColor[1], textColor[2], textColor[3]));
 
 			ImGui::Text("AnchorPos");
-			GUI::ShowFloat3(mUiSet.mText->GetAnchorPos());
+			GUI::ShowFloat3(mUiSet.text->GetAnchorPos());
 
 			ImGui::InputTextMultiline("Input your Text", mInputText, IM_ARRAYSIZE(mInputText));
+
+			ImGui::InputFloat("MinFontWidth", &mMinBoxWidth);
+
+			ImGui::InputFloat("MaxFontWidth", &mMaxBoxWidth);
 
 
 			if (ImGui::Button("UpdateString"))
 			{
-				mUiSet.mText->SetContent(mInputText);
+				mUiSet.text->SetContent(mInputText);
 			}
 
-			mUiSet.mText->DebugFunction();
+			mUiSet.text->DebugFunction();
 		}
 
 		ImGui::InputText("Input template Name", mTemplateName, IM_ARRAYSIZE(mTemplateName));
@@ -313,13 +366,17 @@ json UIStackContainer::SaveData(const char* objName)
 	//ContainerSize //BackGroundScale
 	data["ContainerSize"] = { mUIContainerSize.x,mUIContainerSize.y };
 	//Rotation
-	data["Rotation"]={mUiSet.mBackGround->GetRotation().x,mUiSet.mBackGround->GetRotation().y,mUiSet.mBackGround->GetRotation().z };
+	data["Rotation"]={mUiSet.background->GetRotation().x,mUiSet.background->GetRotation().y,mUiSet.background->GetRotation().z };
 
 	//bgColor
-	data["Material"]["Ambient"] = { mUiSet.mBackGround->GetMaterial().ambient.x,mUiSet.mBackGround->GetMaterial().ambient.y, mUiSet.mBackGround->GetMaterial().ambient.z, mUiSet.mBackGround->GetMaterial().ambient.w };
-	data["Material"]["Diffuse"] = { mUiSet.mBackGround->GetDiffuseColor().x,mUiSet.mBackGround->GetDiffuseColor().y,mUiSet.mBackGround->GetDiffuseColor().z,mUiSet.mBackGround->GetDiffuseColor().w }; 
-	data["Material"]["Specular"] = { mUiSet.mBackGround->GetMaterial().specular.x,mUiSet.mBackGround->GetMaterial().specular.y,mUiSet.mBackGround->GetMaterial().specular.z,mUiSet.mBackGround->GetMaterial().specular.w };
-	data["Material"]["Emission"] = { mUiSet.mBackGround->GetMaterial().emission.x,mUiSet.mBackGround->GetMaterial().emission.y, mUiSet.mBackGround->GetMaterial().emission.z, mUiSet.mBackGround->GetMaterial().emission.w };
+	data["Material"]["Ambient"] = { mUiSet.background->GetMaterial().ambient.x,mUiSet.background->GetMaterial().ambient.y, mUiSet.background->GetMaterial().ambient.z, mUiSet.background->GetMaterial().ambient.w };
+	data["Material"]["Diffuse"] = { mUiSet.background->GetDiffuseColor().x,mUiSet.background->GetDiffuseColor().y,mUiSet.background->GetDiffuseColor().z,mUiSet.background->GetDiffuseColor().w }; 
+	data["Material"]["Specular"] = { mUiSet.background->GetMaterial().specular.x,mUiSet.background->GetMaterial().specular.y,mUiSet.background->GetMaterial().specular.z,mUiSet.background->GetMaterial().specular.w };
+	data["Material"]["Emission"] = { mUiSet.background->GetMaterial().emission.x,mUiSet.background->GetMaterial().emission.y, mUiSet.background->GetMaterial().emission.z, mUiSet.background->GetMaterial().emission.w };
+
+	data["OutlineColor"] = { mUiSet.outline->GetDiffuseColor().x,mUiSet.outline->GetDiffuseColor().y,mUiSet.outline->GetDiffuseColor().z,mUiSet.outline->GetDiffuseColor().w };
+
+	data["Outline"] = { mOutline };
 
 	data["IsUseText"] = { (int)isUseText };
 	if (!isUseText)
@@ -328,24 +385,68 @@ json UIStackContainer::SaveData(const char* objName)
 	//Padding
 	data["Padding"] = { mPadding[0],mPadding[1],mPadding[2],mPadding[3] };
 	//fontColor
-	data["FontColor"] = { mUiSet.mText->GetFontColor().x,mUiSet.mText->GetFontColor().y,mUiSet.mText->GetFontColor().z,mUiSet.mText->GetFontColor().w };
+	data["FontColor"] = { mUiSet.text->GetFontColor().x,mUiSet.text->GetFontColor().y,mUiSet.text->GetFontColor().z,mUiSet.text->GetFontColor().w };
 	//context
-	data["Context"] = mUiSet.mText->GetContext().c_str();
+	data["Context"] = mUiSet.text->GetContext().c_str();
 	//Text Align
-	data["TextAlign"] = {(int)mUiSet.mText->GetTextAlign()};
+	data["TextAlign"] = {(int)mUiSet.text->GetTextAlign()};
 	//Text Anchor Align
-	data["AnchorAlign"] = { (int)mUiSet.mText->GetAnchorAlign() };
+	data["AnchorAlign"] = { (int)mUiSet.text->GetAnchorAlign() };
 	//Text Anchor Pos
-	data["AnchorPosition"] = { mUiSet.mText->GetAnchorPos().x,mUiSet.mText->GetAnchorPos().y };
+	data["AnchorPosition"] = { mUiSet.text->GetAnchorPos().x,mUiSet.text->GetAnchorPos().y };
 	//Text FontSize
-	data["FontSize"] = { mUiSet.mText->GetFontSize() };
+	data["FontSize"] = { mUiSet.text->GetFontSize() };
 	//Text Block Width
-	data["FontBlockWidth"] = { mUiSet.mText->GetFontRectWidth() };
+	data["FontBlockWidth"] = { mUiSet.text->GetFontRectWidth() };
 	//Text LineSpacing
-	data["LineSpacing"] = { mUiSet.mText->GetLineSpacing()};
+	data["LineSpacing"] = { mUiSet.text->GetLineSpacing()};
 	return data;
 
+}
 
+json UIStackContainer::SaveData()
+{
+	json data;
+	//Position
+	data["Position"] = { mPosition.x,mPosition.y,mPosition.z };
+	//ContainerSize //BackGroundScale
+	data["ContainerSize"] = { mUIContainerSize.x,mUIContainerSize.y };
+	//Rotation
+	data["Rotation"] = { mUiSet.background->GetRotation().x,mUiSet.background->GetRotation().y,mUiSet.background->GetRotation().z };
+
+	//bgColor
+	data["Material"]["Ambient"] = { mUiSet.background->GetMaterial().ambient.x,mUiSet.background->GetMaterial().ambient.y, mUiSet.background->GetMaterial().ambient.z, mUiSet.background->GetMaterial().ambient.w };
+	data["Material"]["Diffuse"] = { mUiSet.background->GetDiffuseColor().x,mUiSet.background->GetDiffuseColor().y,mUiSet.background->GetDiffuseColor().z,mUiSet.background->GetDiffuseColor().w };
+	data["Material"]["Specular"] = { mUiSet.background->GetMaterial().specular.x,mUiSet.background->GetMaterial().specular.y,mUiSet.background->GetMaterial().specular.z,mUiSet.background->GetMaterial().specular.w };
+	data["Material"]["Emission"] = { mUiSet.background->GetMaterial().emission.x,mUiSet.background->GetMaterial().emission.y, mUiSet.background->GetMaterial().emission.z, mUiSet.background->GetMaterial().emission.w };
+
+	data["OutlineColor"] = { mUiSet.outline->GetDiffuseColor().x,mUiSet.outline->GetDiffuseColor().y,mUiSet.outline->GetDiffuseColor().z,mUiSet.outline->GetDiffuseColor().w };
+
+	data["Outline"] = { mOutline };
+
+	data["IsUseText"] = { (int)isUseText };
+	if (!isUseText)
+		return data;
+
+	//Padding
+	data["Padding"] = { mPadding[0],mPadding[1],mPadding[2],mPadding[3] };
+	//fontColor
+	data["FontColor"] = { mUiSet.text->GetFontColor().x,mUiSet.text->GetFontColor().y,mUiSet.text->GetFontColor().z,mUiSet.text->GetFontColor().w };
+	//context
+	data["Context"] = mUiSet.text->GetContext().c_str();
+	//Text Align
+	data["TextAlign"] = { (int)mUiSet.text->GetTextAlign() };
+	//Text Anchor Align
+	data["AnchorAlign"] = { (int)mUiSet.text->GetAnchorAlign() };
+	//Text Anchor Pos
+	data["AnchorPosition"] = { mUiSet.text->GetAnchorPos().x,mUiSet.text->GetAnchorPos().y };
+	//Text FontSize
+	data["FontSize"] = { mUiSet.text->GetFontSize() };
+	//Text Block Width
+	data["FontBlockWidth"] = { mUiSet.text->GetFontRectWidth() };
+	//Text LineSpacing
+	data["LineSpacing"] = { mUiSet.text->GetLineSpacing() };
+	return data;
 }
 
 void UIStackContainer::LoadSaveData(json data, const char* objName)
@@ -359,12 +460,19 @@ void UIStackContainer::LoadSaveData(json data, const char* objName)
 	SetContainerSize(wordBoxSize[0], wordBoxSize[1]);
 
 	float bgColor[4] = {data[objName]["Material"]["Diffuse"][0],data[objName]["Material"]["Diffuse"][1] ,data[objName]["Material"]["Diffuse"][2] ,data[objName]["Material"]["Diffuse"][3]};
-	mUiSet.mBackGround->SetDiffuseColor(Color(bgColor[0], bgColor[1], bgColor[2], bgColor[3]));
+	mUiSet.background->SetDiffuseColor(Color(bgColor[0], bgColor[1], bgColor[2], bgColor[3]));
 
 	int useText = { data[objName]["IsUseText"][0]};
 	isUseText = useText;
 
 	mObjName = objName;
+
+	float outlineColor[4] = { data[objName]["OutlineColor"][0],data[objName]["OutlineColor"][1],data[objName]["OutlineColor"][2],data[objName]["OutlineColor"][3] };
+	mUiSet.outline->SetDiffuseColor(Color(outlineColor));
+
+	mOutline = { data[objName]["Outline"][0] };
+
+
 	if (!isUseText)return;
 	//SetPadding
 	float padding[4] = { data[objName]["Padding"][0],data[objName]["Padding"][1] ,data[objName]["Padding"][2] ,data[objName]["Padding"][3] };
@@ -374,28 +482,28 @@ void UIStackContainer::LoadSaveData(json data, const char* objName)
 	SetFontColor(fontColor);
 	//Contents
 	std::string str = data[objName]["Context"];
-	mUiSet.mText->SetContent(str.c_str());
+	mUiSet.text->SetContent(str.c_str());
 	//TextAlign
 	int textAlign = data[objName]["TextAlign"][0];
-	mUiSet.mText->SetTextAlign(static_cast<UITextOption::TextAlign>(textAlign));
+	mUiSet.text->SetTextAlign(static_cast<UITextOption::TextAlign>(textAlign));
 	//Text Anchor pattern
 	int anchorAlign = data[objName]["AnchorAlign"][0];
-	mUiSet.mText->SetAnchorAlign(static_cast<UITextOption::AnchorAlign>(anchorAlign));
+	mUiSet.text->SetAnchorAlign(static_cast<UITextOption::AnchorAlign>(anchorAlign));
 	//Anchor Pos
 	float anchorPos[2] = {data[objName]["AnchorPosition"][0],data[objName]["AnchorPosition"][1]};
-	mUiSet.mText->SetAnchorPos(anchorPos[0], anchorPos[1]);
+	mUiSet.text->SetAnchorPos(anchorPos[0], anchorPos[1]);
 	//Font Block Width
 	float blockWidth = data[objName]["FontBlockWidth"][0];
-	mUiSet.mText->SetFontRectWidth(blockWidth);
+	mUiSet.text->SetFontRectWidth(blockWidth);
 	//LineSpacing
-	mUiSet.mText->SetLineSpacing(data[objName]["LineSpacing"][0]);
+	mUiSet.text->SetLineSpacing(data[objName]["LineSpacing"][0]);
 	//FontSize
 	float fontSize = data[objName]["FontSize"][0];
-	mUiSet.mText->SetFontSize(fontSize);
+	mUiSet.text->SetFontSize(fontSize);
 	//Set Font
 
 	NotifySizeChangeListener();
-	mUiSet.mText->NotifyFontSizeChanged();
+	mUiSet.text->NotifyFontSizeChanged();
 }
 
 void UIStackContainer::NotifyWordBoxChangeListener()
@@ -433,7 +541,9 @@ void UIStackContainer::UpdateContainerSize()
 {
 	if(isContainerSizeChange || gD3D->GetResized())
 	{
-		mUiSet.mBackGround->SetScale(mUIContainerSize);
+		mUiSet.background->SetScale(mUIContainerSize);
+		Vector2 outlineSize = { mUIContainerSize.x + mOutline,mUIContainerSize.y + mOutline };
+		mUiSet.outline->SetScale(outlineSize);
 		ClearSizeChangeListener();
 	}
 }
@@ -442,7 +552,8 @@ void UIStackContainer::UpdateContainerPosition()
 {
 	if (isContainerPosChange || gD3D->GetResized())
 	{
-		mUiSet.mBackGround->SetPosition(mPosition.x, mPosition.y);
+		mUiSet.background->SetPosition(mPosition.x, mPosition.y);
+		mUiSet.outline->SetPosition(mPosition.x, mPosition.y);
 		SetPosZ(mPosition.z);
 		ClearPositionChangeListener();
 	}
@@ -450,7 +561,7 @@ void UIStackContainer::UpdateContainerPosition()
 
 void UIStackContainer::UpdateWordBox()
 {
-	if (!mUiSet.mText)return;
+	if (!mUiSet.text)return;
 	UpdateWordBoxSize();
 	UpdateWordPosition();
 }
@@ -460,16 +571,26 @@ void UIStackContainer::UpdateWordBoxSize()
 	//if there need any word box size change
 	float boxWidth = mUIContainerSize.x - mPadding[UIContainerConfig::LEFT] - mPadding[UIContainerConfig::RIGHT];
 	if(isWordAdaptive)
-		mUiSet.mText->SetFontRectWidth(boxWidth);
+	{
+		if (boxWidth <= mMinBoxWidth)
+		{
+			mUiSet.text->SetFontRectWidth(mMinBoxWidth);
+		}
+		else if (boxWidth >= mMaxBoxWidth)
+		{
+			mUiSet.text->SetFontRectWidth(mMaxBoxWidth);
+		}else
+		{
+			mUiSet.text->SetFontRectWidth(boxWidth);
+		}
+	}
 }
 
 void UIStackContainer::UpdateWordPosition()
 {
-	if (!GetWordBoxChange()) return;
-
 	float anchorPosX = 0.0f;
 	float anchorPosY = 0.0f;
-	switch (mUiSet.mText->GetAnchorAlign())
+	switch (mUiSet.text->GetAnchorAlign())
 	{
 	default:
 	case UITextOption::AnchorAlign::TopLeft:
@@ -517,10 +638,8 @@ void UIStackContainer::UpdateWordPosition()
 		anchorPosY = mPosition.y - mUIContainerSize.y / 2.0f + mPadding[UIContainerConfig::BOTTOM];
 		break;
 	}
-
 	// Set the calculated anchor position
-	mUiSet.mText->SetAnchorPos(anchorPosX, anchorPosY);
-	ClearPositionChangeListener();
+	mUiSet.text->SetAnchorPos(anchorPosX, anchorPosY);
 }
 
 void UIStackContainer::TriggerListener()

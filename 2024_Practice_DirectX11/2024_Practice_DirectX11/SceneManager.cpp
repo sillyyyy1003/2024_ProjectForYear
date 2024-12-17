@@ -2,6 +2,7 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "Geometry.h"
+#include "IngredientManager.h"
 #include "PBRModel.h"
 #include "SceneLab.h"
 #include "SceneMission.h"
@@ -23,12 +24,15 @@ void SceneManager::Init()
 	//LoadSaveData
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_manager.json");
 
+	json playerData = LoadSceneData("Assets/Data/SaveDat/player_data.json");
+	
+
 	//Set Scene Map
 	InitSceneMap();
 
 	//カメラ作成
 	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("DefaultCamera");
-	camera->SetPosition(0.0, 2.0, -2.0);
+	camera->SetPosition(0.0, 10.0, -10.0);
 	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
 	//現在のカメラをセットする
 	SetCurrentCamera(camera);
@@ -50,7 +54,13 @@ void SceneManager::Init()
 	//Init Fade Tool
 	ScreenOverlay::Get()->Init();
 
+	//Init Player
+	mPlayer = CreateObj<Player>("player");
+	mPlayer->LoadPlayerData(playerData["Player"]);
 	SetMainScene("Title");
+
+	//Init Ingredient Manager
+	IngredientManager::Get()->Init();
 
 }
 
@@ -58,9 +68,12 @@ void SceneManager::UnInit()
 {
 	json sceneData;
 	sceneData["DefaultCamera"] = GetObj<FirstPersonCamera>("DefaultCamera")->SaveData();
-
 	//Save data here
 	SaveSceneFile("Assets/Data/SaveDat/scene_manager.json", sceneData);
+
+	json playerData;
+	playerData["Player"] = mPlayer->SaveData();
+	SaveSceneFile("Assets/Data/SaveDat/player_data.json", playerData);
 
 }
 
@@ -69,7 +82,8 @@ void SceneManager::Update(float dt)
 	GetObj<FirstPersonCamera>("DefaultCamera")->Update(dt);
 	GetObj<DirLight>("EnvironmentLight")->Update(dt);
 
-	ScreenOverlay::Get()->Update();
+	ScreenOverlay::Get()->Update(dt);
+	IngredientManager::Get()->Update(dt);
 	MainSceneChangeListener();
 }
 
@@ -93,7 +107,6 @@ void SceneManager::InitSceneMap()
 	mSceneMap["Lab"] = SceneConfig::SceneIndex::SCENE_LAB;
 	mSceneMap["Option"] = SceneConfig::SceneIndex::SCENE_OPTION;
 	mSceneMap["Exit"] = SceneConfig::SceneIndex::SCENE_EXIT;
-	//Set SubSceneMap
 	mSceneMap["Potion"] = SceneConfig::SceneIndex::SCENE_POTION;
 	mSceneMap["Mission"] = SceneConfig::SceneIndex::SCENE_MISSION;
 	mSceneMap["InGameOption"] = SceneConfig::SceneIndex::SCENE_IN_GAME_OPTION;
@@ -135,13 +148,18 @@ void SceneManager::InitModelTexture()
 	fantasyHousePropsNormalTexture = CreateObj<Texture>("pbrNormal");
 	HR(fantasyHousePropsNormalTexture->Create("Assets/Model/LabAssets/TrimSheets_mTrimSheet_Normal.png"));
 
-
-
 	waterTexture = CreateObj<Texture>("water");
 	HR(waterTexture->Create("Assets/Texture/water.png"));
 
 	paperTexture = CreateObj<Texture>("paper");
-	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture.png"));
+	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture1.jpg"));
+
+	Texture* paperTexture2 = CreateObj<Texture>("paper2").get();
+	HR(paperTexture2->Create("Assets/Texture/paper3.png"));
+
+	Texture* paperTexture3 = CreateObj<Texture>("paper3").get();
+	HR(paperTexture3->Create("Assets/Texture/sepia-plasterboard-texture.png"));
+
 
 	blackOverlay=CreateObj<Texture>("BlackOverlay");
 	HR(blackOverlay->Create("Assets/Texture/Fade.png"));
@@ -214,6 +232,8 @@ void SceneManager::LoadPixelShaderFile()
 	PixelShader* PS_Outline = CreateObj<PixelShader>("PS_Outline").get();
 	PS_Outline->LoadShaderFile("Assets/Shader/PS_Outline.cso");
 
+	PixelShader* PS_Ingredient = CreateObj<PixelShader>("PS_Ingredient").get();
+	PS_Ingredient->LoadShaderFile("Assets/Shader/PS_Ingredient.cso");
 
 
 }

@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\directxtk\include;C:\Assimp\include;$(ProjectDir)imgui\Include;C:\DirectXTex;$(ProjectDir);C:\Bullet\include;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;C:\Bullet\Lib\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;C:\Bullet\Lib\Debug;C:\directxtk\lib\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;$(ProjectDir)\imgui\Lib\Release;C:\Bullet\Lib\Release;$(LibraryPath)</LibraryPath>
@@ -156,7 +156,22 @@
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CylinderOneCap.cpp" />
+    <ClCompile Include="D2DFont.cpp" />
+    <ClCompile Include="D2D_UIBase.cpp" />
+    <ClCompile Include="D2D_UIStackContainer.cpp" />
+    <ClCompile Include="D2D_UIRect.cpp" />
+    <ClCompile Include="D2D_UIRoundedRect.cpp" />
+    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Ingredient.cpp" />
+    <ClCompile Include="IngredientManager.cpp" />
+    <ClCompile Include="InteractiveMovableObject.cpp" />
+    <ClCompile Include="Mission.cpp" />
+    <ClCompile Include="MissionManager.cpp" />
+    <ClCompile Include="MissionSamplePaper.cpp" />
     <ClCompile Include="Potion.cpp" />
+    <ClCompile Include="SceneScore.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UI_MoveObject.cpp" />
     <ClCompile Include="ScreenOverlay.cpp" />
     <ClCompile Include="InteractiveStaticObject.cpp" />
     <ClCompile Include="MissionPaper.cpp" />
@@ -171,7 +186,6 @@
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="LightBase.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -200,7 +214,6 @@
     <ClCompile Include="ThirdPersonCamera.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="UI2D.cpp" />
     <ClCompile Include="UI_Font.cpp" />
     <ClCompile Include="UIStackContainer.cpp" />
     <ClCompile Include="UIStackContainerManager.cpp" />
@@ -212,6 +225,7 @@
     <ClCompile Include="UI_Square.cpp" />
     <ClCompile Include="UVAnimation.cpp" />
     <ClCompile Include="Water.cpp" />
+    <ClCompile Include="WaterJug.cpp" />
     <ClCompile Include="WaterState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +236,22 @@
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CylinderOneCap.h" />
+    <ClInclude Include="D2DFont.h" />
+    <ClInclude Include="D2D_UIBase.h" />
+    <ClInclude Include="D2D_UIStackContainer.h" />
+    <ClInclude Include="D2D_UIRect.h" />
+    <ClInclude Include="D2D_UIRoundedRect.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Ingredient.h" />
+    <ClInclude Include="IngredientManager.h" />
+    <ClInclude Include="InteractiveMovableObject.h" />
+    <ClInclude Include="Mission.h" />
+    <ClInclude Include="MissionManager.h" />
+    <ClInclude Include="MissionSamplePaper.h" />
     <ClInclude Include="Potion.h" />
+    <ClInclude Include="SceneScore.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UI_MoveObject.h" />
     <ClInclude Include="ScreenOverlay.h" />
     <ClInclude Include="InteractiveStaticObject.h" />
     <ClInclude Include="MissionPaper.h" />
@@ -237,7 +266,6 @@
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GUI.h" />
-    <ClInclude Include="Ingredient.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Mesh.h" />
@@ -267,7 +295,6 @@
     <ClInclude Include="ThirdPersonCamera.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="UI2D.h" />
     <ClInclude Include="UI_Font.h" />
     <ClInclude Include="UIStackContainer.h" />
     <ClInclude Include="UIStackContainerManager.h" />
@@ -279,6 +306,7 @@
     <ClInclude Include="UI_Square.h" />
     <ClInclude Include="UVAnimation.h" />
     <ClInclude Include="Water.h" />
+    <ClInclude Include="WaterJug.h" />
     <ClInclude Include="WaterState.h" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +316,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="PS_Ingredient.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_InteractiveObjectNormal.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

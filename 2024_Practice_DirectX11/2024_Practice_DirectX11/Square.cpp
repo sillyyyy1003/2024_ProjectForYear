@@ -3,6 +3,7 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
+#include <functional>
 
 using namespace DirectX;
 using namespace SimpleMath;
@@ -134,10 +135,10 @@ void Square::CreateMesh()
 
 	vtx = {
 
-		{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
-		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f/mUvAnimation->GetSplit().x,0.f)},
-		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f / mUvAnimation->GetSplit().x,1.0f / mUvAnimation->GetSplit().y)},
-		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,1.0f / mUvAnimation->GetSplit().y)},
+		{pos[0],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,1.0f / mUvAnimation->GetSplit().y)},
+		{pos[1],Vector3(0.0f,1.0f,0.0f),Vector2(0.f,0.f)},
+		{pos[2],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f / mUvAnimation->GetSplit().x,0.f)},
+		{pos[3],Vector3(0.0f,1.0f,0.0f),Vector2(1.0f / mUvAnimation->GetSplit().x,1.0f / mUvAnimation->GetSplit().y)},
 
 	};
 	
@@ -165,38 +166,63 @@ void Square::CreateMesh()
 
 void Square::CreateMesh(UINT slices)
 {
-	float size = 1.0f; 
-	float halfSize = size / 2;  
-	float step = size / slices; 
-	std::vector<Vertex::VtxPosNormalTex> vtx; 
+	
+	
+	float size = 1.0f;
+	uint32_t vertexCount = (slices + 1) * (slices + 1);
+	uint32_t indexCount = 6 * slices * slices;
+	std::vector<Vertex::VtxPosNormalTex> vtx;
+	std::vector<DWORD> indexData;
+	vtx.resize(vertexCount);
+	indexData.resize(indexCount);
 
-	for (UINT i = 0; i <= slices; i++)
+
+	float sliceWidth = size / slices;
+	float sliceDepth = size / slices;
+	float leftBottomX = -size / 2;
+	float leftBottomZ = -size / 2;
+	float posX, posZ;
+	float sliceTexWidth = 1.0f / mUvAnimation->GetSplit().x / slices;
+	float sliceTexDepth = 1.0f / mUvAnimation->GetSplit().y / slices;
+	float normal;
+	uint32_t vIndex = 0;
+	uint32_t iIndex = 0;
+	//  __ __
+	  // | /| /|
+	  // |/_|/_|
+	  // | /| /| 
+	  // |/_|/_|
+	for (uint32_t z = 0; z <= slices; ++z)
 	{
-		for (UINT j = 0; j <= slices; j++)
+		posZ = leftBottomZ + z * sliceDepth;
+		for (uint32_t x = 0; x <= slices; ++x)
 		{
-			float x = -halfSize + j * step; // x 
-			float z = -halfSize + i * step; // z 
-			float u = static_cast<float>(j) / (slices*mUvAnimation->GetSplit().x); // u
-			float v = static_cast<float>(i) / (slices*mUvAnimation->GetSplit().y); // v
-
-			vtx.push_back({ XMFLOAT3(x, 0, z), Vector3(0.0f, 1.0f, 0.0f), Vector2(u, v) });
+			posX = leftBottomX + x * sliceWidth;
+			normal = 1.0f;
+			vtx[vIndex]= {
+				{posX,0.0f,posZ},
+				{0.f,1.f,0.f},
+				{x * sliceTexWidth,1.0f / mUvAnimation->GetSplit().y - z * sliceTexDepth}
+			};
+			vIndex++;
 		}
 	}
+
 	SetVertices(vtx);
 
-	std::vector<DWORD> indexData;
-	for (UINT i = 0; i < slices; i++)
+	
+	for (uint32_t i = 0; i < slices; ++i)
 	{
-		for (UINT j = 0; j < slices; j++)
+		for (uint32_t j = 0; j < slices; ++j)
 		{
-			int start = i * (slices + 1) + j;
-			indexData.push_back(start);
-			indexData.push_back(start + 1);
-			indexData.push_back(start + slices + 2);
+			
+				indexData[iIndex++] = i * (slices + 1) + j;
+				indexData[iIndex++] = (i + 1) * (slices + 1) + j;
+				indexData[iIndex++] = (i + 1) * (slices + 1) + j + 1;
 
-			indexData.push_back(start);
-			indexData.push_back(start + slices + 2);
-			indexData.push_back(start + slices + 1);
+				indexData[iIndex++] = (i + 1) * (slices + 1) + j + 1;
+				indexData[iIndex++] = i * (slices + 1) + j + 1;
+				indexData[iIndex++] = i * (slices + 1) + j;
 		}
 	}
 
@@ -209,6 +235,7 @@ void Square::CreateMesh(UINT slices)
 	desc.indexCount = static_cast<UINT>(indexData.size());
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
+
 }
 
 void Square::WriteDefShader()

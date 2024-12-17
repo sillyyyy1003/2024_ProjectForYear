@@ -1,7 +1,8 @@
-#include "MissionPaper.h"
+ï»¿#include "MissionPaper.h"
 #include "DirLight.h"
 #include "GameApp.h"
 #include "KInput.h"
+#include "MissionManager.h"
 #include "RenderState.h"
 
 
@@ -21,18 +22,26 @@ MissionPaper::MissionPaper()
 
 void MissionPaper::Init(const std::shared_ptr<Texture>& tex, const char* _objName)
 {
-	mModel = std::make_unique<Square>();
-	mModel->Init(tex,0);
-	mModel->SetRotation(-90, 0, 0);
+	mPaper = std::make_unique<Square>();
+	mPaper->Init(tex,0);
+	mPaper->SetRotation(-90, 0, 0);
+
 	InitCollider();
 }
 
 void MissionPaper::Init(const char* filePath, const char* _objName)
 {
-	mModel = std::make_unique<Square>();
-	mModel->Init(filePath, 0);
-	mModel->SetRotation(-90, 0, 0);
+	mPaper = std::make_unique<Square>();
+	mPaper->Init(filePath, 0);
+	mPaper->SetRotation(-90, 0, 0);
 	InitCollider();
+}
+
+void MissionPaper::InitMission(float reward,DirectX::XMFLOAT4 targetColor)
+{
+	mMission = std::make_unique<Mission>();
+	mMission->SetReward(reward);
+	mMission->SetMissionColor(targetColor);
 }
 
 void MissionPaper::Update(float dt)
@@ -42,39 +51,46 @@ void MissionPaper::Update(float dt)
 	GameUpdate(dt);
 
 	LateUpdate(dt);
-
 }
 
 void MissionPaper::Draw()
 {
-	mModel->SwitchToDefShader();
-	mModel->GetDefPS()->WriteShader(2, &mEffect);
-	mModel->Draw();
 
-	//DrawOutline
+	mPaper->GetDefPS()->WriteShader(2, &mEffect);
+	mPaper->Draw();
 
 }
 
 void MissionPaper::SetPosition(DirectX::XMFLOAT3 pos)
 {
-	mModel->SetPosition(pos);
+	mPaper->SetPosition(pos);
 	NotifyModelStateChangeListener();
 }
 
 void MissionPaper::SetScale(const DirectX::XMFLOAT2& scale)
 {
-	mModel->SetScale(scale);
+	mPaper->SetScale(scale);
 	NotifyModelStateChangeListener();
 }
 
 bool MissionPaper::GetClicked()
 {
-	return this->isClicked;
+	if(isClicked)
+	{
+		//reset trigger
+		isClicked = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void MissionPaper::LoadDefShader(const std::shared_ptr<VertexShader>& mVS, const std::shared_ptr<PixelShader>& mPS)
 {
-	mModel->LoadDefShader(mVS,mPS);
+	mPaper->LoadDefShader(mVS,mPS);
+
 }
 
 void MissionPaper::PreUpdate(float dt)
@@ -92,14 +108,14 @@ void MissionPaper::PreUpdate(float dt)
 	default:
 	case ObjectState::STATE_NONE:
 	{
-		//Œ»Ý‚ÌƒJƒƒ‰‚ðŽæ“¾
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’å–å¾—
 		CameraBase* camera = GameApp::GetCurrentCamera();
-		//ƒ}ƒEƒX‚ÌˆÊ’uƒXƒNƒŠ[ƒ“À•W‚ðŽæ“¾
+		//ãƒžã‚¦ã‚¹ã®ä½ç½®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 		POINT mousePos;
 		GetCursorPos(&mousePos);
-		//ƒJƒƒ‰‚©‚çƒ}ƒEƒXˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒžã‚¦ã‚¹ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//ƒJƒƒ‰‚ÌˆÊ’u‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 		XMFLOAT3 camPos = camera->GetPos();
 		XMVECTOR startPos = XMLoadFloat3(&camPos);
 		float distance = 0;
@@ -113,14 +129,14 @@ void MissionPaper::PreUpdate(float dt)
 	break;
 	case ObjectState::STATE_HOVER:
 	{
-		//Œ»Ý‚ÌƒJƒƒ‰‚ðŽæ“¾
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’å–å¾—
 		CameraBase* camera = GameApp::GetCurrentCamera();
-		//ƒ}ƒEƒX‚ÌˆÊ’uƒXƒNƒŠ[ƒ“À•W‚ðŽæ“¾
+		//ãƒžã‚¦ã‚¹ã®ä½ç½®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 		POINT mousePos;
 		GetCursorPos(&mousePos);
-		//ƒJƒƒ‰‚©‚çƒ}ƒEƒXˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒžã‚¦ã‚¹ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//ƒJƒƒ‰‚ÌˆÊ’u‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 		XMFLOAT3 camPos = camera->GetPos();
 		XMVECTOR startPos = XMLoadFloat3(&camPos);
 		float distance = 0;
@@ -142,15 +158,15 @@ void MissionPaper::PreUpdate(float dt)
 
 	case ObjectState::STATE_CLICK:
 	{
-		//Œ»Ý‚ÌƒJƒƒ‰‚ðŽæ“¾
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’å–å¾—
 		CameraBase* camera = GameApp::GetCurrentCamera();
-		//ƒ}ƒEƒX‚ÌˆÊ’uƒXƒNƒŠ[ƒ“À•W‚ðŽæ“¾
+		//ãƒžã‚¦ã‚¹ã®ä½ç½®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 		POINT mousePos;
 		GetCursorPos(&mousePos);
 
-		//ƒJƒƒ‰‚©‚çƒ}ƒEƒXˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒžã‚¦ã‚¹ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//ƒJƒƒ‰‚ÌˆÊ’u‚ðŽæ“¾
+		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 		XMFLOAT3 camPos = camera->GetPos();
 		XMVECTOR startPos = XMLoadFloat3(&camPos);
 		float distance = 0;
@@ -189,16 +205,15 @@ void MissionPaper::GameUpdate(float dt)
 
 void MissionPaper::LateUpdate(float dt)
 {
-	mModel->Update(dt);
-
+	mPaper->Update(dt);
 }
 
 void MissionPaper::InitCollider()
 {
 	mCollider = std::make_unique<BoxCollider>();
 
-	mCollider->SetCenter(mModel->mTransform.GetPosition());
-	Vector3 boxSize = mModel->mTransform.GetScale();
+	mCollider->SetCenter(mPaper->mTransform.GetPosition());
+	Vector3 boxSize = mPaper->mTransform.GetScale();
 	boxSize /= 2.0f;
 	mCollider->SetExtents(boxSize);
 
@@ -220,7 +235,7 @@ void MissionPaper::OnStateNone()
 	isClicked = false;
 
 	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mModel->SetAmbient(ambient * 0.75f);
+	mPaper->SetAmbient(ambient * 0.75f);
 	mEffect.rimIntensity = 0.0f;
 }
 
@@ -230,7 +245,7 @@ void MissionPaper::OnStateHover()
 	isClicked = false;
 
 	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mModel->SetAmbient(ambient);
+	mPaper->SetAmbient(ambient);
 	mEffect.rimIntensity = 0.4f;
 
 }
@@ -241,21 +256,23 @@ void MissionPaper::OnStateClicked()
 	isClicked = true;
 
 	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mModel->SetAmbient(ambient * 0.75f);
+	mPaper->SetAmbient(ambient * 0.75f);
 	mEffect.rimIntensity = 0.4f;
+	//todo:ä»»åŠ¡ç‚¹å‡»è¦å…·æœ‰æŽ’ä»–æ€§!
+	mMission->RegisterAsCheckMission();
 }
 
 void MissionPaper::UpdateCollider()
 {
 	//Update extents
-	Vector3 boxSize = mModel->GetScale();
+	Vector3 boxSize = mPaper->GetScale();
 	boxSize /= 2.0f;
 	mCollider->SetExtents(boxSize);
 
 	//Update center
-	mCollider->SetCenter(mModel->GetPosition());
+	mCollider->SetCenter(mPaper->GetPosition());
 
 	//Update orientation
-	mCollider->SetOrientation(mModel->mTransform.GetQuaternion());
+	mCollider->SetOrientation(mPaper->mTransform.GetQuaternion());
 
 }

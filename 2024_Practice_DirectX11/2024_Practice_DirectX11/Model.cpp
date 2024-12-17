@@ -204,6 +204,7 @@ bool Model::Load(const char* file, bool flip, bool simpleMode)
 		mMaterials.push_back(material);
 	}
 
+	mMaterial = mMaterials[0];
 	DebugLog::Log("モデル読み込み完了");
 	return true;
 }

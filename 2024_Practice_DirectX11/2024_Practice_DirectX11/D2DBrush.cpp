@@ -1,10 +1,8 @@
 #include "D2DBrush.h"
+
+#include "D2DFont.h"
 #include "D3DApp.h"
 
-
-D2DBrush::~D2DBrush()
-{
-}
 
 void D2DBrush::InitBrush()
 {
@@ -12,10 +10,9 @@ void D2DBrush::InitBrush()
 	InitLinearBrush();
 	InitRadianBrush();
 
-	mBrushList.emplace(SOLID, GetSolidBrush());
-	mBrushList.emplace(LINEAR, GetLGBrush());
-	mBrushList.emplace(RADIAN, GetRGBrush());
-
+	mBrushList.emplace(D2DBrushConfig::BrushKind::SOLID, GetSolidBrush());
+	mBrushList.emplace(D2DBrushConfig::BrushKind::LINEAR, GetLGBrush());
+	mBrushList.emplace(D2DBrushConfig::BrushKind::RADIAN, GetRGBrush());
 
 }
 
@@ -24,7 +21,7 @@ void D2DBrush::SetSolidBrushColor(D2D1::ColorF color)
 	mSolidBrush->SetColor(color);
 }
 
-void D2DBrush::SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor, BrushKind brush)
+void D2DBrush::SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor, D2DBrushConfig::BrushKind brush)
 {
 	ID2D1RenderTarget* renderTarget = gD3D->Get2DRenderTarget();
 	mFrontColorF = frontColor;
@@ -32,10 +29,10 @@ void D2DBrush::SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor, Br
 
 	switch(brush)
 	{
-	case LINEAR:
+	case D2DBrushConfig::BrushKind::LINEAR:
 		InitLinearBrush();
 		break;
-	case RADIAN:
+	case D2DBrushConfig::BrushKind::RADIAN:
 		InitRadianBrush();
 		break;
 	}

@@ -2,8 +2,10 @@
 
 #include "GameApp.h"
 #include "KInput.h"
+#include "MissionManager.h"
 #include "RenderState.h"
 #include "ScreenOverlay.h"
+#include "UI_Button.h"
 #include "UI_Font.h"
 
 void SceneMission::Init()
@@ -14,7 +16,7 @@ void SceneMission::Init()
 	mPaperContainer = std::make_unique<UIStackContainer>();
 	mPaperContainer->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
 	mPaperContainer->LoadBackgroundTex(GetObj<Texture>("paper"),{200,50});
-	mPaperContainer->LoadFontTexture(GetObj<Texture>("UIFont_Courier_New_It"), UITextOption::fontDefaultSize);
+	mPaperContainer->LoadFontTexture(GetObj<Texture>("UIFont_Courier_New_It"), UITextOption::FONT_DEFAULT_SIZE);
 	mPaperContainer->LoadSaveData(sceneData,"Test");
 
 	//Mission Icon
@@ -25,13 +27,28 @@ void SceneMission::Init()
 
 	//Accept
 	mAccept = std::make_unique<UI_Button>();
-	mAccept->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 300,50 }, GetObj<Texture>("UIFont_Courier_New_Bold"), UITextOption::fontDefaultSize);
+	mAccept->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 300,50 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
 	mAccept->LoadSaveData(sceneData, "Accept");
 
+	//Back Button
+	mBack = std::make_unique<UI_Button>();
+	mBack->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 300,50 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
+	mBack->LoadSaveData(sceneData, "Back");
 
-	mReject = std::make_unique<UI_Button>();
-	mReject->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 300,50 }, GetObj<Texture>("UIFont_Courier_New_Bold"), UITextOption::fontDefaultSize);
-	mReject->LoadSaveData(sceneData, "Reject");
+
+	//Color Sample
+	mColorSample = std::make_unique<UIStackContainer>();
+	mColorSample->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
+	mColorSample->LoadFile(nullptr, nullptr);
+	mColorSample->LoadSaveData(sceneData, "ColorSample");
+	Color missionColor = MissionManager::Get()->GetCurrentCheckMission()->GetMissionColor();
+	mColorSample->SetBackgroundColor(missionColor);
+
+	mPSWord = std::make_unique<UIStackContainer>();
+	mPSWord->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
+	mPSWord->LoadFile(nullptr, GetObj<Texture>("UIFont_Courier_New_It"),{1,1},UITextOption::FONT_DEFAULT_SIZE);
+	mPSWord->LoadSaveData(sceneData, "PSWord");
+
 
 }
 
@@ -42,18 +59,15 @@ void SceneMission::UnInit()
 	sceneData["Test"] = mPaperContainer->SaveData("Test");
 	sceneData["MissionOwner"] = mMissionOwner->SaveData("MissionOwner");
 	sceneData["Accept"] = mAccept->SaveData("Accept");
-	sceneData["Reject"] = mReject->SaveData("Reject");
+	sceneData["Back"] = mBack->SaveData("Back");
+	sceneData["ColorSample"] = mColorSample->SaveData("ColorSample");
+	sceneData["PSWord"] = mPSWord->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_mission.json", sceneData);
 	
 }
 
 void SceneMission::Update(float dt)
 {
-	mAccept->Update();
-	mReject->Update();
-	mPaperContainer->Update();
-	mMissionOwner->Update();
-
 	if (KInput::IsKeyTrigger(VK_ESCAPE))
 	{
 		SceneManager::Get()->SetSwitchScene(true);
@@ -61,13 +75,27 @@ void SceneMission::Update(float dt)
 		return;
 	}
 
-	if(mAccept->isTrigger()||mReject->isTrigger())
+	if(mBack->isTrigger())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Lab");
 		return;
 	}
 
+	if(mAccept->isTrigger())
+	{
+		MissionManager::Get()->RegisterCheckMissionAsCurrentMission();
+		SceneManager::Get()->SetSwitchScene(true);
+		SceneManager::Get()->SetMainScene("Potion");
+		return;
+	}
+
+	mAccept->Update();
+	mBack->Update();
+	mPaperContainer->Update();
+	mMissionOwner->Update();
+	mColorSample->Update();
+	mPSWord->Update();
 }
 
 void SceneMission::Draw()
@@ -80,8 +108,10 @@ void SceneMission::Draw()
 	mPaperContainer->Draw();
 	mMissionOwner->Draw();
 	mAccept->Draw();
-	mReject->Draw();
-	GameApp::SetBlendState(nullptr);
+	mBack->Draw();
+	mColorSample->Draw();
+	mPSWord->Draw();
+
 
 	
 }

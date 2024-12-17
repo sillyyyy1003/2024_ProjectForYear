@@ -9,9 +9,10 @@ class StaticObject :public Component
 	float rot[3] = {};
 #endif
 protected:
+
 	std::unique_ptr<Primitive> mModel = nullptr;
 	std::string mObjectName;	//オブジェクト名
-
+	bool isUsePBR = false;
 public:
 	StaticObject();
 	~StaticObject() override = default;
@@ -19,16 +20,16 @@ public:
 	/// @brief PBRModelの初期化
 	/// @param filePath 3Dモデルのファルパス
 	///	@param _objName
-	void InitPBR(const char* filePath, const char* _objName);
+	virtual void InitPBR(const char* filePath, const char* _objName);
 
 	/// @brief 一般のモデルの初期化
 	/// @param filePath テクスチャのファイルパス
 	/// @param _objName 
 	/// @param _kind モデルの種類
 	///	@param _UVSplit 
-	void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
+	virtual void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
 
-	void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
+	virtual void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
 
 
 	void LoadTex(PBRConfig::PBRTexList list);
@@ -48,10 +49,10 @@ public:
 
 	std::string GetObjectName() { return mObjectName; };
 
-	void SetVertexShader(VertexShader* vs) { mModel->SetVertexShader(vs); };
-	void SetPixelShader(PixelShader* ps) { mModel->SetPixelShader(ps); };
+	virtual void SetVertexShader(VertexShader* vs) { mModel->SetVertexShader(vs); };
+	virtual void SetPixelShader(PixelShader* ps) { mModel->SetPixelShader(ps); };
 
-	void SwitchToDefShader() { mModel->SwitchToDefShader(); };
+	virtual void SwitchToDefShader() { mModel->SwitchToDefShader(); };
 
 	void LoadAlbedoTex(std::shared_ptr<Texture> tex) { mModel->LoadAlbedoTex(tex); };
 	void LoadNormalMapTex(std::shared_ptr<Texture> tex) { mModel->LoadNormalMapTex(tex); };
@@ -61,6 +62,8 @@ public:
 
 	PixelShader* GetDefPS() { return this->mModel->GetDefPS(); };
 	VertexShader* GetDefVS() { return this->mModel->GetDefVS(); };
+
+	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 	
 
 	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
@@ -70,6 +73,8 @@ public:
 	virtual void SetPosition(DirectX::XMFLOAT3 pos) { mModel->SetPosition(pos); };
 	virtual void SetRotation(DirectX::XMFLOAT3 rot) { mModel->SetRotation(rot); };
 	virtual void SetScale(DirectX::XMFLOAT3 scale) { mModel->SetScale(scale); };
+
+	virtual void SetTransparency(float _transparency);
 
 };
 

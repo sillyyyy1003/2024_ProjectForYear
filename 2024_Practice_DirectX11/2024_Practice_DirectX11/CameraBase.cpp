@@ -1,5 +1,6 @@
 ﻿#include "CameraBase.h"
 #include "GameApp.h"
+#include "GUI.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -96,6 +97,7 @@ DirectX::XMVECTOR CameraBase::ScreenPointToRay(POINT mousePos) noexcept
 	Vector3 cameraPos = mTransform.GetPosition();
 	Vector3 mouseWorldPos = MousePosToWorld(mousePos);
 	XMVECTOR rayDir = XMVector3Normalize(mouseWorldPos - cameraPos);
+
 	return rayDir;
 }
 

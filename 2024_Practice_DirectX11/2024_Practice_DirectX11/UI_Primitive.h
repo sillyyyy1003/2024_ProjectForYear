@@ -15,7 +15,7 @@ namespace UIPrimitiveConfig
 	};
 
 
-	constexpr UINT defaultSlices = 16;
+	constexpr UINT defaultSlices = 64;
 }
 
 class UIComponent: public Component

@@ -4,29 +4,49 @@
 #include <string>
 #include "SceneBase.h"
 
-class Player
+namespace PlayerConfig
+{
+	enum PigmentColor :uint8_t
+	{
+		RED = 0,
+		YELLOW = 1,
+		BLUE = 2,
+		COLOR_MAX
+	};
+}
+
+class Player :public Component
 {
 private:
+	/// @brief
+	///	@param PigmentColor ColorName
+	///	@param float Current Capacity
+	std::unordered_map<PlayerConfig::PigmentColor, float> mCapacities;
 
-	float mGold = 0;	//プレヤーが持つ金
-	int mWitchLevel = 1;//ギルドレベル
+	float mGold = 100;	//プレヤーが持つ金
+	float mWitchLevel = 1;//ギルドレベル
 
-	//the components will all be copied from SceneBase::mObjects;
-	using Ingredients = std::map<std::string, Component*>;
-	static Ingredients mIngredients;	//持つIngredients
-
-	//todo: 全部を一個の容器で扱う
+	int mDay = 1;//Calculate the day
 
 public:
 	Player();
 	~Player() = default;
 
-	void AddIngredient(Ingredients* _component);
+	void LoadPlayerData(json data);
+	json SaveData();
 
-	void Update(float dt);
+	const float& GetPlayerGold() const { return mGold; };
+	std::string GetPlayerGold();
 
-	void DrawObject();
+	std::string GetDayNum();
 
+	const float& GetCapacities(PlayerConfig::PigmentColor color);
+	void SaveCapacitiesData(PlayerConfig::PigmentColor color, float capacity);
 
+	float GetWitchLevel() const { return mWitchLevel; };
+	void LevelUp();
+	void EndToday();
+
+	void ChargeForIngredients();
 };
 

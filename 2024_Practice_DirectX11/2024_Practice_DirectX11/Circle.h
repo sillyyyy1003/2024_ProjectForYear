@@ -34,6 +34,6 @@ public:
 	 /// @brief Default Shaderに使われるデータの書き込み
 	void WriteDefShader()override;
 
-	Mesh* GetMesh() const { return mMesh.get(); };
+	Mesh* GetMesh() const override { return mMesh.get(); };
 };
 

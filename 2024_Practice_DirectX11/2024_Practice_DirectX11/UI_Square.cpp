@@ -153,12 +153,10 @@ void UI_Square::Draw(int texSlot)
 
 void UI_Square::WriteDefShader()
 {
-	Vector2 viewSize = { static_cast<float>(gD3D->GetWinWidth()),static_cast<float>(gD3D->GetWinHeight()) };
-
 	XMMATRIX WVP[3] = {};
 	WVP[0] = mTransform.GetMatrix();
 	WVP[1] = XMMatrixIdentity();
-	WVP[2] = XMMatrixOrthographicLH(viewSize.x, viewSize.y, 0.0f, 3.0f);
+	WVP[2] = XMMatrixOrthographicLH(WIN_WIDTH, WIN_HEIGHT, 0.0f, 3.0f);
 	WVP[2] = XMMatrixTranspose(WVP[2]);
 
 	UVConstantBuffer uvBuffer;

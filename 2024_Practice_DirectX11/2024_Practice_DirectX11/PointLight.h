@@ -24,7 +24,7 @@ public:
 	void SetAttenuation(float x, float y, float z);
 	void SetAttenuation(const float* attenuation);
 
-	const Light::PointLight& GetPointLight() const;
+	Light::PointLight GetPointLight();
 	virtual json SaveData();
 
 	virtual void LoadSaveData(json data, const char* objName);

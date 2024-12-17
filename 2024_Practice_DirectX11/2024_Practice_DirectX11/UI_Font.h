@@ -76,7 +76,7 @@ namespace UITextOption
 
 	constexpr float defaultFontRectWidth = 300.0f;
 
-	constexpr DirectX::XMFLOAT2 fontDefaultSize = { 2.f,3.36f };//1:1.68
+	constexpr DirectX::XMFLOAT2 FONT_DEFAULT_SIZE = { 2.f,3.36f };//1:1.68
 	constexpr float defaultFontLayerPosZ = 0.2f;
 	
 }
@@ -86,15 +86,8 @@ namespace UITextOption
 class UI_Font :public Component
 {
 private:
-	
-	DirectX::XMFLOAT2 mOriginalCharSize = { 1,1 };
-	DirectX::XMFLOAT2 mOriginalAnchorPos = { 0.0f,0.0f };
-	float mOriginalBlockWidth = UITextOption::defaultFontRectWidth;
 
 	float startX, startY, endX, endY = 0;
-
-
-
 protected:
 
 	std::vector<std::shared_ptr<UI_Square>> mText;	//描画する文字列

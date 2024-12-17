@@ -4,7 +4,6 @@
 #include <sstream>
 #include <dxgi.h>
 #include <memory>
-
 #include "DebugLog.h"
 #include "GameApp.h"
 #include "KInput.h"
@@ -86,7 +85,7 @@ int D3DApp::Run()
     mTimer.Reset();
     timeBeginPeriod(1);
     mTimer.mOldTime = timeGetTime();
-
+ 
     while (msg.message != WM_QUIT)
     {
         if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -100,7 +99,7 @@ int D3DApp::Run()
 
             if (!isAppPaused)
             {
-                mTimer.mNewTime = timeGetTime();
+                 mTimer.mNewTime = timeGetTime();
                 float diff = static_cast<float>(mTimer.mNewTime - mTimer.mOldTime);
                 if (diff >= 1000.0f / 60)
                 {
@@ -113,20 +112,20 @@ int D3DApp::Run()
                     UpdateScene(diff);
                     DrawScene();
                     mTimer.mOldTime = mTimer.mNewTime;
-                }          
-                /*
-                    CalculateFrameStats();
-	               ImGui_ImplDX11_NewFrame();
-	               ImGui_ImplWin32_NewFrame();
-	               ImGui::NewFrame();
-	               KInput::UpdateInput();//入力
-	               UpdateScene(mTimer.DeltaTime());
-	               DrawScene();
-                */
+                }         
+                
+            	//CalculateFrameStats();
+	            //ImGui_ImplDX11_NewFrame();
+	            //ImGui_ImplWin32_NewFrame();
+	            //ImGui::NewFrame();
+	            //KInput::UpdateInput();//入力
+	            //UpdateScene(mTimer.DeltaTime());
+	            //DrawScene();
+                
             }
             else
             {
-                Sleep(100);
+                Sleep(10);
             }
         }
     }
@@ -138,6 +137,9 @@ int D3DApp::Run()
 
 bool D3DApp::Init()
 {
+    // コンソール生成
+    AllocConsole();
+
     if (!InitMainWindow())
         return false;
 
@@ -153,12 +155,6 @@ bool D3DApp::Init()
 	if (!InitImGui())
         return false;
 
-    // コンソール生成
-    AllocConsole();
-    // 標準出力の割り当て
-    freopen_s(&fp, "CON", "w", stdout);
-
-    DebugLog::Log("Game Init Completed");
     return true;
 }
 
@@ -404,7 +400,7 @@ bool D3DApp::InitMainWindow()
     int width = R.right - R.left;
     int height = R.bottom - R.top;
 
-    mhMainWnd = CreateWindow(L"D3DWndClassName", mWndTitle.c_str(),WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
+    mhMainWnd = CreateWindow(L"D3DWndClassName", mWndTitle.c_str(), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
 
   
     if (!mhMainWnd)
@@ -413,9 +409,9 @@ bool D3DApp::InitMainWindow()
         return false;
     }
 
-    ShowWindow(mhMainWnd, SW_SHOW);
-    UpdateWindow(mhMainWnd);
 
+    ShowWindow(mhMainWnd, SW_SHOWMAXIMIZED);
+    UpdateWindow(mhMainWnd);
     return true;
 }
 

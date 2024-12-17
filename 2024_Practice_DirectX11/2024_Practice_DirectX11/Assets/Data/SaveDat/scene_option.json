@@ -1,79 +1,114 @@
 {
-    "test": {
-        "AnchorAlign": [
-            4
+    "button": {
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
         ],
-        "AnchorPosition": [
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                0.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                350.0,
+                90.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            10.0,
             0.0,
             0.0
         ],
-        "ContainerSize": [
-            500.0,
-            500.0
+        "Position": [
+            0.0,
+            0.0
         ],
-        "Context": "This is test\nI want test more",
-        "FontBlockWidth": [
-            300.0
+        "Scale": [
+            350.0,
+            90.0
         ],
+        "Text": "Title",
+        "TextAlignment": 1
+    },
+    "test": {
         "FontColor": [
             0.0,
             0.0,
             0.0,
             1.0
         ],
-        "FontSize": [
-            22.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Diffuse": [
+            "OutlineColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Emission": [
-                0.0,
-                0.0,
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
                 0.0,
                 0.0
             ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
+            "RadiusX": [
+                50.0
+            ],
+            "RadiusY": [
+                50.0
+            ],
+            "Scale": [
+                300.0,
+                100.0
             ]
         },
         "Padding": [
-            0.0,
-            0.0,
+            100.0,
+            10.0,
             0.0,
             0.0
         ],
         "Position": [
             0.0,
-            0.0,
-            0.8999999761581421
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
             0.0
         ],
-        "TextAlign": [
-            1
-        ]
+        "Scale": [
+            300.0,
+            100.0
+        ],
+        "Text": "This",
+        "TextAlignment": 1
     }
 }

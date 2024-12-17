@@ -11,12 +11,10 @@ class SceneMission : public SceneBase
 	std::vector<std::unique_ptr<UIStackContainer>> mIngredients;
 
 	std::unique_ptr<UI_Button> mAccept;
-	std::unique_ptr<UI_Button> mReject;
-	std::unique_ptr<UI_Button> mBackToLab;
+	std::unique_ptr<UI_Button> mBack;
 
-	//todo:use mission manager to load all the texture
-
-
+	std::unique_ptr<UIStackContainer> mColorSample;
+	std::unique_ptr<UIStackContainer> mPSWord;
 
 	
 public:

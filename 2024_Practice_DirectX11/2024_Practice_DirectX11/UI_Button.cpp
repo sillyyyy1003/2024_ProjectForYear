@@ -58,9 +58,9 @@ void UI_Button::Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const st
 	mContainer->LoadFontTexture(fontTex, charSize);
 
 	//Init StateColor
-	for (int i = 0; i < UIButton::STATE_MAX; i++)
+	for (int i = 0; i < UIButtonConfig::STATE_MAX; i++)
 	{
-		mStateColor[i] = UIButton::DEFAULT_BUTTON_STATE_COLOR[i];
+		mStateColor[i] = UIButtonConfig::DEFAULT_BUTTON_STATE_COLOR[i];
 	}
 }
 
@@ -70,14 +70,14 @@ void UI_Button::Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const st
 	mContainer = std::make_unique<UIStackContainer>();
 	mContainer->InitUIStackContainer(primitiveKind);
 	mContainer->LoadBackgroundTex(bgTex, { 1,1 });
-	mContainer->LoadFontTexture(fontTex, { 1,1 });
-	for (int i = 0; i < UIButton::STATE_MAX; i++)
+	mContainer->LoadFontTexture(fontTex,  UITextOption::FONT_DEFAULT_SIZE);
+	for (int i = 0; i < UIButtonConfig::STATE_MAX; i++)
 	{
-		mStateColor[i] = UIButton::DEFAULT_BUTTON_STATE_COLOR[i];
+		mStateColor[i] = UIButtonConfig::DEFAULT_BUTTON_STATE_COLOR[i];
 	}
 }
 
-void UI_Button::SetStateColor(DirectX::XMFLOAT4 color, UIButton::ButtonState state)
+void UI_Button::SetStateColor(DirectX::XMFLOAT4 color, UIButtonConfig::ButtonState state)
 {
 	mStateColor[state] = color;
 }
@@ -86,8 +86,14 @@ void UI_Button::Update()
 {
 	mContainer->Update();
 
+
 	PreUpdate();
 	GameUpdate();
+}
+
+void UI_Button::SetEditable(bool isEditable)
+{
+	mContainer->SetEditable(isEditable);
 }
 
 void UI_Button::PreUpdate()
@@ -145,13 +151,13 @@ void UI_Button::GameUpdate()
 	{
 	default:
 	case STATE_NONE:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_NONE]);
+		mContainer->mUiSet.background->SetAmbientColor(mStateColor[UIButtonConfig::STATE_NONE]);
 		break;
 	case STATE_PRESS:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_PRESS]);
+		mContainer->mUiSet.background->SetAmbientColor(mStateColor[UIButtonConfig::STATE_PRESS]);
 		break;
 	case STATE_HOVER:
-		mContainer->mUiSet.mBackGround->SetAmbientColor(mStateColor[UIButton::STATE_HOVER]);
+		mContainer->mUiSet.background->SetAmbientColor(mStateColor[UIButtonConfig::STATE_HOVER]);
 		break;
 	}
 
@@ -172,5 +178,12 @@ json UI_Button::SaveData(const char* objName)
 {
 	json data;
 	data = mContainer->SaveData(objName);
+	return data;
+}
+
+json UI_Button::SaveData()
+{
+	json data;
+	data = mContainer->SaveData(mContainer->GetObjName().c_str());
 	return data;
 }

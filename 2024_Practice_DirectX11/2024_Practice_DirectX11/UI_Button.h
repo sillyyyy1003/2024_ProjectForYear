@@ -3,7 +3,7 @@
 #include "UI_Primitive.h"
 
 
-namespace UIButton
+namespace UIButtonConfig
 {
 	enum ButtonState
 	{
@@ -25,12 +25,13 @@ namespace UIButton
 class UI_Button :public UIComponent
 {
 private:
-	//todo:this only was texture with rect need to evolution
-	// îwåi
+	
 	std::unique_ptr<UIStackContainer> mContainer = nullptr;
+
+	//todo: add another primitive to do the outline
 	int mState = 0;
 
-	DirectX::XMFLOAT4 mStateColor[UIButton::STATE_MAX]={};
+	DirectX::XMFLOAT4 mStateColor[UIButtonConfig::STATE_MAX]={};
 
 public:
 
@@ -43,12 +44,10 @@ public:
 
 	void Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex, const std::shared_ptr<Texture>& fontTex);
 
-	void SetStateColor(DirectX::XMFLOAT4 color, UIButton::ButtonState state);
+	void SetStateColor(DirectX::XMFLOAT4 color, UIButtonConfig::ButtonState state);
 
-
-
-	void Update();
-	void Draw(int texSlot = 0);
+	void Update() override;
+	void Draw(int texSlot = 0) override;
 
 	/// @brief Press 
 	/// @return 
@@ -60,8 +59,11 @@ public:
 
 	void LoadSaveData(json data, const char* objName);
 	json SaveData(const char* objName);
+	json SaveData();
 
 	void SetObjName(const char* objName) { mContainer->SetObjName(objName); };
+
+	void SetEditable(bool isEditable);
 protected:
 	/// @brief É}ÉEÉXÇÃì¸óÕèàóùÇçsÇ§
 	void PreUpdate();
@@ -74,4 +76,8 @@ protected:
 	void SetScale(DirectX::XMFLOAT2 scale) { mContainer->SetContainerSize(scale); };
 
 };
+
+
+
+
 

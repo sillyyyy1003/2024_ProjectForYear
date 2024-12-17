@@ -1,11 +1,13 @@
 #pragma once
 #include "Collider.h"
+#include "Mission.h"
 #include "SceneBase.h"
 #include "Square.h"
 
 class MissionPaper :public Component
 {
 private:
+
 	struct RimLightEffect
 	{
 		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
@@ -16,8 +18,10 @@ private:
 	RimLightEffect mEffect;
 protected:
 
-	std::unique_ptr<Square> mModel = nullptr;//•`‰æ‚·‚é•”•ª
+	std::unique_ptr<Square> mPaper = nullptr;//•`‰æ‚·‚é•”•ª
 	std::unique_ptr<BoxCollider> mCollider = nullptr; //“–‚½‚è”»’è
+	std::unique_ptr<Mission> mMission;
+
 
 	bool isClicked = false;
 	std::string mObjectName;
@@ -41,6 +45,8 @@ public:
 	/// @param _objName mObjectName
 	void Init(const char* filePath, const char* _objName);
 
+	void InitMission(float reward, DirectX::XMFLOAT4 targetColor);
+
 	void Update(float dt);
 
 	void Draw();
@@ -49,9 +55,11 @@ public:
 	void SetPosition(DirectX::XMFLOAT3 pos);
 	void SetScale(const DirectX::XMFLOAT2& scale);
 
-	bool GetClicked();;
+	bool GetClicked();
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& pVS,const std::shared_ptr<PixelShader>& mPS);
+
+	
 protected:
 
 	void PreUpdate(float dt);

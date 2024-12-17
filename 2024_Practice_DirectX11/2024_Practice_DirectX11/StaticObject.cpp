@@ -18,6 +18,7 @@ void StaticObject::InitPBR(const char* filePath, const char* _objName)
 	mModel = std::make_unique<PBRModel>();
 	mModel->InitWithoutTex(filePath);
 	mObjectName = _objName;
+	isUsePBR = true;
 }
 
 
@@ -60,6 +61,7 @@ void StaticObject::InitModel(const char* filePath, const char* _objName, Primiti
 		break;
 	}
 	mObjectName = _objName;
+	isUsePBR = false;
 }
 
 void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind,
@@ -98,6 +100,7 @@ void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _o
 		break;
 	}
 	mObjectName = _objName;
+	isUsePBR = false;
 }
 
 void StaticObject::LoadTex(PBRConfig::PBRTexList list)
@@ -144,6 +147,7 @@ void StaticObject::Update(float dt)
 
 void StaticObject::Draw()
 {
+	
 	mModel->Draw();
 }       
 
@@ -169,4 +173,14 @@ json StaticObject::SaveData()
 	
 	return data;
 
+}
+
+void StaticObject::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+{
+	mModel->LoadDefShader(vs, ps);
+}
+
+void StaticObject::SetTransparency(float _transparency)
+{
+	mModel->GetMaterial().diffuse.w = _transparency;
 }

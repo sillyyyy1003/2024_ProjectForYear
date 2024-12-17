@@ -17,9 +17,9 @@ void SceneLab::Init()
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_lab.json");
 	
 	//Init Lab Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0.f,10.f,-13.f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0.f,8.5f,-10.f);
 	GetObj<FirstPersonCamera>("DefaultCamera")->LookAt({ 0.f,0.f,7.5f });
-#ifdef _RELEASE
+#ifdef NDEBUG
 	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
 #endif
 
@@ -120,10 +120,17 @@ void SceneLab::Init()
 	
 	
 	mMissionPaper = std::make_unique<MissionPaper>();
-	mMissionPaper->Init(GetObj<Texture>("paper"),"paper");
+	mMissionPaper->Init(GetObj<Texture>("paper2"),"paper");
 	mMissionPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"),GetObj<PixelShader>("PS_InteractiveObjectNormal"));
 	mMissionPaper->SetPosition({0.f, 3.f, 16.85f});
-	mMissionPaper->SetScale({2.3f,2.3f});
+	mMissionPaper->SetScale({2.5f,2.3f});
+	mMissionPaper->InitMission(200, { 0,1,0,1 });
+
+	mGoldBar = std::make_unique<UIStackContainer>();
+	mGoldBar->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
+	mGoldBar->LoadBackgroundTex(nullptr, { 200,200 });
+	mGoldBar->LoadFontTexture(GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
+	mGoldBar->LoadSaveData(sceneData, "GoldBar");
 
 	//Init Shadow RenderTarget
 	InitShadowRenderTarget();
@@ -137,7 +144,6 @@ void SceneLab::UnInit()
 	{
 		sceneData[obj.first.c_str()] = obj.second->SaveData();
 	}
-
 	sceneData["Pot"] = mPot->SaveData();
 
 	//Save EnvironmentLight
@@ -149,6 +155,8 @@ void SceneLab::UnInit()
 
 	sceneData["CandleLight"] = mCandleLight->SaveData();
 	sceneData["Wall"] = mWall->SaveData();
+
+	sceneData["GoldBar"] = mGoldBar->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json",sceneData);
 }
 
@@ -163,6 +171,9 @@ void SceneLab::Draw()
 {
 	mCandleLight->Draw();
 	DrawObjectsWithShadow();
+
+	if(!isSubScene)
+		mGoldBar->Draw();
 }
 
 void SceneLab::GameObjectUpdate(float dt)
@@ -182,6 +193,9 @@ void SceneLab::GameObjectUpdate(float dt)
 		staticObj.second->Update(dt);
 	}
 
+
+	mGoldBar->SetText(GetObj<Player>("player")->GetPlayerGold().c_str());
+	mGoldBar->Update();
 }
 
 void SceneLab::TriggerListener()
@@ -314,7 +328,6 @@ void SceneLab::DrawObjectsWithShadow()
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_InterActiveObjectPBRModel")->WriteShader(1, pl);
 	GetObj<PixelShader>("PS_InteractiveObjectNormal")->WriteShader(1, pl);
-	GetObj<PixelShader>("PS_Water")->WriteShader(1, pl);
 	mRedBook->SwitchToDefShader();
 	mRedBook->Draw();
 	mMissionPaper->Draw();

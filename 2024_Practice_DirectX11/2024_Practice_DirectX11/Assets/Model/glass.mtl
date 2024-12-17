@@ -1,0 +1,9 @@
+newmtl initialShadingGroup
+
+Kd 0.794 0.794 0.794           # Diffuse color (_Color)
+Ka 0.000 0.000 0.000           # Ambient color (default to black)
+Ke 0.000 0.000 0.000           # Emission color (_EmissionColor)
+Ks 0.949 0.949 0.949           # Specular color (_SpecColor)
+Ns 50.000                      # Specular exponent (shininess, default value)
+d 0.435                        # Transparency (alpha from _Color)
+illum 2                        # Illumination model (default, includes specular)

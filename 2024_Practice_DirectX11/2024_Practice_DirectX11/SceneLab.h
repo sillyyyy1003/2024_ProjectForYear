@@ -7,6 +7,7 @@
 #include "SceneBase.h"
 #include "Sphere.h"
 #include "StaticObject.h"
+#include "UIStackContainer.h"
 
 #include "Water.h"
 
@@ -21,7 +22,6 @@ class SceneLab :public SceneBase
 	std::unique_ptr<InteractiveStaticObject> mRedBook;
 	std::unique_ptr<InteractiveStaticObject> mBlueBook;
 
-
 	std::unique_ptr<Square> mTable;
 	std::unique_ptr<Water> mWater;
 	std::unique_ptr<MissionPaper> mMissionPaper;
@@ -30,6 +30,9 @@ class SceneLab :public SceneBase
 	std::unique_ptr<StaticObject> mPaperOnTable;///todo:make this into a new class for 
 
 	std::unique_ptr<CandleLight> mCandleLight;
+
+
+	std::unique_ptr<UIStackContainer> mGoldBar;
 
 	bool isSubScene = false;
 

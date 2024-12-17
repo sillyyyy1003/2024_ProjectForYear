@@ -123,6 +123,8 @@ public:
 	virtual void SetRotation(const DirectX::XMFLOAT3& rotation)noexcept { mTransform.SetRotationInDegree(rotation); };
 	virtual void SetRotation(float x, float y, float z)noexcept { mTransform.SetRotationInDegree(x, y, z); };
 
+	virtual void SetRotationInRadian(const DirectX::XMFLOAT3& rotation) noexcept { mTransform.SetRotationInRadian(rotation); };
+
 
 	virtual const DirectX::XMFLOAT3 GetPosition() noexcept { return mTransform.GetPosition(); };
 	virtual const DirectX::XMFLOAT4 GetQuaternion()noexcept { return mTransform.GetQuaternion(); };

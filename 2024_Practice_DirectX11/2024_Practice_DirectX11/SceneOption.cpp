@@ -1,42 +1,54 @@
 ﻿#include "SceneOption.h"
 #include <memory>
+#include "D2DFont.h"
+#include "D2D_UIRoundedRect.h"
 #include "KInput.h"
 #include "SceneManager.h"
-#include "UI_Square.h"
+
+
 
 
 void SceneOption::Init()
 {
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_option.json");
-	container = std::make_unique<UIStackContainer>();
-	container->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
-	container->LoadBackgroundTex(GetObj<Texture>("paper"), { 200,50 });
-	container->LoadFontTexture(GetObj<Texture>("UIFont_Courier_New_It"), UITextOption::fontDefaultSize);
-	container->SetObjName("container");
-	container->LoadSaveData(sceneData, "test");
+
+	testButton = std::make_unique<D2D_UIStackContainer>();
+	testButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Test");
+	testButton->LoadSaveData(sceneData["test"]);
+
+	mButton = std::make_unique<UIButton>();
+	mButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "button");
+	mButton->LoadSaveData(sceneData["button"]);
+	
+
 }
 
 void SceneOption::UnInit()
 {
 
 	json sceneData;
-	sceneData["test"] = container->SaveData("test");
+	sceneData["test"] = testButton->SaveData();
+	sceneData["button"] = mButton->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_option.json", sceneData);
+
+
+	
 }
 
 void SceneOption::Update(float dt)
 {
+	if(KInput::IsKeyTrigger(VK_ESCAPE))
+	{
+		SceneManager::Get()->SetMainScene("Title");//Back to TitleScene
+	}
 
-	if (KInput::IsKeyTrigger(VK_ESCAPE))
-		SceneManager::Get()->SetMainScene("Title");
+	//testButton->Update(dt);
+	mButton->Update(dt);
 
-	container->Update();
-	
 }
 
 void SceneOption::Draw()
 {
-
-	container->Draw();
-	
+	mButton->Draw();
+	//testButton->Draw();
 }

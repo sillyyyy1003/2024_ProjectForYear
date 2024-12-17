@@ -17,9 +17,9 @@ namespace WaterDefault
 	};
 
 	//Default circle slice
-	constexpr int defaultSlice = 50;
+	constexpr int DEFAULT_SLICES = 64;
 	//Default circle level
-	constexpr int defaultLevel = 50;
+	constexpr int DEFAULT_LEVELS = 64;
 }
 
 /// @brief ポーションの規定になる
@@ -56,13 +56,13 @@ public:
 	/// @param filePath water texture filepath
 	/// @param objName オブジェクト名
 	///	@param slices 分割数
-	void Init(const char* filePath, const char* objName, int slices = 50);
+	void Init(const char* filePath, const char* objName, int slices = WaterDefault::DEFAULT_SLICES);
 		
 	/// @brief Init Object with existing texture
 	/// @param tex 既にロードされたテクスチャ
 	/// @param objName オブジェクト名
 	///	@param slices 分割数
-	void Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices = 50);
+	void Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices = WaterDefault::DEFAULT_SLICES);
 
 
 	virtual void Update(float dt);
@@ -84,7 +84,7 @@ public:
 	/// @param objName dataName
 	void LoadSaveData(json data, const char* objName);
 
-	void UpdatColor(DirectX::XMFLOAT4 color);
+	void UpdateColor(DirectX::XMFLOAT4 color);
 
 	/// @brief オブジェクトのデータをjsonファイルに書き込み
 	/// @return 

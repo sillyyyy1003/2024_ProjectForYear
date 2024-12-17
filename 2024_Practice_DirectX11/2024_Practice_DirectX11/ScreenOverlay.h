@@ -14,7 +14,7 @@ public:
 	static ScreenOverlay* Get() { static ScreenOverlay instance; return &instance; }
 
 	void Init();
-	void Update();
+	void Update(float dt);
 
 	
 	void ScreenOverlayEffect();

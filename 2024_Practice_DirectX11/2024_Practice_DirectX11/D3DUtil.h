@@ -29,6 +29,7 @@
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "DirectXTK.lib")
 
 
 // 16バイトにアラインメントする。
@@ -235,6 +236,23 @@ inline void MtxMultiply(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& 
 /// @return 
 HRESULT LoadTextureFromFile(ID3D11Device* pDevice,const char* pszFileName, ID3D11ShaderResourceView** ppTexture);
 
+inline float Sign(const float& num)
+{
+	if (num >= 0)return 1.f;
+	else return -1.f;
+}
+
+inline DirectX::XMFLOAT2 LocalClientToWorld(const POINT& cursorPos, DirectX::XMFLOAT2 winSize)
+{
+	DirectX::XMFLOAT2 result;
+	float winWidth = winSize.x;
+	float winHeight = winSize.y;
+
+	result.x = cursorPos.x - winWidth / 2.f;
+	result.y = winHeight / 2.f - cursorPos.y;
+	return result;
+}
+
 
 namespace Vertex
 {
@@ -246,9 +264,9 @@ namespace Vertex
 
 	struct VtxPosColorNormal
 	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT3 pos;		
 		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT3 normal;
 
 	};
 

@@ -52,6 +52,7 @@ protected:
     int mClientHeight = 0;      //Client Height
 
     Timer mTimer;
+
     FILE* fp = nullptr;
 
     //Scroll wheel‚É‚æ‚é‘€ì

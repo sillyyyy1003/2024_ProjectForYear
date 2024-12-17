@@ -3,33 +3,40 @@
 #include "PBRModel.h"
 #include "SceneBase.h"
 
-//now only use pbr model
-class InteractiveStaticObject :public Component
+namespace InteractiveConfig
 {
-private:
 	struct RimLightEffect
 	{
 		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
 		float rimIntensity = 0.0f;
 	};
 
-	// Used for clicked or Hover
-	RimLightEffect mEffect;
 
-	DirectX::XMFLOAT3 mColliderExtents = { 0,0,0 };
+
+}
+
+//now only use pbr model
+class InteractiveStaticObject :public Component
+{
 protected:
+
+	// Used for clicked or Hover
+	InteractiveConfig::RimLightEffect mEffect;
+	DirectX::XMFLOAT3 mColliderExtents = { 0,0,0 };
+
 
 	std::shared_ptr<Primitive> mModel = nullptr;
 	std::unique_ptr<BoxCollider> mCollider = nullptr;
 	std::string mObjectName;	//オブジェクト名
+
+	bool isUseRimLight = true;
+
 
 	//Trigger used to update collider
 	bool isModelStateChange = false;
 
 	// object state
 	int mObjectState = 0;
-
-
 	bool isClicked = false;
 
 	//Debug用
@@ -43,28 +50,30 @@ protected:
 
 public:
 	InteractiveStaticObject();
-	~InteractiveStaticObject() = default;
+	~InteractiveStaticObject() override = default;
 
 	/// @brief 
 	/// @param filePath
 	///	@param _objName
-	void InitPBRModel(const char* filePath,const char* _objName);
-	void InitPBRModel(std::shared_ptr<PBRModel> _model, const char* _objName);
+	virtual void InitPBRModel(const char* filePath,const char* _objName);
+	virtual void InitPBRModel(std::shared_ptr<PBRModel> _model, const char* _objName);
 
-	void InitModel(const char* filePath, const char* _objName);
+	virtual void InitModel(const char* filePath, const char* _objName);
+	virtual void InitModel(const std::shared_ptr<Texture>& _file, const char* _objName);
 
+	virtual void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& filePath, const char* _objName, DirectX::XMINT2 _UVSplit={1,1});
 
-	void LoadTex(PBRConfig::PBRTexList list);
-	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
-	void LoadShaderFile(const char* vsFile, const char* psFile);
+	virtual void LoadTex(PBRConfig::PBRTexList list);
+	virtual void LoadShaderFile(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
+	virtual void LoadShaderFile(const char* vsFile, const char* psFile);
 
 	/// @brief 
 	/// @param dt delta time
-	void Update(float dt);
+	virtual void Update(float dt);
 
-	void Draw();
+	virtual void Draw();
 
-	bool GetClicked() { return isClicked; };
+	virtual bool GetClicked();
 
 	//====================================
 	//	外側でモデルを設定できるのは以下のみ
@@ -79,7 +88,8 @@ public:
 
 
 	json SaveData();
-	void LoadSaveData(json data, const char* objName);
+	virtual void LoadSaveData(json data, const char* objName);
+	virtual void LoadSaveData(json data);
 
 	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
 	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
@@ -98,6 +108,10 @@ public:
 	
 	PixelShader* GetDefPS() const { return mModel->GetDefPS(); };
 
+	void UseRimLightEffect();
+	void DisableRimLightEffect();
+
+	BoxCollider* GetCollider()const { return mCollider.get(); };
 protected:
 
 	void InitCollider();

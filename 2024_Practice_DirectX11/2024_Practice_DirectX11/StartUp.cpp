@@ -17,7 +17,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,_In
 #endif
 
 
-
 	// Create Window
 	GameApp::Get()->InitDX(hInstance, L"My Blender", static_cast<int>(WIN_WIDTH), static_cast<int>(WIN_HEIGHT));
 

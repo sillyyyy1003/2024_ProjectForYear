@@ -1,85 +1,63 @@
-﻿#pragma once
-#include "Collider.h"
-#include "Primitive.h"
-#include "StaticObject.h"
+#pragma once
+#include "InteractiveMovableObject.h"
 
-
-/// Potionを構成する素材
-class Ingredient :public StaticObject
+class Ingredient:public InteractiveMovableObject
 {
-private:
-	///todo:以下は使えない
-	float mBasicPrice = 100.0f;
-	float mCurrPrice = 100.0f;
-	float mFreshness = 100.0f;		//新鮮度
-	float mBasicDecayRate = 0.01f;
-	int	mIngredientState = 0;		//素材の状態
-	float mShelfLife = 100.0f;		//保存時間
-
-	POINT mOldPos = {};//Old MouseCursor Pos
-	int mState = 0;//オブジェクトの状態を司る
-	bool isStateChange = false;//状態変更判定
-	bool isUsed = false;
-
-
-	struct RimLightEffect
+	struct ContainerData
 	{
-		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
-		float rimIntensity = 0.0f;
+		float capacityHeight;
+		DirectX::XMFLOAT3 pigmentColor;
 	};
+private:
 
-	// Used for clicked or Hover
-	RimLightEffect mEffect;
-	DirectX::XMFLOAT3 mColliderExtents = { 0,0,0 };
+	float mAccumulateTime = 0.0f;//Counting pouring time
+	float mCapacity = 90.f;
+	float mAlpha = 0.3f;
 
-	//Debug用
-#ifdef _DEBUG
-	std::unique_ptr<Cube> mDebugColliderMesh = nullptr;
-	bool isShowCollider = false;
-#endif
-protected:
 
-	std::string mIngredientName = "";
-	std::unique_ptr<BoxCollider> mCollider;
+	//Default��Ԃ̎��̈ʒu
+	DirectX::XMFLOAT3 mDefaultPos = { 0,0,0 };
+	//�痿�F
+	DirectX::XMFLOAT4 mPigmentColor = { 1,1,1,1 };
+	ContainerData mContainerData = {};
+
+	float mPrice = 100.f;
 
 public:
 	Ingredient();
-	~Ingredient() = default;
+	~Ingredient() override = default;
 
-	void Init(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit);
-
-	/// @brief 金額を設定する
-	void SetPrice(float _price);
-
-	/// @brief 名前を設定する
-	void SetName(const char* _ingredientName);
-
-	void Update(float dt) override;
+	void OnStateDrag(float dt) override;
+	void OnStateReleased(float dt) override;
 	void Draw() override;
 
-	void UpdatePrice();
+	/// @brief Reset Position to the defaultPos
+	void ResetPos();
+	void SetDefaultPos(DirectX::XMFLOAT3 pos);
 
-	/// @brief 素材の情報
-	/// @return format: Name:xxx Freshness:xxx Price:xxx
-	std::string GetIngredientInfo();
+	const DirectX::XMFLOAT4& GetColor();
 
-	const DirectX::XMFLOAT4& GetColor() { return mModel->GetMaterial().diffuse; };
-	void SetColor(const DirectX::XMFLOAT4& color){mModel->SetDiffuse(color);}
+	void SetPigmentColor(DirectX::XMFLOAT4 color);
 
-	void SetPosition(DirectX::XMFLOAT3 pos);
-	void SetScale(DirectX::XMFLOAT3 scale);
+	void AddColor(float dt);
+	void UpdateContainerColor();
+
+	void Update(float dt) override;
+
+	json SaveData() override;
+	void LoadSaveData(json data) override;
+
+	bool GetControllable()const { return isControllable; };
+	void SetControllable(bool isControllable) { this->isControllable = isControllable; };
+
+	void SetIngredientAlpha(float alpha);
 
 
-protected:
-	void InitCollider();
+	/// @brief 
+	void ChargeCapacity();
+	void SetCapacity(float _capacity);
+	float GetCapacity()const { return mCapacity; };
 
-	void PreUpdate(float dt);
-	void GameUpdate(float dt);
-	void LateUpdate(float dt);
-
-	virtual void OnStateNone(float dt);
-	virtual void OnStateDrag(float dt);
-	virtual void OnStateSelected(float dt);
-
-	void UpdateCollider();
+	void MixColorFunction(float dt);
 };
+

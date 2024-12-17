@@ -18,49 +18,65 @@ using namespace DirectX;
 
 void SceneTitle::Init()
 {
-	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title_default.json");
+	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title.json");
+	//Camera
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPos({ 0, 1.2f, -14.f });
+	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInRadian(0.13f,0.f,0.f);
 
-	std::shared_ptr<Texture> uiBgTex = CreateObj<Texture>("uiBg");
-	uiBgTex->Create("Assets/Texture/UI/main_title_background_1920x1080.png");
+#ifdef NDEBUG
+	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
+#endif
 
-	std::shared_ptr<Texture> uiStartTex = CreateObj<Texture>("uiStart");
-	uiStartTex->Create("Assets/Texture/UI/main_title_startbutton_700x140.png");
-
-	std::shared_ptr<Texture> uiOptionTex = CreateObj<Texture>("uiOption");
-	uiOptionTex->Create("Assets/Texture/UI/main_title_optionbutton_700x140.png");
-
-	std::shared_ptr<Texture> uiExitTex = CreateObj<Texture>("uiExit");
-	uiExitTex->Create("Assets/Texture/UI/main_title_exitbutton_700x140.png");
-
-	uiBg = std::make_shared<UI_Square>();
-	uiBg->Init(uiBgTex);
-	uiBg->SetScale(WIN_WIDTH, WIN_HEIGHT);
-	uiBg->LoadDefShader(GetObj<VertexShader>("VS_DefaultUI"), GetObj<PixelShader>("PS_DefaultUI"));
-	uiBg->SetPosZ(2.7f);
-
+	//Light
+	mCandleLight = std::make_unique<CandleLight>();
+	mCandleLight->Init();
+	mCandleLight->LoadSaveData(sceneData, "CandleLight");
+	//Ui
 	uiStart = std::make_unique<UI_Button>();
-	uiStart->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE, uiStartTex, nullptr);
+	uiStart->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
 	uiStart->LoadSaveData(sceneData, "uiStart");
 
+
 	uiOption = std::make_unique<UI_Button>();
-	uiOption->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE, uiOptionTex, nullptr);
+	uiOption->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
 	uiOption->LoadSaveData(sceneData, "uiOption");
 
+
 	uiExit = std::make_unique<UI_Button>();
-	uiExit->Init(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE,uiExitTex,  nullptr);
+	uiExit->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
 	uiExit->LoadSaveData(sceneData, "uiExit");
-	
+
+
+	uiTitle = std::make_unique<UIStackContainer>();
+	uiTitle->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
+	uiTitle->LoadBackgroundTex(nullptr, { 1,1 });
+	uiTitle->LoadFontTexture(GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
+	uiTitle->LoadSaveData(sceneData, "uiTitle");
+
+	//Object
+	mWater = std::make_unique<Potion>();
+	mWater->LoadSaveData(sceneData, "ScenePotionWater");
+	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mWater->SetTexture(GetObj<Texture>("water"));
+	mWater->SetWaterColor({1,0,0,0.4f});
+	mWater->SetAutoColor(true);
+	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
+	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
 }
 
 void SceneTitle::UnInit()
 {
-	/*
+#ifdef _DEBUG
 	json sceneData;
-	sceneData["uiStart"]=uiStart->SaveData("uiStart");
+	sceneData["uiStart"] = uiStart->SaveData("uiStart");
 	sceneData["uiOption"] = uiOption->SaveData("uiOption");
 	sceneData["uiExit"] = uiExit->SaveData("uiExit");
-	SaveSceneFile("Assets/Data/SaveDat/scene_title_default.json", sceneData);
-	*/
+	sceneData["uiTitle"] = uiTitle->SaveData("uiTitle");
+	sceneData["ScenePotionWater"] = mWater->SaveData();
+	sceneData["CandleLight"] = mCandleLight->SaveData();
+	SaveSceneFile("Assets/Data/SaveDat/scene_title.json", sceneData);
+#endif
+
 }
 
 void SceneTitle::Update(float dt)
@@ -96,20 +112,32 @@ void SceneTitle::TriggerListener()
 
 void SceneTitle::ObjectUpdate(float dt)
 {
-
-	uiBg->Update();
 	uiStart->Update();
 	uiOption->Update();
 	uiExit->Update();
+	uiTitle->Update();
 
+	mWater->Update(dt);
+	mCandleLight->Update(dt);
 }
 
 void SceneTitle::Draw()
 {
+	//SetLightDataToCandle
+	Light::PointLight pl[2] = {
+		mCandleLight->GetPointLight(),
+		{}
+	};
 
-	uiBg->Draw();
+	//Set PointLight to pbr shader
+	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
+	mWater->Draw();
+
 	uiStart->Draw();
 	uiOption->Draw();
 	uiExit->Draw();
+	uiTitle->Draw();
+
+
 }
 

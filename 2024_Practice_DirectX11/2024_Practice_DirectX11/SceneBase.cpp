@@ -29,11 +29,9 @@ SceneBase::~SceneBase()
 
 void SceneBase::_update(float dt)
 {
-
 	Update(dt);
 	if (mpSubScene)
 		mpSubScene->_update(dt);
-
 }
 
 void SceneBase::_draw()
@@ -41,7 +39,7 @@ void SceneBase::_draw()
 	Draw();
 	if (mpSubScene)
 		mpSubScene->_draw();
-
+	
 }
 
 json SceneBase::LoadSceneData(const char* fileName)
@@ -49,14 +47,14 @@ json SceneBase::LoadSceneData(const char* fileName)
 	std::filesystem::path filePath = fileName;
 	if (!std::filesystem::exists(filePath))
 	{
-		DebugLog::Log("scene_title.json not found.");
+		DebugLog::LogError(fileName," not found.");
 		return nullptr;
 	}
 
 	std::ifstream file(filePath);
 	if (!file.is_open())
 	{
-		DebugLog::Log("Failed to open scene_title.json for reading.");
+		DebugLog::LogError("Failed to open file for reading.");
 		return nullptr;
 	}
 

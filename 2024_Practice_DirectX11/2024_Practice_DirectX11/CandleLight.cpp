@@ -12,12 +12,14 @@ CandleLight::~CandleLight()
 
 void CandleLight::Init()
 {
-
+#ifdef _DEBUG
     mDebugMesh = std::make_unique<Sphere>();
     mDebugMesh->Init(nullptr);
     mDebugMesh->SetDiffuse({ 1,0,0,1 });
     mDebugMesh->SetScale(0.5, 0.5, 0.5);
     mDebugMesh->LoadDefShader();
+#endif
+
 	GameApp::GetNoise().SetFrequency(0.5f);
 }
 
@@ -90,14 +92,18 @@ void CandleLight::CandleLightShaking(float dt)
     mCastShadowLightPos = mCandleLight.position;
     mCastShadowLightPos.y = mCandleLight.position.y + mCastShadowHeight;
 
-
+#ifdef _DEBUG
     mDebugMesh->SetPosition(mCandleLight.position);
+#endif
 
 }
 
 void CandleLight::Draw()
 {
+	#ifdef _DEBUG
     mDebugMesh->Draw();
+#endif
+
 }
 
 const Light::PointLight& CandleLight::GetPointLight()

@@ -4,14 +4,19 @@
 #include <string>
 #include <variant>
 #include <wrl/client.h>
+#include "D2DFont.h"
 using namespace Microsoft::WRL;
 
-enum BrushKind
+namespace D2DBrushConfig
 {
-	SOLID,
-	LINEAR,
-	RADIAN,
-};
+	enum class BrushKind :uint8_t
+	{
+		SOLID,
+		LINEAR,		//linear gradient
+		RADIAN		//Radian gradient
+	};
+	using BrushList = std::map<BrushKind, ID2D1Brush*>;
+}
 /// @brief D2D RenderópBrush
 class D2DBrush
 {
@@ -20,7 +25,8 @@ private:
 	ComPtr<ID2D1SolidColorBrush> mSolidBrush;		//Mono tone
 	ComPtr<ID2D1RadialGradientBrush> mRGBrush;		//Radian
 	ComPtr<ID2D1LinearGradientBrush> mLGBrush;		//Linear
-	//ComPtr<ID2D1BitmapBrush> mBitMapBrush = nullptr;		//ImageBrush
+
+
 
 	D2D1::ColorF mFrontColorF = D2D1::ColorF::White;		//ëOåiêF
 	D2D1::ColorF mBackColorF = D2D1::ColorF::Black;			//ç@åiêF
@@ -28,15 +34,16 @@ private:
 	ComPtr<ID2D1GradientStopCollection> mGradientStopLiner = nullptr;
 	ComPtr<ID2D1GradientStopCollection> mGradientStopRadian= nullptr;
 	using BrushVariant = std::variant<ID2D1SolidColorBrush*, ID2D1LinearGradientBrush*, ID2D1RadialGradientBrush*>;
-	using BrushList = std::map<BrushKind, ID2D1Brush*>;
 
-public:
-	BrushList mBrushList;
-
-public:
 
 	D2DBrush() {};
-	~D2DBrush();
+	~D2DBrush() = default;
+
+	D2DBrushConfig::BrushList mBrushList;
+
+public:
+
+	static D2DBrush* Get() { static D2DBrush instance; return &instance; };
 
 	ID2D1SolidColorBrush* GetSolidBrush() { return mSolidBrush.Get(); };		//Mono tone
 	ID2D1RadialGradientBrush* GetRGBrush() { return mRGBrush.Get(); };		//Radian
@@ -53,10 +60,12 @@ public:
 	/// @param frontColor ëOåiêF
 	/// @param backColor ç@åiêF
 	/// @param brush ïœÇ¶ÇΩÇ¢Brush
-	void SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor,BrushKind brush);
+	void SetBrushColor(D2D1::ColorF frontColor, D2D1::ColorF backColor, D2DBrushConfig::BrushKind brush);
 
 	void UnInit();
 
+
+	const D2DBrushConfig::BrushList& GetBrushList() { return mBrushList; };
 
 private:
 

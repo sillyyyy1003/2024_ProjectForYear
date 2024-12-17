@@ -9,6 +9,17 @@
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
+XMFLOAT3 CalculateSphericalNormal(float r, float theta, float phi, float dTheta, float dPhi)
+{
+	// 球面坐标的偏导数
+	float nx = r * cos(phi) * cos(theta + dTheta) - r * cos(phi) * cos(theta - dTheta);
+	float ny = r * sin(phi + dPhi) - r * sin(phi - dPhi);
+	float nz = r * cos(phi + dPhi) * sin(theta) - r * cos(phi - dPhi) * sin(theta);
+
+	return XMFLOAT3(nx, ny, nz);
+}
+
+
 Water::Water()
 {
 
@@ -106,14 +117,14 @@ void Water::Update(float dt)
 
 	ImGui::End();
 
-	
-#endif
-
-	if(KInput::IsKeyTrigger(VK_RETURN))
+	if (KInput::IsKeyTrigger(VK_RETURN))
 	{
 		mBoilingState = WaterStateConfig::WaterBoilingState::STATE_STILL;
 		isTrigger = true;
 	}
+
+#endif
+
 
 
 
@@ -198,11 +209,32 @@ void Water::RenderUpdate()
 			{
 				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
 				vertex.pos.y = waveHeight;
-			
-				
+
 			}
 		}
+		/*
+		for (size_t i = 1; i < WaterDefault::DEFAULT_SLICES - 1; ++i)
+		{
+			for (size_t j = 1; j < WaterDefault::DEFAULT_SLICES - 1; ++j)
+			{
+				// 获取相邻点的球面坐标，假设这些点存储在经纬度网格中
+				float r = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.x;
+				float theta = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.y;
+				float phi = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.z;
 
+				// 计算相邻点的经纬度差异
+				float dTheta = mModel->mVertices[(i + 1) * WaterDefault::DEFAULT_SLICES + j].pos.y - mModel->mVertices[(i - 1) * WaterDefault::DEFAULT_SLICES + j].pos.y;
+				float dPhi = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j + 1)].pos.z - mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j - 1)].pos.z;
+
+				// 基于球面坐标的法向量计算
+				XMFLOAT3 normal = CalculateSphericalNormal(r, theta, phi, dTheta, dPhi);
+
+				// 归一化法向量
+				XMVECTOR nVec = XMVector3Normalize(XMLoadFloat3(&normal));
+				XMStoreFloat3(&mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].normal, nVec);
+			}
+		}
+		*/
 		//頂点データに再書き込み
 		RewriteVertices();
 		break;
@@ -225,10 +257,38 @@ void Water::RenderUpdate()
 			{
 				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
 				vertex.pos.y = waveHeight;
-				//float y = noise.GetNoise(vertex.pos.x, vertex.pos.y);
+			
 
 			}
 		}
+		for (size_t i = 1; i < WaterDefault::DEFAULT_SLICES - 1; ++i)
+		{
+			for (size_t j = 1; j < WaterDefault::DEFAULT_SLICES - 1; ++j)
+			{
+				// 当前点位置
+				XMFLOAT3 current = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos;
+
+				// 获取相邻点的顶点位置
+				XMFLOAT3 left = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j - 1)].pos;
+				XMFLOAT3 right = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j + 1)].pos;
+				XMFLOAT3 top = mModel->mVertices[(i - 1) * WaterDefault::DEFAULT_SLICES + j].pos;
+				XMFLOAT3 bottom = mModel->mVertices[(i + 1) * WaterDefault::DEFAULT_SLICES + j].pos;
+
+				// 计算相邻点的方向向量
+				XMVECTOR vec1 = XMVectorSubtract(XMLoadFloat3(&right), XMLoadFloat3(&left));
+				XMVECTOR vec2 = XMVectorSubtract(XMLoadFloat3(&bottom), XMLoadFloat3(&top));
+
+				// 计算叉积以获得法向量
+				XMVECTOR normal = XMVector3Cross(vec1, vec2);
+
+				// 归一化法向量
+				normal = XMVector3Normalize(normal);
+
+				// 存储法向量
+				XMStoreFloat3(&mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].normal, normal);
+			}
+		}
+
 		//頂点データに再書き込み
 		RewriteVertices();
 		break;
@@ -357,7 +417,7 @@ void Water::LoadSaveData(json data, const char* objName)
 	mWaterStates->LoadWaterStateData(data[objName]["WaterParam"]);
 }
 
-void Water::UpdatColor(DirectX::XMFLOAT4 color)
+void Water::UpdateColor(DirectX::XMFLOAT4 color)
 {
 	Vector4 waterColor = mModel->GetMaterial().diffuse;
 	waterColor += color;

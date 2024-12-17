@@ -16,7 +16,6 @@ UI_Font::UI_Font()
 void UI_Font::Init(const char* filePath,DirectX::XMFLOAT2 charSize)
 {
 	mCharSize = charSize;
-    mOriginalCharSize = mCharSize;
 	mText.resize(UITextOption::defaultMaxChar);
 
     mTexData.tex = std::make_shared<Texture>();
@@ -37,7 +36,6 @@ void UI_Font::Init(const char* filePath,DirectX::XMFLOAT2 charSize)
 void UI_Font::Init(const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize)
 {
     mCharSize = charSize;
-    mOriginalCharSize = mCharSize;
     mText.resize(UITextOption::defaultMaxChar);
 
     mTexData.tex = fontTex;
@@ -69,33 +67,11 @@ void UI_Font::SetFontRectWidth(float width)
 {
     if (mBlockWidth == width)return;
 	mBlockWidth = width;
-	mOriginalBlockWidth = width;
 }
 
 
 void UI_Font::UpdateCharSize() noexcept
 {
-    //When the screen is resized
-    if(gD3D->GetResized()||GetFontSizeChanged())
-    {
-        if (gD3D->GetWinWidth() == 1 || gD3D->GetWinHeight() == 1)
-            return;
-
-        Vector2 ratio={0,0};
-        //Get Change Ratio
-        ratio.x = gD3D->GetWinWidth() / WIN_WIDTH;
-        ratio.y = gD3D->GetWinHeight()/ WIN_HEIGHT;
-
-        //Calculate Size
-        mCharSize = mOriginalCharSize * ratio * mFontSize;
-
-        //Calculate winWidth
-        mBlockWidth = mOriginalBlockWidth * ratio.x;
-
-        //Calculate anchor pos //todo:根据不同的排列方式，anchor的变换方式也 不一样
-        mAnchorPos = { mAnchorPos.x * ratio.x,mAnchorPos.y * ratio.y };
-
-    }
 }
 
 
@@ -103,10 +79,10 @@ void UI_Font::UpdatePosition()
 {
 
 	int charNum = (int)mContent.size();
-    float charWidth = mOriginalCharSize.x * mFontSize;
-    float charHeight = mOriginalCharSize.y * mFontSize;
+    float charWidth = mCharSize.x * mFontSize;
+    float charHeight = mCharSize.y * mFontSize;
 	// Calculate total width and height
-    float lineHeight = mCharSize.y + mLineSpacing;
+    float lineHeight = mCharSize.y * mFontSize + mLineSpacing;
 	float lineWidth = 0.0f; // current line width
 	std::vector<float> lines; // store line widths for alignment
 
@@ -131,7 +107,7 @@ void UI_Font::UpdatePosition()
 
 	lineWidth = std::min(mBlockWidth, lineWidth); // last line width
 	lines.push_back(lineWidth); // store the last line width
-    float totalHeight = lines.size() * mCharSize.y + (lines.size()) *mLineSpacing;
+    float totalHeight = lines.size() * mCharSize.y * mFontSize + (lines.size()) * mLineSpacing;
 
 
 	// Set Anchor position
@@ -373,13 +349,11 @@ void UI_Font::Draw()
 void UI_Font::SetAnchorPos(float x, float y)
 {
     mAnchorPos = { x,y };
-    mOriginalAnchorPos = mAnchorPos;
 }
 
 void UI_Font::SetAnchorPos(DirectX::XMFLOAT2 anchorPos)
 {
     mAnchorPos = anchorPos;
-    mOriginalAnchorPos = mAnchorPos;
 }
 
 void UI_Font::SetContent(const char* str)
@@ -402,6 +376,4 @@ void UI_Font::SetTextAlign(UITextOption::TextAlign align)
 void UI_Font::SetCharSize(DirectX::XMFLOAT2 _size)noexcept
 {
     mCharSize = _size;
-    mOriginalCharSize = mCharSize;
-
 }

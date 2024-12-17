@@ -1,2 +1,4 @@
 Game Init Completed
 SceneName = SceneTitle
+SceneName = SceneOption
+SceneName = SceneTitle

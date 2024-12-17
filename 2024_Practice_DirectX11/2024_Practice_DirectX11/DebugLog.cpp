@@ -38,6 +38,7 @@ void DebugLog::LogOutput(const std::string& message, Log::Type type)
 
 bool DebugLog::Init(const char* _fileName)
 {
+
     ofs = std::ofstream(_fileName);
     if (!ofs)
     {
@@ -47,4 +48,5 @@ bool DebugLog::Init(const char* _fileName)
 
     std::cout << "ログテキスト生成or上書き成功 = " << _fileName << std::endl;
     return true;
+
 }

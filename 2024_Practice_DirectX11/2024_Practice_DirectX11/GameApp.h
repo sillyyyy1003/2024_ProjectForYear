@@ -3,7 +3,7 @@
 #include <FastNoise/FastNoiseLite.h>
 #include "d3dApp.h"
 #include "SceneManager.h"
-#include "UI2D.h"
+
 
 class GameApp : public D3DApp
 {

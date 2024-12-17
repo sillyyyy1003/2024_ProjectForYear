@@ -35,7 +35,6 @@ VS_OUT main (VS_IN vin)
     vOut.pos = mul(vOut.pos, world);
 	// ピクセルシェーダーに渡すために、途中で変数にコピー
     vOut.worldPos = vOut.pos;
-
     vOut.pos = mul(vOut.pos, view);
     vOut.pos = mul(vOut.pos, proj);
 

@@ -97,7 +97,7 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	for (int i = 0; i < MAX_NUM_POINT_LIGHT; i++)
 		diffuse.rgb += PointLightCal(pointLight[i], pin.worldPos.xyz, N, toEye);
 
-	color = color * (ambient + diffuse);
+	color = color * (ambient + diffuse) + spec;
 
  
 
