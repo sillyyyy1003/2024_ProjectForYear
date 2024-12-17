@@ -56,36 +56,29 @@ void UI_Primitive::CreateTexture(const std::shared_ptr<Texture>* pTex)
 
 void UI_Primitive::Update()
 {
-	UpdateScale();
-	UpdatePos();
 	if (!isUseUVAnimation) { return; }
 	mUvAnimation->UpdateUV();
-
 }
 
 void UI_Primitive::SetPosition(const DirectX::XMFLOAT3& pos) noexcept
 {
 	mTransform.SetPosition(pos);
-	mOriginPos = {pos.x,pos.y};
 }
 
 void UI_Primitive::SetScale(float width, float height)
 {
 	mTransform.SetScaleXY(width, height);
-	mOriginScale = { width,height };
-	
+
 }
 
 void UI_Primitive::SetScale(const DirectX::XMFLOAT2& size)
 {
 	mTransform.SetScaleXY(size);
-	mOriginScale = size;
 }
 
 void UI_Primitive::SetScale(float scale)
 {
 	mTransform.SetScale(scale, scale, scale);
-	mOriginScale = { scale,scale };
 }
 
 void UI_Primitive::SetPosZ(float z) noexcept
@@ -96,7 +89,6 @@ void UI_Primitive::SetPosZ(float z) noexcept
 void UI_Primitive::SetPosition(float x, float y) noexcept
 {
 	mTransform.SetPosition(x, y);
-	mOriginPos = { x,y };
 }
 
 void UI_Primitive::SetPosition(const DirectX::XMFLOAT2& pos) noexcept
@@ -207,27 +199,4 @@ void UI_Primitive::SetDefShader()
 		mPS = mDefPS.get();
 	}
 }
-
-void UI_Primitive::UpdateScale()
-{
-	if (!gD3D->GetResized()) { return; }
-
-	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
-	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
-	Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
-	Vector3 scale = { ratio.x * mOriginScale.x,ratio.y * mOriginScale.y,1.0f };
-	mTransform.SetScale(scale);
-}
-
-void UI_Primitive::UpdatePos()
-{
-	if (!gD3D->GetResized()) { return; }
-	float viewWidth = static_cast<float>(gD3D->GetWinWidth());
-	float viewHeight = static_cast<float>(gD3D->GetWinHeight());
-	Vector3 ratio = { viewWidth / WIN_WIDTH,viewHeight / WIN_HEIGHT,1.0f };
-	Vector3 pos = { mOriginPos.x,mOriginPos.y, mTransform.GetPosition().z };
-	pos *= ratio;
-	mTransform.SetPosition(pos);
-}
-
 

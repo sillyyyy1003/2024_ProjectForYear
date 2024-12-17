@@ -8,5 +8,9 @@ public:
 
 	/// @brief Draw with solid brushes
 	void Draw() override;
+
+	/// @brief Draw with radian brushes
+	///	No outline
+	void DrawWithRadianBrush() override;
 };
 

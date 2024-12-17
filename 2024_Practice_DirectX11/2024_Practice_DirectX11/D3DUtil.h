@@ -9,6 +9,7 @@
 #include <DirectXPackedVector.h>
 #include <DirectXColors.h>
 #include <d3dcompiler.h>
+#include <filesystem>
 #include <vector>
 #include <string>
 #include <memory>
@@ -16,6 +17,9 @@
 #include <imgui/Include/imgui.h>
 #include <imgui/Include/imgui_impl_dx11.h>
 #include <imgui/Include/imgui_impl_win32.h>
+#include <nlohmann/json_fwd.hpp>
+
+#include "DebugLog.h"
 #include "DXTrace.h"
 #include "Mesh.h"
 #include "DirectXTex.h"
@@ -252,7 +256,6 @@ inline DirectX::XMFLOAT2 LocalClientToWorld(const POINT& cursorPos, DirectX::XMF
 	result.y = winHeight / 2.f - cursorPos.y;
 	return result;
 }
-
 
 namespace Vertex
 {

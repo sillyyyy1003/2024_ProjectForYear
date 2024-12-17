@@ -34,6 +34,142 @@
             40.0
         ]
     },
+    "Exit": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "DefaultFontColor": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+        ],
+        "FontColor": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+        ],
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.0,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -350.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -350.0
+        ],
+        "Scale": [
+            400.0,
+            100.0
+        ],
+        "Text": "EXIT",
+        "TextAlignment": 1
+    },
+    "Option": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "DefaultFontColor": [
+            0.8627451062202454,
+            0.8627451062202454,
+            0.0,
+            1.0
+        ],
+        "FontColor": [
+            0.8627451062202454,
+            0.8627451062202454,
+            0.0,
+            1.0
+        ],
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.8627451062202454,
+                0.8627451062202454,
+                0.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -200.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -200.0
+        ],
+        "Scale": [
+            400.0,
+            100.0
+        ],
+        "Text": "OPTION",
+        "TextAlignment": 1
+    },
     "ScenePotionWater": {
         "Duration": [
             4.741000175476074
@@ -46,8 +182,8 @@
                 1.0
             ],
             "Diffuse": [
+                0.32748985290527344,
                 0.0,
-                0.7637531757354736,
                 1.0,
                 0.4000000059604645
             ],
@@ -170,158 +306,113 @@
             }
         }
     },
-    "uiExit": {
-        "AnchorAlign": [
-            4
+    "Start": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
         ],
-        "AnchorPosition": [
+        "DefaultFontColor": [
+            1.0,
             0.0,
-            -375.0
+            0.0,
+            1.0
         ],
-        "ContainerSize": [
-            350.0,
+        "FontColor": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.970588207244873,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -40.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -40.0
+        ],
+        "Scale": [
+            400.0,
             100.0
         ],
-        "Context": "EXIT",
-        "FontBlockWidth": [
-            350.0
-        ],
-        "FontColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "FontSize": [
-            25.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                0.8500000238418579,
-                0.8500000238418579,
-                0.8500000238418579,
-                1.0
-            ],
-            "Diffuse": [
-                0.0,
-                0.0,
-                1.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            7.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "Padding": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "Position": [
-            0.0,
-            -375.0,
-            0.8999999761581421
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "TextAlign": [
-            1
-        ]
+        "Text": "START",
+        "TextAlignment": 1
     },
-    "uiOption": {
-        "AnchorAlign": [
-            4
-        ],
-        "AnchorPosition": [
-            0.0,
-            -225.0
-        ],
-        "ContainerSize": [
-            350.0,
-            100.0
-        ],
-        "Context": "OPTION",
-        "FontBlockWidth": [
-            350.0
-        ],
+    "Title": {
         "FontColor": [
             1.0,
             1.0,
             1.0,
             1.0
         ],
-        "FontSize": [
-            25.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                0.8500000238418579,
-                0.8500000238418579,
-                0.8500000238418579,
-                1.0
-            ],
-            "Diffuse": [
-                0.9656862616539001,
-                0.9656862616539001,
-                0.004733741283416748,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
+        "FontSize": 0,
+        "Graphic": {
+            "BaseColor": [
                 1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                0.0,
+                240.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1920.0,
+                300.0
             ]
         },
-        "Outline": [
-            7.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
         "Padding": [
             0.0,
             0.0,
@@ -330,188 +421,13 @@
         ],
         "Position": [
             0.0,
-            -225.0,
-            0.8999999761581421
+            240.0
         ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
+        "Scale": [
+            1920.0,
+            300.0
         ],
-        "TextAlign": [
-            1
-        ]
-    },
-    "uiStart": {
-        "AnchorAlign": [
-            4
-        ],
-        "AnchorPosition": [
-            0.0,
-            -74.0
-        ],
-        "ContainerSize": [
-            350.0,
-            100.0
-        ],
-        "Context": "START",
-        "FontBlockWidth": [
-            350.0
-        ],
-        "FontColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "FontSize": [
-            25.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                0.8500000238418579,
-                0.8500000238418579,
-                0.8500000238418579,
-                1.0
-            ],
-            "Diffuse": [
-                1.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            7.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "Padding": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "Position": [
-            0.0,
-            -74.0,
-            0.8999999761581421
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "TextAlign": [
-            1
-        ]
-    },
-    "uiTitle": {
-        "AnchorAlign": [
-            4
-        ],
-        "AnchorPosition": [
-            0.0,
-            220.0
-        ],
-        "ContainerSize": [
-            0.0,
-            0.0
-        ],
-        "Context": "My Blender",
-        "FontBlockWidth": [
-            1920.0
-        ],
-        "FontColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "FontSize": [
-            75.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "Diffuse": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            0.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "Padding": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "Position": [
-            0.0,
-            220.0,
-            0.8999999761581421
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "TextAlign": [
-            1
-        ]
+        "Text": "My Blender",
+        "TextAlignment": 1
     }
 }

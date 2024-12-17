@@ -385,13 +385,19 @@
       <Filter>ソース ファイル\UI\D2DUI</Filter>
     </ClCompile>
     <ClCompile Include="D2D_UIRoundedRect.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\UI\D2DUI</Filter>
     </ClCompile>
     <ClCompile Include="D2D_UIStackContainer.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\UI\D2DUI</Filter>
     </ClCompile>
     <ClCompile Include="UIButton.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\UI\D2DUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialManager.cpp">
+      <Filter>ソース ファイル\GameFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="UISquare.cpp">
+      <Filter>ソース ファイル\UI\BillboardUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,9 +590,6 @@
     <ClInclude Include="Potion.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="IngredientManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="UI_IngameFont.h">
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
@@ -595,9 +598,6 @@
     </ClInclude>
     <ClInclude Include="WaterJug.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneScore.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Mission.h">
       <Filter>ヘッダー ファイル\GameFunction</Filter>
@@ -629,8 +629,20 @@
     <ClInclude Include="D2D_UIRoundedRect.h">
       <Filter>ヘッダー ファイル\UI\D2DUI</Filter>
     </ClInclude>
+    <ClInclude Include="IngredientManager.h">
+      <Filter>ヘッダー ファイル\GameFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneScore.h">
+      <Filter>ヘッダー ファイル\Scene\SubScene</Filter>
+    </ClInclude>
     <ClInclude Include="UIButton.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\UI\D2DUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialManager.h">
+      <Filter>ヘッダー ファイル\GameFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="UISquare.h">
+      <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

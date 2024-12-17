@@ -37,22 +37,22 @@ void D2DFont::InitD2DFont()
 
 	//Init Text Format
 	HR(writeFactory->CreateTextFormat(
-		L"06Takibi",    // Font family name
+		L"Hangyaku",    // Font family name
 		nullptr,        // Font collection (nullptr for system default)
 		DWRITE_FONT_WEIGHT_NORMAL,	// Font weight (e.g., Normal, Bold)
 		DWRITE_FONT_STYLE_NORMAL,   // Font style (e.g., Normal, Italic)
-		DWRITE_FONT_STRETCH_NORMAL, // Font stretch (e.g., Normal, Condensed)
+		DWRITE_FONT_STRETCH_EXPANDED, // Font stretch (e.g., Normal, Condensed)
 		D2DUIConfig::FONT_TITLE_SIZE,                         // Font size
 		L"ja-JP",                   // Locale (e.g., en-us for English, zh-cn for Simplified Chinese)
 		mJpnTitleSizeFormat.GetAddressOf()// Address of the text format pointer
 	));
 
 	HR(writeFactory->CreateTextFormat(
-		L"04Takibi",    // Font family name
+		L"Hangyaku",    // Font family name
 		nullptr,        // Font collection (nullptr for system default)
 		DWRITE_FONT_WEIGHT_NORMAL,	// Font weight (e.g., Normal, Bold)
 		DWRITE_FONT_STYLE_NORMAL,   // Font style (e.g., Normal, Italic)
-		DWRITE_FONT_STRETCH_NORMAL, // Font stretch (e.g., Normal, Condensed)
+		DWRITE_FONT_STRETCH_EXPANDED, // Font stretch (e.g., Normal, Condensed)
 		D2DUIConfig::FONT_NORMAL_SIZE,                         // Font size
 		L"ja-JP",                   // Locale (e.g., en-us for English, zh-cn for Simplified Chinese)
 		mJpnNormalSizeFormat.GetAddressOf()// Address of the text format pointer
@@ -60,7 +60,7 @@ void D2DFont::InitD2DFont()
 
 
 	HR(writeFactory->CreateTextFormat(
-		L"02Takibi",    // Font family name
+		L"Hangyaku",    // Font family name
 		nullptr,        // Font collection (nullptr for system default)
 		DWRITE_FONT_WEIGHT_NORMAL,	// Font weight (e.g., Normal, Bold)
 		DWRITE_FONT_STYLE_NORMAL,   // Font style (e.g., Normal, Italic)

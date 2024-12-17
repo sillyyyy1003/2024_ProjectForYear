@@ -39,10 +39,10 @@ void UIButton::UpdateCollider()
 	float centerX = mPosition.x + WIN_WIDTH / 2.f;
 	float centerY = WIN_HEIGHT / 2.f - mPosition.y;
 
-	mRect.left = centerX - mScale.x / 2.f;
-	mRect.top = centerY - mScale.y / 2.f;
-	mRect.right = centerX + mScale.x / 2.f;
-	mRect.bottom = centerY + mScale.y / 2.f;
+	mRect.left = (LONG) (centerX - mScale.x / 2.f);
+	mRect.top = (LONG)(centerY - mScale.y / 2.f);
+	mRect.right = (LONG)(centerX + mScale.x / 2.f);
+	mRect.bottom = (LONG)(centerY + mScale.y / 2.f);
 
 }
 
@@ -83,19 +83,79 @@ void UIButton::GameUpdate(float dt)
 	{
 	default:
 	case STATE_NONE:
-		mBackGround->SetBaseColor({ 0,1,0,1 });
+		mBackGround->SetBaseColor(mDefaultColor);
+		mFontColor = mDefaultFontColor;
 		break;
 	case STATE_PRESS:
-		mBackGround->SetBaseColor({ 1,0,0,1 });
+		{
+		D2D1::ColorF fontColor = mDefaultColor;
+		D2D1::ColorF bgColor = mDefaultFontColor;
+		mBackGround->SetBaseColor(bgColor);
+		mFontColor = fontColor;
+		}
 		break;
 	case STATE_HOVER:
-		mBackGround->SetBaseColor({ 0,0,1,1 });
+		{
+		D2D1::ColorF fontColor = mDefaultColor;
+		D2D1::ColorF bgColor = mDefaultFontColor;
+		mBackGround->SetBaseColor(bgColor);
+		mFontColor = fontColor;
+		}
+		break;
+	case STATE_TRIGGER:
+		{
+		D2D1::ColorF fontColor = mDefaultColor;
+		D2D1::ColorF bgColor = mDefaultFontColor;
+		mBackGround->SetBaseColor(bgColor);
+		mFontColor = fontColor;
+		}
 		break;
 	}
 }
 
 void UIButton::LateUpdate(float dt)
 {
+}
+
+void UIButton::LoadSaveData(json data)
+{
+	mBackGround->LoadSaveData(data, "Graphic");
+
+	//DefaultColor
+	mDefaultColor = { data["DefaultColor"][0],data["DefaultColor"][1],data["DefaultColor"][2] ,data["DefaultColor"][3] };
+
+	//Set Base Color
+	mBackGround->SetBaseColor(mDefaultColor);
+
+	//Text
+	mText = data["Text"];
+	mDefaultFontColor = { data["DefaultFontColor"][0],data["DefaultFontColor"][1] ,data["DefaultFontColor"][2] ,data["DefaultFontColor"][3] };
+	int num = { data["TextAlignment"] };
+	mTextAlignment = static_cast<D2DUIConfig::TextAlignment>(num);
+	num = { data["FontSize"] };
+	mFontSize = static_cast<D2DUIConfig::FontSize>(num);
+
+	//Button
+	mPosition = { data["Position"][0],data["Position"][1] };
+	mScale = { data["Scale"][0],data["Scale"][1] };
+	mPadding = { data["Padding"][0],data["Padding"][1],data["Padding"][2],data["Padding"][3] };
+}
+
+json UIButton::SaveData()
+{
+	json data;
+	data["Graphic"] = mBackGround->SaveData();
+	data["Text"] = mText.c_str();
+	data["FontColor"] = { mFontColor.r,mFontColor.g,mFontColor.b,mFontColor.a };
+	data["FontSize"] = static_cast<int>(mFontSize);
+	data["Position"] = { mPosition.x,mPosition.y };
+	data["Scale"] = { mScale.x,mScale.y };
+	data["TextAlignment"] = static_cast<int>(mTextAlignment);
+	data["Padding"] = { mPadding.x,mPadding.y,mPadding.z,mPadding.w };
+	data["DefaultFontColor"] = { mDefaultFontColor.r,mDefaultFontColor.g,mDefaultFontColor.b,mDefaultFontColor.a };
+	data["DefaultColor"] = { mDefaultColor.r,mDefaultColor.g,mDefaultColor.b,mDefaultColor.a };
+
+	return data;
 }
 
 bool UIButton::IsPressed()
@@ -115,4 +175,13 @@ bool UIButton::IsTrigger()
 	}
 
 	return false;
+}
+
+void UIButton::Levitate()
+{
+}
+
+void UIButton::SetDefaultColor(D2D1::ColorF color)
+{
+	mDefaultColor = color;
 }

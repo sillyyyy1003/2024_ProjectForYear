@@ -49,11 +49,6 @@ protected:
 	VertexShader* mVS = nullptr;
 	PixelShader* mPS = nullptr;
 
-
-	//Å‰‚Ì‘å‚«‚³‚ğ‹L˜^‚µAviewport•Ï‰»‚·‚é‚Æ‚«‚É‘å‚«‚³‚ğ•Ï‰»‚µ‚È‚¢‚æ‚¤‚É
-	DirectX::XMFLOAT2 mOriginScale = {1.0f,1.0f};
-	DirectX::XMFLOAT2 mOriginPos = {};
-
 	bool isDefShader = true;
 	bool isUseUVAnimation = false;//UVAnimation‚ğg‚¤‚©
 
@@ -170,9 +165,7 @@ public:
 	std::string GetObjectName() { return mObjectName; };
 #endif
 
-protected:
+	//UI‚Ì“®‚«
 
-	virtual void UpdateScale();
-	virtual void UpdatePos();
 };
 

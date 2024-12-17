@@ -44,12 +44,7 @@ private:
 
 protected:
 	//Font Texture
-	std::shared_ptr<Texture> UIFont_StringLiteral;
 	std::shared_ptr<Texture> UIFont_OCRA_Extend;
-	std::shared_ptr<Texture> UIFont_Courier_New_Regular;
-	std::shared_ptr<Texture> UIFont_Courier_New_Bold;
-	std::shared_ptr<Texture> UIFont_Courier_New_It;
-	std::shared_ptr<Texture> UIFont_Source_Code_Pro_It;
 
 	//Texture
 	std::shared_ptr<Texture> fantasyHousePropsAlbedoTexture;

@@ -1,7 +1,9 @@
 #pragma once
 #include "D2D_UIBase.h"
 
-class D2D_UIStackContainer
+
+
+class D2D_UIStackContainer :public Component
 {
 protected:
 #ifdef _DEBUG
@@ -20,13 +22,20 @@ protected:
 	DirectX::XMFLOAT4 mPadding = {};
 
 	std::string mObjName;
+
+	//Ç∑Ç◊ÇƒÇÃèÛë‘ÇéiÇÈ
+	UINT mUiState = 0;
+	
+
 public:
 	D2D_UIStackContainer();
-	~D2D_UIStackContainer();
+	virtual ~D2D_UIStackContainer();
 	virtual void Init(D2DUIConfig::UIShape shape,D2DUIConfig::FontSize size,const char* objName);
 	
 	virtual void Update(float dt);
 	virtual void Draw();
+	virtual void DrawWithRadianBrush();
+
 	virtual void SetText(const char* text);
 	virtual void SetFontColor(D2D1::ColorF color);
 
@@ -37,5 +46,11 @@ public:
 	void DebugFunction();
 #endif
 
+	void SetUIState(UINT state);
+	void RemoveUIState(UINT state);
+	void EnableAllState();
+
+	DirectX::XMFLOAT2 GetPosition() { return mPosition; };
+	void SetPositionY(float posY) { mPosition.y = posY; };
 };
 

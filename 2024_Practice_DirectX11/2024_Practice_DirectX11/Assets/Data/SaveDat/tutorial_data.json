@@ -1,0 +1,185 @@
+{
+    "Tutorial": {
+        "FirstPhaseBackGround": {
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                2.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                2000.0,
+                2000.0,
+                1.0
+            ]
+        },
+        "FirstPhaseFade": {
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                -0.003499438986182213
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                0.10000000149011612
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                2000.0,
+                2000.0,
+                1.0
+            ]
+        },
+        "FirstPhasePaper": {
+            "Diffuse": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Position": [
+                0.0,
+                0.0,
+                1.899999976158142
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1400.0,
+                750.0,
+                1.0
+            ]
+        },
+        "FirstPhaseSkipButton": {
+            "FontColor": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "FontSize": 1,
+            "Graphic": {
+                "BaseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "OutlineColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "OutlineWeight": [
+                    1.0
+                ],
+                "Position": [
+                    430.0,
+                    -141.57177734375
+                ],
+                "RadiusX": [
+                    1.0
+                ],
+                "RadiusY": [
+                    1.0
+                ],
+                "Scale": [
+                    250.0,
+                    -100.0
+                ]
+            },
+            "Padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Position": [
+                430.0,
+                -141.57177734375
+            ],
+            "Scale": [
+                250.0,
+                -100.0
+            ],
+            "Text": "左クリック",
+            "TextAlignment": 2
+        },
+        "FirstPhaseText": {
+            "FontColor": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "FontSize": 1,
+            "Graphic": {
+                "BaseColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "OutlineColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "OutlineWeight": [
+                    1.0
+                ],
+                "Position": [
+                    0.0,
+                    30.0
+                ],
+                "RadiusX": [
+                    1.0
+                ],
+                "RadiusY": [
+                    1.0
+                ],
+                "Scale": [
+                    1200.0,
+                    300.0
+                ]
+            },
+            "Padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Position": [
+                0.0,
+                30.0
+            ],
+            "Scale": [
+                1200.0,
+                300.0
+            ],
+            "Text": "ようこそ、あなたの工房へ！\n ここからポーションづくりの旅が始まるよ・・・",
+            "TextAlignment": 1
+        }
+    }
+}

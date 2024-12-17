@@ -150,7 +150,7 @@ void UIStackContainer::Draw()
 	//	mUiSet.text->Draw();
 	//}
 
-	D2DFont::Get()->DrawSolidText(D2DUIConfig::FontSize::NORMAL_SIZE, D2D1::ColorF{ 1,1,1,1 }, mUiSet.text->GetContext().c_str(), { mPosition.x, mPosition.y }, mUIContainerSize);
+	/*D2DFont::Get()->DrawSolidText(D2DUIConfig::FontSize::NORMAL_SIZE, D2D1::ColorF{ 1,1,1,1 }, mUiSet.text->GetContext().c_str(), { mPosition.x, mPosition.y }, mUIContainerSize);*/
 
 }
 

@@ -41,18 +41,45 @@ void D2D_UIStackContainer::Update(float dt)
 
 void D2D_UIStackContainer::Draw()
 {
-	//Draw the Background
-	mBackGround->Draw();
-
-	//SetTextAlign
-	D2DFont::Get()->SetTextAlign(mFontSize, mTextAlignment);
-
-	//Draw the font
-	float width = mScale.x - mPadding.x - mPadding.z;
-	float height = mScale.y - mPadding.y - mPadding.w;
-
-	D2DFont::Get()->DrawSolidText(mFontSize, mFontColor, mText.c_str(), mPosition,{width,height});
 	
+	if (mUiState & D2DUIConfig::STATE_USE_BACKGROUND)
+	{
+		//Draw the Background
+		mBackGround->Draw();
+	}
+
+	if(mUiState& D2DUIConfig::STATE_USE_FONT)
+	{
+		//SetTextAlign
+		D2DFont::Get()->SetTextAlign(mFontSize, mTextAlignment);
+
+		//Draw the font
+		float width = mScale.x - mPadding.x - mPadding.z;
+		float height = mScale.y - mPadding.y - mPadding.w;
+
+		D2DFont::Get()->DrawSolidText(mFontSize, mFontColor, mText.c_str(), mPosition, { width,height });
+	}
+}
+
+void D2D_UIStackContainer::DrawWithRadianBrush()
+{
+	if (mUiState & D2DUIConfig::STATE_USE_BACKGROUND)
+	{
+		//Draw the Background
+		mBackGround->DrawWithRadianBrush();
+	}
+
+	if (mUiState & D2DUIConfig::STATE_USE_FONT)
+	{
+		//SetTextAlign
+		D2DFont::Get()->SetTextAlign(mFontSize, mTextAlignment);
+
+		//Draw the font
+		float width = mScale.x - mPadding.x - mPadding.z;
+		float height = mScale.y - mPadding.y - mPadding.w;
+
+		D2DFont::Get()->DrawSolidText(mFontSize, mFontColor, mText.c_str(), mPosition, { width,height });
+	}
 }
 
 void D2D_UIStackContainer::SetText(const char* text)
@@ -160,4 +187,20 @@ void D2D_UIStackContainer::DebugFunction()
 		}
 	}
 	ImGui::End();
+}
+
+void D2D_UIStackContainer::SetUIState(UINT state)
+{
+	mUiState |= state;
+}
+
+void D2D_UIStackContainer::RemoveUIState(UINT state)
+{
+	mUiState &= ~state;
+}
+
+void D2D_UIStackContainer::EnableAllState()
+{
+	mUiState |= D2DUIConfig::STATE_USE_FONT;
+	mUiState |= D2DUIConfig::STATE_USE_BACKGROUND;
 }

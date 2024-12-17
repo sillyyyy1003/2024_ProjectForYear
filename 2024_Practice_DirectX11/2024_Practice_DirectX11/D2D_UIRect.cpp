@@ -31,3 +31,22 @@ void D2D_UIRect::Draw()
 	renderTarget->FillRectangle(rect, D2DBrush::Get()->GetSolidBrush());
 	renderTarget->EndDraw();
 }
+
+void D2D_UIRect::DrawWithRadianBrush()
+{
+	float centerX = mPos.x + WIN_WIDTH / 2.f;
+	float centerY = WIN_HEIGHT / 2.f - mPos.y;
+	D2D1_RECT_F rect;
+	rect.left = centerX - mScale.x / 2.f;
+	rect.top = centerY - mScale.y / 2.f;
+	rect.right = centerX + mScale.x / 2.f;
+	rect.bottom = centerY + mScale.y / 2.f;
+
+	
+	ID2D1RenderTarget* renderTarget = gD3D->Get2DRenderTarget();
+	renderTarget->BeginDraw();
+
+	//Draw Content
+	renderTarget->FillRectangle(rect, D2DBrush::Get()->GetRGBrush());
+	renderTarget->EndDraw();
+}

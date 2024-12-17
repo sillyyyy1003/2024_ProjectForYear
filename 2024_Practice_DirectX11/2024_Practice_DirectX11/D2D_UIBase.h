@@ -12,6 +12,10 @@ namespace D2DUIConfig
 		
 	};
 
+	constexpr UINT STATE_USE_FONT = 1 << 0;
+	constexpr UINT STATE_USE_BACKGROUND = 1 << 1; 
+
+
 }
 
 ///@brief 派生类用于描绘各类UI形状
@@ -34,6 +38,7 @@ public:
 	virtual ~D2D_UIBase() = default;
 	virtual void Draw(ID2D1Brush* outlineBrush, ID2D1Brush* brush){};
 	virtual void Draw(){};
+	virtual void DrawWithRadianBrush(){};
 
 	virtual void InitUI(D2DUIConfig::UIShape shape){};
 

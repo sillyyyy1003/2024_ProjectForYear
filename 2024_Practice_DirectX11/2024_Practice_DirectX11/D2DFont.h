@@ -22,9 +22,9 @@ namespace D2DUIConfig
 		SMALL_SIZE,
 	};
 
-	constexpr float FONT_TITLE_SIZE = 180.f;
-	constexpr float FONT_NORMAL_SIZE = 80.f;
-	constexpr float FONT_SMALL_SIZE = 24.f;
+	constexpr float FONT_TITLE_SIZE = 280.f;
+	constexpr float FONT_NORMAL_SIZE = 90.f;
+	constexpr float FONT_SMALL_SIZE = 28.f;
 
 	enum class TextAlignment:uint8_t
 	{

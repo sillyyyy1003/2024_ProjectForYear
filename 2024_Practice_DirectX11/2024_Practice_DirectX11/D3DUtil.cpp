@@ -1,4 +1,5 @@
 #include "d3dUtil.h"
+using json = nlohmann::json;
 
 HRESULT LoadTextureFromFile(ID3D11Device* pDevice, const char* pszFileName, ID3D11ShaderResourceView** ppTexture)
 {
@@ -29,3 +30,4 @@ HRESULT LoadTextureFromFile(ID3D11Device* pDevice, const char* pszFileName, ID3D
 	return hr;
 
 }
+

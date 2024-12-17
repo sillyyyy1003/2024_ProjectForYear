@@ -79,7 +79,6 @@ void UI_Capsule::SetScale(const DirectX::XMFLOAT2& size)
 void UI_Capsule::SetScale(float scale)
 {
 	UI_Primitive::SetScale(scale);
-    mOriginScale={scale, scale};
 }
 
 

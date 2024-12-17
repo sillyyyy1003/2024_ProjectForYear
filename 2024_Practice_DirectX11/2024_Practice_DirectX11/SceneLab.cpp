@@ -7,6 +7,7 @@
 #include "ScenePotion.h"
 #include "SceneMission.h"
 #include "Sprite.h"
+#include "TutorialManager.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -162,8 +163,13 @@ void SceneLab::UnInit()
 
 void SceneLab::Update(float dt)
 {
-	TriggerListener();
-	GameObjectUpdate(dt);
+	if(!TutorialManager::Get()->GetSceneFreeze())
+	{
+		TriggerListener();
+		GameObjectUpdate(dt);
+	}
+
+	TutorialManager::Get()->Update(dt);
 	
 }
 
@@ -174,6 +180,10 @@ void SceneLab::Draw()
 
 	if(!isSubScene)
 		mGoldBar->Draw();
+
+
+	TutorialManager::Get()->Draw();
+
 }
 
 void SceneLab::GameObjectUpdate(float dt)

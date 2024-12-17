@@ -170,7 +170,9 @@
     <ClCompile Include="MissionSamplePaper.cpp" />
     <ClCompile Include="Potion.cpp" />
     <ClCompile Include="SceneScore.cpp" />
+    <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UISquare.cpp" />
     <ClCompile Include="UI_MoveObject.cpp" />
     <ClCompile Include="ScreenOverlay.cpp" />
     <ClCompile Include="InteractiveStaticObject.cpp" />
@@ -250,7 +252,9 @@
     <ClInclude Include="MissionSamplePaper.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="SceneScore.h" />
+    <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UISquare.h" />
     <ClInclude Include="UI_MoveObject.h" />
     <ClInclude Include="ScreenOverlay.h" />
     <ClInclude Include="InteractiveStaticObject.h" />

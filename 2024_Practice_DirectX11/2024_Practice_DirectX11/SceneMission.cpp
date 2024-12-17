@@ -72,6 +72,7 @@ void SceneMission::Update(float dt)
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Lab");
+		ScreenOverlay::Get()->SetDefaultState();
 		return;
 	}
 
@@ -79,6 +80,7 @@ void SceneMission::Update(float dt)
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Lab");
+		ScreenOverlay::Get()->SetDefaultState();
 		return;
 	}
 
@@ -87,6 +89,7 @@ void SceneMission::Update(float dt)
 		MissionManager::Get()->RegisterCheckMissionAsCurrentMission();
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Potion");
+		ScreenOverlay::Get()->SetDefaultState();
 		return;
 	}
 

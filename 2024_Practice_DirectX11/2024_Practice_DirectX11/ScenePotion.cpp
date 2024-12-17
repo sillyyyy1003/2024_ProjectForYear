@@ -64,7 +64,7 @@ void ScenePotion::Init()
 	mJug->LoadSaveData(sceneData);
 
 	mMissionPaper = std::make_unique<MissionSamplePaper>();
-	mMissionPaper->Init(PrimitiveConfig::SQUARE, GetObj<Texture>("paper3"), "MissionPaper");
+	mMissionPaper->Init(PrimitiveConfig::SQUARE, GetObj<Texture>("paper2"), "MissionPaper");
 	mMissionPaper->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
 	mMissionPaper->LoadSaveData(sceneData);
 

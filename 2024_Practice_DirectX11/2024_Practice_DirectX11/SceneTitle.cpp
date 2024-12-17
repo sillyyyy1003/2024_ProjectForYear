@@ -1,19 +1,24 @@
 ﻿#include <nlohmann/json.hpp>
-#include <fstream>
 #include "SceneTitle.h"
 #include <memory>
+#include "D2D_UIStackContainer.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
 #include "Model.h"
-#include "PBRModel.h"
-#include "UI_Font.h"
 #include "SceneManager.h"
+#include "ScreenOverlay.h"
 
 
 using json = nlohmann::json;
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
+enum SceneState
+{
+	STATE_NONE,
+	STATE_OPTION,
+	STATE_LAB,
+};
 
 
 void SceneTitle::Init()
@@ -31,52 +36,58 @@ void SceneTitle::Init()
 	mCandleLight = std::make_unique<CandleLight>();
 	mCandleLight->Init();
 	mCandleLight->LoadSaveData(sceneData, "CandleLight");
-	//Ui
-	uiStart = std::make_unique<UI_Button>();
-	uiStart->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	uiStart->LoadSaveData(sceneData, "uiStart");
 
-
-	uiOption = std::make_unique<UI_Button>();
-	uiOption->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	uiOption->LoadSaveData(sceneData, "uiOption");
-
-
-	uiExit = std::make_unique<UI_Button>();
-	uiExit->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	uiExit->LoadSaveData(sceneData, "uiExit");
-
-
-	uiTitle = std::make_unique<UIStackContainer>();
-	uiTitle->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
-	uiTitle->LoadBackgroundTex(nullptr, { 1,1 });
-	uiTitle->LoadFontTexture(GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	uiTitle->LoadSaveData(sceneData, "uiTitle");
 
 	//Object
 	mWater = std::make_unique<Potion>();
 	mWater->LoadSaveData(sceneData, "ScenePotionWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mWater->SetTexture(GetObj<Texture>("water"));
-	mWater->SetWaterColor({1,0,0,0.4f});
+	mWater->SetWaterColor({ 1,0,0,0.4f });
 	mWater->SetAutoColor(true);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+
+	mTitle = std::make_unique<D2D_UIStackContainer>();
+	mStart = std::make_unique<UIButton>();
+	mOption = std::make_unique<UIButton>();
+	mExit = std::make_unique<UIButton>();
+
+	mTitle->Init(D2DUIConfig::UIShape::RECT,D2DUIConfig::FontSize::TITLE_SIZE,"title");
+	mTitle->SetUIState(D2DUIConfig::STATE_USE_FONT);
+	mTitle->LoadSaveData(sceneData["Title"]);
+
+	mStart->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "start");
+	mStart->LoadSaveData(sceneData["Start"]);
+	mStart->EnableAllState();
+
+	mOption->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Option");
+	mOption->LoadSaveData(sceneData["Option"]);
+	mOption->EnableAllState();
+
+	mExit->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Exit");
+	mExit->LoadSaveData(sceneData["Exit"]);
+	mExit->EnableAllState();
+
+	mSceneState = STATE_NONE;
+
+
 }
 
 void SceneTitle::UnInit()
 {
 #ifdef _DEBUG
+
 	json sceneData;
-	sceneData["uiStart"] = uiStart->SaveData("uiStart");
-	sceneData["uiOption"] = uiOption->SaveData("uiOption");
-	sceneData["uiExit"] = uiExit->SaveData("uiExit");
-	sceneData["uiTitle"] = uiTitle->SaveData("uiTitle");
+	sceneData["Title"] = mTitle->SaveData();
+	sceneData["Start"] = mStart->SaveData();
+	sceneData["Option"] = mOption->SaveData();
+	sceneData["Exit"] = mExit->SaveData();
 	sceneData["ScenePotionWater"] = mWater->SaveData();
 	sceneData["CandleLight"] = mCandleLight->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_title.json", sceneData);
-#endif
 
+#endif
 }
 
 void SceneTitle::Update(float dt)
@@ -84,39 +95,62 @@ void SceneTitle::Update(float dt)
 	//Object Update / Rendering
 	ObjectUpdate(dt);
 
-	//シーン切り替えなどトリガーに使われる
-	TriggerListener();
+	if(!ScreenOverlay::Get()->GetFade())
+	{
+		//シーン切り替えなどトリガーに使われる
+		TriggerListener();
+	}
+
+	if(ScreenOverlay::Get()->GetFadeIn())
+	{
+		switch(mSceneState)
+		{
+		case STATE_OPTION:
+			SceneManager::Get()->SetMainScene("Option");
+			break;
+		case STATE_LAB:
+			SceneManager::Get()->SetMainScene("Lab");
+			break;
+		default:
+			return;
+		}
+	}
 }
 
 void SceneTitle::TriggerListener()
 {
-	if (uiStart->isTrigger())
+
+	if (mStart->IsTrigger())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
-		SceneManager::Get()->SetMainScene("Lab");
+		ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_OUT);
+		mSceneState = STATE_LAB;
 	}
 
-	if (uiExit->isTrigger())
+	if (mExit->IsTrigger())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Exit");
 	}
 
-	if (uiOption->isTrigger())
+	if (mOption->IsTrigger())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
-		SceneManager::Get()->SetMainScene("Option");
-	}
+		ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_OUT);
+		mSceneState = STATE_OPTION;
 		
+	}
+
 }
 
 void SceneTitle::ObjectUpdate(float dt)
 {
-	uiStart->Update();
-	uiOption->Update();
-	uiExit->Update();
-	uiTitle->Update();
-
+	
+	mTitle->Update(dt);
+	mStart->Update(dt);
+	mOption->Update(dt);
+	mExit->Update(dt);
+	
 	mWater->Update(dt);
 	mCandleLight->Update(dt);
 }
@@ -133,11 +167,10 @@ void SceneTitle::Draw()
 	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	mWater->Draw();
 
-	uiStart->Draw();
-	uiOption->Draw();
-	uiExit->Draw();
-	uiTitle->Draw();
-
+	mTitle->Draw();
+	mStart->Draw();
+	mOption->Draw();
+	mExit->Draw();
 
 }
 

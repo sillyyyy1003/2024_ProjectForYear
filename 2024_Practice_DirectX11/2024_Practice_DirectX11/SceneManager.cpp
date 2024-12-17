@@ -10,6 +10,7 @@
 #include "ScenePotion.h"
 #include "SceneTitle.h"
 #include "ScreenOverlay.h"
+#include "TutorialManager.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -23,9 +24,8 @@ void SceneManager::Init()
 {
 	//LoadSaveData
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_manager.json");
-
 	json playerData = LoadSceneData("Assets/Data/SaveDat/player_data.json");
-	
+	json tutorialData = LoadSceneData("Assets/Data/SaveDat/tutorial_data.json");
 
 	//Set Scene Map
 	InitSceneMap();
@@ -53,14 +53,22 @@ void SceneManager::Init()
 
 	//Init Fade Tool
 	ScreenOverlay::Get()->Init();
+	ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_IN);
 
 	//Init Player
 	mPlayer = CreateObj<Player>("player");
 	mPlayer->LoadPlayerData(playerData["Player"]);
-	SetMainScene("Title");
+
+	//Init Tutorial
+	TutorialManager::Get()->Init(tutorialData["Tutorial"]);
 
 	//Init Ingredient Manager
 	IngredientManager::Get()->Init();
+
+	//Set Scene
+	SetMainScene("Title");
+
+	
 
 }
 
@@ -75,6 +83,9 @@ void SceneManager::UnInit()
 	playerData["Player"] = mPlayer->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/player_data.json", playerData);
 
+	json tutorialData;
+	tutorialData["Tutorial"]=TutorialManager::Get()->UnInit();
+	SaveSceneFile("Assets/Data/SaveDat/tutorial_data.json", tutorialData);
 }
 
 void SceneManager::Update(float dt)
@@ -89,7 +100,7 @@ void SceneManager::Update(float dt)
 
 void SceneManager::Draw()
 {
-
+	ScreenOverlay::Get()->Draw();
 }
 
 void SceneManager::SetMainScene(const std::string& sceneName)
@@ -116,25 +127,8 @@ void SceneManager::InitSceneMap()
 void SceneManager::InitFontLib()
 {
 	//UI_Font
-	UIFont_StringLiteral = CreateObj<Texture>("UIFont_StringLiteral");
-	HR(UIFont_StringLiteral->Create("Assets/Texture/UI/UIFontLib/ASCIILib_StringLiteral_Regular.png"));
-
 	UIFont_OCRA_Extend = CreateObj<Texture>("UIFont_OCRA_Extend");
 	HR(UIFont_OCRA_Extend->Create("Assets/Texture/UI/UIFontLib/ASCIILib_OCRA_Extend.png"));
-
-	UIFont_Courier_New_Regular = CreateObj<Texture>("UIFont_Courier_New_Regular");
-	HR(UIFont_Courier_New_Regular->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_Regular.png"));
-
-	UIFont_Courier_New_Bold = CreateObj<Texture>("UIFont_Courier_New_Bold");
-	HR(UIFont_Courier_New_Bold->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_Bold.png"));
-
-	UIFont_Courier_New_It = CreateObj<Texture>("UIFont_Courier_New_It");
-	HR(UIFont_Courier_New_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_Courier_New_It.png"));
-
-	UIFont_Source_Code_Pro_It = CreateObj<Texture>("UIFont_SourceCodeProIt");
-	HR(UIFont_Source_Code_Pro_It->Create("Assets/Texture/UI/UIFontLib/ASCIILib_SourceCodeProIt.png"));
-
-
 }
 
 void SceneManager::InitModelTexture()
@@ -155,14 +149,16 @@ void SceneManager::InitModelTexture()
 	HR(paperTexture->Create("Assets/Texture/sepia-plasterboard-texture1.jpg"));
 
 	Texture* paperTexture2 = CreateObj<Texture>("paper2").get();
-	HR(paperTexture2->Create("Assets/Texture/paper3.png"));
+	HR(paperTexture2->Create("Assets/Texture/paper2.png"));
 
 	Texture* paperTexture3 = CreateObj<Texture>("paper3").get();
-	HR(paperTexture3->Create("Assets/Texture/sepia-plasterboard-texture.png"));
-
+	HR(paperTexture3->Create("Assets/Texture/paper3.png"));
 
 	blackOverlay=CreateObj<Texture>("BlackOverlay");
-	HR(blackOverlay->Create("Assets/Texture/Fade.png"));
+	HR(blackOverlay->Create("Assets/Texture/ScreenOverlay/bg_mask.png"));
+
+	Texture* fadeOverlay = CreateObj<Texture>("Fade").get();
+	HR(fadeOverlay->Create("Assets/Texture/ScreenOverlay/Fade.png"))
 
 
 	//Close Book

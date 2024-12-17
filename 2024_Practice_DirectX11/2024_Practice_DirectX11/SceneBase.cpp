@@ -29,17 +29,18 @@ SceneBase::~SceneBase()
 
 void SceneBase::_update(float dt)
 {
-	Update(dt);
 	if (mpSubScene)
 		mpSubScene->_update(dt);
+	Update(dt);
+
 }
 
 void SceneBase::_draw()
 {
-	Draw();
 	if (mpSubScene)
 		mpSubScene->_draw();
-	
+	Draw();
+
 }
 
 json SceneBase::LoadSceneData(const char* fileName)
