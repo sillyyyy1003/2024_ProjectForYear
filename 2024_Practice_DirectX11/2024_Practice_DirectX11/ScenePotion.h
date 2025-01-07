@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CandleLight.h"
 #include "Ingredient.h"
 #include "InteractiveStaticObject.h"
@@ -48,10 +48,10 @@ class ScenePotion :public SceneBase
 
 
 public:
-	/// @brief ƒf[ƒ^‚Ìƒ[ƒh‚Æ‰Šú‰»
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰ã¨åˆæœŸåŒ–
 	void Init();
 
-	/// @brief ƒf[ƒ^‚ÌƒZ[ƒu‚ğs‚¤
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ã‚»ãƒ¼ãƒ–ã‚’è¡Œã†
 	void UnInit();
 
 	void Update(float dt);

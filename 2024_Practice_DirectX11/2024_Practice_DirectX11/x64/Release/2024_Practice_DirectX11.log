@@ -1,62 +1,14 @@
-﻿  CandleLight.cpp
-  Circle.cpp
-  Cube.cpp
-  Capsule.cpp
-  Collider.cpp
-  CylinderOneCap.cpp
-  Ingredient.cpp
-  IngredientManager.cpp
-  InteractiveMovableObject.cpp
-  Mission.cpp
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Mission.cpp(38,14): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Mission.cpp(48,15): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-  MissionManager.cpp
-  MissionSamplePaper.cpp
-  Potion.cpp
-  PotionIngredientManager.cpp
-  SceneScore.cpp
-  UI_MoveObject.cpp
-  ScreenOverlay.cpp
-  InteractiveStaticObject.cpp
-  MissionPaper.cpp
-  Object.cpp
-  正在编译...
-  Cylinder.cpp
-  GameApp.cpp
-  Model.cpp
-  PBRModel.cpp
-  SceneLab.cpp
-  SceneMission.cpp
-  SceneOption.cpp
-  ScenePotion.cpp
-  Square.cpp
-  Player.cpp
-  PointLight.cpp
-  Primitive.cpp
-  SceneManager.cpp
-  SceneTitle.cpp
-  Sphere.cpp
-  StaticObject.cpp
-  UI_Font.cpp
-  UIStackContainer.cpp
-  UI_Button.cpp
-  UI_Capsule.cpp
-  正在编译...
-  UI_Primitive.cpp
-  UI_RoundSquare.cpp
-  UI_Square.cpp
-  Water.cpp
-  WaterJug.cpp
+﻿  ScenePotion.cpp
     正在创建库 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.lib 和对象 C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exp
   正在生成代码
-  649 of 9389 functions ( 6.9%) were compiled, the rest were copied from previous compilation.
-    201 functions were new in current compilation
-    462 functions had inline decision re-evaluated but remain unchanged
+  5 of 10053 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    58 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
+imgui.lib(imgui_widgets.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_widgets.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
+imgui.lib(imgui.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 imgui.lib(imgui_impl_dx11.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_impl_dx11.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 imgui.lib(imgui_impl_win32.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_impl_win32.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-imgui.lib(imgui.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 imgui.lib(imgui_draw.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_draw.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-imgui.lib(imgui_widgets.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_widgets.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
 imgui.lib(imgui_tables.obj) : warning LNK4099: 未找到 PDB“”(使用“imgui.lib(imgui_tables.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Release\2024_Practice_DirectX11.exe

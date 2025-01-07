@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <map>
 #include <memory>
 #include <string>
@@ -23,8 +23,8 @@ private:
 	///	@param float Current Capacity
 	std::unordered_map<PlayerConfig::PigmentColor, float> mCapacities;
 
-	float mGold = 100;	//ƒvƒŒƒ„[‚ª‚Â‹à
-	float mWitchLevel = 1;//ƒMƒ‹ƒhƒŒƒxƒ‹
+	float mGold = 100;	//ãƒ—ãƒ¬ãƒ¤ãƒ¼ãŒæŒã¤é‡‘
+	float mWitchLevel = 1;//ã‚®ãƒ«ãƒ‰ãƒ¬ãƒ™ãƒ«
 
 	int mDay = 1;//Calculate the day
 

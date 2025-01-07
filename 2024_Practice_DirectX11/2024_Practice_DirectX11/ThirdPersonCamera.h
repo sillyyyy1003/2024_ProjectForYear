@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CameraBase.h"
 class ThirdPersonCamera : public CameraBase
 {
@@ -11,13 +11,13 @@ private:
 public:
     DirectX::XMFLOAT3 mTarget={};
 
-    //ƒ^[ƒQƒbƒg‚Æ‚Ì‹——£
+    //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã®è·é›¢
     float mDistance = 0.0f;
 
-    //Å’Z‹–—e‹——£
+    //æœ€çŸ­è¨±å®¹è·é›¢
     float mMinDist = 0.0f;
 
-    //Å‘å‹–—e‹——£
+    //æœ€å¤§è¨±å®¹è·é›¢
 	float mMaxDist = 0.0f;
 
     ThirdPersonCamera() = default;
@@ -25,42 +25,42 @@ public:
 
     void Update(float dt) override;
 
-    /// @brief ƒ^[ƒQƒbƒg‚Æ‚ÌˆÊ’u‚ğæ“¾
-    /// @return ƒ^[ƒQƒbƒg‚ÌˆÊ’u
+    /// @brief ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã®ä½ç½®ã‚’å–å¾—
+    /// @return ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®
     DirectX::XMFLOAT3 GetTargetPosition() const;
 
-    /// @brief ƒIƒuƒWƒFƒNƒg‚Æ‚Ì‹——£
+    /// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è·é›¢
     float GetDistance() const;
 
-    /// @brief ƒIƒuƒWƒFƒNƒg‚ğ’†S‚É‚’¼‰ñ“](0~60)
-    /// @param rad ƒ‰ƒWƒAƒ“
+    /// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸­å¿ƒã«å‚ç›´å›è»¢(0~60)
+    /// @param rad ãƒ©ã‚¸ã‚¢ãƒ³
     void RotateX(float rad);
 
-    /// @brief ƒIƒuƒWƒFƒNƒg‚ğ’†S‚É…•½‰ñ“](0~60)
-    /// @param rad ƒ‰ƒWƒAƒ“
+    /// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸­å¿ƒã«æ°´å¹³å›è»¢(0~60)
+    /// @param rad ãƒ©ã‚¸ã‚¢ãƒ³
     void RotateY(float rad);
 
-    /// @brief ƒIƒuƒWƒFƒNƒg‚É‹ß•t‚­
+    /// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¿‘ä»˜ã
     /// @param dist 
     void Approach(float dist);
 
-    /// @brief ‚’¼‰ñ“]‚Ì‰Šúİ’è[0, pi/3]
-    /// @param rad ƒ‰ƒWƒAƒ“
+    /// @brief å‚ç›´å›è»¢ã®åˆæœŸè¨­å®š[0, pi/3]
+    /// @param rad ãƒ©ã‚¸ã‚¢ãƒ³
     void SetRotationX(float rad);
 
-    /// @brief …•½‰ñ“]‚Ì‰Šúİ’è[0, pi/3]
-	/// @param rad ƒ‰ƒWƒAƒ“
+    /// @brief æ°´å¹³å›è»¢ã®åˆæœŸè¨­å®š[0, pi/3]
+	/// @param rad ãƒ©ã‚¸ã‚¢ãƒ³
     void SetRotationY(float rad);
 
-    /// @brief ’ÇÕ‘ÎÛ‚ğİ’è
+    /// @brief è¿½è·¡å¯¾è±¡ã‚’è¨­å®š
     /// @param target 
     void SetTarget(const DirectX::XMFLOAT3& target);
 
-	/// @brief ’ÇÕ‹——£‚ğİ’è
-    /// @param dist ‹——£
+	/// @brief è¿½è·¡è·é›¢ã‚’è¨­å®š
+    /// @param dist è·é›¢
     void SetDistance(float dist);
 
-    /// @brief ‹——£‚ÌÅ‘åÅ¬’l‚ğİ’è
+    /// @brief è·é›¢ã®æœ€å¤§æœ€å°å€¤ã‚’è¨­å®š
     /// @param minDist 
     /// @param maxDist 
     void SetDistanceMinMax(float minDist, float maxDist);

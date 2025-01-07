@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 #include "Shader.h"
 #include "Transform.h"
 #include "UVAnimation.h"
 
-/// @brief ’n–ÊE•½–ÊE°‚È‚Ç‚Ég‚í‚ê‚é
+/// @brief åœ°é¢ãƒ»å¹³é¢ãƒ»åºŠãªã©ã«ä½¿ã‚ã‚Œã‚‹
 class Square :public Primitive
 {
 public:
@@ -22,9 +22,9 @@ public:
 
 	void Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSplit = { 1,1 }) override;
 
-	/// @brief •ªŠ„‚ª‚à‚Á‚Æ×‚©‚¢•½–Ê
+	/// @brief åˆ†å‰²ãŒã‚‚ã£ã¨ç´°ã‹ã„å¹³é¢
 	/// @param _fileName 
-	/// @param slices •ªŠ„”
+	/// @param slices åˆ†å‰²æ•°
 	///
 	void Init(const char* _fileName, int slices = 0, DirectX::XMINT2 _UVSplit = { 1,1 }) override;
 
@@ -42,12 +42,12 @@ public:
 	/// @brief Square with 4 vertices
 	void CreateMesh();
 
-	/// @brief N x N‚Ì¬‚³‚¢³•ûŒ`‚ÅƒvƒŒ[ƒ“
-	/// @param slices •ªŠ„”
+	/// @brief N x Nã®å°ã•ã„æ­£æ–¹å½¢ã§ãƒ—ãƒ¬ãƒ¼ãƒ³
+	/// @param slices åˆ†å‰²æ•°
 	void CreateMesh(UINT slices) override;
 
 
-	/// @brief Default Shader‚Ég‚í‚ê‚éƒf[ƒ^‚Ì‘‚«‚İ
+	/// @brief Default Shaderã«ä½¿ã‚ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 	void WriteDefShader() override;
 
 	Mesh* GetMesh() const override { return mMesh.get(); };

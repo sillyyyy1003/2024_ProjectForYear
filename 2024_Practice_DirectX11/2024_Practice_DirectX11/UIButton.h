@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D2D_UIStackContainer.h"
 
 
@@ -15,26 +15,26 @@ public:
 	UIButton();
 	~UIButton() override = default;
 
-	void Init(D2DUIConfig::UIShape shape, D2DUIConfig::FontSize size, const char* objName) override;
+	virtual void Init(D2DUIConfig::UIShape shape, D2DUIConfig::FontSize size, const char* objName) override;
 
-	void Update(float dt) override;
+	virtual void Update(float dt) override;
+	virtual void UpdateCollider();
 
-	void UpdateCollider();
+	virtual void PreUpdate(float dt);
+	virtual void GameUpdate(float dt);
+	virtual void LateUpdate(float dt);
 
-	void PreUpdate(float dt);
-	void GameUpdate(float dt);
-	void LateUpdate(float dt);
+	virtual void LoadSaveData(json data) override;
+	virtual json SaveData() override;
 
-	void LoadSaveData(json data) override;
-	json SaveData() override;
+	virtual bool IsPressed();
+	virtual bool IsTrigger();
 
+	/// @brief æµ®éŠå‹•ä½œ
+	virtual void Levitate();
 
-	bool IsPressed();
-	bool IsTrigger();
-
-	/// @brief •‚—V“®ì
-	void Levitate();
-
-	void SetDefaultColor(D2D1::ColorF color);
+	/// @brief å…ƒã®è‰²ã‚’è¨­å®šã™ã‚‹
+	/// @param color 
+	virtual void SetDefaultColor(D2D1::ColorF color);
 };
 

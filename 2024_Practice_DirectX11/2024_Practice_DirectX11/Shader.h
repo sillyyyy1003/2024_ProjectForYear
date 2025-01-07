@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <wrl/client.h>
 #include <vector>
 #include "SceneBase.h"
@@ -13,6 +13,7 @@ protected:
 	enum  ShaderKind {
 		Vertex = 0,
 		Pixel = 1,
+		Geometry = 2,
 	};
 public:
 	Shader(ShaderKind kind);
@@ -27,31 +28,29 @@ protected:
 
 public:
 
-	/// @brief Šî–{ƒVƒF[ƒ_[‚É‘Î‰
+	/// @brief åŸºæœ¬ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«å¯¾å¿œ
 	/// @return 
 	HRESULT CompileShader(const char* pCode);
 
-	/// @brief hlslƒtƒ@ƒCƒ‹‚ğƒ[ƒh‚»‚µ‚Äì¬
+	/// @brief hlslãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ãã—ã¦ä½œæˆ
 	/// @param _fileName
-	///	ƒIƒuƒWƒFƒNƒg‚Ég‚¤
+	///	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ä½¿ã†
 	HRESULT LoadShaderFile(const char* _fileName);
-
+	
 	virtual void SetShader() = 0;
 
-	/// @brief ƒf[ƒ^‚ğƒVƒF[ƒ_‚É“Ç‚İ‚Ş
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã‚’ã‚·ã‚§ãƒ¼ãƒ€ã«èª­ã¿è¾¼ã‚€
 	/// @param slot 
-	/// @param pData XV‚·‚éƒf[ƒ^‚Ìƒ|ƒCƒ“ƒ^[
+	/// @param pData æ›´æ–°ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒ³ã‚¿ãƒ¼
 	void WriteShader(UINT slot, void* pData);
 
-	/// @brief ƒeƒNƒXƒ`ƒƒ‚ğ‚Â‚¯‚é
+	/// @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ã¤ã‘ã‚‹
 	/// @param slot 
 	/// @param _texture 
 	void SetTexture(UINT slot, Texture* _texture);
 
-	/*std::vector<ComPtr<ID3D11Buffer>> GetBuffers() { int bufferIndex = GameApp::GetRenderIndex(); return mBuffers[bufferIndex]; };*/
-
 protected:
-	/// @brief ƒVƒF[ƒ_‚ğì¬
+	/// @brief ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½œæˆ
 	/// @param pData 
 	/// @param size 
 	/// @return 
@@ -59,7 +58,7 @@ protected:
 
 
 private:
-	/// @brief ’è”ƒoƒbƒtƒ@‚ÆƒVƒF[ƒ_[‚ğì¬
+	/// @brief å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ä½œæˆ
 	/// @param pData 
 	/// @param size 
 	/// @return 
@@ -68,7 +67,7 @@ private:
 
 };
 
-/// @brief InputLayout & VertexShader ˆ—
+/// @brief InputLayout & VertexShader å‡¦ç†
 class VertexShader :public Shader
 {
 
@@ -81,14 +80,15 @@ public:
 	VertexShader();
 	~VertexShader() override;
 
-	/// @brief VertexShaderì¬
-	/// @param pData “Ç‚İ‚ñ‚½data
+	/// @brief VertexShaderä½œæˆ(Shader* InputLayOut)
+	/// @param pData èª­ã¿è¾¼ã‚“ãŸdata
 	/// @param size 
 	/// @return 
 	HRESULT CreateShader(void* pData, UINT size) override;
 
-	/// @brief Set Constant Buffer to VtxPosColorNormal Shader
+	/// @brief Set Constant Buffer toã€€Vertex Shader
 	void SetShader() override;
+
 	ComPtr<ID3D11InputLayout> GetInputLayOut() { return mInputLayout; };
 };
 
@@ -102,8 +102,8 @@ public:
 	PixelShader();
 	~PixelShader() override;
 
-	/// @brief Pixel Shaderì¬
-	/// @param pData “Ç‚İ‚ñ‚½data
+	/// @brief Pixel Shaderä½œæˆ
+	/// @param pData èª­ã¿è¾¼ã‚“ãŸdata
 	/// @param size 
 	/// @return 
 	HRESULT CreateShader(void* pData, UINT size) override;
@@ -113,4 +113,18 @@ public:
 
 
 
+};
+
+class GeometryShader:public Shader
+{
+public:
+	GeometryShader();
+	~GeometryShader() override;
+
+	void SetShader() override;
+	static void UnsetShader();
+protected:
+	HRESULT CreateShader(void* pData, UINT size) override;
+private:
+	ComPtr <ID3D11GeometryShader> mGS;
 };

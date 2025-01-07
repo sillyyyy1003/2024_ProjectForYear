@@ -257,6 +257,9 @@ inline DirectX::XMFLOAT2 LocalClientToWorld(const POINT& cursorPos, DirectX::XMF
 	return result;
 }
 
+
+
+
 namespace Vertex
 {
 	struct VtxPosTex
@@ -292,7 +295,7 @@ namespace Vertex
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT2 tex;
-		DirectX::XMFLOAT4 color;
+		DirectX::XMFLOAT4 color = { 1.f,1.f,1.f,1.f };
 	};
 
 	struct VtxPosNormalTangentTex
@@ -321,6 +324,99 @@ namespace Vertex
 
 }
 
+
+struct HSV
+{
+	float hue = 0.f;
+	float saturation = 1.f;
+	float value = 1.f;
+};
+
+inline DirectX::XMFLOAT4 HSVtoRGB(const HSV& color)
+{
+	float c = color.value * color.saturation;
+	float x = c * (1.f - fabs(fmod(color.hue / 60.f, 2.f) - 1.f));
+	float m = color.value - c;
+
+	float r, g, b = 0.0f;
+	DirectX::SimpleMath::Color outputColor;
+	if (color.hue >= 0 && color.hue < 60.f)
+	{
+		r = c;
+		g = x;
+		b = 0;
+	}
+	else if (color.hue >= 60.f && color.hue < 120.f)
+	{
+		r = x;
+		g = c;
+		b = 0;
+	}
+	else if (color.hue >= 120.f && color.hue < 180.f)
+	{
+		r = 0;
+		g = c;
+		b = x;
+	}
+	else if (color.hue >= 180.f && color.hue < 240.f)
+	{
+		r = 0;
+		g = x;
+		b = c;
+	}
+	else if (color.hue >= 240.f && color.hue < 300.f)
+	{
+		r = x;
+		g = 0;
+		b = c;
+
+	}
+	else
+	{
+		r = c;
+		g = 0;
+		b = x;
+	}
+
+	outputColor.R(r + m);
+	outputColor.G(g + m);
+	outputColor.B(b + m);
+	outputColor.A(1.0f);
+	return outputColor;
+}
+
+inline HSV RGBtoHSV(const DirectX::XMFLOAT4& color)
+{
+	float maxVal = std::max({ color.x,color.y,color.z });
+	float minVal = std::min({ color.x,color.y,color.z });
+
+	float delta = maxVal - minVal;
+	float h = 0.f, s = 0.f, v = maxVal;
+
+	if (delta > 0)
+	{
+		if (maxVal == color.x)
+		{
+			h = 60.f * (fmod(((color.y - color.z) / delta), 6.0f));
+		}
+		else if (maxVal == color.y)
+		{
+			h = 60.f * (((color.z - color.x) / delta) + 2.0f);
+		}
+		else
+		{
+			h = 60.f * (((color.x - color.y) / delta) + 4.f);
+		}
+
+		if (maxVal > 0)
+		{
+			s = delta / maxVal;
+		}
+	}
+	if (h < 0.f)h += 360.f;
+
+	return { h,s,v };
+}
 
 //todo
 struct Material

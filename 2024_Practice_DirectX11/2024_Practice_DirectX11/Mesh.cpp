@@ -1,4 +1,4 @@
-#include "Mesh.h"
+ï»¿#include "Mesh.h"
 #include "DebugLog.h"
 #include "DXTrace.h"
 #include "GameApp.h"
@@ -7,7 +7,7 @@ Mesh::Mesh(const MeshData& _data)
 {
 	HR(CreateVertexBuffer(_data.pVertex, _data.vertexSize, _data.vertexCount));
 
-    //Index ‚ ‚é‚È‚ç
+    //Index ã‚ã‚‹ãªã‚‰
     if (_data.pIndex)
     {
 		HR(CreateIndexBuffer(_data.pIndex, _data.indexSize, _data.indexCount));
@@ -38,7 +38,7 @@ Mesh::~Mesh()
 
 HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCount)
 {
-	//--- ì¬‚·‚éƒoƒbƒtƒ@‚Ìî•ñ
+	//--- ä½œæˆã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®æƒ…å ±
 	D3D11_BUFFER_DESC bufDesc = {};
 	bufDesc.ByteWidth = size * vertexCount;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -49,11 +49,11 @@ HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCoun
 		bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	}
 
-	//--- ƒoƒbƒtƒ@‚Ì‰Šú’l‚ðÝ’è
+	//--- ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸå€¤ã‚’è¨­å®š
 	D3D11_SUBRESOURCE_DATA subResource = {};
 	subResource.pSysMem = pVertex;
 
-	//--- ’¸“_ƒoƒbƒtƒ@‚Ìì¬
+	//--- é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	HRESULT hr;
 	ID3D11Device* pDevice = GameApp::Get()->GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, pVertexBuffer.GetAddressOf());
@@ -67,7 +67,7 @@ HRESULT Mesh::CreateVertexBuffer(const void* pVertex, UINT size, UINT vertexCoun
 
 HRESULT Mesh::CreateIndexBuffer(const void* pIndex, UINT size, UINT indexCount)
 {
-	// ƒCƒ“ƒfƒbƒNƒXƒTƒCƒY‚ÌŠm”F
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚µã‚¤ã‚ºã®ç¢ºèª
 	switch (size)
 	{
 	default:
@@ -77,16 +77,16 @@ HRESULT Mesh::CreateIndexBuffer(const void* pIndex, UINT size, UINT indexCount)
 		break;
 	}
 
-	// ƒoƒbƒtƒ@‚Ìî•ñ‚ðÝ’è
+	// ãƒãƒƒãƒ•ã‚¡ã®æƒ…å ±ã‚’è¨­å®š
 	D3D11_BUFFER_DESC bufDesc = {};
 	bufDesc.ByteWidth = size * indexCount;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	// ƒoƒbƒtƒ@‚Ì‰Šúƒf[ƒ^
+	// ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸãƒ‡ãƒ¼ã‚¿
 	D3D11_SUBRESOURCE_DATA subResource = {};
 	subResource.pSysMem = pIndex;
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	ID3D11Device* pDevice = GameApp::Get()->GetDevice();
 	HRESULT hr;
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, pIndexBuffer.GetAddressOf());
@@ -106,7 +106,7 @@ HRESULT Mesh::Write(void* pVertex) const
 	ID3D11DeviceContext* pContext = gD3D->GetContext();
 	D3D11_MAPPED_SUBRESOURCE mapResource;
 
-	// ƒf[ƒ^ƒRƒs[
+	// ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 	hr = pContext->Map(pVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
 	if (SUCCEEDED(hr))
 	{
@@ -123,7 +123,7 @@ void Mesh::Draw(int count)
 	UINT stride = mData.vertexSize;
 	UINT offset = 0;
 
-	// ƒgƒ|ƒƒW‚ÌÝ’è
+	// ãƒˆãƒãƒ­ã‚¸ã®è¨­å®š
 	ID3D11HullShader* hullShader;
 	pContext->HSGetShader(&hullShader, nullptr, nullptr);
 	if (hullShader)
@@ -131,10 +131,10 @@ void Mesh::Draw(int count)
 	else
 		pContext->IASetPrimitiveTopology(mData.topology);
 
-	// ’¸“_ƒoƒbƒtƒ@Ý’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	pContext->IASetVertexBuffers(0, 1, pVertexBuffer.GetAddressOf(), &stride, &offset);
 
-	// •`‰æ
+	// æç”»
 	if (mData.indexCount > 0)
 	{
 		DXGI_FORMAT format = {};
@@ -148,7 +148,7 @@ void Mesh::Draw(int count)
 	}
 	else
 	{
-		// ’¸“_ƒoƒbƒtƒ@‚Ì‚Ý‚Å•`‰æ
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã¿ã§æç”»
 		pContext->Draw(count ? count : mData.vertexCount, 0);
 	}
 

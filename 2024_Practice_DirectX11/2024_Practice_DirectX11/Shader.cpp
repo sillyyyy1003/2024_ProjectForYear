@@ -22,7 +22,7 @@ HRESULT Shader::CompileShader(const char* pCode)
 	{
 		"vs_5_0",
 		"ps_5_0",
-		//"gs_5_0",
+		"gs_5_0",
 		//"hs_5_0",
 		//"ds_5_0",
 	};
@@ -78,11 +78,6 @@ void Shader::WriteShader(UINT slot, void* pData)
 	//大きさを超えないよう
 	if (slot < mBuffers.size())
 	{
-		int bufferIndex = GameApp::GetCurrentRenderIndex();
-		if (mBuffers[slot] == nullptr)
-		{
-			DebugLog::LogError("nullptr");
-		}
 		gD3D->GetContext()->UpdateSubresource(mBuffers[slot].Get(), 0, nullptr, pData, 0, 0);
 	}
 }
@@ -101,6 +96,8 @@ void Shader::SetTexture(UINT slot, Texture* _texture)
 	case ShaderKind::Pixel:
 		gD3D->GetContext()->PSSetShaderResources(slot, 1, &pTex);
 		break;
+	default:
+		return;
 		//case Hull:		GetContext()->HSSetShaderResources(slot, 1, &pTex); break;
 		//case Domain:	GetContext()->DSSetShaderResources(slot, 1, &pTex); break;
 	}
@@ -174,17 +171,17 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 	hr = pDevice->CreateVertexShader(pData, size, nullptr, mVertexShader.GetAddressOf());
 	if (FAILED(hr)) { return hr; }
 
-	
+	//InputLayout作成
 	/*
 	シェーダ作成時にシェーダリフレクションを通してインプットレイアウトを取得
 	セマンティクスの配置などから識別子を作成
 	識別子が登録済→再利用、なければ新規作成
 	https://blog.techlab-xe.net/dxc-shader-reflection/
 	*/
-
-	ID3D11ShaderReflection* pReflection = {};
+	ID3D11ShaderReflection* pReflection;
 	D3D11_SHADER_DESC shaderDesc;
-	std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutDesc;
+	D3D11_INPUT_ELEMENT_DESC* pInputDesc;
+	D3D11_SIGNATURE_PARAMETER_DESC sigDesc;
 
 	DXGI_FORMAT formats[][4] =
 	{
@@ -206,58 +203,49 @@ HRESULT VertexShader::CreateShader(void* pData, UINT size)
 		},
 	};
 
-
 	hr = D3DReflect(pData, size, IID_PPV_ARGS(&pReflection));
 	if (FAILED(hr)) { return hr; }
-	pReflection->GetDesc(&shaderDesc);
 
+	pReflection->GetDesc(&shaderDesc);
+	pInputDesc = new D3D11_INPUT_ELEMENT_DESC[shaderDesc.InputParameters];
 	for (UINT i = 0; i < shaderDesc.InputParameters; ++i)
 	{
-		D3D11_SIGNATURE_PARAMETER_DESC paramDesc;
-		pReflection->GetInputParameterDesc(i, &paramDesc);
+		pReflection->GetInputParameterDesc(i, &sigDesc);
+		pInputDesc[i].SemanticName = sigDesc.SemanticName;
+		pInputDesc[i].SemanticIndex = sigDesc.SemanticIndex;
 
-		D3D11_INPUT_ELEMENT_DESC elementDesc = {};
-		elementDesc.SemanticName = paramDesc.SemanticName;
-		elementDesc.SemanticIndex = paramDesc.SemanticIndex;
-		elementDesc.InputSlot = 0;
-		elementDesc.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-		elementDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		elementDesc.InstanceDataStepRate = 0;
+		// http://marupeke296.com/TIPS_No17_Bit.html
+		BYTE elementCount = sigDesc.Mask;
+		elementCount = (elementCount & 0x05) + ((elementCount >> 1) & 0x05);
+		elementCount = (elementCount & 0x03) + ((elementCount >> 2) & 0x03);
 
-		int formatIndex = 0;
-		switch(paramDesc.ComponentType)
+		switch (sigDesc.ComponentType)
 		{
-		case D3D_REGISTER_COMPONENT_UINT32:formatIndex = 0; break;
-		case D3D_REGISTER_COMPONENT_SINT32:formatIndex = 1; break;
-		case D3D_REGISTER_COMPONENT_FLOAT32:formatIndex = 2; break;
+		case D3D_REGISTER_COMPONENT_UINT32:
+			pInputDesc[i].Format = formats[0][elementCount - 1];
+			break;
+		case D3D_REGISTER_COMPONENT_SINT32:
+			pInputDesc[i].Format = formats[1][elementCount - 1];
+			break;
+		case D3D_REGISTER_COMPONENT_FLOAT32:
+			pInputDesc[i].Format = formats[2][elementCount - 1];
+			break;
 		}
-
-		// Determine the mask index
-		int maskIndex = 0;
-		if (paramDesc.Mask == 1) {
-			maskIndex = 0;
-		}
-		else if (paramDesc.Mask <= 3) {
-			maskIndex = 1;
-		}
-		else if (paramDesc.Mask <= 7) {
-			maskIndex = 2;
-		}
-		else if (paramDesc.Mask <= 15) {
-			maskIndex = 3;
-		}
-
-		// Set the format using the calculated indices
-		elementDesc.Format = formats[formatIndex][maskIndex];
-		inputLayoutDesc.push_back(elementDesc);
+		pInputDesc[i].InputSlot = 0;
+		pInputDesc[i].AlignedByteOffset = i == 0 ? 0 : D3D11_APPEND_ALIGNED_ELEMENT;
+		pInputDesc[i].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		pInputDesc[i].InstanceDataStepRate = 0;
 	}
 
-	hr = pDevice->CreateInputLayout(&inputLayoutDesc[0], (UINT)inputLayoutDesc.size(), pData, size, mInputLayout.GetAddressOf());
+	hr = pDevice->CreateInputLayout(
+		pInputDesc, shaderDesc.InputParameters,
+		pData, size, mInputLayout.GetAddressOf()
+	);
 
-	
+	delete[] pInputDesc;
 	return hr;
-
 }
+
 
 void VertexShader::SetShader()
 {
@@ -303,6 +291,36 @@ void PixelShader::SetShader()
 		pContext->PSSetConstantBuffers(i, 1, mBuffers[i].GetAddressOf());
 	for (int i = 0; i < mTextures.size(); ++i)
 		pContext->PSSetShaderResources(i, 1, mTextures[i].GetAddressOf());
+}
+
+GeometryShader::GeometryShader():Shader(Shader::Geometry)
+{
+	mGS = nullptr;
+}
+
+GeometryShader::~GeometryShader()
+{
+
+}
+
+void GeometryShader::SetShader()
+{
+	ID3D11DeviceContext* pContext = gD3D->GetContext();
+	pContext->GSSetShader(mGS.Get(), nullptr, 0);
+	for (int i = 0; i < mBuffers.size(); i++)
+		pContext->GSSetConstantBuffers(i, 1, mBuffers[i].GetAddressOf());
+	for (int i = 0; i < mBuffers.size(); i++)
+		pContext->GSSetShaderResources(i, 1, mTextures[i].GetAddressOf());
+}
+
+void GeometryShader::UnsetShader()
+{
+	gD3D->GetContext()->GSSetShader(nullptr, nullptr, 0);
+}
+
+HRESULT GeometryShader::CreateShader(void* pData, UINT size)
+{
+	return gD3D->GetDevice()->CreateGeometryShader(pData, size, NULL, mGS.GetAddressOf());
 }
 
 

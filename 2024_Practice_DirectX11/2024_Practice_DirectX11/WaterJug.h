@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "InteractiveMovableObject.h"
 
 class WaterJug :public InteractiveMovableObject
 {
 private:
-	//Default��Ԃ̎��̈ʒu
+	//Default状態の時の位置
 	DirectX::XMFLOAT3 mDefaultPos = { 0,0,0 };
 
 	float mAccumulateTime = 0.0f;

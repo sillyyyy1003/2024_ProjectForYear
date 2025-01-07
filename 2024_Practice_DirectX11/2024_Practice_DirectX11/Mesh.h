@@ -1,16 +1,16 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DApp.h"
 #include <wrl/client.h>
 
-//todo:this doesn't support draw instanced. Need fixing
-/// @brief Šî’ê 
+
+/// @brief åŸºåº• 
 class Mesh
 {
 public:
 
 	struct MeshData
 	{
-		const void* pVertex; //’¸“_@ˆÙ‚È‚éŒ^‚Ìƒf[ƒ^‚ğˆ—‚·‚éÛ‚É”Ä—p“I‚Èƒ|ƒCƒ“ƒ^
+		const void* pVertex; //é ‚ç‚¹ã€€ç•°ãªã‚‹å‹ã®ãƒ‡ãƒ¼ã‚¿ã‚’å‡¦ç†ã™ã‚‹éš›ã«æ±ç”¨çš„ãªãƒã‚¤ãƒ³ã‚¿
 		UINT vertexSize;
 		UINT vertexCount;
 		const void* pIndex;
@@ -18,7 +18,7 @@ public:
 		UINT indexCount;
 		//https://conscious-maple-e95.notion.site/D3D11_PRIMITIVE_TOPOLOGY-65f1aa0b85284bc4b1f1a2f9a8aa81c5?pvs=74
 		D3D11_PRIMITIVE_TOPOLOGY topology;
-		bool isWrite = true;	//ƒf[ƒ^‚Ì‘‚«Š·‚¦‚ª‰Â”\‚©‚Ç‚¤‚©
+		bool isWrite = true;	//ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãæ›ãˆãŒå¯èƒ½ã‹ã©ã†ã‹
 	};
 
 	MeshData mData = {};
@@ -34,8 +34,8 @@ public:
 	ID3D11Buffer* GetVertexBuffer() const { return pVertexBuffer.Get(); };
 	ID3D11Buffer* GetIndexBuffer() const { return pIndexBuffer.Get(); };
 
-	/// @brief ’¸“_ƒoƒbƒtƒ@‚ğ‘‚«Š·‚¦‚é
-	/// @param pVertex ’¸“_î•ñ
+	/// @brief é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’æ›¸ãæ›ãˆã‚‹
+	/// @param pVertex é ‚ç‚¹æƒ…å ±
 	HRESULT Write(void* pVertex) const;
 
 	void Draw(int count = 0);

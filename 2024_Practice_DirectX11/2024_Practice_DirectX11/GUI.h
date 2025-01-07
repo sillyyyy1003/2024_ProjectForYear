@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DApp.h"
 
 
@@ -10,13 +10,13 @@ private:
 	static GUI& GetInstance();
 
 public:
-	/// @brief ‰Šú‰»
+	/// @brief åˆæœŸåŒ–
 	static void Init();
 
-	/// @brief F•\¦
+	/// @brief è‰²è¡¨ç¤º
 	static void ShowColor(const DirectX::XMFLOAT4& _color);
 
-	/// @brief ˆÊ’u•\¦
+	/// @brief ä½ç½®è¡¨ç¤º
 	static void ShowFloat3(const DirectX::XMFLOAT3& _Pos);
 
 	static void ShowFloat4(const DirectX::XMFLOAT4& _rot);

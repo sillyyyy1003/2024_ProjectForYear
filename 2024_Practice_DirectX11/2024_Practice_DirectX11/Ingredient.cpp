@@ -13,6 +13,7 @@ Ingredient::Ingredient()
 
 void Ingredient::OnStateDrag(float dt)
 {
+	if (!isMovable)return;
 	InteractiveMovableObject::OnStateDrag(dt);
 
 	//始终把物体的z轴固定在0，在xy轴上移动物体
@@ -83,6 +84,11 @@ void Ingredient::SetPigmentColor(DirectX::XMFLOAT4 color)
 	mPigmentColor = color;
 	mContainerData.pigmentColor = { color.x,color.y,color.z };
 	mModel->SetDiffuse({1.f,1.f,1.f,1.0f});
+}
+
+void Ingredient::SetHSVColor(float hue, float saturation, float value)
+{
+	mHSVColor = { hue,saturation,value };
 }
 
 void Ingredient::AddColor(float dt)

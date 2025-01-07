@@ -1,6 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "D2D_UIRect.h"
 #include "D2D_UIStackContainer.h"
+#include "ParticleEffect.h"
 #include "PBRModel.h"
 #include "SceneBase.h"
 #include "UIButton.h"
@@ -8,14 +9,13 @@
 
 class SceneOption : public SceneBase
 {
-	std::unique_ptr<D2D_UIBase> test;
-	std::unique_ptr<D2D_UIStackContainer> testButton;
-	std::unique_ptr<UIButton> mButton;
+
+	std::unique_ptr <ParticleEffect> testParticle;
 public:
-	/// @brief ƒf[ƒ^‚Ìƒ[ƒh‚Æ‰Šú‰»
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰ã¨åˆæœŸåŒ–
 	void Init();
 
-	/// @brief ƒf[ƒ^‚ÌƒZ[ƒu‚ğs‚¤
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ã‚»ãƒ¼ãƒ–ã‚’è¡Œã†
 	void UnInit();
 
 	void Update(float dt);

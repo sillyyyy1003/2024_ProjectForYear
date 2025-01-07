@@ -76,7 +76,7 @@
     <LibraryPath>$(ProjectDir)imgui\Lib\Debug;C:\DirectXTex\lib\Debug;C:\Assimp\lib;C:\Bullet\Lib\Debug;C:\directxtk\lib\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;$(ProjectDir)\imgui\Lib\Release;C:\Bullet\Lib\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\DirectXTex\lib\Release;C:\Assimp\lib;$(ProjectDir)\imgui\Lib\Release;C:\Bullet\Lib\Release;C:\directxtk\lib\x64\Release;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir);C:\directxtk\include;C:\DirectXTex;C:\Bullet\include;C:\Assimp\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -165,18 +165,22 @@
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientManager.cpp" />
     <ClCompile Include="InteractiveMovableObject.cpp" />
-    <ClCompile Include="Mission.cpp" />
+    <ClCompile Include="MissionFalse.cpp" />
     <ClCompile Include="MissionManager.cpp" />
+    <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="MissionSamplePaper.cpp" />
+    <ClCompile Include="Paper.cpp" />
+    <ClCompile Include="ParticleEffect.cpp" />
+    <ClCompile Include="ParticleMesh.cpp" />
     <ClCompile Include="Potion.cpp" />
+    <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="SceneScore.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UISquare.cpp" />
     <ClCompile Include="UI_MoveObject.cpp" />
-    <ClCompile Include="ScreenOverlay.cpp" />
+    <ClCompile Include="ScreenFadeEffect.cpp" />
     <ClCompile Include="InteractiveStaticObject.cpp" />
-    <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D2DBrush.cpp" />
@@ -247,18 +251,22 @@
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientManager.h" />
     <ClInclude Include="InteractiveMovableObject.h" />
-    <ClInclude Include="Mission.h" />
+    <ClInclude Include="MissionFalse.h" />
     <ClInclude Include="MissionManager.h" />
+    <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="MissionSamplePaper.h" />
+    <ClInclude Include="Paper.h" />
+    <ClInclude Include="ParticleEffect.h" />
+    <ClInclude Include="ParticleMesh.h" />
     <ClInclude Include="Potion.h" />
+    <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="SceneScore.h" />
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UISquare.h" />
     <ClInclude Include="UI_MoveObject.h" />
-    <ClInclude Include="ScreenOverlay.h" />
+    <ClInclude Include="ScreenFadeEffect.h" />
     <ClInclude Include="InteractiveStaticObject.h" />
-    <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D2DBrush.h" />
@@ -352,6 +360,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="PS_ParticleInstance.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -411,6 +425,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="VS_ParticleInstance.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="VS_PBRModel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

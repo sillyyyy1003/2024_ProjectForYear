@@ -1,4 +1,4 @@
-#include "D2D_UIStackContainer.h"
+﻿#include "D2D_UIStackContainer.h"
 
 #include "D2D_UIRect.h"
 #include "D2D_UIRoundedRect.h"
@@ -30,6 +30,22 @@ void D2D_UIStackContainer::Init(D2DUIConfig::UIShape shape, D2DUIConfig::FontSiz
 	mObjName = objName;
 }
 
+void D2D_UIStackContainer::Init(D2DUIConfig::UIShape shape, const char* objName)
+{
+	switch (shape)
+	{
+	default:
+	case D2DUIConfig::UIShape::RECT:
+		mBackGround = std::make_unique<D2D_UIRect>();
+		break;
+	case D2DUIConfig::UIShape::ROUNDED_RECT:
+		mBackGround = std::make_unique<D2D_UIRoundedRect>();
+		break;
+	}
+	//SetObjName
+	mObjName = objName;
+}
+
 
 void D2D_UIStackContainer::Update(float dt)
 {
@@ -56,7 +72,7 @@ void D2D_UIStackContainer::Draw()
 		//Draw the font
 		float width = mScale.x - mPadding.x - mPadding.z;
 		float height = mScale.y - mPadding.y - mPadding.w;
-
+		//D2DFont::Get()->SetFontScale(mFontScale);
 		D2DFont::Get()->DrawSolidText(mFontSize, mFontColor, mText.c_str(), mPosition, { width,height });
 	}
 }
@@ -78,6 +94,7 @@ void D2D_UIStackContainer::DrawWithRadianBrush()
 		float width = mScale.x - mPadding.x - mPadding.z;
 		float height = mScale.y - mPadding.y - mPadding.w;
 
+		D2DFont::Get()->SetFontScale(mFontScale);
 		D2DFont::Get()->DrawSolidText(mFontSize, mFontColor, mText.c_str(), mPosition, { width,height });
 	}
 }
@@ -104,7 +121,7 @@ json D2D_UIStackContainer::SaveData()
 	data["Scale"] = { mScale.x,mScale.y };
 	data["TextAlignment"] = static_cast<int>(mTextAlignment);
 	data["Padding"] = { mPadding.x,mPadding.y,mPadding.z,mPadding.w };
-
+	data["FontScale"] = { mFontScale.x,mFontScale.y };
 	return data;
 }
 
@@ -117,12 +134,15 @@ void D2D_UIStackContainer::LoadSaveData(json data)
 	mScale = { data["Scale"][0],data["Scale"][1] };
 	int num = { data["TextAlignment"]};
 	mTextAlignment = static_cast<D2DUIConfig::TextAlignment>(num);
-	num = { data["FontSize"] };
-	mFontSize = static_cast<D2DUIConfig::FontSize>(num);
-
+	mFontScale = { data["FontScale"][0],data["FontScale"][1] };
 	mPadding = { data["Padding"][0],data["Padding"][1],data["Padding"][2],data["Padding"][3] };
 }
 
+void D2D_UIStackContainer::SetBackGroundColor(D2D1::ColorF color)
+{
+	mBackGround->SetBaseColor(color);
+}
+#ifdef _DEBUG
 void D2D_UIStackContainer::DebugFunction()
 {
 	if(ImGui::Begin(mObjName.c_str()))
@@ -158,12 +178,17 @@ void D2D_UIStackContainer::DebugFunction()
 		float fontColor[4] = { mFontColor.r, mFontColor.g , mFontColor.b, mFontColor.a };
 		ImGui::ColorEdit4("FontColor", fontColor);
 		SetFontColor({ fontColor[0],fontColor[1],fontColor[2],fontColor[3] });
+
 		//Set Text
 		ImGui::InputTextMultiline("Input your Text", mInputText, IM_ARRAYSIZE(mInputText));
 		if (ImGui::Button("UpdateString"))
 		{
 			SetText(mInputText);
 		}
+
+		float fontScale[2] = {mFontScale.x,mFontScale.y};
+		ImGui::InputFloat2("FontScale", fontScale);
+		mFontScale={fontScale[0],fontScale[1]};
 
 		float padding[4] = { mPadding.x,mPadding.y,mPadding.z,mPadding.w };
 		ImGui::InputFloat4("Padding", padding);
@@ -188,13 +213,14 @@ void D2D_UIStackContainer::DebugFunction()
 	}
 	ImGui::End();
 }
+#endif
 
-void D2D_UIStackContainer::SetUIState(UINT state)
+void D2D_UIStackContainer::SetUIState(D2DUIConfig::UIState state)
 {
 	mUiState |= state;
 }
 
-void D2D_UIStackContainer::RemoveUIState(UINT state)
+void D2D_UIStackContainer::RemoveUIState(D2DUIConfig::UIState state)
 {
 	mUiState &= ~state;
 }

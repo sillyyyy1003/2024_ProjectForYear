@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 
 class CylinderOneCap :public Primitive
@@ -13,15 +13,15 @@ public:
 
 	/// @brief 
 	/// @param filePath 
-	/// @param slices ‚’¼•ªŠ„”
-	/// @param stacks …•½•ªŠ„”
+	/// @param slices å‚ç›´åˆ†å‰²æ•°
+	/// @param stacks æ°´å¹³åˆ†å‰²æ•°
 	///	@param _UVSplit UVAnimation
 	void Init(const char* filePath, int slices = 64, int stacks = 64, DirectX::XMINT2 _UVSplit = { 1,1 })override;
 
 	/// @brief Create square with existing;
 	///	@param tex
-	/// @param slices ‚’¼•ªŠ„”
-	/// @param stacks …•½•ªŠ„”
+	/// @param slices å‚ç›´åˆ†å‰²æ•°
+	/// @param stacks æ°´å¹³åˆ†å‰²æ•°
 	///	@param _UVSplit UVAnimation
 	void Init(const std::shared_ptr<Texture>& tex, int slices = 64, int stacks = 64, DirectX::XMINT2 _UVSplit = { 1,1 })override;
 
@@ -30,9 +30,9 @@ public:
 
 private:
 
-	/// @brief ‰~’ŒƒƒbƒVƒ…ì¬
-	/// @param slices ‚’¼•ªŠ„”
-	/// @param stacks …•½•ªŠ„”
+	/// @brief å††æŸ±ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆ
+	/// @param slices å‚ç›´åˆ†å‰²æ•°
+	/// @param stacks æ°´å¹³åˆ†å‰²æ•°
 	void CreateMesh(UINT slices, UINT stacks) override;
 
 	void WriteDefShader() override;

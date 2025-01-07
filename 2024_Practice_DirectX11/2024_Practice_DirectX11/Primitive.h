@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "SceneBase.h"
 #include "Transform.h"
 #include "Shader.h"
 #include "UVAnimation.h"
 
 /// <summary>
-/// ƒƒbƒVƒ…‚Ìí—Ş
+/// ãƒ¡ãƒƒã‚·ãƒ¥ã®ç¨®é¡
 /// </summary>
 namespace PrimitiveConfig
 {
@@ -49,7 +49,7 @@ namespace PBRConfig
 
 
 /// <summary>
-/// Šî–{ƒ‚ƒfƒ‹iCube/Sphere/Cone/Capsule...j
+/// åŸºæœ¬ãƒ¢ãƒ‡ãƒ«ï¼ˆCube/Sphere/Cone/Capsule...ï¼‰
 /// </summary>
 class Primitive :public Component
 {
@@ -70,9 +70,9 @@ protected:
 	bool isUseUVAnimation = false;
 public:
 
-	/// @brief ‘å‚«‚³EˆÊ’uE‰ñ“]‚È‚Ç‚Ìî•ñ
+	/// @brief å¤§ãã•ãƒ»ä½ç½®ãƒ»å›è»¢ãªã©ã®æƒ…å ±
 	Transform mTransform = {};
-	/// @brief ’¸“_ƒf[ƒ^‚Ì‘‚«Š·‚¦—p
+	/// @brief é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãæ›ãˆç”¨
 	std::vector<Vertex::VtxPosNormalTex> mVertices;
 	std::vector<DWORD> mIndices;
 
@@ -147,7 +147,7 @@ public:
 	PixelShader* GetPS() const { return mPS; };
 	VertexShader* GetVS() const { return mVS; };
 
-	/// @brief Default Shader‚Ì‰Šú‰»
+	/// @brief Default Shaderã®åˆæœŸåŒ–
 	virtual void LoadDefShader();
 	virtual void LoadDefShader(const char* vsPath, const char* psPath);
 	virtual void LoadDefShader(const std::shared_ptr<VertexShader>& vsShader,const std::shared_ptr<PixelShader>& psShader);
@@ -155,10 +155,10 @@ public:
 	virtual void SwitchToDefShader();
 
 	virtual void SetDefShader();
-	/// @brief mVS/mPS‚É‘‚«‚Ş
+	/// @brief mVS/mPSã«æ›¸ãè¾¼ã‚€
 	virtual void WriteShader() {};
 
-	/// @brief Def VS/PS‚É‘‚«‚Ş
+	/// @brief Def VS/PSã«æ›¸ãè¾¼ã‚€
 	virtual void WriteDefShader() {};
 	virtual void WritePixelShader() {};
 	virtual void WriteVertexShader() {};

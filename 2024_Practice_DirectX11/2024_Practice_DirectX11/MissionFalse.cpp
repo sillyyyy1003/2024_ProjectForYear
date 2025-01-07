@@ -1,34 +1,34 @@
-#include "Mission.h"
+﻿#include "MissionFalse.h"
 
 #include "MissionManager.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 
-Mission::Mission()
+MissionFalse::MissionFalse()
 {
 }
 
-Mission::~Mission()
+MissionFalse::~MissionFalse()
 {
 }
 
-void Mission::InitMission()
+void MissionFalse::InitMission()
 {
 }
 
-void Mission::RegisterAsCheckMission()
+void MissionFalse::RegisterAsCheckMission()
 {
-	MissionManager::Get()->SetCurrentCheckMission(this);
+	
 }
 
-std::string Mission::GetMissionContents()
+std::string MissionFalse::GetMissionContents()
 {
 	return mMissionContents;
 }
 
 
-void Mission::CompleteMission(DirectX::XMFLOAT4 targetColor)
+void MissionFalse::CompleteMission(DirectX::XMFLOAT4 targetColor)
 {
 	float deltaR, deltaG, deltaB;
 	deltaR = targetColor.x - mMissionColor.x;
@@ -38,7 +38,7 @@ void Mission::CompleteMission(DirectX::XMFLOAT4 targetColor)
 	float score = (float)std::sqrt(pow(deltaR, 2) + pow(deltaG, 2) + pow(deltaB, 2));
 }
 
-std::string Mission::GetMissionResultGrade(DirectX::XMFLOAT4 targetColor)
+std::string MissionFalse::GetMissionResultGrade(DirectX::XMFLOAT4 targetColor)
 {
 	float deltaR, deltaG, deltaB;
 	deltaR = targetColor.x - mMissionColor.x;

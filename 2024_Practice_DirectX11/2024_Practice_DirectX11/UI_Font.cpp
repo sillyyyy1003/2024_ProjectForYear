@@ -256,9 +256,10 @@ void UI_Font::InitDebugFunction()
 #endif
 }
 
+#ifdef _DEBUG
 void UI_Font::DebugFunction()
 {
-	#ifdef _DEBUG
+
 
 	    if (ImGui::BeginChild("FontSet"))
 	    {
@@ -302,9 +303,9 @@ void UI_Font::DebugFunction()
 	    }
 
 	    ImGui::EndChild();
-	#endif
+	
 }
-
+#endif
 
 void UI_Font::Update()
 {

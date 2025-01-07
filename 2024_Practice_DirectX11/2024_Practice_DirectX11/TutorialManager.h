@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <cstdint>
 #include "D2D_UIStackContainer.h"
 #include "UIButton.h"
@@ -25,15 +25,15 @@ namespace Tutorial
 	};
 }
 
-/// @brief ƒ`ƒ…[ƒgƒŠƒAƒ‹‚Ìi’»‚ğŠÇ—‚·‚é
+/// @brief ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã®é€²æ—ã‚’ç®¡ç†ã™ã‚‹
 class TutorialManager
 {
-	//‚¢‚Ü‚Ìƒ`ƒ…[ƒgƒŠƒAƒ‹ó‘Ô‚ğŠÇ—‚·‚é
+	//ã„ã¾ã®ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
 	uint32_t mTutorialPhaseState = Tutorial::Tutorial_01_Intro;
-	//Œ»İ‚Ìó‘Ô‚ÍŠ®¬‚µ‚½‚©H
+	//ç¾åœ¨ã®çŠ¶æ…‹ã¯å®Œæˆã—ãŸã‹ï¼Ÿ
 	bool mCurrentPhaseCompleted = false;
 
-	//ƒ`ƒ…[ƒgƒŠƒAƒ‹‚Ì@ƒV[ƒ“‘€ì‰Â”\H
+	//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã®æ™‚ã€€ã‚·ãƒ¼ãƒ³æ“ä½œå¯èƒ½ï¼Ÿ
 	bool isSceneFreeze = false;
 
 	TutorialManager();
@@ -45,8 +45,7 @@ class TutorialManager
 	std::unique_ptr<UISquare> mFirstPhasePaper;
 	std::unique_ptr<D2D_UIStackContainer> mFirstPhaseText;
 	std::unique_ptr<D2D_UIStackContainer> mFirstPhaseSkipButton;
-	std::unique_ptr<UISquare> mFirstPhaseFrontFade;
-	float mFadeParam = 1.0f;
+
 	float mAccumulateTime = 0.f;
 	float mAmplitude = 10.0f;
 	float posY = 0.0f;

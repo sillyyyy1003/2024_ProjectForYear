@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "InteractiveStaticObject.h"
 #include "Square.h"
 
@@ -14,7 +14,7 @@ public:
 	void InitModel(const std::shared_ptr<Texture>& _file, const char* _objName) override;
 	void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& filePath, const char* _objName, DirectX::XMINT2 _UVSplit = { 1,1 }) override;
 
-	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps) override;
+	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps) override;
 	void Draw() override;
 	void Update(float dt) override;
 

@@ -195,8 +195,9 @@ public:
 	UITextOption::AnchorAlign GetAnchorAlign() const { return mAnchorAlign; };
 	DirectX::XMFLOAT3 GetAnchorPos() const { return DirectX::XMFLOAT3{ mAnchorPos.x,mAnchorPos.y,posZ }; };
 
+#ifdef _DEBUG
 	void DebugFunction();
-
+#endif
 	std::string GetContext() const { return mContent; };
 
 	float GetFontSize()const { return mFontSize; };

@@ -12,8 +12,14 @@ namespace D2DUIConfig
 		
 	};
 
-	constexpr UINT STATE_USE_FONT = 1 << 0;
-	constexpr UINT STATE_USE_BACKGROUND = 1 << 1; 
+	enum UIState :UINT
+	{
+		STATE_USE_FONT = 1 << 0,
+		STATE_USE_BACKGROUND = 1 << 1,
+	};
+
+	//constexpr UINT STATE_USE_FONT = 1 << 0;
+	//constexpr UINT STATE_USE_BACKGROUND = 1 << 1;
 
 
 }

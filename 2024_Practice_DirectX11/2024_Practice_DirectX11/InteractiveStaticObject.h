@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Collider.h"
 #include "PBRModel.h"
 #include "SceneBase.h"
@@ -10,8 +10,6 @@ namespace InteractiveConfig
 		DirectX::XMFLOAT3 rimColor = { 1.f,1.f,1.f };
 		float rimIntensity = 0.0f;
 	};
-
-
 
 }
 
@@ -27,7 +25,7 @@ protected:
 
 	std::shared_ptr<Primitive> mModel = nullptr;
 	std::unique_ptr<BoxCollider> mCollider = nullptr;
-	std::string mObjectName;	//ƒIƒuƒWƒFƒNƒg–¼
+	std::string mObjectName;	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå
 
 	bool isUseRimLight = true;
 
@@ -39,13 +37,13 @@ protected:
 	int mObjectState = 0;
 	bool isClicked = false;
 
-	//Debug—p
+	//Debugç”¨
 #ifdef _DEBUG
 	std::unique_ptr<Cube> mDebugColliderMesh = nullptr;
 	bool isShowCollider = false;
 #endif
 
-	bool isUsePBRModel = true;
+	bool isUsePBRModel = false;
 	
 
 public:
@@ -61,22 +59,23 @@ public:
 	virtual void InitModel(const char* filePath, const char* _objName);
 	virtual void InitModel(const std::shared_ptr<Texture>& _file, const char* _objName);
 
-	virtual void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& filePath, const char* _objName, DirectX::XMINT2 _UVSplit={1,1});
+	virtual void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& texture, const char* _objName, DirectX::XMINT2 _UVSplit={1,1});
 
 	virtual void LoadTex(PBRConfig::PBRTexList list);
-	virtual void LoadShaderFile(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
-	virtual void LoadShaderFile(const char* vsFile, const char* psFile);
+	virtual void LoadDefShader(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
+	virtual void LoadDefShader(const char* vsFile, const char* psFile);
 
 	/// @brief 
 	/// @param dt delta time
 	virtual void Update(float dt);
 
 	virtual void Draw();
+	virtual void DrawWithPosition(DirectX::XMFLOAT3 pos);
 
 	virtual bool GetClicked();
 
 	//====================================
-	//	ŠO‘¤‚Åƒ‚ƒfƒ‹‚ğİ’è‚Å‚«‚é‚Ì‚ÍˆÈ‰º‚Ì‚İ
+	//	å¤–å´ã§ãƒ¢ãƒ‡ãƒ«ã‚’è¨­å®šã§ãã‚‹ã®ã¯ä»¥ä¸‹ã®ã¿
 	//====================================
 	void SetModelPosition(DirectX::XMFLOAT3 pos);
 	void SetModelRotation(DirectX::XMFLOAT3 rot);
@@ -110,8 +109,11 @@ public:
 
 	void UseRimLightEffect();
 	void DisableRimLightEffect();
+	void SetRimLightIntensity(float intensity);
+	void SetRimLightColor(const DirectX::XMFLOAT4& color);
 
 	BoxCollider* GetCollider()const { return mCollider.get(); };
+	
 protected:
 
 	void InitCollider();
@@ -126,9 +128,9 @@ protected:
 
 	void UpdateCollider();
 
-	/// @brief ó‘Ô•Ï‰»‚ğListener‚ğ’Ê’m‚·‚é
+	/// @brief çŠ¶æ…‹å¤‰åŒ–ã‚’Listenerã‚’é€šçŸ¥ã™ã‚‹
 	void NotifyModelStateChangeListener();
-	/// @brief ó‘Ô•Ï‰»‚ğƒŠƒZƒbƒg‚·‚é
+	/// @brief çŠ¶æ…‹å¤‰åŒ–ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	void ClearModelStateChangeListener();
 	bool GetModelStateChange() { return isModelStateChange; };
 

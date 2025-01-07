@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "UIStackContainer.h"
 #include "UI_Primitive.h"
 
@@ -65,10 +65,10 @@ public:
 
 	void SetEditable(bool isEditable);
 protected:
-	/// @brief ƒ}ƒEƒX‚Ì“ü—Íˆ—‚ğs‚¤
+	/// @brief ãƒã‚¦ã‚¹ã®å…¥åŠ›å‡¦ç†ã‚’è¡Œã†
 	void PreUpdate();
 
-	/// @brief “ü—Í‚É‰‚¶‚éˆ—
+	/// @brief å…¥åŠ›ã«å¿œã˜ã‚‹å‡¦ç†
 	void GameUpdate();
 
 	void SetPosZ(float Z) override;

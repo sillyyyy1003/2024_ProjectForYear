@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Cube.h"
 #include "D3DUtil.h"
 #include "Texture.h"
@@ -46,8 +46,8 @@ public:
 
 	void Init(const char* filePath = nullptr);
 
-	/// @brief ƒeƒNƒXƒ`ƒƒ•Ê‚È‚Ç‚±‚ë‚Å“Ç‚İ‚İ
-	/// @param file ƒ‚ƒfƒ‹‚ÆŠî–{‚Ìƒ}ƒeƒŠƒAƒ‹‚Ì‚İ
+	/// @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ¥ãªã©ã“ã‚ã§èª­ã¿è¾¼ã¿
+	/// @param file ãƒ¢ãƒ‡ãƒ«ã¨åŸºæœ¬ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã¿
 	void InitWithoutTex(const char* file);
 
 	void LoadDefShader();

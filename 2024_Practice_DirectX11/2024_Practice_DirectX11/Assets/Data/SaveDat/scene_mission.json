@@ -1,350 +1,257 @@
 {
-    "Accept": {
-        "AnchorAlign": [
-            4
-        ],
-        "AnchorPosition": [
-            -330.0,
-            -400.0
-        ],
-        "ContainerSize": [
-            320.0,
-            100.0
-        ],
-        "Context": "ACCEPT",
-        "FontBlockWidth": [
-            330.0
-        ],
-        "FontColor": [
+    "Background": {
+        "Diffuse": [
             1.0,
             1.0,
             1.0,
-            1.0
-        ],
-        "FontSize": [
-            20.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                0.8500000238418579,
-                0.8500000238418579,
-                0.8500000238418579,
-                1.0
-            ],
-            "Diffuse": [
-                1.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            7.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "Padding": [
-            40.0,
-            40.0,
-            0.0,
-            40.0
+            0.4000000059604645
         ],
         "Position": [
-            -330.0,
-            -400.0,
-            0.20000000298023224
+            0.0,
+            0.0,
+            2.799999952316284
         ],
         "Rotation": [
             0.0,
             0.0,
             0.0
         ],
-        "TextAlign": [
-            1
-        ]
-    },
-    "Back": {
-        "AnchorAlign": [
-            4
-        ],
-        "AnchorPosition": [
-            330.0,
-            -400.0
-        ],
-        "ContainerSize": [
-            300.0,
-            100.0
-        ],
-        "Context": "Back",
-        "FontBlockWidth": [
-            300.0
-        ],
-        "FontColor": [
-            1.0,
-            1.0,
-            1.0,
+        "Scale": [
+            2000.0,
+            2000.0,
             1.0
-        ],
-        "FontSize": [
-            22.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
-                0.8500000238418579,
-                0.8500000238418579,
-                0.8500000238418579,
-                1.0
-            ],
-            "Diffuse": [
-                0.0,
-                0.0,
-                1.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            7.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
-        "Padding": [
-            40.0,
-            40.0,
-            0.0,
-            40.0
-        ],
-        "Position": [
-            330.0,
-            -400.0,
-            0.20000000298023224
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
-        ],
-        "TextAlign": [
-            1
         ]
     },
     "ColorSample": {
-        "ContainerSize": [
-            150.0,
-            150.0
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
         ],
-        "IsUseText": [
-            0
-        ],
-        "Material": {
-            "Ambient": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "Diffuse": [
+        "FontSize": 1,
+        "Graphic": {
+            "BaseColor": [
                 0.0,
-                1.0,
+                0.5,
                 0.0,
                 1.0
             ],
-            "Emission": [
+            "OutlineColor": [
                 0.0,
                 0.0,
                 0.0,
-                0.0
+                1.0
             ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                -380.0,
+                150.0
+            ],
+            "RadiusX": [
+                30.0
+            ],
+            "RadiusY": [
+                30.0
+            ],
+            "Scale": [
+                200.0,
+                400.0
             ]
         },
-        "Outline": [
-            10.0
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
         ],
-        "OutlineColor": [
+        "Position": [
+            -380.0,
+            150.0
+        ],
+        "Scale": [
+            200.0,
+            400.0
+        ],
+        "Text": "",
+        "TextAlignment": 0
+    },
+    "MissionContent": {
+        "FontColor": [
             0.0,
             0.0,
             0.0,
             1.0
         ],
-        "Position": [
-            -400.0,
-            -120.0,
-            0.8999999761581421
-        ],
-        "Rotation": [
-            0.0,
-            0.0,
-            0.0
-        ]
-    },
-    "MissionOwner": {
-        "ContainerSize": [
-            180.0,
-            180.0
-        ],
-        "IsUseText": [
-            0
-        ],
-        "Material": {
-            "Ambient": [
+        "FontSize": 2,
+        "Graphic": {
+            "BaseColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Diffuse": [
+            "OutlineColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
+            "OutlineWeight": [
+                1.0
             ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
+            "Position": [
+                400.0,
+                260.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
             ]
         },
-        "Outline": [
-            10.0
+        "Padding": [
+            0.0,
+            5.0,
+            0.0,
+            0.0
         ],
-        "OutlineColor": [
+        "Position": [
+            400.0,
+            260.0
+        ],
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "Make Life Potion!",
+        "TextAlignment": 0
+    },
+    "MissionName": {
+        "FontColor": [
             0.0,
             0.0,
             0.0,
+            1.0
+        ],
+        "FontSize": 3,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                360.0,
+                360.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            360.0,
+            360.0
+        ],
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "FirstMission",
+        "TextAlignment": 0
+    },
+    "MissionOwner": {
+        "Diffuse": [
+            1.0,
+            1.0,
+            1.0,
             1.0
         ],
         "Position": [
             440.0,
-            400.0,
-            1.7999999523162842
+            -140.0,
+            2.5999999046325684
         ],
         "Rotation": [
             0.0,
             0.0,
             0.0
+        ],
+        "Scale": [
+            240.0,
+            267.0,
+            1.0
         ]
     },
-    "PSWord": {
-        "AnchorAlign": [
-            0
-        ],
-        "AnchorPosition": [
-            -300.5,
-            -49.5
-        ],
-        "ContainerSize": [
-            1.0,
-            1.0
-        ],
-        "Context": "PS This is the sample color!",
-        "FontBlockWidth": [
-            850.0
-        ],
+    "MissionOwnerName": {
         "FontColor": [
-            0.4745098054409027,
             0.0,
-            0.41960784792900085,
+            0.0,
+            0.0,
             1.0
         ],
-        "FontSize": [
-            20.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            0.0
-        ],
-        "Material": {
-            "Ambient": [
+        "FontSize": 3,
+        "Graphic": {
+            "BaseColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Diffuse": [
+            "OutlineColor": [
                 1.0,
                 1.0,
                 1.0,
                 1.0
             ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
+            "OutlineWeight": [
+                1.0
             ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
+            "Position": [
+                330.0,
+                140.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
             ]
         },
-        "Outline": [
-            1.0
-        ],
-        "OutlineColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
         "Padding": [
             0.0,
             0.0,
@@ -352,103 +259,205 @@
             0.0
         ],
         "Position": [
-            -300.0,
-            -50.0,
-            0.8999999761581421
+            330.0,
+            140.0
         ],
-        "Rotation": [
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "依頼人",
+        "TextAlignment": 0
+    },
+    "MissionOwnerNameContent": {
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": 2,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                370.0,
+                40.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
             0.0,
             0.0,
             0.0
         ],
-        "TextAlign": [
-            0
-        ]
-    },
-    "Test": {
-        "AnchorAlign": [
-            1
-        ],
-        "AnchorPosition": [
-            0.0,
-            390.0
-        ],
-        "ContainerSize": [
-            1200.0,
-            720.0
-        ],
-        "Context": "Dear Player,\n  Hello! This is Witch Q.\n  I want you to make Poison Potion for me.\n  I will give 200 gold as reward.",
-        "FontBlockWidth": [
-            1050.0
-        ],
-        "FontColor": [
-            0.4754902124404907,
-            0.0,
-            0.419550359249115,
-            1.0
-        ],
-        "FontSize": [
-            14.0
-        ],
-        "IsUseText": [
-            1
-        ],
-        "LineSpacing": [
-            10.0
-        ],
-        "Material": {
-            "Ambient": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "Diffuse": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "Emission": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "Specular": [
-                1.0,
-                0.5,
-                0.5,
-                0.20000000298023224
-            ]
-        },
-        "Outline": [
-            15.0
-        ],
-        "OutlineColor": [
-            0.5980392098426819,
-            0.26384082436561584,
-            0.0,
-            1.0
-        ],
-        "Padding": [
-            60.0,
-            40.0,
-            40.0,
+        "Position": [
+            370.0,
             40.0
         ],
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "WitchA",
+        "TextAlignment": 0
+    },
+    "MissionReward": {
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontSize": 3,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                360.0,
+                -80.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            360.0,
+            -80.0
+        ],
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "報酬",
+        "TextAlignment": 0
+    },
+    "MissionRewardContent": {
+        "FontColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.9921568632125854
+        ],
+        "FontSize": 2,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                400.0,
+                -180.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1000.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            400.0,
+            -180.0
+        ],
+        "Scale": [
+            1000.0,
+            100.0
+        ],
+        "Text": "400",
+        "TextAlignment": 0
+    },
+    "PaperBackground": {
+        "Diffuse": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
         "Position": [
             0.0,
-            90.0,
-            2.0
+            70.0,
+            2.700000047683716
         ],
         "Rotation": [
             0.0,
             0.0,
             0.0
         ],
-        "TextAlign": [
-            0
+        "Scale": [
+            1200.0,
+            780.0,
+            1.0
         ]
     }
 }

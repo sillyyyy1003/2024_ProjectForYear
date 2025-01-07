@@ -1,4 +1,4 @@
-#include "ScenePotion.h"
+Ôªø#include "ScenePotion.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
@@ -21,8 +21,8 @@ void ScenePotion::Init()
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_potion.json");
 	json uiData = LoadSceneData("Assets/Data/SaveDat/ui_config.json");
 	//Init Potion Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0,10.57f,-4.51f);
-	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInDegree(66.6f,0.f,0.f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0, 10.57f, -4.51f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInDegree(66.6f, 0.f, 0.f);
 #ifdef NDEBUG
 	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
 #endif
@@ -38,7 +38,6 @@ void ScenePotion::Init()
 	mWater->SetWaterColor({ 0.4f,0.4f,0.4f,0.3f });
 	mWater->SetTexture(nullptr);
 
-
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
 	pbrTexList[PBRConfig::PBRTex::METALLIC] = GetObj<Texture>("pbrMetallic");
@@ -47,14 +46,14 @@ void ScenePotion::Init()
 	//Init Model & Objects
 	mPot = CreateObj<InteractiveStaticObject>("pot");
 	mPot->InitPBRModel("Assets/Model/LabAssets/Pot.obj", "pot");
-	mPot->LoadShaderFile(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
+	mPot->LoadDefShader(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
 	mPot->LoadTex(pbrTexList);
 	mPot->LoadSaveData(sceneData, "Pot");
 	mPot->DisableRimLightEffect();
 
 	mTable = std::make_unique<StaticObject>();
 	mTable->InitModel(GetObj<Texture>("table"), "Table", PrimitiveConfig::SQUARE);
-	mTable->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mTable->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mTable->LoadSaveData(sceneData);
 
 	mJug = CreateObj<WaterJug>("Jug");
@@ -65,10 +64,9 @@ void ScenePotion::Init()
 
 	mMissionPaper = std::make_unique<MissionSamplePaper>();
 	mMissionPaper->Init(PrimitiveConfig::SQUARE, GetObj<Texture>("paper2"), "MissionPaper");
-	mMissionPaper->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
+	mMissionPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
 	mMissionPaper->LoadSaveData(sceneData);
-
-	mMissionPaper->SetSampleColor(MissionManager::Get()->GetCurrentMissionInstance().GetMissionColor());
+	mMissionPaper->SetSampleColor(MissionManager::Get()->GetCurrentMission().MissionColor);
 
 	//Set Water
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
@@ -92,25 +90,27 @@ void ScenePotion::Init()
 
 	mRedPotion = std::make_shared<Ingredient>();
 	mRedPotion->InitModel("Assets/Model/Potion4.obj", "RedPotion", PrimitiveConfig::MULTI, { 1,1 });
-	mRedPotion->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
+	mRedPotion->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
 	mRedPotion->LoadSaveData(sceneData);
+	mRedPotion->SetPigmentColor(HSVtoRGB({ 0,1,0.5f }));
 
 	mBluePotion = std::make_shared<Ingredient>();
 	mBluePotion->InitModel("Assets/Model/Potion2.obj", "BluePotion", PrimitiveConfig::MULTI, { 1,1 });
-	mBluePotion->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
+	mBluePotion->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
 	mBluePotion->LoadSaveData(sceneData);
-
+	mBluePotion->SetPigmentColor(HSVtoRGB({240,1,0.5f}));
 
 	mYellowPotion = std::make_shared<Ingredient>();
 	mYellowPotion->InitModel("Assets/Model/Potion3.obj", "YellowPotion", PrimitiveConfig::MULTI, { 1,1 });
-	mYellowPotion->LoadShaderFile(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
+	mYellowPotion->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
 	mYellowPotion->LoadSaveData(sceneData);
+	mYellowPotion->SetPigmentColor(HSVtoRGB({ 60,1,0.5f }));
 
 	mCandleLight = std::make_unique<CandleLight>();
 	mCandleLight->Init();
 	mCandleLight->LoadSaveData(sceneData, "CandleLight");
 
-	//ShadowÇ…ä÷Ç∑ÇÈRenderTargetÇçÏê¨
+	//Shadow„Å´Èñ¢„Åô„ÇãRenderTarget„Çí‰ΩúÊàê
 	InitShadowRenderTarget();
 
 	IngredientManager::Get()->RegisterIngredient(mRedPotion.get(),PlayerConfig::RED);
@@ -284,7 +284,6 @@ void ScenePotion::DrawWithShadow()
 	mJug->SwitchToDefShader();
 	mJug->Draw();
 	mMissionPaper->Draw();
-	//mMissionPaper->Draw();
 
 	GameApp::SetBlendState(RenderState::BSTransparent);
 	mPot->SwitchToDefShader();
@@ -312,12 +311,12 @@ void ScenePotion::DrawWithShadow()
 }
 
 void ScenePotion::InitShadowRenderTarget()
-{	// ÉåÉìÉ_Å[É^Å[ÉQÉbÉgçÏê¨
+{	// „É¨„É≥„ÉÄ„Éº„Çø„Éº„Ç≤„ÉÉ„Éà‰ΩúÊàê
 	std::shared_ptr<RenderTarget> pRTV = CreateObj<RenderTarget>("DepthWriteRTV");
-	// âúçsÇÃèÓïÒÇç◊Ç©Ç≠ï€ë∂Ç∑ÇÈÇΩÇﬂÇ…ÅAR8G8B8A8ÇÃ
-	// äe8bitÇ≈ÇÕÇ»Ç≠R32ÇÃÉfÉJÇ¢ãÊêÿÇËÇ≈èëÇ´çûÇ›Ç∑ÇÈ
+	// Â••Ë°å„ÅÆÊÉÖÂ†±„ÇíÁ¥∞„Åã„Åè‰øùÂ≠ò„Åô„Çã„Åü„ÇÅ„Å´„ÄÅR8G8B8A8„ÅÆ
+	// ÂêÑ8bit„Åß„ÅØ„Å™„ÅèR32„ÅÆ„Éá„Ç´„ÅÑÂå∫Âàá„Çä„ÅßÊõ∏„ÅçËæº„Åø„Åô„Çã
 	pRTV->Create(DXGI_FORMAT_R32_FLOAT, gD3D->GetWinWidth(), gD3D->GetWinHeight());
-	// ê[ìxÉoÉbÉtÉ@
+	// Ê∑±Â∫¶„Éê„ÉÉ„Éï„Ç°
 	std::shared_ptr<DepthStencil> pDSV = CreateObj<DepthStencil>("DepthWriteDSV");
 	pDSV->Create(gD3D->GetWinWidth(), gD3D->GetWinHeight(), false);
 

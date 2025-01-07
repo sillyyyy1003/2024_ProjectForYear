@@ -108,12 +108,7 @@ void StaticObject::LoadTex(PBRConfig::PBRTexList list)
 	mModel->LoadTex(list);
 }
 
-void StaticObject::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
-{
-	mModel->Primitive::LoadDefShader(vs, ps);
-}
-
-void StaticObject::LoadShaderFile(const char* vsFile, const char* psFile)
+void StaticObject::LoadDefShader(const char* vsFile, const char* psFile)
 {
 	mModel->Primitive::LoadDefShader(vsFile, psFile);
 }
@@ -147,9 +142,14 @@ void StaticObject::Update(float dt)
 
 void StaticObject::Draw()
 {
-	
 	mModel->Draw();
-}       
+}
+
+void StaticObject::DrawWithNewPos(DirectX::XMFLOAT3 pos)
+{
+	mModel->SetPosition(pos);
+	mModel->Draw();
+}
 
 
 void StaticObject::LoadSaveData(json data)
@@ -178,6 +178,11 @@ json StaticObject::SaveData()
 void StaticObject::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
 	mModel->LoadDefShader(vs, ps);
+}
+
+void StaticObject::SetDiffuseColor(const DirectX::XMFLOAT4& diffuseColor)
+{
+	mModel->SetDiffuse(diffuseColor);
 }
 
 void StaticObject::SetTransparency(float _transparency)

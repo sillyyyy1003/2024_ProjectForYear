@@ -1,4 +1,4 @@
-#include "PBRModel.h"
+ï»¿#include "PBRModel.h"
 
 #include "Model.h"
 #include <memory>
@@ -45,46 +45,46 @@ void PBRModel::InitWithoutTex(const char* file)
 
 bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 {
-	DebugLog::Log("ƒ‚ƒfƒ‹“Ç‚İ‚İŠJn");
+	DebugLog::Log("ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿é–‹å§‹");
 
 	int flag = 0;
 	if (simpleMode)
 	{
-		flag |= aiProcess_Triangulate;					// ”ñOŠpƒ|ƒŠƒSƒ“‚ğOŠp‚ÉŠ„‚é
-		flag |= aiProcess_JoinIdenticalVertices;		// “¯ˆêˆÊ’u’¸“_‚ğˆê‚Â‚É“‡‚·‚é
-		flag |= aiProcess_FlipUVs;						//@UV’l‚ğY²‚ğŠî€‚É”½“]‚³‚¹‚é
-		flag |= aiProcess_PreTransformVertices;			// ƒm[ƒh‚ğˆê‚Â‚É“‡ !!ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ‚ªÁ‚¦‚é‚±‚Æ‚É’ˆÓ!!
-		if (flip) flag |= aiProcess_MakeLeftHanded;		// ¶èŒnÀ•W‚É•ÏŠ·
+		flag |= aiProcess_Triangulate;					// éä¸‰è§’ãƒãƒªã‚´ãƒ³ã‚’ä¸‰è§’ã«å‰²ã‚‹
+		flag |= aiProcess_JoinIdenticalVertices;		// åŒä¸€ä½ç½®é ‚ç‚¹ã‚’ä¸€ã¤ã«çµ±åˆã™ã‚‹
+		flag |= aiProcess_FlipUVs;						//ã€€UVå€¤ã‚’Yè»¸ã‚’åŸºæº–ã«åè»¢ã•ã›ã‚‹
+		flag |= aiProcess_PreTransformVertices;			// ãƒãƒ¼ãƒ‰ã‚’ä¸€ã¤ã«çµ±åˆ !!ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±ãŒæ¶ˆãˆã‚‹ã“ã¨ã«æ³¨æ„!!
+		if (flip) flag |= aiProcess_MakeLeftHanded;		// å·¦æ‰‹ç³»åº§æ¨™ã«å¤‰æ›
 	}
 	else
 	{
-		flag |= aiProcessPreset_TargetRealtime_MaxQuality;	// ƒŠƒAƒ‹ƒ^ƒCƒ€ ƒŒƒ“ƒ_ƒŠƒ“ƒO—p‚Éƒf[ƒ^‚ğÅ“K‰»‚·‚éƒfƒtƒHƒ‹ƒg‚ÌŒãˆ—\¬B
-		flag |= aiProcess_PopulateArmatureData;				// •W€“I‚Èƒ{[ƒ“,ƒA[ƒ}ƒ`ƒ…ƒA‚Ìİ’è
-		if (flip) flag |= aiProcess_ConvertToLeftHanded;	// ¶èŒn•ÏXƒIƒvƒVƒ‡ƒ“‚ª‚Ü‚Æ‚Ü‚Á‚½‚à‚Ì
+		flag |= aiProcessPreset_TargetRealtime_MaxQuality;	// ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ  ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ç”¨ã«ãƒ‡ãƒ¼ã‚¿ã‚’æœ€é©åŒ–ã™ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å¾Œå‡¦ç†æ§‹æˆã€‚
+		flag |= aiProcess_PopulateArmatureData;				// æ¨™æº–çš„ãªãƒœãƒ¼ãƒ³,ã‚¢ãƒ¼ãƒãƒãƒ¥ã‚¢ã®è¨­å®š
+		if (flip) flag |= aiProcess_ConvertToLeftHanded;	// å·¦æ‰‹ç³»å¤‰æ›´ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã¾ã¨ã¾ã£ãŸã‚‚ã®
 	}
 
-	// assimp‚Å“Ç‚İ‚İ
+	// assimpã§èª­ã¿è¾¼ã¿
 	mScene = importer.get()->ReadFile(file, flag);
 	if (!mScene)
 	{
 		Error(importer->GetErrorString());
-		DebugLog::Log("{} Assimpƒ‚ƒfƒ‹ƒ[ƒh¸”s", file);
+		DebugLog::Log("{} Assimpãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰å¤±æ•—", file);
 		return false;
 	}
 
-	// ƒƒbƒVƒ…‚Ìì¬
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	aiVector3D zero(0.0f, 0.0f, 0.0f);
 	std::vector<Vertex::VtxPosNormalTex> vtxGroup;
 	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
 	{
 		MeshBuffer mesh = {};
 
-		// ’¸“_‚Ìì¬
+		// é ‚ç‚¹ã®ä½œæˆ
 		std::vector<Vertex::VtxPosNormalTangentTex> vtx;
 		vtx.resize(mScene->mMeshes[i]->mNumVertices);
 		for (unsigned int j = 0; j < vtx.size(); ++j)
 		{
-			// ’l‚Ì‹zo‚µ
+			// å€¤ã®å¸å‡ºã—
 			aiVector3D pos = mScene->mMeshes[i]->mVertices[j];
 			aiVector3D uv = mScene->mMeshes[i]->HasTextureCoords(0) ?
 				mScene->mMeshes[i]->mTextureCoords[0][j] : zero;
@@ -92,7 +92,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 				mScene->mMeshes[i]->mNormals[j] : zero;
 			aiVector3D tangent = mScene->mMeshes[i]->HasTangentsAndBitangents() ?
 				mScene->mMeshes[i]->mTangents[j] : zero;
-			// ’l‚ğİ’è
+			// å€¤ã‚’è¨­å®š
 			vtx[j] = {
 				XMFLOAT3(pos.x, pos.y, pos.z),
 				XMFLOAT3(normal.x, normal.y, normal.z),
@@ -109,9 +109,9 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 	
 	
 
-		// ƒCƒ“ƒfƒbƒNƒX‚Ìì¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä½œæˆ
 		std::vector<unsigned int> idx;
-		idx.resize(mScene->mMeshes[i]->mNumFaces * 3); // face‚Íƒ|ƒŠƒSƒ“‚Ì”‚ğ•\‚·(‚Pƒ|ƒŠƒSƒ“‚Å3ƒCƒ“ƒfƒbƒNƒX
+		idx.resize(mScene->mMeshes[i]->mNumFaces * 3); // faceã¯ãƒãƒªã‚´ãƒ³ã®æ•°ã‚’è¡¨ã™(ï¼‘ãƒãƒªã‚´ãƒ³ã§3ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		for (unsigned int j = 0; j < mScene->mMeshes[i]->mNumFaces; ++j)
 		{
 			aiFace face = mScene->mMeshes[i]->mFaces[j];
@@ -121,10 +121,10 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 			idx[faceIdx + 2] = face.mIndices[2];
 		}
 
-		// ƒ}ƒeƒŠƒAƒ‹‚ÌŠ„‚è“–‚Ä
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã®å‰²ã‚Šå½“ã¦
 		mesh.materialID = mScene->mMeshes[i]->mMaterialIndex;
 
-		// ƒƒbƒVƒ…‚ğŒ³‚É’¸“_ƒoƒbƒtƒ@ì¬
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã‚’å…ƒã«é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 		Mesh::MeshData desc = {};
 		desc.pVertex = vtx.data();
 		desc.vertexSize = sizeof(Vertex::VtxPosNormalTangentTex);
@@ -135,17 +135,17 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mesh.mesh = std::make_shared<Mesh>(desc);
 
-		// ƒƒbƒVƒ…’Ç‰Á
+		// ãƒ¡ãƒƒã‚·ãƒ¥è¿½åŠ 
 		mMeshes.push_back(mesh);
 	}
 
 	this->SetVertices(vtxGroup);
 
-	//--- ƒ}ƒeƒŠƒAƒ‹‚Ìì¬
-	// ƒtƒ@ƒCƒ‹‚Ì’Tõ
+	//--- ãƒãƒ†ãƒªã‚¢ãƒ«ã®ä½œæˆ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¢ç´¢
 	std::string dir = file;
 	dir = dir.substr(0, dir.find_last_of('/') + 1);
-	// ƒ}ƒeƒŠƒAƒ‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«
 	aiColor3D color(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT4 diffuse(1.0f, 1.0f, 1.0f, 1.0f);
 	DirectX::XMFLOAT4 ambient(0.3f, 0.3f, 0.3f, 1.0f);
@@ -155,7 +155,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 
 		PBRMaterial material = {};
 
-		// Šeíƒpƒ‰ƒ[ƒ^[
+		// å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
 		float shininess;
 		material.material.diffuse = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS ?
 			DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f) : diffuse;
@@ -165,28 +165,28 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		material.material.specular = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS ?
 			DirectX::XMFLOAT4(color.r, color.g, color.b, shininess) : DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, shininess);
 
-		// ƒeƒNƒXƒ`ƒƒ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		aiString path;
 		if (mScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) == AI_SUCCESS)
 		{
 			HRESULT hr;
-			// ƒtƒ@ƒCƒ‹Œ`®ƒ`ƒFƒbƒN
+			// ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ãƒã‚§ãƒƒã‚¯
 			if (strstr(path.C_Str(), ".psd"))
 			{
-				DebugLog::LogError("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
-				Error("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
+				DebugLog::LogError("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
+				Error("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
 			}
-			// ‚»‚Ì‚Ü‚Ü’Tõ
+			// ãã®ã¾ã¾æ¢ç´¢
 			material.albedoTex = std::make_shared<Texture>();
 			hr = material.albedoTex->Create(path.C_Str());
-			// ƒ‚ƒfƒ‹‚Æ“¯‚¶ŠK‘w‚ğ’Tõ
+			// ãƒ¢ãƒ‡ãƒ«ã¨åŒã˜éšå±¤ã‚’æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = dir;
 				file += path.C_Str();
 				hr = material.albedoTex->Create(file.c_str());
 			}
-			// ƒtƒ@ƒCƒ‹–¼‚Ì‚İ‚Å’Tõ
+			// ãƒ•ã‚¡ã‚¤ãƒ«åã®ã¿ã§æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = path.C_Str();
@@ -197,7 +197,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					hr = material.albedoTex->Create(file.c_str());
 				}
 
-				// ƒtƒ@ƒCƒ‹–Ú‚ÌƒpƒX‚ª"\\‚Å‚Í‚È‚­"/"‚Ìê‡‚Ì‘Î‰
+				// ãƒ•ã‚¡ã‚¤ãƒ«ç›®ã®ãƒ‘ã‚¹ãŒ"\\ã§ã¯ãªã"/"ã®å ´åˆã®å¯¾å¿œ
 				if (FAILED(hr))
 				{
 					if (size_t idx = file.find_last_of('/'); idx != std::string::npos)
@@ -208,7 +208,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					}
 				}
 			}
-			// ¸”s
+			// å¤±æ•—
 			if (FAILED(hr))
 			{
 				DebugLog::LogWarning("Assimp: Filepath is wrong");
@@ -228,23 +228,23 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		if (mScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_SHININESS(0), path) == AI_SUCCESS)
 		{
 			HRESULT hr;
-			// ƒtƒ@ƒCƒ‹Œ`®ƒ`ƒFƒbƒN
+			// ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ãƒã‚§ãƒƒã‚¯
 			if (strstr(path.C_Str(), ".psd"))
 			{
-				DebugLog::LogError("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
-				Error("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
+				DebugLog::LogError("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
+				Error("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
 			}
-			// ‚»‚Ì‚Ü‚Ü’Tõ
+			// ãã®ã¾ã¾æ¢ç´¢
 			material.metallicTex = std::make_shared<Texture>();
 			hr = material.metallicTex->Create(path.C_Str());
-			// ƒ‚ƒfƒ‹‚Æ“¯‚¶ŠK‘w‚ğ’Tõ
+			// ãƒ¢ãƒ‡ãƒ«ã¨åŒã˜éšå±¤ã‚’æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = dir;
 				file += path.C_Str();
 				hr = material.metallicTex->Create(file.c_str());
 			}
-			// ƒtƒ@ƒCƒ‹–¼‚Ì‚İ‚Å’Tõ
+			// ãƒ•ã‚¡ã‚¤ãƒ«åã®ã¿ã§æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = path.C_Str();
@@ -255,7 +255,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					hr = material.metallicTex->Create(file.c_str());
 				}
 
-				// ƒtƒ@ƒCƒ‹–Ú‚ÌƒpƒX‚ª"\\‚Å‚Í‚È‚­"/"‚Ìê‡‚Ì‘Î‰
+				// ãƒ•ã‚¡ã‚¤ãƒ«ç›®ã®ãƒ‘ã‚¹ãŒ"\\ã§ã¯ãªã"/"ã®å ´åˆã®å¯¾å¿œ
 				if (FAILED(hr))
 				{
 					if (size_t idx = file.find_last_of('/'); idx != std::string::npos)
@@ -266,7 +266,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					}
 				}
 			}
-			// ¸”s
+			// å¤±æ•—
 			if (FAILED(hr))
 			{
 				DebugLog::LogWarning("Assimp: Filepath is wrong");
@@ -284,23 +284,23 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		if (mScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_HEIGHT(0), path) == AI_SUCCESS)
 		{
 			HRESULT hr;
-			// ƒtƒ@ƒCƒ‹Œ`®ƒ`ƒFƒbƒN
+			// ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ãƒã‚§ãƒƒã‚¯
 			if (strstr(path.C_Str(), ".psd"))
 			{
-				DebugLog::LogError("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
-				Error("ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚Épsdƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·Bpsd“Ç‚İ‚İ‚É‚Í”ñ‘Î‰B");
+				DebugLog::LogError("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
+				Error("ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«psdãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚psdèª­ã¿è¾¼ã¿ã«ã¯éå¯¾å¿œã€‚");
 			}
-			// ‚»‚Ì‚Ü‚Ü’Tõ
+			// ãã®ã¾ã¾æ¢ç´¢
 			material.normalMap = std::make_shared<Texture>();
 			hr = material.normalMap->Create(path.C_Str());
-			// ƒ‚ƒfƒ‹‚Æ“¯‚¶ŠK‘w‚ğ’Tõ
+			// ãƒ¢ãƒ‡ãƒ«ã¨åŒã˜éšå±¤ã‚’æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = dir;
 				file += path.C_Str();
 				hr = material.normalMap->Create(file.c_str());
 			}
-			// ƒtƒ@ƒCƒ‹–¼‚Ì‚İ‚Å’Tõ
+			// ãƒ•ã‚¡ã‚¤ãƒ«åã®ã¿ã§æ¢ç´¢
 			if (FAILED(hr))
 			{
 				std::string file = path.C_Str();
@@ -311,7 +311,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					hr = material.normalMap->Create(file.c_str());
 				}
 
-				// ƒtƒ@ƒCƒ‹–Ú‚ÌƒpƒX‚ª"\\‚Å‚Í‚È‚­"/"‚Ìê‡‚Ì‘Î‰
+				// ãƒ•ã‚¡ã‚¤ãƒ«ç›®ã®ãƒ‘ã‚¹ãŒ"\\ã§ã¯ãªã"/"ã®å ´åˆã®å¯¾å¿œ
 				if (FAILED(hr))
 				{
 					if (size_t idx = file.find_last_of('/'); idx != std::string::npos)
@@ -322,7 +322,7 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 					}
 				}
 			}
-			// ¸”s
+			// å¤±æ•—
 			if (FAILED(hr))
 			{
 				DebugLog::LogWarning("Assimp: Filepath is wrong");
@@ -339,53 +339,53 @@ bool PBRModel::Load(const char* file, bool flip, bool simpleMode)
 		mMaterials.push_back(material);
 	}
 
-	DebugLog::Log("ƒ‚ƒfƒ‹“Ç‚İ‚İŠ®—¹");
+	DebugLog::Log("ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿å®Œäº†");
 	return true;
 }
 
 bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 {
-	DebugLog::Log("ƒ‚ƒfƒ‹“Ç‚İ‚İŠJn");
+	DebugLog::Log("ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿é–‹å§‹");
 
 	int flag = 0;
 	if (simpleMode)
 	{
-		flag |= aiProcess_Triangulate;					// ”ñOŠpƒ|ƒŠƒSƒ“‚ğOŠp‚ÉŠ„‚é
-		flag |= aiProcess_JoinIdenticalVertices;		// “¯ˆêˆÊ’u’¸“_‚ğˆê‚Â‚É“‡‚·‚é
-		flag |= aiProcess_FlipUVs;						//@UV’l‚ğY²‚ğŠî€‚É”½“]‚³‚¹‚é
-		flag |= aiProcess_PreTransformVertices;			// ƒm[ƒh‚ğˆê‚Â‚É“‡ !!ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ‚ªÁ‚¦‚é‚±‚Æ‚É’ˆÓ!!
-		if (flip) flag |= aiProcess_MakeLeftHanded;		// ¶èŒnÀ•W‚É•ÏŠ·
+		flag |= aiProcess_Triangulate;					// éä¸‰è§’ãƒãƒªã‚´ãƒ³ã‚’ä¸‰è§’ã«å‰²ã‚‹
+		flag |= aiProcess_JoinIdenticalVertices;		// åŒä¸€ä½ç½®é ‚ç‚¹ã‚’ä¸€ã¤ã«çµ±åˆã™ã‚‹
+		flag |= aiProcess_FlipUVs;						//ã€€UVå€¤ã‚’Yè»¸ã‚’åŸºæº–ã«åè»¢ã•ã›ã‚‹
+		flag |= aiProcess_PreTransformVertices;			// ãƒãƒ¼ãƒ‰ã‚’ä¸€ã¤ã«çµ±åˆ !!ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±ãŒæ¶ˆãˆã‚‹ã“ã¨ã«æ³¨æ„!!
+		if (flip) flag |= aiProcess_MakeLeftHanded;		// å·¦æ‰‹ç³»åº§æ¨™ã«å¤‰æ›
 	}
 	else
 	{
-		flag |= aiProcessPreset_TargetRealtime_MaxQuality;	// ƒŠƒAƒ‹ƒ^ƒCƒ€ ƒŒƒ“ƒ_ƒŠƒ“ƒO—p‚Éƒf[ƒ^‚ğÅ“K‰»‚·‚éƒfƒtƒHƒ‹ƒg‚ÌŒãˆ—\¬B
-		flag |= aiProcess_PopulateArmatureData;				// •W€“I‚Èƒ{[ƒ“,ƒA[ƒ}ƒ`ƒ…ƒA‚Ìİ’è
-		if (flip) flag |= aiProcess_ConvertToLeftHanded;	// ¶èŒn•ÏXƒIƒvƒVƒ‡ƒ“‚ª‚Ü‚Æ‚Ü‚Á‚½‚à‚Ì
+		flag |= aiProcessPreset_TargetRealtime_MaxQuality;	// ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ  ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ç”¨ã«ãƒ‡ãƒ¼ã‚¿ã‚’æœ€é©åŒ–ã™ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å¾Œå‡¦ç†æ§‹æˆã€‚
+		flag |= aiProcess_PopulateArmatureData;				// æ¨™æº–çš„ãªãƒœãƒ¼ãƒ³,ã‚¢ãƒ¼ãƒãƒãƒ¥ã‚¢ã®è¨­å®š
+		if (flip) flag |= aiProcess_ConvertToLeftHanded;	// å·¦æ‰‹ç³»å¤‰æ›´ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒã¾ã¨ã¾ã£ãŸã‚‚ã®
 	}
 
-	// assimp‚Å“Ç‚İ‚İ
+	// assimpã§èª­ã¿è¾¼ã¿
 	mScene = importer.get()->ReadFile(file, flag);
 	if (!mScene)
 	{
 		Error(importer->GetErrorString());
-		DebugLog::Log("{} Assimpƒ‚ƒfƒ‹ƒ[ƒh¸”s", file);
+		DebugLog::Log("{} Assimpãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰å¤±æ•—", file);
 		return false;
 	}
 
-	// ƒƒbƒVƒ…‚Ìì¬
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	aiVector3D zero(0.0f, 0.0f, 0.0f);
 	std::vector<Vertex::VtxPosNormalTex> vtxGroup;
 	for (unsigned int i = 0; i < mScene->mNumMeshes; ++i)
 	{
 		MeshBuffer mesh = {};
 
-		// ’¸“_‚Ìì¬
+		// é ‚ç‚¹ã®ä½œæˆ
 		
 		std::vector<Vertex::VtxPosNormalTangentTex> vtx;
 		vtx.resize(mScene->mMeshes[i]->mNumVertices);
 		for (unsigned int j = 0; j < vtx.size(); ++j)
 		{
-			// ’l‚Ì‹zo‚µ
+			// å€¤ã®å¸å‡ºã—
 			aiVector3D pos = mScene->mMeshes[i]->mVertices[j];
 			aiVector3D uv = mScene->mMeshes[i]->HasTextureCoords(0) ?
 				mScene->mMeshes[i]->mTextureCoords[0][j] : zero;
@@ -393,7 +393,7 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 				mScene->mMeshes[i]->mNormals[j] : zero;
 			aiVector3D tangent = mScene->mMeshes[i]->HasTangentsAndBitangents() ?
 				mScene->mMeshes[i]->mTangents[j] : zero;
-			// ’l‚ğİ’è
+			// å€¤ã‚’è¨­å®š
 			vtx[j] = {
 				XMFLOAT3(pos.x, pos.y, pos.z),
 				XMFLOAT3(normal.x, normal.y, normal.z),
@@ -410,9 +410,9 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 		}
 	
 
-		// ƒCƒ“ƒfƒbƒNƒX‚Ìì¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä½œæˆ
 		std::vector<unsigned int> idx;
-		idx.resize(mScene->mMeshes[i]->mNumFaces * 3); // face‚Íƒ|ƒŠƒSƒ“‚Ì”‚ğ•\‚·(‚Pƒ|ƒŠƒSƒ“‚Å3ƒCƒ“ƒfƒbƒNƒX
+		idx.resize(mScene->mMeshes[i]->mNumFaces * 3); // faceã¯ãƒãƒªã‚´ãƒ³ã®æ•°ã‚’è¡¨ã™(ï¼‘ãƒãƒªã‚´ãƒ³ã§3ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		for (unsigned int j = 0; j < mScene->mMeshes[i]->mNumFaces; ++j)
 		{
 			aiFace face = mScene->mMeshes[i]->mFaces[j];
@@ -422,10 +422,10 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 			idx[faceIdx + 2] = face.mIndices[2];
 		}
 
-		// ƒ}ƒeƒŠƒAƒ‹‚ÌŠ„‚è“–‚Ä
+		// ãƒãƒ†ãƒªã‚¢ãƒ«ã®å‰²ã‚Šå½“ã¦
 		mesh.materialID = mScene->mMeshes[i]->mMaterialIndex;
 
-		// ƒƒbƒVƒ…‚ğŒ³‚É’¸“_ƒoƒbƒtƒ@ì¬
+		// ãƒ¡ãƒƒã‚·ãƒ¥ã‚’å…ƒã«é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 		Mesh::MeshData desc = {};
 		desc.pVertex = vtx.data();
 		desc.vertexSize = sizeof(Vertex::VtxPosNormalTangentTex);
@@ -436,16 +436,16 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mesh.mesh = std::make_shared<Mesh>(desc);
 
-		// ƒƒbƒVƒ…’Ç‰Á
+		// ãƒ¡ãƒƒã‚·ãƒ¥è¿½åŠ 
 		mMeshes.push_back(mesh);
 	}
 
 	this->SetVertices(vtxGroup);
-	//--- ƒ}ƒeƒŠƒAƒ‹‚Ìì¬
-	// ƒtƒ@ƒCƒ‹‚Ì’Tõ
+	//--- ãƒãƒ†ãƒªã‚¢ãƒ«ã®ä½œæˆ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¢ç´¢
 	std::string dir = file;
 	dir = dir.substr(0, dir.find_last_of('/') + 1);
-	// ƒ}ƒeƒŠƒAƒ‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«
 	aiColor3D color(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT4 diffuse(1.0f, 1.0f, 1.0f, 1.0f);
 	DirectX::XMFLOAT4 ambient(0.3f, 0.3f, 0.3f, 1.0f);
@@ -454,7 +454,7 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 	{
 		PBRMaterial material = {};
 
-		// Šeíƒpƒ‰ƒ[ƒ^[
+		// å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
 		float shininess;
 		material.material.diffuse = mScene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS ?
 			DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f) : diffuse;
@@ -466,7 +466,7 @@ bool PBRModel::LoadWithoutTex(const char* file, bool flip, bool simpleMode)
 
 		mMaterials.push_back(material);
 	}
-	DebugLog::Log("ƒ‚ƒfƒ‹“Ç‚İ‚İŠ®—¹");
+	DebugLog::Log("ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿å®Œäº†");
 	return true;
 }
 

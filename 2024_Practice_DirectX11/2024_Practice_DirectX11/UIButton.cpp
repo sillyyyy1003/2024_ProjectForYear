@@ -1,13 +1,13 @@
-#include "UIButton.h"
+ï»¿#include "UIButton.h"
 
 #include "KInput.h"
 
 enum ButtonState
 {
 	STATE_NONE,		// Default State
-	STATE_HOVER,	// ƒ}ƒEƒX‚ªƒ{ƒ^ƒ“‚É’u‚­
-	STATE_TRIGGER,	// ƒ}ƒEƒX‚ªƒŠƒŠ[ƒX‚³‚ê‚Ä‚é
-	STATE_PRESS,	// ƒ}ƒEƒX‚ª‰Ÿ‚µ‚½‚ç
+	STATE_HOVER,	// ãƒã‚¦ã‚¹ãŒãƒœã‚¿ãƒ³ã«ç½®ã
+	STATE_TRIGGER,	// ãƒã‚¦ã‚¹ãŒãƒªãƒªãƒ¼ã‚¹ã•ã‚Œã¦ã‚‹
+	STATE_PRESS,	// ãƒã‚¦ã‚¹ãŒæŠ¼ã—ãŸã‚‰
 
 };
 
@@ -24,7 +24,7 @@ void UIButton::Update(float dt)
 {
 	//Debug Function
 	D2D_UIStackContainer::Update(dt);
-	//Collider XV
+	//Collider æ›´æ–°
 	UpdateCollider();
 
 	PreUpdate(dt);
@@ -63,7 +63,7 @@ void UIButton::PreUpdate(float dt)
 	else
 	{
 		mState = STATE_HOVER;
-		//ƒNƒŠƒbƒN‚µ‚½‚ç
+		//ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
 			mState = STATE_PRESS;
@@ -132,8 +132,7 @@ void UIButton::LoadSaveData(json data)
 	mDefaultFontColor = { data["DefaultFontColor"][0],data["DefaultFontColor"][1] ,data["DefaultFontColor"][2] ,data["DefaultFontColor"][3] };
 	int num = { data["TextAlignment"] };
 	mTextAlignment = static_cast<D2DUIConfig::TextAlignment>(num);
-	num = { data["FontSize"] };
-	mFontSize = static_cast<D2DUIConfig::FontSize>(num);
+	mFontScale= { data["FontScale"][0],data["FontScale"][1] };
 
 	//Button
 	mPosition = { data["Position"][0],data["Position"][1] };
@@ -147,14 +146,13 @@ json UIButton::SaveData()
 	data["Graphic"] = mBackGround->SaveData();
 	data["Text"] = mText.c_str();
 	data["FontColor"] = { mFontColor.r,mFontColor.g,mFontColor.b,mFontColor.a };
-	data["FontSize"] = static_cast<int>(mFontSize);
 	data["Position"] = { mPosition.x,mPosition.y };
 	data["Scale"] = { mScale.x,mScale.y };
 	data["TextAlignment"] = static_cast<int>(mTextAlignment);
 	data["Padding"] = { mPadding.x,mPadding.y,mPadding.z,mPadding.w };
 	data["DefaultFontColor"] = { mDefaultFontColor.r,mDefaultFontColor.g,mDefaultFontColor.b,mDefaultFontColor.a };
 	data["DefaultColor"] = { mDefaultColor.r,mDefaultColor.g,mDefaultColor.b,mDefaultColor.a };
-
+	data["FontScale"] = { mFontScale.x,mFontScale.y };
 	return data;
 }
 

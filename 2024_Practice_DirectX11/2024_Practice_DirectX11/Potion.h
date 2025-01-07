@@ -1,15 +1,6 @@
 ﻿#pragma once
 #include "Water.h"
 
-namespace PotionColor
-{
-	struct HSV {
-		float hue; 
-		float saturation;
-		float value;
-};
-
-}
 class Potion :public Water
 {
 private:
@@ -32,11 +23,7 @@ public:
 	void Dilute(float diluteAlpha);
 
 	void MixColor(DirectX::XMFLOAT4 color,float alpha);
-
-	PotionColor::HSV RGBtoHSV(const DirectX::XMFLOAT4& color);
-	PotionColor::HSV BlendColor(const PotionColor::HSV& color1, const PotionColor::HSV& color2,float alpha);
-
-	DirectX::XMFLOAT4 HSVtoColor(const PotionColor::HSV& color);
+	HSV BlendColor(const HSV& color1, const HSV& color2,float alpha);
 
 	void AutoColor(float dt);
 

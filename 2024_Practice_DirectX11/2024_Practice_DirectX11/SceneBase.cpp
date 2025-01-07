@@ -32,7 +32,7 @@ void SceneBase::_update(float dt)
 	if (mpSubScene)
 		mpSubScene->_update(dt);
 	Update(dt);
-
+	
 }
 
 void SceneBase::_draw()

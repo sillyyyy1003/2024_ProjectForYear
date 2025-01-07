@@ -1,4 +1,4 @@
-#include "UI_MoveObject.h"
+ï»¿#include "UI_MoveObject.h"
 #include "GameApp.h"
 #include "KInput.h"
 #include "D3DUtil.h"
@@ -31,7 +31,7 @@ void UI_MoveObject::Draw()
 void UI_MoveObject::PreUpdate(float dt)
 {
 
-	//¡‚Ìƒ{ƒ^ƒ“‚ÌˆÊ’u‚ğŒvZ‚·‚é
+	//ä»Šã®ãƒœã‚¿ãƒ³ã®ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
 	float winHeight = static_cast<float>(GameApp::Get()->GetWinHeight());
 	float winWidth = static_cast<float>(GameApp::Get()->GetWinWidth());
 	float buttonWidth = mGraphic->GetContainerSize().x;
@@ -120,14 +120,14 @@ void UI_MoveObject::GameUpdate(float dt)
 json UI_MoveObject::SaveData()
 {
 	json data;
-	//Graphic‚Ì•”•ª‚Ìƒf[ƒ^
+	//Graphicã®éƒ¨åˆ†ã®ãƒ‡ãƒ¼ã‚¿
 	data = mGraphic->SaveData();
 	return data;
 }
 
 void UI_MoveObject::LoadSaveData(json saveData)
 {
-	//Graphic‚Ì•”•ª
+	//Graphicã®éƒ¨åˆ†
 	mGraphic->LoadSaveData(saveData, "Graphic");
 }
 

@@ -1,4 +1,4 @@
-#include "UI_Primitive.h"
+ï»¿#include "UI_Primitive.h"
 
 #include "GameApp.h"
 #include "SceneManager.h"
@@ -16,10 +16,10 @@ void UI_Primitive::CreateMaterial()
 {
 	mMaterial.material =
 	{
-		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ŠÂ‹«Œõ
-		Color(1.0f, 1.0f, 1.0f, 1.0f),		// •\–ÊF
-		Color(1.0f, 0.5f, 0.5f, 0.2f),		// ‹¾–Ê”½Ë: specular power 1
-		Color(0.0f, 0.0f, 0.0f, 0.0f)		// ©”­Œõ‚È‚µ};
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// ç’°å¢ƒå…‰
+		Color(1.0f, 1.0f, 1.0f, 1.0f),		// è¡¨é¢è‰²
+		Color(1.0f, 0.5f, 0.5f, 0.2f),		// é¡é¢åå°„: specular power 1
+		Color(0.0f, 0.0f, 0.0f, 0.0f)		// è‡ªç™ºå…‰ãªã—};
 	};
 }
 

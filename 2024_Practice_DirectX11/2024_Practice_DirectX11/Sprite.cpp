@@ -1,4 +1,4 @@
-#include "Sprite.h"
+﻿#include "Sprite.h"
 #include <memory>
 using namespace DirectX;
 using namespace DirectX::SimpleMath;

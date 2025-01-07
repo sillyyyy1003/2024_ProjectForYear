@@ -1,4 +1,4 @@
-#include "UI_Button.h"
+ï»¿#include "UI_Button.h"
 #include "GameApp.h"
 #include "KInput.h"
 #include "Sprite.h"
@@ -9,9 +9,9 @@ using namespace DirectX;
 enum ButtonState
 {
 	STATE_NONE,		// Default State
-	STATE_HOVER,	// ƒ}ƒEƒX‚ªƒ{ƒ^ƒ“‚É’u‚­
-	STATE_TRIGGER,	// ƒ}ƒEƒX‚ªƒŠƒŠ[ƒX‚³‚ê‚Ä‚é
-	STATE_PRESS,	// ƒ}ƒEƒX‚ª‰Ÿ‚µ‚½‚ç
+	STATE_HOVER,	// ãƒã‚¦ã‚¹ãŒãƒœã‚¿ãƒ³ã«ç½®ã
+	STATE_TRIGGER,	// ãƒã‚¦ã‚¹ãŒãƒªãƒªãƒ¼ã‚¹ã•ã‚Œã¦ã‚‹
+	STATE_PRESS,	// ãƒã‚¦ã‚¹ãŒæŠ¼ã—ãŸã‚‰
 
 };
 
@@ -98,7 +98,7 @@ void UI_Button::SetEditable(bool isEditable)
 
 void UI_Button::PreUpdate()
 {
-	//¡‚Ìƒ{ƒ^ƒ“‚ÌˆÊ’u‚ğŒvZ‚·‚é
+	//ä»Šã®ãƒœã‚¿ãƒ³ã®ä½ç½®ã‚’è¨ˆç®—ã™ã‚‹
 	float winHeight = static_cast<float>(GameApp::Get()->GetWinHeight());
 	float winWidth = static_cast<float>(GameApp::Get()->GetWinWidth());
 
@@ -130,7 +130,7 @@ void UI_Button::PreUpdate()
 	else
 	{
 		mState = STATE_HOVER;
-		//ƒNƒŠƒbƒN‚µ‚½‚ç
+		//ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
 		if (KInput::IsKeyPress(VK_LBUTTON))
 		{
 			mState = STATE_PRESS;

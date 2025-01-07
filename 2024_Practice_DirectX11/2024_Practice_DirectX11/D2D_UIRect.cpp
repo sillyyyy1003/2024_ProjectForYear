@@ -1,4 +1,4 @@
-#include "D2D_UIRect.h"
+﻿#include "D2D_UIRect.h"
 
 
 D2D_UIRect::D2D_UIRect():D2D_UIBase(D2DUIConfig::UIShape::RECT)

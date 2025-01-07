@@ -1,4 +1,4 @@
-#include "DebugLog.h"
+ï»¿#include "DebugLog.h"
 #include <iostream>
 
 
@@ -42,11 +42,11 @@ bool DebugLog::Init(const char* _fileName)
     ofs = std::ofstream(_fileName);
     if (!ofs)
     {
-        std::cout << "ƒƒOƒVƒXƒeƒ€‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+        std::cout << "ãƒ­ã‚°ã‚·ã‚¹ãƒ†ãƒ åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚" << std::endl;
         return false;
     }
 
-    std::cout << "ƒƒOƒeƒLƒXƒg¶¬orã‘‚«¬Œ÷ = " << _fileName << std::endl;
+    std::cout << "ãƒ­ã‚°ãƒ†ã‚­ã‚¹ãƒˆç”Ÿæˆorä¸Šæ›¸ãæˆåŠŸ = " << _fileName << std::endl;
     return true;
 
 }

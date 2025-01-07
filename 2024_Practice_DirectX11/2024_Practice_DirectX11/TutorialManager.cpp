@@ -1,10 +1,10 @@
-#include "TutorialManager.h"
+﻿#include "TutorialManager.h"
 #include "DebugLog.h"
 #include "GameApp.h"
 #include "KInput.h"
 #include "RenderState.h"
 #include "SceneManager.h"
-#include "ScreenOverlay.h"
+#include "ScreenFadeEffect.h"
 
 
 TutorialManager::TutorialManager()
@@ -19,8 +19,7 @@ void TutorialManager::Init(json sceneData)
     mFirstPhasePaper = std::make_unique<UISquare>();
     mFirstPhaseText = std::make_unique<D2D_UIStackContainer>();
     mFirstPhaseSkipButton = std::make_unique<D2D_UIStackContainer>();
-    mFirstPhaseFrontFade = std::make_unique<UISquare>();
-
+  
     mFirstPhaseBackground->Init(SceneManager::Get()->GetObj<Texture>("BlackOverlay"), DirectX::XMINT2(1, 1));
     mFirstPhaseBackground->LoadSaveData(sceneData["FirstPhaseBackGround"]);
 
@@ -31,13 +30,9 @@ void TutorialManager::Init(json sceneData)
     mFirstPhaseText->SetUIState(D2DUIConfig::STATE_USE_FONT);
     mFirstPhaseText->LoadSaveData(sceneData["FirstPhaseText"]);
 
-    mFirstPhaseSkipButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "FirstPhaseSkipButton");
+    mFirstPhaseSkipButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::SMALL_SIZE, "FirstPhaseSkipButton");
     mFirstPhaseSkipButton->SetUIState(D2DUIConfig::STATE_USE_FONT);
     mFirstPhaseSkipButton->LoadSaveData(sceneData["FirstPhaseSkipButton"]);
-    
-    mFirstPhaseFrontFade->Init(SceneManager::Get()->GetObj<Texture>("Fade"), DirectX::XMINT2(1, 1));
-    mFirstPhaseFrontFade->LoadSaveData(sceneData["FirstPhaseFade"]);
-
     posY = mFirstPhaseSkipButton->GetPosition().y;
 }
 
@@ -55,27 +50,18 @@ void TutorialManager::Update(float dt)
         DebugLog::Log("Phase Intro");
 #endif
         isSceneFreeze = true;
-
-        //Fade
-        if(mFadeParam>=0)
-        {
-            mFadeParam -= dt * 0.5f * ScreenOverlayConfig::FADE_SPEED;
-        }
-
-        mFirstPhaseFrontFade->SetTransparency(mFadeParam);
-
         //Object Update
         mFirstPhaseBackground->Update();
         mFirstPhasePaper->Update();
         mFirstPhaseText->Update(dt);
         mFirstPhaseSkipButton->Update(dt);
-        mFirstPhaseFrontFade->Update();
+       
 
         mAccumulateTime += dt * 5.f;
         mFirstPhaseSkipButton->SetPositionY(posY + sin(mAccumulateTime) * mAmplitude);
 
         //first skip button levitating
-        if(mFadeParam<=0&&KInput::IsKeyTrigger(VK_LBUTTON))CompleteCurrentPhase();
+        if(!ScreenFadeEffect::Get()->GetFade()&&KInput::IsKeyTrigger(VK_LBUTTON))CompleteCurrentPhase();
         
         //Trigger
         break;
@@ -304,7 +290,7 @@ void TutorialManager::MoveToNextPhase()
 
 void TutorialManager::DrawIntroPhase()
 {
-    //ScreenOverlay
+    //ScreenFadeEffect
     GameApp::SetBlendState(RenderState::BSMulti);
     mFirstPhaseBackground->Draw();
     GameApp::SetBlendState(nullptr);
@@ -313,11 +299,12 @@ void TutorialManager::DrawIntroPhase()
     //Draw FontText
     mFirstPhaseText->Draw();
     //Skip Button
-    mFirstPhaseSkipButton->Draw();
-    //Fade
-    GameApp::SetBlendState(RenderState::BSTransparent);
-	mFirstPhaseFrontFade->Draw();
-    GameApp::SetBlendState(nullptr);
+
+
+
+	mFirstPhaseSkipButton->Draw();
+
+ 
 
 }
 
@@ -329,7 +316,6 @@ json TutorialManager::UnInit()
     sceneData["FirstPhasePaper"] = mFirstPhasePaper->SaveData();
     sceneData["FirstPhaseText"] = mFirstPhaseText->SaveData();
     sceneData["FirstPhaseSkipButton"] = mFirstPhaseSkipButton->SaveData();
-    sceneData["FirstPhaseFade"] = mFirstPhaseFrontFade->SaveData();
     return sceneData;
 }
 

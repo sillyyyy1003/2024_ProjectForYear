@@ -1,4 +1,4 @@
-#include "IngredientManager.h"
+﻿#include "IngredientManager.h"
 
 IngredientManager::IngredientManager()
 {
@@ -21,7 +21,7 @@ void IngredientManager::InitPotionCapacity()
 
 void IngredientManager::Update(float dt)
 {
-	//Ingredient ��ԊǗ�
+	//Ingredient 状態管理
 	if(mCurrentIngredient)
 	{
 		for(const auto& element:mCurrentIngredients)

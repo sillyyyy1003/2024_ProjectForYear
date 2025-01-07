@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 #include "UI_Primitive.h"
 
@@ -23,7 +23,7 @@ public:
 	/// @param size 
 	void SetScale(const DirectX::XMFLOAT2& size) override;
 
-	/// @brief “™”ä—¦Šg‘åk¬
+	/// @brief ç­‰æ¯”ç‡æ‹¡å¤§ç¸®å°
 	/// @param scale 
 	void SetScale(float scale) override;
 
@@ -32,7 +32,7 @@ protected:
 
 	void CreateMesh(int slices) override;
 
-	/// @brief Default Shader‚Ég‚í‚ê‚éƒf[ƒ^‚Ì‘‚«‚İ
+	/// @brief Default Shaderã«ä½¿ã‚ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 	void WriteDefShader() override;
 
 	std::vector<Vertex::VtxPosNormalTex> CreateNewVertexData(int slices=UIPrimitiveConfig::defaultSlices);

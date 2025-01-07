@@ -1,4 +1,4 @@
-#include "CylinderOneCap.h"
+ï»¿#include "CylinderOneCap.h"
 
 #include "CylinderOneCap.h"
 #include "DirLight.h"
@@ -13,13 +13,13 @@ CylinderOneCap::CylinderOneCap() :Primitive(PrimitiveConfig::CYLINDER_ONECAP)
 
 void CylinderOneCap::Init(const char* filePath, int slices, int stacks, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -32,13 +32,13 @@ void CylinderOneCap::Init(const char* filePath, int slices, int stacks, DirectX:
 
 void CylinderOneCap::Init(const std::shared_ptr<Texture>& tex, int slices, int stacks, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -160,7 +160,7 @@ void CylinderOneCap::CreateMesh(UINT slices, UINT stacks)
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
 
-	//’¸“_î•ñ‚ğmVertices‚É“n‚·
+	//é ‚ç‚¹æƒ…å ±ã‚’mVerticesã«æ¸¡ã™
 	SetVertices(vtx);
 }
 
@@ -200,7 +200,7 @@ void CylinderOneCap::WriteDefShader()
 
 	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-	//UV MATRIX ì¬
+	//UV MATRIX ä½œæˆ
 	if (isUseUVAnimation)
 	{
 		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI_Primitive.h"
 
 class UI_Square :public UI_Primitive

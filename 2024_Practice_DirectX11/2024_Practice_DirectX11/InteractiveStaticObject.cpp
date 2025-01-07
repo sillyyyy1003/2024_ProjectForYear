@@ -58,7 +58,7 @@ void InteractiveStaticObject::InitModel(const std::shared_ptr<Texture>& _file, c
 {
 }
 
-void InteractiveStaticObject::Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& filePath,const char* _objName, DirectX::XMINT2 _UVSplit)
+void InteractiveStaticObject::Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& texture,const char* _objName, DirectX::XMINT2 _UVSplit)
 {
 	
 	switch (_kind)
@@ -66,40 +66,38 @@ void InteractiveStaticObject::Init(PrimitiveConfig::PrimitiveKind _kind, const s
 	default:
 	case PrimitiveConfig::CAPSULE:
 		mModel = std::make_unique<Capsule>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::CUBE:
 		mModel = std::make_unique<Cube>();
-		mModel->Init(filePath, _UVSplit);
+		mModel->Init(texture, _UVSplit);
 		break;
 	case PrimitiveConfig::SPHERE:
 		mModel = std::make_unique<Sphere>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::CYLINDER:
 		mModel = std::make_unique<Cylinder>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::CYLINDER_ONECAP:
 		mModel = std::make_unique<CylinderOneCap>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::SQUARE:
 		mModel = std::make_unique<Square>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::CIRCLE:
 		mModel = std::make_unique<Circle>();
-		mModel->Init(filePath, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		mModel->Init(texture, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
 		break;
 	case PrimitiveConfig::MULTI:
-		/*mModel = std::make_unique<Model>();
-		mModel->Init(filePath);
-		break;*/
+		assert("The Model can't be created by texture!");
 		break;
 	}
 	mObjectName = _objName;
-
+	isUsePBRModel = false;
 	InitCollider();
 	
 }
@@ -110,12 +108,12 @@ void InteractiveStaticObject::LoadTex(PBRConfig::PBRTexList list)
 	
 }
 
-void InteractiveStaticObject::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+void InteractiveStaticObject::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
 	mModel->Primitive::LoadDefShader(vs,ps);
 }
 
-void InteractiveStaticObject::LoadShaderFile(const char* vsFile, const char* psFile)
+void InteractiveStaticObject::LoadDefShader(const char* vsFile, const char* psFile)
 {
 	mModel->Primitive::LoadDefShader(vsFile, psFile);
 }
@@ -129,6 +127,16 @@ void InteractiveStaticObject::UseRimLightEffect()
 void InteractiveStaticObject::DisableRimLightEffect()
 {
 	isUseRimLight = false;
+}
+
+void InteractiveStaticObject::SetRimLightIntensity(float intensity)
+{
+	mEffect.rimIntensity = intensity;
+}
+
+void InteractiveStaticObject::SetRimLightColor(const DirectX::XMFLOAT4& color)
+{
+	mEffect.rimColor = { color.x,color.y,color.z };
 }
 
 void InteractiveStaticObject::InitCollider()
@@ -204,13 +212,16 @@ void InteractiveStaticObject::Update(float dt)
 void InteractiveStaticObject::Draw()
 {
 	mModel->GetDefPS()->WriteShader(2, &mEffect);
-
 	mModel->Draw();
 
 #ifdef _DEBUG
 	if(isShowCollider)
 		mDebugColliderMesh->Draw();
 #endif
+}
+
+void InteractiveStaticObject::DrawWithPosition(DirectX::XMFLOAT3 pos)
+{
 }
 
 bool InteractiveStaticObject::GetClicked()

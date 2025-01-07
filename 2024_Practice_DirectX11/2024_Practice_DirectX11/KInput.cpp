@@ -1,4 +1,4 @@
-#include "KInput.h"
+ï»¿#include "KInput.h"
 
 
 KInput::~KInput()
@@ -7,7 +7,7 @@ KInput::~KInput()
 
 HRESULT KInput::InitInput()
 {
-	// ˆê”ÔÅ‰‚Ì“ü—Í
+	// ä¸€ç•ªæœ€åˆã®å…¥åŠ›
 	GetKeyboardState(Get()->mKeyTable);
 	return S_OK;
 }
@@ -15,9 +15,9 @@ HRESULT KInput::InitInput()
 
 void KInput::UpdateInput()
 {
-	// ŒÃ‚¢“ü—Í‚ðXV
+	// å¤ã„å…¥åŠ›ã‚’æ›´æ–°
 	memcpy_s(Get()->mOldTable, sizeof(mOldTable), Get()->mKeyTable, sizeof(mKeyTable));
-	// Œ»Ý‚Ì“ü—Í‚ðŽæ“¾
+	// ç¾åœ¨ã®å…¥åŠ›ã‚’å–å¾—
 	GetKeyboardState(Get()->mKeyTable);
 }
 

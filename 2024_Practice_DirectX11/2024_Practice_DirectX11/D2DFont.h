@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include <d2d1.h>
 #include <DirectXCollision.h>
 #include <map>
@@ -20,11 +20,13 @@ namespace D2DUIConfig
 		TITLE_SIZE,
 		NORMAL_SIZE,
 		SMALL_SIZE,
+		SEMI_SIZE,
 	};
 
 	constexpr float FONT_TITLE_SIZE = 280.f;
 	constexpr float FONT_NORMAL_SIZE = 90.f;
-	constexpr float FONT_SMALL_SIZE = 28.f;
+	constexpr float FONT_SMALL_SIZE = 40.f;
+	constexpr float FONT_SEMI_SIZE = 100.f;
 
 	enum class TextAlignment:uint8_t
 	{
@@ -38,11 +40,14 @@ namespace D2DUIConfig
 }
 
 
-///@brief ï∂éöÇÃï`âÊ
+///@brief ÊñáÂ≠ó„ÅÆÊèèÁîª
 class D2DFont
 {
 private:
 
+	D2D1_MATRIX_3X2_F FontMatrix;
+	DirectX::XMFLOAT2 mFontScale={1,1};
+	
 	//Brushes
 	ComPtr<ID2D1SolidColorBrush> mSolidBrush;		//Mono tone
 	ComPtr<ID2D1RadialGradientBrush> mRadianGBrush;		//Radian
@@ -51,8 +56,8 @@ private:
 	//Text Format
 	ComPtr<IDWriteTextFormat> mJpnTitleSizeFormat = nullptr;
 	ComPtr<IDWriteTextFormat> mJpnNormalSizeFormat = nullptr;
+	ComPtr<IDWriteTextFormat> mJpnSemiSizeFormat = nullptr;
 	ComPtr<IDWriteTextFormat> mJpnSmallSizeFormat = nullptr;
-
 	//Color
 	//Radian
 	D2D1::ColorF mRadianFrontColor = D2D1::ColorF::White;
@@ -76,7 +81,6 @@ public:
 
 	void SetSolidBrushColor(D2D1::ColorF color);
 	void DrawSolidFont(D2DUIConfig::FontSize size, const char* text, D2D1_RECT_F  rect);
-
 	void DrawSolidFont(D2DUIConfig::FontSize size, const char* text,DirectX::XMFLOAT2 pos,DirectX::XMFLOAT2 scale);
 
 
@@ -89,17 +93,10 @@ public:
 	void DrawSolidText(D2DUIConfig::FontSize size, D2D1::ColorF color, const char* text, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 scale);
 
 	void SetTextAlign(D2DUIConfig::FontSize font, D2DUIConfig::TextAlignment alignment);
-
 	void SetTextFormatAlignment(IDWriteTextFormat* format,D2DUIConfig::TextAlignment alignment);
 
-	/// @brief Fill the RoundedRect
-	/// @param roundRect 
-	void DrawRoundRect(D2D1_ROUNDED_RECT roundRect);
-
-	/// @brief Draw the rounded rect
-	/// @param roundRect 
-	void DrawRoundRectOutline(D2D1_ROUNDED_RECT roundRect);
-
+	
+	void SetFontScale(DirectX::XMFLOAT2 _size);
 
 	
 

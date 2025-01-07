@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <fstream>
 #include <string>
 #include <format>
 
 namespace Log
 {
-	//ƒƒbƒZ[ƒW‚Ìƒ^ƒCƒv
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚¿ã‚¤ãƒ—
 	enum class Type:int
 	{
         LOG_INFO = 0,
@@ -14,7 +14,7 @@ namespace Log
 	};
 }
 
-/// @brief î•ño—Í
+/// @brief æƒ…å ±å‡ºåŠ›
 class DebugLog
 {
 private:
@@ -22,21 +22,21 @@ private:
     ~DebugLog() = default;
 
 private:
-    /// @brief ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+    /// @brief ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
     static DebugLog& GetInstance();
 
-    /// @brief ƒƒbƒZ[ƒWo—Í
-    /// @param message ƒƒbƒZ[ƒW 
-    /// @param type ƒƒbƒZ[ƒW‚Ìí—Ş
+    /// @brief ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡ºåŠ›
+    /// @param message ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ 
+    /// @param type ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ç¨®é¡
     void LogOutput(const std::string& message, Log::Type type);
 
 
     std::ofstream ofs;
 
 public:
-    /// @brief ‰Šú‰»
-    /// @param _fileName o—Íƒtƒ@ƒCƒ‹–¼ 
-    /// @return ‰Šú‰»¬Œ÷‚©”Û‚©
+    /// @brief åˆæœŸåŒ–
+    /// @param _fileName å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«å 
+    /// @return åˆæœŸåŒ–æˆåŠŸã‹å¦ã‹
     bool Init(const char* _fileName);
 
     //About template<class... Args>https://conscious-maple-e95.notion.site/Template-class-Args-90f56b52ea7b4259803ffb917cb81547?pvs=74

@@ -1,4 +1,4 @@
-#include "D2D_UIRoundedRect.h"
+﻿#include "D2D_UIRoundedRect.h"
 
 D2D_UIRoundedRect::D2D_UIRoundedRect():D2D_UIBase(D2DUIConfig::UIShape::ROUNDED_RECT)
 {

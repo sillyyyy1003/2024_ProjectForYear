@@ -1,4 +1,4 @@
-#include "UI_Square.h"
+ï»¿#include "UI_Square.h"
 
 #include "GameApp.h"
 
@@ -12,7 +12,7 @@ UI_Square::UI_Square():UI_Primitive(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE)
 
 void UI_Square::Init(const char* _fileName, int slices, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	InitAnimation(_UVSplit);
 	if (slices == 0)
 	{
@@ -72,13 +72,13 @@ void UI_Square::CreateMesh(int slices)
 		for (int j = 0; j < slices; j++)
 		{
 			int start = i * (slices + 1) + j;
-			indexData.push_back(start);               // ¶ã
-			indexData.push_back(start + slices + 1);  // ¶‰º
-			indexData.push_back(start + 1);           // ‰Eã
+			indexData.push_back(start);               // å·¦ä¸Š
+			indexData.push_back(start + slices + 1);  // å·¦ä¸‹
+			indexData.push_back(start + 1);           // å³ä¸Š
 
-			indexData.push_back(start + 1);           // ‰Eã
-			indexData.push_back(start + slices + 1);  // ¶‰º
-			indexData.push_back(start + slices + 2);  // ‰E‰º
+			indexData.push_back(start + 1);           // å³ä¸Š
+			indexData.push_back(start + slices + 1);  // å·¦ä¸‹
+			indexData.push_back(start + slices + 2);  // å³ä¸‹
 		}
 	}
 
@@ -161,7 +161,7 @@ void UI_Square::WriteDefShader()
 
 	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-	//UV MATRIX ì¬
+	//UV MATRIX ä½œæˆ
 	if (isUseUVAnimation)
 	{
 		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);
@@ -184,7 +184,7 @@ void UI_Square::InitAnimation(DirectX::XMINT2 _split)
 	{
 		isUseUVAnimation = true;
 	}
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_split);
 }

@@ -1,38 +1,26 @@
-﻿#include "SceneOption.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "SceneOption.h"
 #include <memory>
-#include "D2DFont.h"
 #include "D2D_UIRoundedRect.h"
+#include "GameApp.h"
 #include "KInput.h"
+#include "MissionManager.h"
 #include "SceneManager.h"
-
-
-
 
 void SceneOption::Init()
 {
-	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_option.json");
+	PixelShader* ps = CreateObj<PixelShader>("psi").get();
+	ps->LoadShaderFile("Assets/Shader/PS_ParticleInstance.cso");
 
-	testButton = std::make_unique<D2D_UIStackContainer>();
-	testButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Test");
-	testButton->LoadSaveData(sceneData["test"]);
-
-	mButton = std::make_unique<UIButton>();
-	mButton->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "button");
-	mButton->LoadSaveData(sceneData["button"]);
-	
-
+	testParticle = std::make_unique<ParticleEffect>();
+	testParticle->InitParticleRenderer("VS_ParticleInstance.hlsl",1000);
+	testParticle->InitParticleData({2,0,0},{0,3,0},{1,1,1},4);
 }
 
 void SceneOption::UnInit()
 {
 
-	json sceneData;
-	sceneData["test"] = testButton->SaveData();
-	sceneData["button"] = mButton->SaveData();
-	SaveSceneFile("Assets/Data/SaveDat/scene_option.json", sceneData);
 
-
-	
 }
 
 void SceneOption::Update(float dt)
@@ -42,13 +30,17 @@ void SceneOption::Update(float dt)
 		SceneManager::Get()->SetMainScene("Title");//Back to TitleScene
 	}
 
-	//testButton->Update(dt);
-	mButton->Update(dt);
+
+	MissionManager::Get()->MissionGenerator();
+	testParticle->Update(dt);
 
 }
 
 void SceneOption::Draw()
 {
-	mButton->Draw();
-	//testButton->Draw();
+	PixelShader* ps = GetObj<PixelShader>("psi").get();
+	ps->SetShader();
+	testParticle->Draw();
+
+
 }

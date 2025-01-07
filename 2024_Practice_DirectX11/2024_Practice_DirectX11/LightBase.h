@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include <DirectXCollision.h>
 
-/// @brief ŒõŠî’êƒNƒ‰ƒX
+/// @brief å…‰åŸºåº•ã‚¯ãƒ©ã‚¹
 class LightBase
 {
 protected:
-	DirectX::XMFLOAT3 mPos = { 0.0f, 0.0f, 0.0f };	//ˆÊ’u
-	DirectX::XMFLOAT3 mDir = { 0.0f, 1.0f, 0.0f };	//•ûŒü
-	DirectX::XMFLOAT4 mAmbient = { 1.0f, 1.0f, 1.0f, 1.0f }; //ŠÂ‹«Œõ
-	DirectX::XMFLOAT4 mDiffuse = { 0.8f, 0.8f, 0.8f, 1.0f }; //ŠgŽU”½ŽË
+	DirectX::XMFLOAT3 mPos = { 0.0f, 0.0f, 0.0f };	//ä½ç½®
+	DirectX::XMFLOAT3 mDir = { 0.0f, 1.0f, 0.0f };	//æ–¹å‘
+	DirectX::XMFLOAT4 mAmbient = { 1.0f, 1.0f, 1.0f, 1.0f }; //ç’°å¢ƒå…‰
+	DirectX::XMFLOAT4 mDiffuse = { 0.8f, 0.8f, 0.8f, 1.0f }; //æ‹¡æ•£åå°„
 
 	bool isEnable = true;
 
@@ -19,22 +19,22 @@ public:
 
 	virtual void Update(float dt) = 0;
 
-	DirectX::XMFLOAT3 GetPosition() const  { return mPos; };	//ˆÊ’u
-	DirectX::XMFLOAT3 GetDirection() const { return mDir; };	//•ûŒü
-	DirectX::XMFLOAT4 GetAmbient() const { return mAmbient; }; //ŠÂ‹«Œõ
-	DirectX::XMFLOAT4 GetDiffuse() const { return mDiffuse; }; //ŠgŽU”½ŽË
+	DirectX::XMFLOAT3 GetPosition() const  { return mPos; };	//ä½ç½®
+	DirectX::XMFLOAT3 GetDirection() const { return mDir; };	//æ–¹å‘
+	DirectX::XMFLOAT4 GetAmbient() const { return mAmbient; }; //ç’°å¢ƒå…‰
+	DirectX::XMFLOAT4 GetDiffuse() const { return mDiffuse; }; //æ‹¡æ•£åå°„
 
 	bool GetEnable() { return isEnable; };
 
-	void SetPosition(const DirectX::XMFLOAT3& _pos);	//ˆÊ’u
+	void SetPosition(const DirectX::XMFLOAT3& _pos);	//ä½ç½®
 	void SetPosition(float* _pos);
 
-	void SetDirection(const DirectX::XMFLOAT3& _dir);	//•ûŒü
+	void SetDirection(const DirectX::XMFLOAT3& _dir);	//æ–¹å‘
 	void SetDirection(float* _dir);
 
-	void SetAmbient(const DirectX::XMFLOAT4& _ambient); //ŠÂ‹«Œõ
+	void SetAmbient(const DirectX::XMFLOAT4& _ambient); //ç’°å¢ƒå…‰
 	void SetAmbient(float* ambient);
-	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse); //ŠgŽU”½ŽË
+	void SetDiffuse(const DirectX::XMFLOAT4& _diffuse); //æ‹¡æ•£åå°„
 	void SetDiffuse(float* diffuse);
 
 	void SetEnable(bool isEnable) { this->isEnable = isEnable; };

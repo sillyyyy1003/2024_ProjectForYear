@@ -12,6 +12,8 @@ enum CameraKind
     CAM_FREE,
     /// カメラをロックする
     CAM_LOCK,
+    /// 補間でカメラ移動
+    CAM_MOVE,
 };
 
 void FirstPersonCamera::Update(float dt)
@@ -38,16 +40,19 @@ void FirstPersonCamera::Update(float dt)
 
     if (mState == CAM_NONE) return;
 
-    // マウス移動量
-    POINT cursorPos;
-    GetCursorPos(&cursorPos);
-	XMFLOAT2 mouseMove = DirectX::XMFLOAT2((float)cursorPos.x - mOldPos.x, (float)cursorPos.y - mOldPos.y);
-    mOldPos = cursorPos;
-
-
     switch (mState)
     {
-    case CAM_FREE:	UpdateFlight(mouseMove, dt);	break;
+    case CAM_FREE:	
+        // マウス移動量
+        POINT cursorPos;
+        GetCursorPos(&cursorPos);
+        XMFLOAT2 mouseMove = DirectX::XMFLOAT2((float)cursorPos.x - mOldPos.x, (float)cursorPos.y - mOldPos.y);
+        mOldPos = cursorPos;
+        UpdateFlight(mouseMove, dt);
+    	break;
+    case CAM_MOVE:  
+        UpdateMove(dt);
+        break;
     default:;
     }
 }
@@ -66,7 +71,6 @@ void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, cons
 {
     mTransform.SetPosition(pos);
     mTransform.LookAt(target, up);
-   
 }
 
 void FirstPersonCamera::LookAt(const DirectX::XMFLOAT3& target)
@@ -106,19 +110,19 @@ void FirstPersonCamera::MoveForward(float d)
 void FirstPersonCamera::LookDown()
 {
     XMFLOAT3 rotation = mTransform.GetRotationInRadian();
-	rotation.x = -XM_PI / 2;
+    rotation.x = -XM_PI / 2;
     mTransform.SetRotationInRadian(rotation);
 }
 
 void FirstPersonCamera::Pitch(float rad)
 {
     XMFLOAT3 rotation = mTransform.GetRotationInRadian();
-    // LIMIT ROTATE DEGREE TO ±75°
+    // LIMIT ROTATE DEGREE TO ±85°
     rotation.x += rad;
-    if (rotation.x > XM_PI * 75 / 18)
-        rotation.x = XM_PI * 75 / 18;
-    else if (rotation.x < -XM_PI * 75 / 18)
-        rotation.x = -XM_PI * 75 / 18;
+    if (rotation.x > XM_PI * 85 / 18)
+        rotation.x = XM_PI * 85 / 18;
+    else if (rotation.x < -XM_PI * 85 / 18)
+        rotation.x = -XM_PI * 85 / 18;
 
     mTransform.SetRotationInRadian(rotation);
 }
@@ -161,8 +165,64 @@ void FirstPersonCamera::LockCamera()
     isLockPos = true;
 }
 
+void FirstPersonCamera::StartMoveToTarget(DirectX::XMFLOAT3 targetPos, DirectX::XMFLOAT3 targetRot, float duration)
+{
+    isMoveToTarget = true;
+    //元の位置を保存する
+    mDefaultPosition = this->GetPos();
+    //回転角度を設定
+    mTargetRotation = targetRot- this->mTransform.GetRotationInRadian();
+    //位置を設定する
+    mTargetPosition = targetPos;
+    //移動Vectorを計算
+	Vector3 direction = mTargetPosition - GetPos();
+    mDistance = direction.Length();
+    direction.Normalize();
+    mDirection = direction;
+    //時間を設定
+    mDuration = duration;
+
+	
+}
+
+void FirstPersonCamera::BackToDefaultPos()
+{
+    isMoveToTarget = true;
+    mTargetRotation = mTargetRotation * -1;
+    mTargetPosition = mDefaultPosition;
+    mDirection = mDirection * -1;
+}
+
+void FirstPersonCamera::ZoomIn(float dt)
+{
+    if (mAccumulateTime <= mDuration)
+    {
+        //累積時間
+        float step = dt / mDuration;
+        mAccumulateTime += dt;
+        mTransform.Translate(mDirection, step * mDistance);
+
+        Pitch(mTargetRotation.x * step);
+    }else
+    {
+        //運動停止
+        isMoveToTarget = false;
+        //時間リセット
+        mAccumulateTime = 0.0f;
+    }
+}
+
+
 void FirstPersonCamera::UpdateState()
 {
+    //移動状態の場合
+    if (isMoveToTarget)
+    {
+        mState = CAM_MOVE;
+    	return;
+    }
+
+    // 操作の場合
     CameraKind prev = (CameraKind)mState;
 
     if (KInput::IsKeyPress(VK_MENU))//ALT
@@ -171,18 +231,19 @@ void FirstPersonCamera::UpdateState()
         if (KInput::IsKeyTrigger('R'))
             ResetCamera();//カメラの位置を元に戻す
     }
-	else if(KInput::IsKeyPress(VK_RBUTTON))
+    else if (KInput::IsKeyPress(VK_RBUTTON))
     {
         mState = CAM_FREE;
     }
     else
     {
-		mState = CAM_NONE;
+        mState = CAM_NONE;
     }
 
     if (prev != mState)
         GetCursorPos(&mOldPos);
 
+   
 
 }
 
@@ -226,3 +287,22 @@ void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
 
 }
 
+void FirstPersonCamera::UpdateMove(float dt)
+{
+    /*
+    if (mAccumulateTime <= mDuration)
+    {
+        mAccumulateTime += dt;
+        Pitch(dt * mRotateSpeed);
+        mTransform.Translate(mDirection, mMoveSpeed * dt);
+      
+    }else
+    {
+        //運動停止
+        isMoveToTarget = false;
+        //時間リセット
+        mAccumulateTime = 0.0f;
+    }*/
+    ZoomIn(dt);
+  
+}

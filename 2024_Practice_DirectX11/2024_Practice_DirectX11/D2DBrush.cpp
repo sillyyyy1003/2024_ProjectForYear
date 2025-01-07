@@ -1,4 +1,4 @@
-#include "D2DBrush.h"
+﻿#include "D2DBrush.h"
 
 #include "D2DFont.h"
 #include "D3DApp.h"

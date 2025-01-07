@@ -6,20 +6,12 @@
 #include "GameApp.h"
 #include "Model.h"
 #include "SceneManager.h"
-#include "ScreenOverlay.h"
+#include "ScreenFadeEffect.h"
 
 
 using json = nlohmann::json;
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
-
-enum SceneState
-{
-	STATE_NONE,
-	STATE_OPTION,
-	STATE_LAB,
-};
-
 
 void SceneTitle::Init()
 {
@@ -69,9 +61,6 @@ void SceneTitle::Init()
 	mExit->LoadSaveData(sceneData["Exit"]);
 	mExit->EnableAllState();
 
-	mSceneState = STATE_NONE;
-
-
 }
 
 void SceneTitle::UnInit()
@@ -95,20 +84,20 @@ void SceneTitle::Update(float dt)
 	//Object Update / Rendering
 	ObjectUpdate(dt);
 
-	if(!ScreenOverlay::Get()->GetFade())
+	if(!ScreenFadeEffect::Get()->GetFade())
 	{
 		//シーン切り替えなどトリガーに使われる
 		TriggerListener();
 	}
 
-	if(ScreenOverlay::Get()->GetFadeIn())
+	if(ScreenFadeEffect::Get()->GetFadeIn())
 	{
-		switch(mSceneState)
+		switch(mNextScene)
 		{
-		case STATE_OPTION:
+		case SceneConfig::SceneIndex::SCENE_OPTION:
 			SceneManager::Get()->SetMainScene("Option");
 			break;
-		case STATE_LAB:
+		case SceneConfig::SceneIndex::SCENE_LAB:
 			SceneManager::Get()->SetMainScene("Lab");
 			break;
 		default:
@@ -122,23 +111,23 @@ void SceneTitle::TriggerListener()
 
 	if (mStart->IsTrigger())
 	{
-		SceneManager::Get()->SetSwitchScene(true);
-		ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_OUT);
-		mSceneState = STATE_LAB;
+		SceneManager::Get()->SetSwitchSceneWithFade(true);
+		mNextScene = SceneConfig::SceneIndex::SCENE_LAB;
+		return;
 	}
 
 	if (mExit->IsTrigger())
 	{
 		SceneManager::Get()->SetSwitchScene(true);
 		SceneManager::Get()->SetMainScene("Exit");
+		return;
 	}
 
 	if (mOption->IsTrigger())
 	{
-		SceneManager::Get()->SetSwitchScene(true);
-		ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_OUT);
-		mSceneState = STATE_OPTION;
-		
+		SceneManager::Get()->SetSwitchSceneWithFade(true);
+		mNextScene = SceneConfig::SceneIndex::SCENE_OPTION;
+		return;
 	}
 
 }

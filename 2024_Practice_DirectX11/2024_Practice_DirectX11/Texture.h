@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include <d3d11.h>
 #include <wrl/client.h>
 
 using namespace Microsoft::WRL;
-/// @brief ƒeƒNƒXƒ`ƒƒ
+/// @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£
 class Texture
 {
 public:
@@ -21,13 +21,13 @@ protected:
 
 
 protected:
-	UINT mWidth = 0;	///< ‰¡•
-	UINT mHeight = 0;	///< c•
+	UINT mWidth = 0;	///< æ¨ªå¹…
+	UINT mHeight = 0;	///< ç¸¦å¹…
 	ComPtr<ID3D11ShaderResourceView> mSRV;
 	ComPtr<ID3D11Texture2D> mTex;
 };
 
-/// @brief ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg
+/// @brief ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 class RenderTarget : public Texture
 {
 public:
@@ -46,7 +46,7 @@ private:
 	ComPtr<ID3D11RenderTargetView> mRTV;
 };
 
-/// @brief [“xƒeƒNƒXƒ`ƒƒ
+/// @brief æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£
 class DepthStencil : public Texture
 {
 public:

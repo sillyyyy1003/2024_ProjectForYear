@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "PointLight.h"
 #include "Sphere.h"
 
@@ -7,11 +7,12 @@ class CandleLight :public PointLight
 private:
 #ifdef _DEBUG
 	std::unique_ptr<Sphere> mDebugMesh;
+	std::string name="default";
 #endif
 	
 	bool isShaking = true;
-	Light::PointLight mCandleLight;		//ƒIƒuƒWƒFƒNƒg‚ğÆ‚ç‚·—p
-	DirectX::XMFLOAT3 mCastShadowLightPos = { 0,1,0 };	//Cast Shadow—p‚Ì
+	Light::PointLight mCandleLight;		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç…§ã‚‰ã™ç”¨
+	DirectX::XMFLOAT3 mCastShadowLightPos = { 0,1,0 };	//Cast Shadowç”¨ã®
 	float mCastShadowHeight = 0.0f;
 public:
 
@@ -19,6 +20,8 @@ public:
 	~CandleLight();
 
 	void Init();
+	void InitName(const char* name);
+
 	void Update(float dt) override;
 	void CandleLightShaking(float dt);
 	void Draw();

@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "InteractiveMovableObject.h"
+#include "Potion.h"
 
 class Ingredient:public InteractiveMovableObject
 {
@@ -15,13 +16,16 @@ private:
 	float mAlpha = 0.3f;
 
 
-	//Default��Ԃ̎��̈ʒu
+	//Default状態の時の位置
 	DirectX::XMFLOAT3 mDefaultPos = { 0,0,0 };
-	//�痿�F
+
+	//顔料色
 	DirectX::XMFLOAT4 mPigmentColor = { 1,1,1,1 };
+	HSV mHSVColor = {0,1,1};
 	ContainerData mContainerData = {};
 
 	float mPrice = 100.f;
+	bool isMovable = true;
 
 public:
 	Ingredient();
@@ -38,6 +42,7 @@ public:
 	const DirectX::XMFLOAT4& GetColor();
 
 	void SetPigmentColor(DirectX::XMFLOAT4 color);
+	void SetHSVColor(float hue, float saturation, float value);
 
 	void AddColor(float dt);
 	void UpdateContainerColor();
@@ -51,7 +56,7 @@ public:
 	void SetControllable(bool isControllable) { this->isControllable = isControllable; };
 
 	void SetIngredientAlpha(float alpha);
-
+	void SetMovable(bool isMovable) { this->isMovable = isMovable; };
 
 	/// @brief 
 	void ChargeCapacity();

@@ -24,7 +24,7 @@ protected:
 	float mAspect = 0.0f;
 	float mFovY = 0.0f;//Default:90°
 
-	const DirectX::XMFLOAT3 defaultPos={0,10.f,-10.f};
+	const DirectX::XMFLOAT3 defaultPos = { 0,10.f,-10.f };
 	const DirectX::XMFLOAT3 defaultTarget = { 0,0,0 };
 	const DirectX::XMFLOAT3 defaultUpAxis = { 0,1,0 };
 

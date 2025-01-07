@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 #include "SceneBase.h"
 #include "Transform.h"
@@ -50,7 +50,7 @@ protected:
 	PixelShader* mPS = nullptr;
 
 	bool isDefShader = true;
-	bool isUseUVAnimation = false;//UVAnimation‚ğg‚¤‚©
+	bool isUseUVAnimation = false;//UVAnimationã‚’ä½¿ã†ã‹
 
 
 	std::unique_ptr<UVAnimation> mUvAnimation = nullptr;
@@ -85,12 +85,12 @@ public:
 	/// @brief Virtual Init Function for roundSquare
 	/// @param pTex Texture
 	///	@param _squareSize x:InnerSquare Height y:InnerSquare width
-	///	@param radius ‰~Šp”¼Œa
+	///	@param radius å††è§’åŠå¾„
 	/// @param slices Slices 
 	/// @param _UVSplit UVAnimation Split
 	virtual void Init(const std::shared_ptr<Texture>& pTex, DirectX::XMFLOAT2 _squareSize, float radius, int slices, DirectX::XMINT2 _UVSplit){};
 
-	/*ˆø—p??Test
+	/*å¼•ç”¨??Test
 	virtual void Init(const std::shared_ptr<Texture>* tex, int slices = 0, DirectX::XMINT2 _split = { 1,1 }) {};
 	virtual void Init(const std::shared_ptr<Texture>* tex, DirectX::XMFLOAT2 _squareSize, int slices = UIPrimitiveConfig::defaultSlices, DirectX::XMINT2 _split = { 1,1 }) {};
 	*/
@@ -114,7 +114,7 @@ public:
 	virtual void SetScale(const DirectX::XMFLOAT2& size);
 	virtual void SetScale(float scale);
 
-	/// @brief ©“®•À‚Ñ‘Ö‚¦•`‰æ
+	/// @brief è‡ªå‹•ä¸¦ã³æ›¿ãˆæç”»
 	/// @param z layer depth
 	virtual void SetPosZ(float z) noexcept override;
 
@@ -153,7 +153,7 @@ public:
 
 	virtual void SetDefShader();
 
-	/// @brief Default Shader‚Ég‚í‚ê‚éƒf[ƒ^‚Ì‘‚«‚İ
+	/// @brief Default Shaderã«ä½¿ã‚ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 	virtual void WriteDefShader(){};
 
 	UVAnimation* GetAnimation() { return mUvAnimation.get(); };
@@ -162,10 +162,10 @@ public:
 
 #ifdef _DEBUG
 	virtual void SetObjectName(const char* name) { mObjectName = name; };
-	std::string GetObjectName() { return mObjectName; };
+	const std::string& GetObjectName() { return mObjectName; };
 #endif
 
-	//UI‚Ì“®‚«
+	//UIã®å‹•ã
 
 };
 

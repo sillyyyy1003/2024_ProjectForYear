@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DUtil.h"
 #include <DirectXCollision.h>
 #include "SceneBase.h"
@@ -23,14 +23,14 @@ public:
 	Collider(ColliderKind kind);
 	virtual ~Collider();//virtual method
 
-	/// @brief ƒRƒ‰ƒCƒ_[ˆÊ’u‚Æ‰ñ“]‚ÌXV
-	/// @param pos ˆÊ’u
-	/// @param rot ‰ñ“]
-	///	@param scale Šg‘åk¬‚Ì”ä—¦
+	/// @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ä½ç½®ã¨å›è»¢ã®æ›´æ–°
+	/// @param pos ä½ç½®
+	/// @param rot å›è»¢
+	///	@param scale æ‹¡å¤§ç¸®å°ã®æ¯”ç‡
 	virtual void Transform(DirectX::XMFLOAT3 pos,DirectX::XMVECTOR rot,DirectX::XMFLOAT3 scale){};
 
-	/// @brief ƒRƒ‰ƒCƒ_[‘å‚«‚³
-	/// @param size ‘å‚«‚³
+	/// @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å¤§ãã•
+	/// @param size å¤§ãã•
 	virtual void UpdateSize(DirectX::XMFLOAT3 size){};
 	virtual void UpdateSize(float size) {};
 
@@ -43,7 +43,7 @@ public:
 
 };
 
-/// @brief ƒ{ƒbƒNƒXƒRƒ‰ƒCƒ_[
+/// @brief ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 class BoxCollider :public Collider
 {
 private:
@@ -55,27 +55,27 @@ public:
 	BoxCollider();
 	~BoxCollider() override = default;
 
-	/// @brief ƒRƒ‰ƒCƒ_[•ÏŠ·
-	/// @param pos ˆÚ“®Œã‚Ì’†SˆÊ’u
-	/// @param rot ‰ñ“]Šp“x(lŒ³”)
-	///	@param scale Šg‘åk¬‚Ì”ä—¦
+	/// @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å¤‰æ›
+	/// @param pos ç§»å‹•å¾Œã®ä¸­å¿ƒä½ç½®
+	/// @param rot å›è»¢è§’åº¦(å››å…ƒæ•°)
+	///	@param scale æ‹¡å¤§ç¸®å°ã®æ¯”ç‡
 	void Transform(DirectX::XMFLOAT3 pos, DirectX::XMVECTOR rot, DirectX::XMFLOAT3 scale) override;
 
-	/// @brief ‘å‚«‚³‚ğİ’è‚·‚é
-	/// @param size İ’è‚µ‚½‚¢ƒTƒCƒY
+	/// @brief å¤§ãã•ã‚’è¨­å®šã™ã‚‹
+	/// @param size è¨­å®šã—ãŸã„ã‚µã‚¤ã‚º
 	void UpdateSize(DirectX::XMFLOAT3 size) override;
 
-	/// @brief ƒŒƒC‚Æ‚ÌŒğ·‚µ‚Ä‚é‚©‚Ç‚¤‚©
-	/// @param start Œõü‚ÌŒ´“_
-	/// @param des Œõü‚Ì•ûŒü
-	/// @param distance Ëü‚Æ•\–Ê‚Ìˆê”Ô‹ß‚¢‹——£
-	/// @return ƒŒƒC‚Æ‚ÌŒğ·‚µ‚Ä‚é‚©‚Ç‚¤‚©
+	/// @brief ãƒ¬ã‚¤ã¨ã®äº¤å·®ã—ã¦ã‚‹ã‹ã©ã†ã‹
+	/// @param start å…‰ç·šã®åŸç‚¹
+	/// @param des å…‰ç·šã®æ–¹å‘
+	/// @param distance å°„ç·šã¨è¡¨é¢ã®ä¸€ç•ªè¿‘ã„è·é›¢
+	/// @return ãƒ¬ã‚¤ã¨ã®äº¤å·®ã—ã¦ã‚‹ã‹ã©ã†ã‹
 	bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) override;
 
 	DirectX::XMFLOAT4 GetOrientation() override;
 	 DirectX::XMFLOAT3 GetCenter() override;
 
-	/// @brief Get Box's HeightEWidthEDepth
+	/// @brief Get Box's Heightãƒ»Widthãƒ»Depth
 	DirectX::XMFLOAT3 GetScale() override;
 
 	/// @brief Get Box Extents
@@ -100,25 +100,25 @@ public:
 	SphereCollider();
 	~SphereCollider() override = default;
 
-	/// @brief ƒRƒ‰ƒCƒ_[•ÏŠ·
-	/// @param pos ˆÚ“®Œã‚Ì’†SˆÊ’u
-	/// @param rot ‰ñ“]Šp“x(lŒ³”)
-	///	@param scale Šg‘åk¬‚Ì”ä—¦
+	/// @brief ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å¤‰æ›
+	/// @param pos ç§»å‹•å¾Œã®ä¸­å¿ƒä½ç½®
+	/// @param rot å›è»¢è§’åº¦(å››å…ƒæ•°)
+	///	@param scale æ‹¡å¤§ç¸®å°ã®æ¯”ç‡
 	void Transform(DirectX::XMFLOAT3 pos, DirectX::XMVECTOR rot, DirectX::XMFLOAT3 scale) override;
 
-	/// @brief ƒŒƒC‚Æ‚ÌŒğ·‚µ‚Ä‚é‚©‚Ç‚¤‚©
-	/// @param start Œõü‚ÌŒ´“_
-	/// @param des Œõü‚Ì•ûŒü
-	/// @param distance Ëü‚Æ•\–Ê‚Ìˆê”Ô‹ß‚¢‹——£
-	/// @return ƒŒƒC‚Æ‚ÌŒğ·‚µ‚Ä‚é‚©‚Ç‚¤‚©
+	/// @brief ãƒ¬ã‚¤ã¨ã®äº¤å·®ã—ã¦ã‚‹ã‹ã©ã†ã‹
+	/// @param start å…‰ç·šã®åŸç‚¹
+	/// @param des å…‰ç·šã®æ–¹å‘
+	/// @param distance å°„ç·šã¨è¡¨é¢ã®ä¸€ç•ªè¿‘ã„è·é›¢
+	/// @return ãƒ¬ã‚¤ã¨ã®äº¤å·®ã—ã¦ã‚‹ã‹ã©ã†ã‹
 	bool Interacts(DirectX::XMVECTOR start, DirectX::XMVECTOR des, float& distance) override;
 
-	/// @brief ’†S“_‚ğæ“¾
-	/// @return ƒRƒ‰ƒCƒ_[‚Ì’†S“_
+	/// @brief ä¸­å¿ƒç‚¹ã‚’å–å¾—
+	/// @return ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ä¸­å¿ƒç‚¹
 	DirectX::XMFLOAT3 GetCenter() override { return mCollider.Center; };
 
-	/// @brief ”¼Œa‚ğæ“¾
-	/// @return ”¼Œa
+	/// @brief åŠå¾„ã‚’å–å¾—
+	/// @return åŠå¾„
 	float GetRadius() override { return mCollider.Radius; };
 
 	void UpdateSize(float radius)override;

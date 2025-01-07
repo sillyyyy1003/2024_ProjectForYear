@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 class Capsule :public Primitive
 {
@@ -13,15 +13,15 @@ public:
 
 	/// @brief 
 	/// @param filePath 
-	///	@param levels ‹…‘Ì‚’¼•ªŠ„”
-	///	@param slices ‹…‘ÌEƒVƒŠƒ“ƒ_[…•½•ªŠ„”
+	///	@param levels çƒä½“å‚ç›´åˆ†å‰²æ•°
+	///	@param slices çƒä½“ãƒ»ã‚·ãƒªãƒ³ãƒ€ãƒ¼æ°´å¹³åˆ†å‰²æ•°
 	///	@param _UVSplit UVAnimation
 	void Init(const char* filePath, int levels = 16 , int slices = 16, DirectX::XMINT2 _UVSplit={1,1}) override;
 	
 	/// @brief 
 	/// @param tex 
-	///	@param levels ‹…‘Ì‚’¼•ªŠ„”
-	///	@param slices ‹…‘ÌEƒVƒŠƒ“ƒ_[…•½•ªŠ„”
+	///	@param levels çƒä½“å‚ç›´åˆ†å‰²æ•°
+	///	@param slices çƒä½“ãƒ»ã‚·ãƒªãƒ³ãƒ€ãƒ¼æ°´å¹³åˆ†å‰²æ•°
 	///	@param _UVSplit UVAnimation
 	void Init(const std::shared_ptr<Texture>& tex, int levels = 16, int slices = 16, DirectX::XMINT2 _UVSplit={1,1}) override;
 
@@ -30,10 +30,10 @@ public:
 
 private:
 
-	/// @brief ƒƒbƒVƒ…ì¬
-	///	@param levels ‹…‘Ì‚’¼•ªŠ„”
-	///	@param slices ‹…‘ÌEƒVƒŠƒ“ƒ_[…•½•ªŠ„”
-	/// @param stacks ƒVƒŠƒ“ƒ_[‚’¼•ªŠ„”
+	/// @brief ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆ
+	///	@param levels çƒä½“å‚ç›´åˆ†å‰²æ•°
+	///	@param slices çƒä½“ãƒ»ã‚·ãƒªãƒ³ãƒ€ãƒ¼æ°´å¹³åˆ†å‰²æ•°
+	/// @param stacks ã‚·ãƒªãƒ³ãƒ€ãƒ¼å‚ç›´åˆ†å‰²æ•°
 	void CreateMesh(UINT levels, UINT slices, UINT stacks);
 
 	void WriteDefShader() override;

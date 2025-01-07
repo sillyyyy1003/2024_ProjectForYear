@@ -1,2 +1,9 @@
-﻿  SceneManager.cpp
+﻿  Ingredient.cpp
+  IngredientManager.cpp
+  Player.cpp
+  SceneLab.cpp
+  SceneManager.cpp
+  ScenePotion.cpp
+  WaterJug.cpp
+  正在生成代码...
   2024_Practice_DirectX11.vcxproj -> C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\x64\Debug\2024_Practice_DirectX11.exe

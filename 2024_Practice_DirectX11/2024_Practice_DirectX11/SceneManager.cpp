@@ -1,15 +1,16 @@
-#include "SceneManager.h"
+ï»¿#include "SceneManager.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "Geometry.h"
 #include "IngredientManager.h"
+#include "MissionManager.h"
 #include "PBRModel.h"
 #include "SceneLab.h"
 #include "SceneMission.h"
 #include "SceneOption.h"
 #include "ScenePotion.h"
 #include "SceneTitle.h"
-#include "ScreenOverlay.h"
+#include "ScreenFadeEffect.h"
 #include "TutorialManager.h"
 
 using namespace DirectX::SimpleMath;
@@ -26,24 +27,25 @@ void SceneManager::Init()
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_manager.json");
 	json playerData = LoadSceneData("Assets/Data/SaveDat/player_data.json");
 	json tutorialData = LoadSceneData("Assets/Data/SaveDat/tutorial_data.json");
+	json missionData = LoadSceneData("Assets/Data/SaveDat/mission_data.json");
 
 	//Set Scene Map
 	InitSceneMap();
 
-	//ƒJƒƒ‰ì¬
+	//ã‚«ãƒ¡ãƒ©ä½œæˆ
 	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("DefaultCamera");
 	camera->SetPosition(0.0, 10.0, -10.0);
 	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
-	//Œ»İ‚ÌƒJƒƒ‰‚ğƒZƒbƒg‚·‚é
+	//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	SetCurrentCamera(camera);
 
-	//Šî’êƒ‰ƒCƒgì¬ Ambient Light
+	//åŸºåº•ãƒ©ã‚¤ãƒˆä½œæˆ Ambient Light
 	std::shared_ptr <DirLight> light = CreateObj<DirLight>("EnvironmentLight");
 	light->SetAmbient(Vector4(0.5f,0.5f,0.5f,1.0f));
 	light->SetPosition(Vector3(0.0f,10.0f,-10.0f));
 	light->SetDirection(Vector3(0.0f,0.0,0.f));
 
-	//Font Lib ì¬
+	//Font Lib ä½œæˆ
 	InitFontLib();
 	InitModelTexture();
 
@@ -52,8 +54,8 @@ void SceneManager::Init()
 	LoadVertexShaderFile();
 
 	//Init Fade Tool
-	ScreenOverlay::Get()->Init();
-	ScreenOverlay::Get()->SetState(ScreenOverlayConfig::STATE_FADE_IN);
+	ScreenFadeEffect::Get()->Init();
+	ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_FADE_IN);
 
 	//Init Player
 	mPlayer = CreateObj<Player>("player");
@@ -64,6 +66,10 @@ void SceneManager::Init()
 
 	//Init Ingredient Manager
 	IngredientManager::Get()->Init();
+
+	//Load MissionFalse
+	MissionManager::Get()->Init();
+	MissionManager::Get()->LoadMissionList(missionData);
 
 	//Set Scene
 	SetMainScene("Title");
@@ -86,6 +92,10 @@ void SceneManager::UnInit()
 	json tutorialData;
 	tutorialData["Tutorial"]=TutorialManager::Get()->UnInit();
 	SaveSceneFile("Assets/Data/SaveDat/tutorial_data.json", tutorialData);
+
+	json missionData;
+	missionData = MissionManager::Get()->SaveData();
+	SaveSceneFile("Assets/Data/SaveDat/mission_data.json", missionData);
 }
 
 void SceneManager::Update(float dt)
@@ -93,14 +103,25 @@ void SceneManager::Update(float dt)
 	GetObj<FirstPersonCamera>("DefaultCamera")->Update(dt);
 	GetObj<DirLight>("EnvironmentLight")->Update(dt);
 
-	ScreenOverlay::Get()->Update(dt);
+	ScreenFadeEffect::Get()->Update(dt);
 	IngredientManager::Get()->Update(dt);
 	MainSceneChangeListener();
 }
 
 void SceneManager::Draw()
 {
-	ScreenOverlay::Get()->Draw();
+	ScreenFadeEffect::Get()->Draw();
+}
+
+void SceneManager::SetSwitchScene(bool isSwitchScene)
+{
+	this->isSwitchScene = isSwitchScene;
+}
+
+void SceneManager::SetSwitchSceneWithFade(bool isSwitchScene)
+{
+	this->isSwitchScene = isSwitchScene;
+	ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_FADE_OUT);
 }
 
 void SceneManager::SetMainScene(const std::string& sceneName)
@@ -154,15 +175,24 @@ void SceneManager::InitModelTexture()
 	Texture* paperTexture3 = CreateObj<Texture>("paper3").get();
 	HR(paperTexture3->Create("Assets/Texture/paper3.png"));
 
+	Texture* paperTexture4=CreateObj<Texture>("paper4").get();
+	HR(paperTexture4->Create("Assets/Texture/paper4.png"));
+
+	Texture* splashTexture = CreateObj<Texture>("splash").get();
+	HR(splashTexture->Create("Assets/Texture/Splash.png"));
+
+	Texture* witchIcon = CreateObj<Texture>("witchIcon1").get();
+	HR(witchIcon->Create("Assets/Texture/CharIcon/WitchChar.png"));
+
 	blackOverlay=CreateObj<Texture>("BlackOverlay");
 	HR(blackOverlay->Create("Assets/Texture/ScreenOverlay/bg_mask.png"));
 
 	Texture* fadeOverlay = CreateObj<Texture>("Fade").get();
-	HR(fadeOverlay->Create("Assets/Texture/ScreenOverlay/Fade.png"))
+	HR(fadeOverlay->Create("Assets/Texture/ScreenOverlay/Fade.png"));
 
 
 	//Close Book
-	closeBookRedAlbedoTexture = CreateObj<Texture>("closeBookRedAlbedo");
+	/*closeBookRedAlbedoTexture = CreateObj<Texture>("closeBookRedAlbedo");
 	HR(closeBookRedAlbedoTexture->Create("Assets/Model/Book/book_close_book_close_BaseColor.1001_00.png"));
 
 	closeBookBlueAlbedoTexture = CreateObj<Texture>("closeBookBlueAlbedo");
@@ -172,7 +202,7 @@ void SceneManager::InitModelTexture()
 	HR(closeBookNormalTexture->Create("Assets/Model/Book/book_close_book_close_Normal.1001.png"));
 
 	closeBookMetallicTexture = CreateObj<Texture>("closeBookMetallic");
-	HR(closeBookMetallicTexture->Create("Assets/Model/Book/book_close_book_close_Roughness.1001.png"));
+	HR(closeBookMetallicTexture->Create("Assets/Model/Book/book_close_book_close_Roughness.1001.png"));*/
 
 	//Open Book
 	//openBookRedAlbedoTexture = CreateObj<Texture>("openBookRedAlbedo");
@@ -263,11 +293,12 @@ void SceneManager::ClearMainSceneChange()
 
 void SceneManager::MainSceneChangeListener()
 {
+
 	if (isChangeMainScene)
 	{
 		switch (mSceneIndex)
 		{
-		default:
+		
 		case SceneConfig::SceneIndex::SCENE_TITLE:AddSubScene<SceneTitle>();
 			DebugLog::Log("SceneName = SceneTitle");
 			break;
@@ -287,6 +318,8 @@ void SceneManager::MainSceneChangeListener()
 			DebugLog::Log("Exiting the application...");
 			PostQuitMessage(0);
 			break;
+		default:
+			return;
 		}
 
 		ClearMainSceneChange();

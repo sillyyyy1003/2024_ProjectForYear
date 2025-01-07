@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include "Ingredient.h"
 
@@ -30,7 +30,7 @@ public:
 	/// @param color Ingredient name
 	void RegisterIngredient(Ingredient* ingredient, PlayerConfig::PigmentColor color);
 
-	/// @brief ‘€ì’†‚Ì‚à‚Ì‚ğƒZƒbƒg‚·‚é
+	/// @brief æ“ä½œä¸­ã®ã‚‚ã®ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	/// @param ingredient 
 	void SetControllableIngredient(Ingredient* ingredient);
 

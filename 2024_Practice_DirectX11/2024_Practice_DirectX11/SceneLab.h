@@ -1,6 +1,8 @@
-#pragma once
+﻿#pragma once
 #include "CandleLight.h"
 #include "Cylinder.h"
+#include "D2D_UIStackContainer.h"
+#include "Ingredient.h"
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
 #include "PointLight.h"
@@ -13,34 +15,44 @@
 
 class SceneLab :public SceneBase
 {
-
 	//Texture List
 	PBRConfig::PBRTexList pbrTexList;
-	std::unordered_map<std::string, StaticObject*> staticObjList;
+	
+	//左の蝋燭に影響されるオブジェクト
+	std::unordered_map<std::string, StaticObject*> leftStaticObjList;
+	//右の蝋燭に影響されるオブジェクト
+	std::unordered_map<std::string, StaticObject*> rightStaticObjList;
 
 	std::unique_ptr<InteractiveStaticObject> mPot;
-	std::unique_ptr<InteractiveStaticObject> mRedBook;
-	std::unique_ptr<InteractiveStaticObject> mBlueBook;
-
-	std::unique_ptr<Square> mTable;
-	std::unique_ptr<Water> mWater;
-	std::unique_ptr<MissionPaper> mMissionPaper;
+	std::unique_ptr<Ingredient> mRedPotion;
+	std::unique_ptr<Ingredient> mBluePotion;
+	std::unique_ptr<Ingredient> mYellowPotion;
 
 	std::unique_ptr<StaticObject> mWall;
-	std::unique_ptr<StaticObject> mPaperOnTable;///todo:make this into a new class for 
+	std::unique_ptr<Square> mTable;
+	std::unique_ptr<Water> mWater;
 
-	std::unique_ptr<CandleLight> mCandleLight;
+	std::unique_ptr<InteractiveStaticObject> mPaperOnTable;
+	std::unique_ptr<StaticObject> mSplash;
+	std::unique_ptr<D2D_UIStackContainer> mText;//詳しい文字
 
+	//std::unique_ptr<MissionPaper> mPaper;
+	std::unique_ptr<CandleLight> mCandleLight1;
+	std::unique_ptr<CandleLight> mCandleLight2;
 
-	std::unique_ptr<UIStackContainer> mGoldBar;
+	std::unique_ptr<D2D_UIStackContainer> mGoldBar;
 
-	bool isSubScene = false;
+	//シーン切り替え用
+	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;
+
+	//カメラ切り替えトリガー
+	bool isCheckMission = false;
 
 public:
-	/// @brief �f�[�^�̃��[�h�Ə�����
+	/// @brief データのロードと初期化
 	void Init();
 
-	/// @brief �f�[�^�̃Z�[�u���s��
+	/// @brief データのセーブを行う
 	void UnInit();
 
 	void Update(float dt);
@@ -53,7 +65,10 @@ protected:
 	void TriggerListener();
 
 	void InitShadowRenderTarget();
+	
 	void DrawObjectsWithShadow();
-
+	void DrawLeftObjectWithShadow();
+	void DrawRightObjectWithShadow();
+	void DrawMiddleObjectWithShadow();
 };
 

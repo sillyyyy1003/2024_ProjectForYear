@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "D3DUtil.h"
 #include "Texture.h"
 #include "Shader.h"

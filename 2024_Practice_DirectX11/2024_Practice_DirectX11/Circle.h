@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "Primitive.h"
 
-//‰~Œ`‚Ì•½–Ê@—eŠí“à‚Ì•½–Ê—p
+//å††å½¢ã®å¹³é¢ã€€å®¹å™¨å†…ã®å¹³é¢ç”¨
 class Circle :public Primitive
 {
 protected:
@@ -24,14 +24,14 @@ public:
 	void Init(const std::shared_ptr<Texture>& tex, int slices = 64, int levels = 64, DirectX::XMINT2 _UVSplit = { 1,1 })override;
 
 
-	//•ªŠ„‚ª­‚È‚¢ƒƒbƒVƒ…‚ğì‚é
+	//åˆ†å‰²ãŒå°‘ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½œã‚‹
 	void CreateMesh(UINT slices)override;
 
-	//‹…‘Ì‚Ì‚æ‚¤‚È•¡G‚ÈƒƒbƒVƒ…‚ğì‚é
+	//çƒä½“ã®ã‚ˆã†ãªè¤‡é›‘ãªãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½œã‚‹
 	void CreateMesh(UINT levels, UINT slices)override;
 
 
-	 /// @brief Default Shader‚Ég‚í‚ê‚éƒf[ƒ^‚Ì‘‚«‚İ
+	 /// @brief Default Shaderã«ä½¿ã‚ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 	void WriteDefShader()override;
 
 	Mesh* GetMesh() const override { return mMesh.get(); };

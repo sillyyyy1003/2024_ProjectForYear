@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DUtil.h"
 
 namespace
@@ -24,7 +24,7 @@ protected:
 	bool isLoop = false;
 	bool isPlaying = false;
 
-	DirectX::XMINT2 mFrame{ 0,0 };//¡‚Í‚Ç‚ÌƒtƒŒ[ƒ€
+	DirectX::XMINT2 mFrame{ 0,0 };//ä»Šã¯ã©ã®ãƒ•ãƒ¬ãƒ¼ãƒ 
 
 	std::vector<int> mAnimeTable;
 

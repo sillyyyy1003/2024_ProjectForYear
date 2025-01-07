@@ -401,8 +401,10 @@ bool D3DApp::InitMainWindow()
     int height = R.bottom - R.top;
 
     mhMainWnd = CreateWindow(L"D3DWndClassName", mWndTitle.c_str(), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
-
-  
+#ifdef NDEBUG
+    SetWindowLong(
+        mhMainWnd, GWL_STYLE, GetWindowLong(mhMainWnd, GWL_STYLE) & ~(WS_OVERLAPPEDWINDOW));
+#endif
     if (!mhMainWnd)
     {
         MessageBox(0, L"CreateWindow Failed.", 0, 0);

@@ -1,4 +1,4 @@
-#include "PointLight.h"
+ï»¿#include "PointLight.h"
 
 PointLight::PointLight()
 {
@@ -23,17 +23,17 @@ void PointLight::Update(float dt)
 		ImGui::ColorEdit4("Diffuse", diffuse);
 		SetDiffuse(diffuse);
 
-		//ˆÊ’u
+		//ä½ç½®
 		float pos[3] = { mPos.x,mPos.y,mPos.z};
 		ImGui::InputFloat3("Position", pos);
 		SetPosition(pos);
 
-		//Œ¸Š
+		//æ¸›è¡°
 		float attenuation[3] = { mAttenuation.x,mAttenuation.y,mAttenuation.z };
 		ImGui::InputFloat3("Attenuation", attenuation);
 		SetAttenuation(attenuation);
 
-		//”ÍˆÍİ’è
+		//ç¯„å›²è¨­å®š
 		ImGui::SliderFloat("Range", &mRange, 0, 40.f);
 	}
 

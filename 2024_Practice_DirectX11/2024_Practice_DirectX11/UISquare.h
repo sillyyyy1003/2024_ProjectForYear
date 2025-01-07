@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UI_Primitive.h"
 class UISquare : public UI_Primitive
 {
@@ -8,7 +8,7 @@ public:
 	UISquare();
 	~UISquare() override = default;
 
-	void Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSplit);
+	void Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSplit ={1,1});
 
 	/// @brief Create Square with 4 vertices
 	void CreateMesh() override;

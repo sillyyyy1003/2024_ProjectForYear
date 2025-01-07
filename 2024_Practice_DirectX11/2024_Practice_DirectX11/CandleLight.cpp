@@ -1,5 +1,4 @@
 ﻿#include "CandleLight.h"
-
 #include "GameApp.h"
 
 CandleLight::CandleLight()
@@ -23,10 +22,15 @@ void CandleLight::Init()
 	GameApp::GetNoise().SetFrequency(0.5f);
 }
 
+void CandleLight::InitName(const char* name)
+{
+	this->name = name;
+}
+
 void CandleLight::Update(float dt)
 {
 #ifdef _DEBUG
-	if (ImGui::Begin("Candle Light Option"))
+	if (ImGui::Begin(name.c_str()))
 	{
 		ImGui::Checkbox("isEnable", &isEnable);
 

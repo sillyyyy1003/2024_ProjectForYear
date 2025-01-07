@@ -1,4 +1,4 @@
-#include "D2D_UIBase.h"
+﻿#include "D2D_UIBase.h"
 
 D2D_UIBase::D2D_UIBase(D2DUIConfig::UIShape shape)
 {

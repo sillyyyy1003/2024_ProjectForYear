@@ -166,8 +166,6 @@ void Square::CreateMesh()
 
 void Square::CreateMesh(UINT slices)
 {
-	
-	
 	float size = 1.0f;
 	uint32_t vertexCount = (slices + 1) * (slices + 1);
 	uint32_t indexCount = 6 * slices * slices;

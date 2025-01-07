@@ -1,4 +1,4 @@
-#include "MissionSamplePaper.h"
+﻿#include "MissionSamplePaper.h"
 
 void MissionSamplePaper::InitPBRModel(std::shared_ptr<PBRModel> _model, const char* _objName)
 {
@@ -29,9 +29,9 @@ void MissionSamplePaper::Init(PrimitiveConfig::PrimitiveKind _kind, const std::s
 	mSampleColor->Init(nullptr, 0);
 }
 
-void MissionSamplePaper::LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
+void MissionSamplePaper::LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps)
 {
-	InteractiveStaticObject::LoadShaderFile(vs, ps);
+	InteractiveStaticObject::LoadDefShader(vs, ps);
 	mSampleColor->LoadDefShader(vs, ps);
 }
 
@@ -56,7 +56,8 @@ void MissionSamplePaper::LoadSaveData(json data)
 	mSampleColor->mTransform.SetScale(mModel->GetScale() * 0.5f);
 }
 
-void MissionSamplePaper::SetSampleColor(DirectX::XMFLOAT4 color)
+void MissionSamplePaper::
+SetSampleColor(DirectX::XMFLOAT4 color)
 {
 	mSampleColor->SetDiffuse(color);
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DUtil.h"
 #include "Timer.h"
 #include <d2d1.h>
@@ -55,9 +55,9 @@ protected:
 
     FILE* fp = nullptr;
 
-    //Scroll wheel‚É‚æ‚é‘€ì
-    int mScrollValue = 0;	// WIN_API‚ğg‚¤
-    int moveUnit = 0;		// wheel‚É‚æ‚éˆÚ“®—Ê
+    //Scroll wheelã«ã‚ˆã‚‹æ“ä½œ
+    int mScrollValue = 0;	// WIN_APIã‚’ä½¿ã†
+    int moveUnit = 0;		// wheelã«ã‚ˆã‚‹ç§»å‹•é‡
    
 public:
 
@@ -82,24 +82,24 @@ public:
 
 
 
-    HINSTANCE AppInst()const { return mhAppInst; };   // ‰Šú‰»
+    HINSTANCE AppInst()const { return mhAppInst; };   // åˆæœŸåŒ–
     HWND      MainWnd()const { return mhMainWnd; };   // Get Main Wnd 
     float     AspectRatio()const;                     // Calculate Aspect Ratio
 
     int Run();                                  // Run Application
 
-    /// @brief ƒAƒvƒŠ‚Ì‰Šú‰»
+    /// @brief ã‚¢ãƒ—ãƒªã®åˆæœŸåŒ–
     /// @return 
     virtual bool Init();
 
-    /// @brief Wnd Size’²®
+    /// @brief Wnd Sizeèª¿æ•´
     virtual void OnResize();
 
     /// @brief 
     /// @param tick 
     virtual void UpdateScene(float tick);
 
-    /// @brief •`‰æ
+    /// @brief æç”»
     virtual void DrawScene();
 
     /// @brief Wnd Message
@@ -108,12 +108,12 @@ public:
 	int GetWinWidth();
     int GetWinHeight();;
 
-    /// @brief ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgİ’è
+    /// @brief ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
 	/// @param _state 
     static void SetSamplerState(ComPtr<ID3D11SamplerState> _state);
 
-    /// @brief ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğİ’è
-    /// @param _state ƒuƒŒƒ“ƒhƒXƒe[ƒg–¼
+    /// @brief ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¨­å®š
+    /// @param _state ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆå
     static void SetBlendState(ComPtr<ID3D11BlendState> _state);
 
     /// @brief Set Rasterizer State
@@ -149,7 +149,7 @@ protected:
     /// @return succeed or not
     bool InitImGui();            
 
-    /// @brief ƒtƒŒ[ƒ€”‚ğŒvZ••\¦
+    /// @brief ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’è¨ˆç®—ï¼†è¡¨ç¤º
     void CalculateFrameStats();
 
 

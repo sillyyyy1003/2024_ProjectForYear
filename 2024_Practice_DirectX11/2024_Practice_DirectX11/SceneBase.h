@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DUtil.h"
 #include <list>
 #include <map>
@@ -10,7 +10,7 @@
 using json = nlohmann::json;
 using namespace DirectX::SimpleMath;
 
-/// @brief ƒQ[ƒ€ƒV[ƒ“‚Åg‚¤‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ÌŠî’ê‚É‚È‚é
+/// @brief ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã§ä½¿ã†ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åŸºåº•ã«ãªã‚‹
 class Component
 {
 public:
@@ -18,7 +18,7 @@ public:
 };
 
 /// @brief Scene Load Object
-/// @tparam T ‘½íƒIƒuƒWƒFƒNƒg‘Î‰
+/// @tparam T å¤šç¨®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå¯¾å¿œ
 template<class T>
 class SceneObject : public Component
 {
@@ -28,15 +28,15 @@ public:
 	std::shared_ptr<T> mObj;
 };
 
-/// @brief ƒV[ƒ“Šî–{ƒNƒ‰ƒX(Abstract factory pattern?)
+/// @brief ã‚·ãƒ¼ãƒ³åŸºæœ¬ã‚¯ãƒ©ã‚¹(Abstract factory pattern?)
 class SceneBase
 {
 private:
 	using Objects = std::map<std::string, std::shared_ptr<Component>>;
 	using Items = std::list<std::string>;
 
-	static Objects mObjects;//ƒV[ƒ““à‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg
-
+	static Objects mObjects;//ã‚·ãƒ¼ãƒ³å†…ã™ã¹ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	
 
 protected:
 	/*
@@ -57,28 +57,28 @@ public:
 	json LoadSceneData(const char* fileName);
 	void SaveSceneFile(const char* fileName, json sceneFile);
 
-	/// @brief ƒTƒuƒV[ƒ“‚Ì’Ç‰Á
-	/// @tparam T ƒTƒuƒV[ƒ“‚ÌŒ^
-	///	@return ¶¬‚µ‚½ƒTƒuƒV[ƒ“
+	/// @brief ã‚µãƒ–ã‚·ãƒ¼ãƒ³ã®è¿½åŠ 
+	/// @tparam T ã‚µãƒ–ã‚·ãƒ¼ãƒ³ã®å‹
+	///	@return ç”Ÿæˆã—ãŸã‚µãƒ–ã‚·ãƒ¼ãƒ³
 	template<class T> T* AddSubScene();
 
-	/// @brief ƒV[ƒ“”pŠü
+	/// @brief ã‚·ãƒ¼ãƒ³å»ƒæ£„
 	void RemoveSubScene() const;
 
-	/// @brief ƒIƒuƒWƒFƒNƒg‚ğì‚èo‚·
-	/// @tparam T ƒIƒuƒWƒFƒNƒg‚ÌŒ^
-	/// @param name ƒIƒuƒWƒFƒNƒg‚Ì–¼Ì
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œã‚Šå‡ºã™
+	/// @tparam T ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹
+	/// @param name ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åç§°
 	/// @return 
 	template<class T> std::shared_ptr<T> CreateObj(const char* name);
 
 
-	/// @brief ƒIƒuƒWƒFƒNƒg”jŠü
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„
 	void DestroyObj(const char* name);
 
-	/// @brief ƒIƒuƒWƒFƒNƒg‚Ìæ“¾
-	/// @tparam T ƒIƒuƒWƒFƒNƒg‚ÌŒ^
-	/// @param name ƒIƒuƒWƒFƒNƒg‚Ì–¼Ì
-	/// @return æ“¾‚µ‚½ƒIƒuƒWƒFƒNƒg
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
+	/// @tparam T ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‹
+	/// @param name ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åç§°
+	/// @return å–å¾—ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	template<class T> std::shared_ptr<T> GetObj(const char* name);
 
 	// virtual function
@@ -105,7 +105,7 @@ template <class T>
 std::shared_ptr<T> SceneBase::CreateObj(const char* name)
 {
 #ifdef _DEBUG
-	// ƒfƒoƒbƒO’†‚Ì‚İA–¼Ìƒ_ƒu‚è‚ª‚È‚¢‚©ƒ`ƒFƒbƒN
+	// ãƒ‡ãƒãƒƒã‚°ä¸­ã®ã¿ã€åç§°ãƒ€ãƒ–ã‚ŠãŒãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	Objects::iterator it = mObjects.find(name);
 	if (it != mObjects.end())
 	{
@@ -116,7 +116,7 @@ std::shared_ptr<T> SceneBase::CreateObj(const char* name)
 	}
 #endif // _DEBUG
 
-	// ƒIƒuƒWƒFƒNƒg¶¬
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	std::shared_ptr<T> ptr = std::make_shared<T>();
 	mObjects.insert(std::pair<std::string, std::shared_ptr<Component>>(name, std::make_shared<SceneObject<T>>(ptr)));
 	mItems.push_back(name);
@@ -125,11 +125,11 @@ std::shared_ptr<T> SceneBase::CreateObj(const char* name)
 
 template <class T>
 std::shared_ptr<T> SceneBase::GetObj(const char* name)
-{	// ƒIƒuƒWƒFƒNƒg‚Ì’Tõ
+{	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ¢ç´¢
 	Objects::iterator it = mObjects.find(name);
 	if (it == mObjects.end()) return nullptr;
 
-	// Œ^•ÏŠ·
+	// å‹å¤‰æ›
 	std::shared_ptr<SceneObject<T>> ptr = std::reinterpret_pointer_cast<SceneObject<T>>(it->second);
 	return ptr->mObj;
 }

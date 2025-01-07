@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "D3DUtil.h"
 #include <map>
 #include <string>
@@ -10,12 +10,12 @@ namespace WaterStateConfig
 {
 	struct WaterStateParam
 	{
-		DirectX::XMFLOAT3  center = {}; // ”g‚Ì’†SˆÊ’u
-		float maxAmplitude = 0.f;			// ”g‚Ì•
+		DirectX::XMFLOAT3  center = {}; // æ³¢ã®ä¸­å¿ƒä½ç½®
+		float maxAmplitude = 0.f;			// æ³¢ã®å¹…
 		float minAmplitude = 0.f;
-		float frequency = 0.f;			// ”g‚Ì•p“x
-		float speed = 0.f;				// ”g‚ÌƒXƒr[ƒh
-		float sigma = 0.f;				// ”g‚ÌŠgU”ÍˆÍ
+		float frequency = 0.f;			// æ³¢ã®é »åº¦
+		float speed = 0.f;				// æ³¢ã®ã‚¹ãƒ“ãƒ¼ãƒ‰
+		float sigma = 0.f;				// æ³¢ã®æ‹¡æ•£ç¯„å›²
 	};
 
 	enum class WaterState:unsigned int
@@ -47,13 +47,13 @@ namespace WaterStateConfig
 
 }
 
-//…‚Ì•¦“«ó‘Ô‚ğŠÇ—‚·‚é
+//æ°´ã®æ²¸é¨°çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
 //todo: param would be changed considering the fire
 class WaterState
 {
 	/// @brief
-	///	@param string •Û‘¶‚³‚ê‚½ó‘Ô‚Ì–¼‘O
-	///	@param WaterParam ”g‚Ìó‘Ô
+	///	@param string ä¿å­˜ã•ã‚ŒãŸçŠ¶æ…‹ã®åå‰
+	///	@param WaterParam æ³¢ã®çŠ¶æ…‹
 	//std::map<std::string, WaterStateConfig::WaterParam> mWaterState;
 	std::map<WaterStateConfig::WaterState, WaterStateConfig::WaterStateParam> mWaterStates;
 

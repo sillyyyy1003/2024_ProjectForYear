@@ -21,6 +21,8 @@ namespace SceneConfig
 		SCENE_POTION,
 		SCENE_IN_GAME_OPTION,
 		SCENE_MAX,
+
+		SCENE_NONE
 	};
 
 	
@@ -54,15 +56,15 @@ protected:
 	std::shared_ptr<Texture> waterTexture;
 	std::shared_ptr<Texture> paperTexture;
 
-	std::shared_ptr<Texture> closeBookRedAlbedoTexture;
-	std::shared_ptr<Texture> closeBookBlueAlbedoTexture;
-	std::shared_ptr<Texture> closeBookNormalTexture;
-	std::shared_ptr<Texture> closeBookMetallicTexture;
+	//std::shared_ptr<Texture> closeBookRedAlbedoTexture;
+	//std::shared_ptr<Texture> closeBookBlueAlbedoTexture;
+	//std::shared_ptr<Texture> closeBookNormalTexture;
+	//std::shared_ptr<Texture> closeBookMetallicTexture;
 
-	std::shared_ptr<Texture> openBookRedAlbedoTexture;
-	std::shared_ptr<Texture> openBookBlueAlbedoTexture;
-	std::shared_ptr<Texture> openBookNormalTexture;
-	std::shared_ptr<Texture> openBookMetallicTexture;
+	//std::shared_ptr<Texture> openBookRedAlbedoTexture;
+	//std::shared_ptr<Texture> openBookBlueAlbedoTexture;
+	//std::shared_ptr<Texture> openBookNormalTexture;
+	//std::shared_ptr<Texture> openBookMetallicTexture;
 
 	std::shared_ptr<Texture> tableTexture;
 	std::shared_ptr<Texture> blackOverlay;
@@ -127,10 +129,11 @@ public:
 
 	/// @brief シーンの切り替えを設定する
 	/// @param isSwitchScene 
-	void SetSwitchScene(bool isSwitchScene) { this->isSwitchScene = isSwitchScene; };
+	void SetSwitchScene(bool isSwitchScene);
+	void SetSwitchSceneWithFade(bool isSwitchScene);
 
 	void SetMainScene(const std::string& sceneName);
-
+	
 private:
 
 	/// @brief 使うシェーダーファイルを事前に読み込み

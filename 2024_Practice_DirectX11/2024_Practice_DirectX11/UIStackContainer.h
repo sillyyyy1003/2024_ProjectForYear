@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "SceneBase.h"
 #include "UI_Font.h"
 
@@ -31,8 +31,8 @@ private:
 		std::unique_ptr<UI_Primitive> outline;
 	};
 
-	bool isContainerSizeChange = false;		//Container©‘Ì‚Ì‘å‚«‚³‚ª•Ï‚í‚Á‚½‚©
-	bool isContainerPosChange = false;		//Container‚ÌˆÊ’u‚ª•Ï‚í‚Á‚½‚©
+	bool isContainerSizeChange = false;		//Containerè‡ªä½“ã®å¤§ãã•ãŒå¤‰ã‚ã£ãŸã‹
+	bool isContainerPosChange = false;		//Containerã®ä½ç½®ãŒå¤‰ã‚ã£ãŸã‹
 
 	bool isWordBoxChange = false;
 	bool isWordAdaptive = false;
@@ -47,7 +47,7 @@ public:
 protected:
 
 	bool isEditable = true;
-	DirectX::XMFLOAT3 mPosition = { 0,0,0.9f };//ˆÊ’u
+	DirectX::XMFLOAT3 mPosition = { 0,0,0.9f };//ä½ç½®
 	DirectX::XMFLOAT2 mUIContainerSize = { 0.0f,0.0f };	//Container Size
 
 	float mOutline = 1.0f;
@@ -97,13 +97,13 @@ public:
 	void SetPadding(float param);
 	void SetPadding(const float* param);
 
-	/// @brief ƒeƒNƒXƒ`ƒƒ‚È‚µ‚Ì‚ÌFİ’è
+	/// @brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ãªã—ã®æ™‚ã®è‰²è¨­å®š
 	/// @param color diffuse color
 	void SetBackgroundColor(DirectX::XMFLOAT4 color);
 
 	void SetOutlineColor(DirectX::XMFLOAT4 color);
 
-	/// @brief Font‚ÌFİ’è
+	/// @brief Fontã®è‰²è¨­å®š
 	/// @param color diffuse color
 	void SetFontColor(DirectX::XMFLOAT4 color);
 
@@ -118,7 +118,7 @@ public:
 
 
 	void SetObjName(const char* name) { mObjName = name; };
-	std::string GetObjName() { return mObjName; };
+	const std::string& GetObjName() { return mObjName; };
 
 protected:
 

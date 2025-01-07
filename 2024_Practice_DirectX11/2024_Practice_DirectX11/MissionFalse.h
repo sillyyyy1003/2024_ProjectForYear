@@ -1,20 +1,22 @@
-#pragma once
+ï»¿#pragma once
 #include "CameraBase.h"
 
-class Mission
+
+class MissionFalse
 {
 protected:
-	float mResult = 100;	//	Œ‹‰Ê“_”
+	float mResult = 100;									//	çµæœç‚¹æ•°
 	DirectX::XMFLOAT4 mMissionColor = { 1,1,1 ,1};	//TargetColor
 	float mReward = 100;
 	std::string mMissionGrade;
 	std::string mMissionContents;
-	std::string mMissionOwner;		//”C–±å(Name+Icon)
+	std::string mMissionOwner;		//ä»»å‹™ä¸»(Name+Icon)
+	std::string mMissionReview;
 
 public:
 
-	Mission();
-	~Mission();
+	MissionFalse();
+	~MissionFalse();
 
 	void InitMission();
 	void RegisterAsCheckMission();

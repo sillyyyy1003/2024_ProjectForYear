@@ -1,4 +1,4 @@
-#include "StartUp.h"
+﻿#include "StartUp.h"
 #include <crtdbg.h>
 #include "GameApp.h"
 

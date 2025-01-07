@@ -1,20 +1,21 @@
-#pragma once
+ï»¿#pragma once
 #include "CandleLight.h"
 #include "D2D_UIStackContainer.h"
 #include "Potion.h"
 #include "SceneBase.h"
+#include "SceneManager.h"
 #include "UIButton.h"
 #include "UI_Font.h"
 #include "UI_Button.h"
 
-//ƒ^ƒCƒgƒ‹ƒV[ƒ“
+//ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 class SceneTitle:public SceneBase
 {
 private:
 	bool isEditable = false;
 
 	//======================================
-	//	ƒV[ƒ“’†‚Åg‚í‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒgƒŠƒXƒg
+	//	ã‚·ãƒ¼ãƒ³ä¸­ã§ä½¿ã‚ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆ
 	//======================================
 
 	//std::shared_ptr<UI_Button> uiStart;		//Start Button
@@ -32,14 +33,14 @@ private:
 	std::unique_ptr<Potion> mWater;
 	std::unique_ptr<CandleLight> mCandleLight;
 
-	int mSceneState = 0;
+	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;
 	
 
 public:
-	/// @brief ƒf[ƒ^‚Ìƒ[ƒh‚Æ‰Šú‰»
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰ã¨åˆæœŸåŒ–
 	void Init();
 
-	/// @brief ƒf[ƒ^‚ÌƒZ[ƒu‚ğs‚¤
+	/// @brief ãƒ‡ãƒ¼ã‚¿ã®ã‚»ãƒ¼ãƒ–ã‚’è¡Œã†
 	void UnInit();
 
 	void Update(float dt);

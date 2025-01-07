@@ -1,4 +1,4 @@
-#include "UISquare.h"
+ï»¿#include "UISquare.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
@@ -16,7 +16,7 @@ void UISquare::Init(const std::shared_ptr<Texture>& tex, DirectX::XMINT2 _UVSpli
 	{
 		isUseUVAnimation = true;
 	}
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -92,7 +92,7 @@ void UISquare::WriteDefShader()
 
 	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-	//UV MATRIX ì¬
+	//UV MATRIX ä½œæˆ
 	if (isUseUVAnimation)
 	{
 		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);

@@ -309,7 +309,7 @@
     <ClCompile Include="UI_Square.cpp">
       <Filter>ソース ファイル\UI\UIMesh</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenOverlay.cpp">
+    <ClCompile Include="ScreenFadeEffect.cpp">
       <Filter>ソース ファイル\GameFunction</Filter>
     </ClCompile>
     <ClCompile Include="CandleLight.cpp">
@@ -357,14 +357,11 @@
     <ClCompile Include="SceneScore.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
-    <ClCompile Include="Mission.cpp">
+    <ClCompile Include="MissionFalse.cpp">
       <Filter>ソース ファイル\GameFunction</Filter>
     </ClCompile>
     <ClCompile Include="MissionManager.cpp">
       <Filter>ソース ファイル\GameFunction</Filter>
-    </ClCompile>
-    <ClCompile Include="MissionPaper.cpp">
-      <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="MissionSamplePaper.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
@@ -398,6 +395,21 @@
     </ClCompile>
     <ClCompile Include="UISquare.cpp">
       <Filter>ソース ファイル\UI\BillboardUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Paper.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MissionPaper.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleMesh.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,7 +566,7 @@
     <ClInclude Include="Square.h">
       <Filter>ヘッダー ファイル\BaseModel\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenOverlay.h">
+    <ClInclude Include="ScreenFadeEffect.h">
       <Filter>ヘッダー ファイル\GameFunction</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -599,14 +611,11 @@
     <ClInclude Include="WaterJug.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Mission.h">
+    <ClInclude Include="MissionFalse.h">
       <Filter>ヘッダー ファイル\GameFunction</Filter>
     </ClInclude>
     <ClInclude Include="MissionManager.h">
       <Filter>ヘッダー ファイル\GameFunction</Filter>
-    </ClInclude>
-    <ClInclude Include="MissionPaper.h">
-      <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="MissionSamplePaper.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
@@ -643,6 +652,21 @@
     </ClInclude>
     <ClInclude Include="UISquare.h">
       <Filter>ヘッダー ファイル\UI\BillboardUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Paper.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MissionPaper.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleMesh.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -698,6 +722,12 @@
       <Filter>リソース ファイル\VS</Filter>
     </FxCompile>
     <FxCompile Include="PS_Ingredient.hlsl">
+      <Filter>リソース ファイル\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS_ParticleInstance.hlsl">
+      <Filter>リソース ファイル\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS_ParticleInstance.hlsl">
       <Filter>リソース ファイル\PS</Filter>
     </FxCompile>
   </ItemGroup>

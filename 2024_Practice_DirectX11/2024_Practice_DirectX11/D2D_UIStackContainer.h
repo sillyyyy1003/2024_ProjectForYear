@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "D2D_UIBase.h"
 
 
@@ -15,6 +15,9 @@ protected:
 
 	D2D1::ColorF mFontColor = { 1,1,1,1 };
 	D2DUIConfig::FontSize mFontSize;
+	DirectX::XMFLOAT2 mFontScale = { 1,1 };
+
+	
 	D2DUIConfig::TextAlignment mTextAlignment;
 
 	DirectX::XMFLOAT2 mPosition = { 0,0 };
@@ -23,7 +26,7 @@ protected:
 
 	std::string mObjName;
 
-	//Ç∑Ç◊ÇƒÇÃèÛë‘ÇéiÇÈ
+	//„Åô„Åπ„Å¶„ÅÆÁä∂ÊÖã„ÇíÂè∏„Çã
 	UINT mUiState = 0;
 	
 
@@ -31,6 +34,7 @@ public:
 	D2D_UIStackContainer();
 	virtual ~D2D_UIStackContainer();
 	virtual void Init(D2DUIConfig::UIShape shape,D2DUIConfig::FontSize size,const char* objName);
+	virtual void Init(D2DUIConfig::UIShape shape,const char* objName);
 	
 	virtual void Update(float dt);
 	virtual void Draw();
@@ -41,16 +45,19 @@ public:
 
 	virtual json SaveData();
 	virtual void LoadSaveData(json data);
+	virtual void SetBackGroundColor(D2D1::ColorF color);
 
 #ifdef _DEBUG
 	void DebugFunction();
 #endif
 
-	void SetUIState(UINT state);
-	void RemoveUIState(UINT state);
+	void SetUIState(D2DUIConfig::UIState state);
+	void RemoveUIState(D2DUIConfig::UIState state);
 	void EnableAllState();
 
 	DirectX::XMFLOAT2 GetPosition() { return mPosition; };
 	void SetPositionY(float posY) { mPosition.y = posY; };
+	DirectX::XMFLOAT2 GetScale() { return mScale; };
+	
 };
 

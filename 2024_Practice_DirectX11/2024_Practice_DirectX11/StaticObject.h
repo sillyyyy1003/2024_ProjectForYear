@@ -22,20 +22,22 @@ public:
 	///	@param _objName
 	virtual void InitPBR(const char* filePath, const char* _objName);
 
-	/// @brief 一般のモデルの初期化
+	/// @brief Primitive/Modelの初期化
 	/// @param filePath テクスチャのファイルパス
 	/// @param _objName 
 	/// @param _kind モデルの種類
 	///	@param _UVSplit 
 	virtual void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
 
+	/// @brief Primitiveの初期化
+	/// @param tex テクスチャのファイルパス
+	/// @param _objName 
+	/// @param _kind モデルの種類
+	///	@param _UVSplit 
 	virtual void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
 
 
 	void LoadTex(PBRConfig::PBRTexList list);
-	void LoadShaderFile(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
-	void LoadShaderFile(const char* vsFile, const char* psFile);
-
 	void SetMaterial(const Material& mat) { mModel->SetMaterial(mat); };
 
 	/// @brief 
@@ -43,11 +45,12 @@ public:
 	virtual void Update(float dt);
 
 	virtual void Draw();
+	virtual void DrawWithNewPos(DirectX::XMFLOAT3 pos);
 
 	virtual void LoadSaveData(json data);
 	virtual json SaveData();
 
-	std::string GetObjectName() { return mObjectName; };
+	const std::string& GetObjectName() { return mObjectName; };
 
 	virtual void SetVertexShader(VertexShader* vs) { mModel->SetVertexShader(vs); };
 	virtual void SetPixelShader(PixelShader* ps) { mModel->SetPixelShader(ps); };
@@ -64,7 +67,8 @@ public:
 	VertexShader* GetDefVS() { return this->mModel->GetDefVS(); };
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
-	
+	void LoadDefShader(const char* vsFile, const char* psFile);
+
 
 	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
 	DirectX::XMFLOAT3 GetScale() { return mModel->GetScale(); };
@@ -73,6 +77,7 @@ public:
 	virtual void SetPosition(DirectX::XMFLOAT3 pos) { mModel->SetPosition(pos); };
 	virtual void SetRotation(DirectX::XMFLOAT3 rot) { mModel->SetRotation(rot); };
 	virtual void SetScale(DirectX::XMFLOAT3 scale) { mModel->SetScale(scale); };
+	virtual void SetDiffuseColor(const DirectX::XMFLOAT4& diffuseColor);
 
 	virtual void SetTransparency(float _transparency);
 

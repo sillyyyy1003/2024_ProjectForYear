@@ -1,4 +1,4 @@
-#include "Circle.h"
+ï»¿#include "Circle.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
@@ -29,13 +29,13 @@ void Circle::Draw(int texSlot)
 
 void Circle::Init(const char* _fileName, int slices, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -46,13 +46,13 @@ void Circle::Init(const char* _fileName, int slices, DirectX::XMINT2 _UVSplit)
 
 void Circle::Init(const char* _fileName, int slices, int levels, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -64,13 +64,13 @@ void Circle::Init(const char* _fileName, int slices, int levels, DirectX::XMINT2
 
 void Circle::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -81,13 +81,13 @@ void Circle::Init(const std::shared_ptr<Texture>& tex, int slices, DirectX::XMIN
 
 void Circle::Init(const std::shared_ptr<Texture>& tex,int slices, int levels, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -169,10 +169,10 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 		Vector2(0.5f, 0.5f),
 		});
 
-	for (UINT i = 0; i < levels; ++i) // ’¸“_–§“x
+	for (UINT i = 0; i < levels; ++i) // é ‚ç‚¹å¯†åº¦
 	{
 		float r = static_cast<float>(i + 1) / levels * radius;
-		for (UINT j = 0; j <= slices; ++j) // ‰~‚Ìc•ªŠ„
+		for (UINT j = 0; j <= slices; ++j) // å††ã®ç¸¦åˆ†å‰²
 		{
 			theta = per_theta * j;
 			x = r * cosf(theta); // x 
@@ -226,7 +226,7 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mMesh = std::make_unique<Mesh>(desc);
 
-	//’¸“_î•ñ‚ğmVertices‚É“n‚·
+	//é ‚ç‚¹æƒ…å ±ã‚’mVerticesã«æ¸¡ã™
 	SetVertices(vtx);
 	SetIndices(idx);
 }
@@ -268,7 +268,7 @@ void Circle::WriteDefShader()
 
 	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-	//UV MATRIX ì¬
+	//UV MATRIX ä½œæˆ
 	if (isUseUVAnimation)
 	{
 		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);

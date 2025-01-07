@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "UI_Primitive.h"
 
 namespace ScreenOverlayConfig
@@ -8,41 +8,37 @@ namespace ScreenOverlayConfig
 		STATE_NONE,
 		STATE_FADE_IN,
 		STATE_FADE_OUT,
-		STATE_SCREEN_OVERLAY,
+
 	};
 
 	constexpr float FADE_SPEED = 1.0f;
 }
 //ScreenOver Function
-class ScreenOverlay
+class ScreenFadeEffect
 {
 private:
 
 	int mState = 0;
 
-	//Screen Overlayï\é¶óp
-	std::unique_ptr<UI_Primitive> mOverlay;
-
-	//Fade in/out ï\é¶óp
+	//Fade in/out Ë°®Á§∫Áî®
 	std::unique_ptr<UI_Primitive> mFade;
 
 	float mFadeParam = 1.0f;
 
-	ScreenOverlay();
-	~ScreenOverlay();
+	ScreenFadeEffect();
+	~ScreenFadeEffect();
 
 public:
 
-	static ScreenOverlay* Get() { static ScreenOverlay instance; return &instance; }
+	static ScreenFadeEffect* Get() { static ScreenFadeEffect instance; return &instance; }
 
 	void Init();
 	void Update(float dt);
 
 	void SetDefaultState();
-	void ScreenOverlayEffect();
 	void SetState(ScreenOverlayConfig::OverlayState state);
 
-	/// @brief LayerDepthÇê›íËÇ∑ÇÈ
+	/// @brief LayerDepth„ÇíË®≠ÂÆö„Åô„Çã
 	/// @param posZ 
 	void SetPosZ(float posZ);
 

@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// •¡”‚ÌUI‚ğ”z’u
+/// è¤‡æ•°ã®UIã‚’é…ç½®
 /// </summary>
 class UIStackContainerManager
 {

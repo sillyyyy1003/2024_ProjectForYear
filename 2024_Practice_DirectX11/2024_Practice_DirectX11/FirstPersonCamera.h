@@ -1,19 +1,32 @@
-#pragma once
+ï»¿#pragma once
 #include "CameraBase.h"
 #include "Transform.h"
 
-/// @brief ˆêlÌƒJƒƒ‰
+/// @brief ä¸€äººç§°ã‚«ãƒ¡ãƒ©
 class FirstPersonCamera : public CameraBase
 {
 private:
  
-    float mMoveSpeed =5.0f;
+    float mMoveSpeed = 5.0f;    //ç§»å‹•é€Ÿåº¦
 
     int mState = 0;
     POINT mOldPos = { 0,0 };
 
-    bool isLockPos = false;     // ˆÊ’uˆÚ“®‰Â”\H
-    bool isLockAngle = false;   // Šp“xŒÅ’èH
+    bool isLockPos = false;     // ä½ç½®ç§»å‹•å¯èƒ½ï¼Ÿ
+    bool isLockAngle = false;   // è§’åº¦å›ºå®šï¼Ÿ
+
+    //UpdateMoveã§ä½¿ã‚ã‚Œã‚‹å¤‰æ•°
+    DirectX::XMFLOAT3 mTargetPosition={};
+    DirectX::XMFLOAT3 mTargetRotation={};
+    DirectX::XMFLOAT3 mDirection = {};
+    DirectX::XMFLOAT3 mDefaultPosition = {};
+    float mDistance = 0.0f;         //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã®è·é›¢
+  
+    float mAccumulateTime = 0.f;    // å‹•ãã®ç´¯ç©æ™‚é–“
+    float mDuration = 1.f;
+    float mRotateSpeed = 0.5f;       // å›è»¢é€Ÿåº¦
+ 
+    bool isMoveToTarget = false;    // å›è»¢é‹å‹•ã™ã‚‹ã‹ã©ã†ã‹
 
 public:
 
@@ -22,54 +35,54 @@ public:
 
     void Update(float dt) override;
 
-    /// @brief ƒJƒƒ‰‚ÌˆÊ’uİ’è
+    /// @brief ã‚«ãƒ¡ãƒ©ã®ä½ç½®è¨­å®š
     void SetPosition(float x, float y, float z);
     void SetPosition(const DirectX::XMFLOAT3& pos);
 
-    /// @brief ƒJƒƒ‰‚ÌŒü‚«‚ğİ’è
-    /// @param pos ƒJƒƒ‰‚ÌˆÊ’u
-    /// @param target ƒ^[ƒQƒbƒg‚ÌˆÊ’u
-    /// @param up ã•ûŒü
+    /// @brief ã‚«ãƒ¡ãƒ©ã®å‘ãã‚’è¨­å®š
+    /// @param pos ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+    /// @param target ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®
+    /// @param up ä¸Šæ–¹å‘
     void LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
 
 
     void LookAt(const DirectX::XMFLOAT3& target);
 
-    /// @brief ‚ ‚é•ûŒü‚É‰ˆ‚Á‚ÄŠÏ@
-    /// @param pos ƒJƒƒ‰‚ÌˆÊ’u
-    /// @param to •ûŒü
-    /// @param up ã•ûŒü
+    /// @brief ã‚ã‚‹æ–¹å‘ã«æ²¿ã£ã¦è¦³å¯Ÿ
+    /// @param pos ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+    /// @param to æ–¹å‘
+    /// @param up ä¸Šæ–¹å‘
     void LookTo(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& to, const DirectX::XMFLOAT3& up);
 
-    /// @brief •½sˆÚ“®
-    /// @param d ‹——£
+    /// @brief å¹³è¡Œç§»å‹•
+    /// @param d è·é›¢
     void Strafe(float d);
 
-    /// @brief ’¼s
-    /// @param d ‹——£
+    /// @brief ç›´è¡Œ
+    /// @param d è·é›¢
     void Walk(float d);
 
-    /// @brief ‘O‚É’¼s
-    /// @param d ‹——£
+    /// @brief å‰ã«ç›´è¡Œ
+    /// @param d è·é›¢
     void MoveForward(float d);
 
     void LookDown();
 
-    /// @brief ã‰ºŠÏ@
+    /// @brief ä¸Šä¸‹è¦³å¯Ÿ
     /// @param rad +:UP -:DOWN
     void Pitch(float rad);
 
-    /// @brief ¶‰EŠÏ@
+    /// @brief å·¦å³è¦³å¯Ÿ
     /// @param rad +:LEFT -:RIGHT
     void RotateY(float rad);
 
     void MoveUpward(float d);
 
-    /// @brief ƒJƒƒ‰‚ÌŠp“x‚ğƒƒbƒN‚·‚é
+    /// @brief ã‚«ãƒ¡ãƒ©ã®è§’åº¦ã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹
     void LockCameraAngle(bool isLockAngle) { this->isLockAngle = isLockAngle; };
     bool GetAngleLock() { return isLockAngle; };
 
-    /// @brief ƒJƒƒ‰‚ÌˆÊ’u‚ğƒƒbƒN‚·‚é
+    /// @brief ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹
     void LockCameraPos(bool isLockPos) { this->isLockPos = isLockPos; };
     bool GetPosLock() { return isLockPos; };
 
@@ -77,9 +90,26 @@ public:
     void LoadSaveData(json data, const char* objName);
 
     void LockCamera();
+
+    /// @brief 
+	/// @param targetPos æŒ‡å®šä½ç½®
+    /// @param targetRot æŒ‡å®šè§’åº¦
+    /// @param duration ç§»å‹•æ™‚é–“
+    void StartMoveToTarget(DirectX::XMFLOAT3 targetPos, DirectX::XMFLOAT3 targetRot, float duration);
+
+    void BackToDefaultPos();
+
+    /// @brief ç‰¹å®šä½ç½®ã‚’ã‚¢ãƒƒãƒ—ã™ã‚‹
+    /// @param dt 
+    void ZoomIn(float dt);
+
+
 private:
     void UpdateState();
     void UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt);
+
+	/// @brief æŒ‡å®šä½ç½®ãƒ»è§’åº¦ã«ç§»å‹•ã™ã‚‹
+    void UpdateMove(float dt);//todo:need to fix the logic problems
 
 
 };

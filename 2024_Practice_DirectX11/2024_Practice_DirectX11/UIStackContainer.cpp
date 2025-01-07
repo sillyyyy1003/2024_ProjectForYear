@@ -1,6 +1,5 @@
-#include "UIStackContainer.h"
+ï»¿#include "UIStackContainer.h"
 #include <memory>
-
 #include "D2DFont.h"
 #include "GUI.h"
 #include "UI_Capsule.h"
@@ -58,7 +57,7 @@ void UIStackContainer::LoadBackgroundTex(const std::shared_ptr<Texture>& backgro
 	case UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE:
 		mUiSet.background->Init(backgroundTex, size);
 		mUiSet.outline->Init(nullptr, size);
-		SetContainerSize(1.0f);//Capsule‚Ìê‡ Scale‚Å‚Í‚È‚­’¸“_‚ð•ÏX‚µ‚Ä‚¢‚é
+		SetContainerSize(1.0f);//Capsuleã®å ´åˆ Scaleã§ã¯ãªãé ‚ç‚¹ã‚’å¤‰æ›´ã—ã¦ã„ã‚‹
 		break;
 	case UIPrimitiveConfig::UI_PrimitiveKind::SQUARE:
 		mUiSet.background->Init(backgroundTex, 0, { 1,1 });
@@ -308,7 +307,7 @@ void UIStackContainer::DebugFunction()
 		ImGui::InputFloat("Outline", &mOutline);
 		mUiSet.outline->SetScale({ mUIContainerSize.x + mOutline,mUIContainerSize.y + mOutline });
 
-		//TextŽg‚í‚È‚¢Žž‚Íì“®‚µ‚È‚¢‚æ‚¤‚É
+		//Textä½¿ã‚ãªã„æ™‚ã¯ä½œå‹•ã—ãªã„ã‚ˆã†ã«
 		if (isUseText)
 		{
 			float textColor[4] = { mUiSet.text->GetFontColor().x,mUiSet.text->GetFontColor().y,mUiSet.text->GetFontColor().z,mUiSet.text->GetFontColor().w };

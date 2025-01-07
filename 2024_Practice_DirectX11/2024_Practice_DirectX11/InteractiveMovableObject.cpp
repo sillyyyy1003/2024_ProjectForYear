@@ -1,4 +1,4 @@
-#include "InteractiveMovableObject.h"
+ï»¿#include "InteractiveMovableObject.h"
 #include "GameApp.h"
 #include "KInput.h"
 #include "Model.h"
@@ -156,7 +156,7 @@ void InteractiveMovableObject::InitCollider()
 {
 	if (!mModel)
 	{
-		DebugLog::LogError("{} Assimpƒ‚ƒfƒ‹ƒ[ƒh¸”s", mObjectName);
+		DebugLog::LogError("{} Assimpãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰å¤±æ•—", mObjectName);
 		return;
 	}
 
@@ -217,7 +217,7 @@ void InteractiveMovableObject::TriggerListener()
 }
 
 void InteractiveMovableObject::PreUpdate(float dt)
-{//‚à‚µƒ‚ƒfƒ‹‚ÌˆÊ’u‚â‘å‚«‚³‚ª•Ï‰»‚µ‚½‚ç
+{//ã‚‚ã—ãƒ¢ãƒ‡ãƒ«ã®ä½ç½®ã‚„å¤§ãã•ãŒå¤‰åŒ–ã—ãŸã‚‰
 	if (GetModelStateChange())
 	{
 		UpdateCollider();
@@ -234,14 +234,14 @@ void InteractiveMovableObject::PreUpdate(float dt)
 
 	case ObjectState::STATE_NONE:
 	{
-		//Œ»İ‚ÌƒJƒƒ‰‚ğæ“¾
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’å–å¾—
 		CameraBase* camera = GameApp::GetCurrentCamera();
-		//ƒ}ƒEƒX‚ÌˆÊ’uƒXƒNƒŠ[ƒ“À•W‚ğæ“¾
+		//ãƒã‚¦ã‚¹ã®ä½ç½®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 		POINT mousePos;
 		GetCursorPos(&mousePos);
-		//ƒJƒƒ‰‚©‚çƒ}ƒEƒXˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹‚ğæ“¾
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒã‚¦ã‚¹ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//ƒJƒƒ‰‚ÌˆÊ’u‚ğæ“¾
+		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 		XMFLOAT3 camPos = camera->GetPos();
 		XMVECTOR startPos = XMLoadFloat3(&camPos);
 		float distance = 0;
@@ -263,14 +263,14 @@ void InteractiveMovableObject::PreUpdate(float dt)
 	break;
 	case ObjectState::STATE_HOVER:
 	{
-		//Œ»İ‚ÌƒJƒƒ‰‚ğæ“¾
+		//ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã‚’å–å¾—
 		CameraBase* camera = GameApp::GetCurrentCamera();
-		//ƒ}ƒEƒX‚ÌˆÊ’uƒXƒNƒŠ[ƒ“À•W‚ğæ“¾
+		//ãƒã‚¦ã‚¹ã®ä½ç½®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’å–å¾—
 		POINT mousePos;
 		GetCursorPos(&mousePos);
-		//ƒJƒƒ‰‚©‚çƒ}ƒEƒXˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹‚ğæ“¾
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒã‚¦ã‚¹ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//ƒJƒƒ‰‚ÌˆÊ’u‚ğæ“¾
+		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
 		XMFLOAT3 camPos = camera->GetPos();
 		XMVECTOR startPos = XMLoadFloat3(&camPos);
 		float distance = 0;
@@ -315,7 +315,7 @@ void InteractiveMovableObject::PreUpdate(float dt)
 
 #ifdef _DEBUG
 	//================================
-	//	ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚È‚Ç‚ğ’²®‚·‚é
+	//	ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ãªã©ã‚’èª¿æ•´ã™ã‚‹
 	//================================
 	if (ImGui::Begin(mObjectName.c_str()))
 	{

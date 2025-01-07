@@ -1,4 +1,4 @@
-#include "LightBase.h"
+﻿#include "LightBase.h"
 #include <SimpleMath.h>
 using namespace DirectX::SimpleMath;
 

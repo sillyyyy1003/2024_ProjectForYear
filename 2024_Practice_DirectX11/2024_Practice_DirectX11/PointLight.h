@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include "CameraBase.h"
 #include "LightBase.h"
 
 class PointLight : public LightBase
 {
 protected:
-	float mRange = 0.0f;					//Light‚Ì”ÍˆÍ
-	DirectX::XMFLOAT3  mAttenuation = {};	//Œ¸Š
+	float mRange = 0.0f;					//Lightã®ç¯„å›²
+	DirectX::XMFLOAT3  mAttenuation = {};	//æ¸›è¡°
 
 public:
 

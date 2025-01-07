@@ -1,278 +1,130 @@
-﻿#include "MissionPaper.h"
-#include "DirLight.h"
-#include "GameApp.h"
+#include "MissionPaper.h"
+
 #include "KInput.h"
 #include "MissionManager.h"
-#include "RenderState.h"
-
-
-enum ObjectState
-{
-	STATE_NONE = 0,
-	STATE_HOVER = 1,
-	STATE_CLICK = 2,
-	STATE_MAX = 99
-};
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 MissionPaper::MissionPaper()
 {
 }
 
-void MissionPaper::Init(const std::shared_ptr<Texture>& tex, const char* _objName)
+void MissionPaper::InitMissionPaper()
 {
-	mPaper = std::make_unique<Square>();
-	mPaper->Init(tex,0);
-	mPaper->SetRotation(-90, 0, 0);
+	mPaperMesh = std::make_unique<Square>();
+	mSplash = std::make_unique<Square>();
+	mText = std::make_unique<Square>();
+	m2DFont = std::make_unique<D2D_UIStackContainer>();
 
-	InitCollider();
-}
+	mPaperMesh->Init(SceneManager::Get()->GetObj<Texture>("paper4"),0);
+	mSplash->Init(SceneManager::Get()->GetObj<Texture>("paper4"), 0);
+	mText->Init(SceneManager::Get()->GetObj<Texture>("paper4"), 0);
 
-void MissionPaper::Init(const char* filePath, const char* _objName)
-{
-	mPaper = std::make_unique<Square>();
-	mPaper->Init(filePath, 0);
-	mPaper->SetRotation(-90, 0, 0);
-	InitCollider();
-}
+	m2DFont->Init(D2DUIConfig::UIShape::RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Paper2DFont");
+	m2DFont->SetUIState(D2DUIConfig::STATE_USE_FONT);
 
-void MissionPaper::InitMission(float reward,DirectX::XMFLOAT4 targetColor)
-{
-	mMission = std::make_unique<Mission>();
-	mMission->SetReward(reward);
-	mMission->SetMissionColor(targetColor);
+	mPaperMesh->LoadDefShader();
+	mSplash->LoadDefShader();
+	mText->LoadDefShader();
+
+	mPaperMesh->SetScale({ 100.f,100.f });
+	mSplash->SetScale({ 100.f,100.f });
 }
 
 void MissionPaper::Update(float dt)
 {
+
 	PreUpdate(dt);
 
 	GameUpdate(dt);
 
-	LateUpdate(dt);
+	if(KInput::IsKeyTrigger(VK_SPACE))
+	{
+		static_cast<Paper::PaperState>(mState << 1);
+	}
+
+	if(mState > Paper::STATE_DISAPPEAR)
+	{
+		mState = Paper::STATE_FALLING;
+	}
 }
 
 void MissionPaper::Draw()
 {
-
-	mPaper->GetDefPS()->WriteShader(2, &mEffect);
-	mPaper->Draw();
-
-}
-
-void MissionPaper::SetPosition(DirectX::XMFLOAT3 pos)
-{
-	mPaper->SetPosition(pos);
-	NotifyModelStateChangeListener();
-}
-
-void MissionPaper::SetScale(const DirectX::XMFLOAT2& scale)
-{
-	mPaper->SetScale(scale);
-	NotifyModelStateChangeListener();
-}
-
-bool MissionPaper::GetClicked()
-{
-	if(isClicked)
+	switch (mState)
 	{
-		//reset trigger
-		isClicked = false;
-		return true;
-	}
-	else
-	{
-		return false;
+	case Paper::STATE_DEFAULT://���̏�ɒu���Ă�����
+		mPaperMesh->Draw();
+		mSplash->Draw();
+		mText->Draw();
+		break;
+	case Paper::STATE_FALLING:	//���o�p
+		mPaperMesh->Draw();
+		break;
+	case Paper::STATE_DISAPPEAR:	//Mission���Ȃ���
+		break;
+	case Paper::STATE_ZOOM:	//Mission���e��\������
+		//Draw3D BackGround
+		mPaperMesh->Draw();
+		mSplash->Draw();
+		//Draw Font
+		
+		break;
+	default:
+		return;
 	}
 }
 
-void MissionPaper::LoadDefShader(const std::shared_ptr<VertexShader>& mVS, const std::shared_ptr<PixelShader>& mPS)
+void MissionPaper::LoadSaveData(json data)
 {
-	mPaper->LoadDefShader(mVS,mPS);
+}
 
+json MissionPaper::SaveData()
+{
+	return 0;
 }
 
 void MissionPaper::PreUpdate(float dt)
 {
-	if (GetModelStateChange())
-	{
-		UpdateCollider();
-		ClearModelStateChangeListener();
-	}
-
-	int prev = static_cast<ObjectState>(mObjectState);
-
-	switch (prev)
-	{
-	default:
-	case ObjectState::STATE_NONE:
-	{
-		//現在のカメラを取得
-		CameraBase* camera = GameApp::GetCurrentCamera();
-		//マウスの位置スクリーン座標を取得
-		POINT mousePos;
-		GetCursorPos(&mousePos);
-		//カメラからマウス位置の方向ベクトルを取得
-		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//カメラの位置を取得
-		XMFLOAT3 camPos = camera->GetPos();
-		XMVECTOR startPos = XMLoadFloat3(&camPos);
-		float distance = 0;
-		GetCursorPos(&mousePos);
-
-		if (mCollider->Interacts(startPos, rayDir, distance))
-		{
-			mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
-		}
-	}
-	break;
-	case ObjectState::STATE_HOVER:
-	{
-		//現在のカメラを取得
-		CameraBase* camera = GameApp::GetCurrentCamera();
-		//マウスの位置スクリーン座標を取得
-		POINT mousePos;
-		GetCursorPos(&mousePos);
-		//カメラからマウス位置の方向ベクトルを取得
-		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//カメラの位置を取得
-		XMFLOAT3 camPos = camera->GetPos();
-		XMVECTOR startPos = XMLoadFloat3(&camPos);
-		float distance = 0;
-		GetCursorPos(&mousePos);
-
-		if (mCollider->Interacts(startPos, rayDir, distance))
-		{
-			if (KInput::IsKeyTrigger(VK_LBUTTON))
-			{
-				mObjectState = ObjectState::STATE_CLICK;
-			}
-		}
-		else
-		{
-			mObjectState = ObjectState::STATE_NONE;
-		}
-	}
-	break;
-
-	case ObjectState::STATE_CLICK:
-	{
-		//現在のカメラを取得
-		CameraBase* camera = GameApp::GetCurrentCamera();
-		//マウスの位置スクリーン座標を取得
-		POINT mousePos;
-		GetCursorPos(&mousePos);
-
-		//カメラからマウス位置の方向ベクトルを取得
-		XMVECTOR rayDir = camera->ScreenPointToRay(mousePos);
-		//カメラの位置を取得
-		XMFLOAT3 camPos = camera->GetPos();
-		XMVECTOR startPos = XMLoadFloat3(&camPos);
-		float distance = 0;
-
-		if (mCollider->Interacts(startPos, rayDir, distance))
-		{
-			mObjectState = static_cast<int>(ObjectState::STATE_HOVER);
-		}
-		else
-		{
-			mObjectState = static_cast<int>(ObjectState::STATE_NONE);
-		}
-	
-	}
-	break;
-	}
-
+	mPaperMesh->Update(dt);
+	mSplash->Update(dt);
+	mText->Update(dt);
+	m2DFont->Update(dt);
 }
 
 void MissionPaper::GameUpdate(float dt)
 {
-	switch (mObjectState)
+	switch (mState)
 	{
+	case Paper::STATE_DEFAULT:
+		break;
+	case Paper::STATE_FALLING:
+		break;
+	case Paper::STATE_DISAPPEAR:
+		break;
+	case Paper::STATE_ZOOM:
+		break;
 	default:
-	case ObjectState::STATE_NONE:
-		OnStateNone();
-		break;
-	case ObjectState::STATE_HOVER:
-		OnStateHover();
-		break;
-	case ObjectState::STATE_CLICK:
-		OnStateClicked();
-		break;
+		return;
 	}
 }
 
 void MissionPaper::LateUpdate(float dt)
 {
-	mPaper->Update(dt);
 }
 
-void MissionPaper::InitCollider()
+void MissionPaper::SetState(Paper::PaperState state)
 {
-	mCollider = std::make_unique<BoxCollider>();
-
-	mCollider->SetCenter(mPaper->mTransform.GetPosition());
-	Vector3 boxSize = mPaper->mTransform.GetScale();
-	boxSize /= 2.0f;
-	mCollider->SetExtents(boxSize);
-
+	//Remove former State
+	mState = 0;
+	//Set current State
+	mState |= state;
 }
 
-void MissionPaper::NotifyModelStateChangeListener()
+void MissionPaper::SetPosition(DirectX::XMFLOAT3 position)
 {
-	isModelStateChange = true;
+	mPosition = position;
 }
 
-void MissionPaper::ClearModelStateChangeListener()
+void MissionPaper::SetRotation(DirectX::XMFLOAT3 rotation)
 {
-	isModelStateChange = false;
-}
-
-void MissionPaper::OnStateNone()
-{
-	//Reset Click
-	isClicked = false;
-
-	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mPaper->SetAmbient(ambient * 0.75f);
-	mEffect.rimIntensity = 0.0f;
-}
-
-void MissionPaper::OnStateHover()
-{
-	//Reset Click
-	isClicked = false;
-
-	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mPaper->SetAmbient(ambient);
-	mEffect.rimIntensity = 0.4f;
-
-}
-
-void MissionPaper::OnStateClicked()
-{
-	// Output Trigger
-	isClicked = true;
-
-	Color ambient = SceneManager::Get()->GetObj<DirLight>("EnvironmentLight")->GetAmbient();
-	mPaper->SetAmbient(ambient * 0.75f);
-	mEffect.rimIntensity = 0.4f;
-	//todo:任务点击要具有排他性!
-	mMission->RegisterAsCheckMission();
-}
-
-void MissionPaper::UpdateCollider()
-{
-	//Update extents
-	Vector3 boxSize = mPaper->GetScale();
-	boxSize /= 2.0f;
-	mCollider->SetExtents(boxSize);
-
-	//Update center
-	mCollider->SetCenter(mPaper->GetPosition());
-
-	//Update orientation
-	mCollider->SetOrientation(mPaper->mTransform.GetQuaternion());
-
+	mRotation = rotation;
 }

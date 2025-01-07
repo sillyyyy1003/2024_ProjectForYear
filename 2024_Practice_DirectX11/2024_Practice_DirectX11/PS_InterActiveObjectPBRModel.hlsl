@@ -128,23 +128,27 @@ float3 DirectionLightPBR(float lightIntensity, float3 lightColor, float3 toLight
 
 float3 PointLightPBR(PointLight pointLight, float3 pos, float3 normal, float3 toEyeW_Unit)
 {
-	float3 color = { 0, 0, 0 };
-	if (pointLight.isEnable == 0)
+	float3 color = float3(0, 0, 0);
+	if (pointLight.isEnable == 0.f)
+	{
 		return color;
+	}
+	else
+	{
+		//calculate vertex to pointLight vector
+		float3 toLightVec = pointLight.position - pos;
+		float3 V = normalize(toLightVec);
+		float3 toLightLen = length(toLightVec);
 
-	//calculate vertex to pointLight vector
-	float3 toLightVec = pointLight.position - pos;
-	float3 V = normalize(toLightVec);
-	float3 toLightLen = length(toLightVec);
+		float3 N = normalize(normal);
+		float dotNV = saturate(dot(N, V));
+		float3 attenuation = saturate(1.0f - toLightLen / pointLight.range);
+		attenuation *= pointLight.att.x;
+		attenuation = pow(attenuation, 2.f);
 
-	float3 N = normalize(normal);
-	float dotNV = saturate(dot(N, V));
-	float3 attenuation = saturate(1.0f - toLightLen / pointLight.range);
-	attenuation *= pointLight.att.x;
-	attenuation = pow(attenuation, 2.f);
-
-	color = pointLight.diffuse.rgb * dotNV * attenuation;
-	return color;
+		color = pointLight.diffuse.rgb * dotNV * attenuation;
+		return color;
+	}
 }
 
 float4 main(PS_IN pin) : SV_TARGET

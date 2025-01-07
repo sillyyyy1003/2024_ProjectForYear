@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Circle.h"
 #include "Square.h"
 #include "WaterState.h"
@@ -22,26 +22,26 @@ namespace WaterDefault
 	constexpr int DEFAULT_LEVELS = 64;
 }
 
-/// @brief ƒ|[ƒVƒ‡ƒ“‚Ì‹K’è‚É‚È‚é
+/// @brief ãƒãƒ¼ã‚·ãƒ§ãƒ³ã®è¦å®šã«ãªã‚‹
 class Water
 {
 private:
-	bool isResetVertices = false;	//‚·‚×‚Ä‚Ì’¸“_‚ÌˆÊ’u‚ğƒ[ƒ‚É‚·‚é‚©‚Ç‚¤‚©H
+	bool isResetVertices = false;	//ã™ã¹ã¦ã®é ‚ç‚¹ã®ä½ç½®ã‚’ã‚¼ãƒ­ã«ã™ã‚‹ã‹ã©ã†ã‹ï¼Ÿ
 protected:
 
 	WaterStateConfig::WaterStateParam mParam = {};
 
-	//”g–äŠJn‚©‚Ç‚¤‚©H
+	//æ³¢ç´‹é–‹å§‹ã‹ã©ã†ã‹ï¼Ÿ
 	bool isTrigger = true;
 	float mNowAmplitude = 0.0f;
-	float mWaterTime = 0.0;		//¡‚Ì”g‚ÌŠÔ
-	float mDuration =3.0f;		// ”g‚ÌŒp‘±ŠÔ
-	WaterStateConfig::WaterBoilingState mBoilingState;//“®‚«‚ª‚ ‚é‚©‚Ç‚¤‚©‚Ì”»’f
+	float mWaterTime = 0.0;		//ä»Šã®æ³¢ã®æ™‚é–“
+	float mDuration =3.0f;		// æ³¢ã®ç¶™ç¶šæ™‚é–“
+	WaterStateConfig::WaterBoilingState mBoilingState;//å‹•ããŒã‚ã‚‹ã‹ã©ã†ã‹ã®åˆ¤æ–­
 
 	std::unique_ptr<WaterState> mWaterStates = nullptr;
 
 
-	//…‚Ì•`‰æ //todo: make the model multi kinds
+	//æ°´ã®æç”» //todo: make the model multi kinds
 	std::unique_ptr<Primitive> mModel = nullptr;
 
 	std::string mObjectName;
@@ -54,25 +54,25 @@ public:
 
 	/// @brief Init object & creating new texture
 	/// @param filePath water texture filepath
-	/// @param objName ƒIƒuƒWƒFƒNƒg–¼
-	///	@param slices •ªŠ„”
+	/// @param objName ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå
+	///	@param slices åˆ†å‰²æ•°
 	void Init(const char* filePath, const char* objName, int slices = WaterDefault::DEFAULT_SLICES);
 		
 	/// @brief Init Object with existing texture
-	/// @param tex Šù‚Éƒ[ƒh‚³‚ê‚½ƒeƒNƒXƒ`ƒƒ
-	/// @param objName ƒIƒuƒWƒFƒNƒg–¼
-	///	@param slices •ªŠ„”
+	/// @param tex æ—¢ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£
+	/// @param objName ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå
+	///	@param slices åˆ†å‰²æ•°
 	void Init(const std::shared_ptr<Texture>& tex, const char* objName, int slices = WaterDefault::DEFAULT_SLICES);
 
 
 	virtual void Update(float dt);
 
-	/// @brief ƒAƒbƒvƒf[ƒg‚ÌÅŒã‚Ås‚¤ •`‰æ‚Ì’¸“_‚ÌXV‚ÆƒVƒF[ƒ_‚Éƒf[ƒ^‘‚«‚Ş
+	/// @brief ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®æœ€å¾Œã§è¡Œã† æç”»ã®é ‚ç‚¹ã®æ›´æ–°ã¨ã‚·ã‚§ãƒ¼ãƒ€ã«ãƒ‡ãƒ¼ã‚¿æ›¸ãè¾¼ã‚€
 	void RenderUpdate();
 
 	void Draw();
 
-	/// @brief WaterParam‚Ì“à—e‚ğƒVƒF[ƒ_‚É‘‚«‚Ş
+	/// @brief WaterParamã®å†…å®¹ã‚’ã‚·ã‚§ãƒ¼ãƒ€ã«æ›¸ãè¾¼ã‚€
 	void WriteShader();
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
@@ -86,7 +86,7 @@ public:
 
 	void UpdateColor(DirectX::XMFLOAT4 color);
 
-	/// @brief ƒIƒuƒWƒFƒNƒg‚Ìƒf[ƒ^‚ğjsonƒtƒ@ƒCƒ‹‚É‘‚«‚İ
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’jsonãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿
 	/// @return 
 	json SaveData();
 
@@ -101,29 +101,29 @@ public:
 	DirectX::XMFLOAT3 GetPosition() { return mModel->GetPosition(); };
 
 
-	/// @brief ”g‚Ì’†S“_‚ğİ’è‚·‚é
-	/// @param centerPos ”g‚Ì’†S“_
+	/// @brief æ³¢ã®ä¸­å¿ƒç‚¹ã‚’è¨­å®šã™ã‚‹
+	/// @param centerPos æ³¢ã®ä¸­å¿ƒç‚¹
 	void SetCenter(DirectX::XMFLOAT3 centerPos);
 
-	/// @brief ”g‚Ì•p“x‚ğİ’è‚·‚é
-	/// @param frequency ”g‚Ì•p“x
+	/// @brief æ³¢ã®é »åº¦ã‚’è¨­å®šã™ã‚‹
+	/// @param frequency æ³¢ã®é »åº¦
 	void SetFrequency(float frequency);
 
-	/// @brief ”g‚ÌƒXƒr[ƒh‚ğİ’è‚·‚é
-	/// @param speed ”g‚ÌƒXƒr[ƒh
+	/// @brief æ³¢ã®ã‚¹ãƒ“ãƒ¼ãƒ‰ã‚’è¨­å®šã™ã‚‹
+	/// @param speed æ³¢ã®ã‚¹ãƒ“ãƒ¼ãƒ‰
 	void SetSpeed(float speed);
 
-	/// @brief ”g‚Ì•‚ğİ’è‚·‚é
-	/// @param amplitude ”g‚Ì•
+	/// @brief æ³¢ã®å¹…ã‚’è¨­å®šã™ã‚‹
+	/// @param amplitude æ³¢ã®å¹…
 	void SetAmplitude(float amplitude);
 
-	/// @brief ”g‚ÌŒp‘±ŠÔ‚ğİ’è‚·‚é
-	/// @param duration ”g‚ÌŒp‘±ŠÔ
+	/// @brief æ³¢ã®ç¶™ç¶šæ™‚é–“ã‚’è¨­å®šã™ã‚‹
+	/// @param duration æ³¢ã®ç¶™ç¶šæ™‚é–“
 	void SetWaveDuration(float duration);
 
 	void ResetMaterial();
 
-	/// @brief Œãˆ—(Shader‚É‘‚«‚İ)
+	/// @brief å¾Œå‡¦ç†(Shaderã«æ›¸ãè¾¼ã¿)
 	/// @param dt delta Time
 	void LateUpdate(float dt);
 };

@@ -3,11 +3,12 @@ struct VS_IN
 	float3 pos : POSITION0;
 	float2 uv : TEXCOORD0;
 };
+
 struct VS_OUT
 {
 	float4 pos : SV_POSITION;
 	float2 uv : TEXCOORD0;
-	float4 color : TEXCOORD1;
+	float4 color : COLOR0;
 };
 
 cbuffer WVP : register(b0) {

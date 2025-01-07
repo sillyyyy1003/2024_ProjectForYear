@@ -1,4 +1,4 @@
-#include "Capsule.h"
+ï»¿#include "Capsule.h"
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
@@ -11,13 +11,13 @@ Capsule::Capsule() :Primitive(PrimitiveConfig::CAPSULE)
 
 void Capsule::Init(const char* filePath, int levels, int slices, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 	
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -28,13 +28,13 @@ void Capsule::Init(const char* filePath, int levels, int slices, DirectX::XMINT2
 
 void Capsule::Init(const std::shared_ptr<Texture>& tex, int levels, int slices, DirectX::XMINT2 _UVSplit)
 {
-	//UV Animation ‚ğg‚¤‚©
+	//UV Animation ã‚’ä½¿ã†ã‹
 	if (_UVSplit.x == 1 && _UVSplit.y == 1)
 		isUseUVAnimation = false;
 	else
 		isUseUVAnimation = true;
 
-	//UV Animation‚Ì‰Šú‰»
+	//UV Animationã®åˆæœŸåŒ–
 	mUvAnimation = std::make_unique<UVAnimation>();
 	mUvAnimation->Init(_UVSplit);
 
@@ -109,7 +109,7 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 	{
 		phi = per_phi * i;
 
-		// slices+1->ƒXƒ^[ƒg‚ÆƒGƒ“ƒh‚Í“¯‚¶‚¯‚ÇAuv‚Í‹t
+		// slices+1->ã‚¹ã‚¿ãƒ¼ãƒˆã¨ã‚¨ãƒ³ãƒ‰ã¯åŒã˜ã‘ã©ã€uvã¯é€†
 		for (UINT j = 0; j <= slices; j++)
 		{
 			theta = per_theta * j;
@@ -134,7 +134,7 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 	{
 		phi = per_phi * i;
 
-		// slices+1->ƒXƒ^[ƒg‚ÆƒGƒ“ƒh‚Í“¯‚¶‚¯‚ÇAuv‚Í‹t
+		// slices+1->ã‚¹ã‚¿ãƒ¼ãƒˆã¨ã‚¨ãƒ³ãƒ‰ã¯åŒã˜ã‘ã©ã€uvã¯é€†
 		for (UINT j = 0; j <= slices; j++)
 		{
 			theta = per_theta * j;
@@ -238,7 +238,7 @@ void Capsule::CreateMesh(UINT levels, UINT slices, UINT stacks)
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mMesh = std::make_unique<Mesh>(desc);
-	//’¸“_î•ñ‚ğmVertices‚É“n‚·
+	//é ‚ç‚¹æƒ…å ±ã‚’mVerticesã«æ¸¡ã™
 	SetVertices(vtx);
 }
 
@@ -276,7 +276,7 @@ void Capsule::WriteDefShader()
 
 	UVConstantBuffer uvBuffer;
 	uvBuffer.useUV = isUseUVAnimation;
-	//UV MATRIX ì¬
+	//UV MATRIX ä½œæˆ
 	if (isUseUVAnimation)
 	{
 		uvBuffer.uv = XMMatrixTranslation(mUvAnimation->GetOffsetUV().x, mUvAnimation->GetOffsetUV().y, 0.0f);

@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "Collider.h"
 #include "Primitive.h"
 
 
-/// @brief Šî–{ƒIƒuƒWƒFƒNƒgE“–‚½‚è”»’è•t‚«
+/// @brief åŸºæœ¬ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ»å½“ãŸã‚Šåˆ¤å®šä»˜ã
 ///	For Test
 class Object :public Component
 {
@@ -11,33 +11,33 @@ protected:
 
 	POINT mOldPos = {};//Old MouseCursor Pos
 
-	int mState = 0;//ƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ği‚é
-	bool isStateChange = false;//ó‘Ô•ÏX”»’è
-	DirectX::XMFLOAT4 mEffect = { 1,1,1,1 };//ƒIƒuƒWƒFƒNƒg‚ÉFŒø‰Ê‚ğ‚Â‚¯‚é
+	int mState = 0;//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’å¸ã‚‹
+	bool isStateChange = false;//çŠ¶æ…‹å¤‰æ›´åˆ¤å®š
+	DirectX::XMFLOAT4 mEffect = { 1,1,1,1 };//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è‰²åŠ¹æœã‚’ã¤ã‘ã‚‹
 #ifdef _DEBUG
 	std::string mObjectName;
 #endif
 
 public:
 	
-	std::unique_ptr<Primitive> 	mModel = nullptr;		//•`‰æ
-	std::unique_ptr<Collider> 	mCollider = nullptr;	//“–‚½‚è”»’è
+	std::unique_ptr<Primitive> 	mModel = nullptr;		//æç”»
+	std::unique_ptr<Collider> 	mCollider = nullptr;	//å½“ãŸã‚Šåˆ¤å®š
 
 
 	Object();
 	virtual ~Object();
 
-	/// @brief ƒIƒuƒWƒFƒNƒgÀ‘Ô‚Ì‰Šú‰»
-	/// @param kind ƒIƒuƒWƒFƒNƒg‚ÌŒ`ó
+	/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå®Ÿæ…‹ã®åˆæœŸåŒ–
+	/// @param kind ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½¢çŠ¶
 	virtual void Init(PrimitiveConfig::PrimitiveKind kind);
 
-	/// @brief İ’èƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ‰Šú‰»
-	/// @param kind ƒIƒuƒWƒFƒNƒg‚ÌŒ`ó
-	/// @param filePath ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+	/// @brief è¨­å®šãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’åˆæœŸåŒ–
+	/// @param kind ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å½¢çŠ¶
+	/// @param filePath ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 	virtual void Init(PrimitiveConfig::PrimitiveKind kind, const char* filePath);
 
-	/// @brief ƒ‚ƒfƒ‹‚Ì‰Šú‰»(Mesh/Transform..)
-	/// @param filePath ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ƒpƒX
+	/// @brief ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–(Mesh/Transform..)
+	/// @param filePath ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 	virtual void InitModel(const char* filePath);
 
 	/// @brief Load Save Data & Init Object Data
@@ -79,27 +79,27 @@ public:
 
 protected:
 
-	/// @brief “ü—ÍE•¨—‰‰Z‚È‚Ç‚Ìˆ—‚ğs‚¤ƒtƒ‰ƒbƒO‚ÌXV
+	/// @brief å…¥åŠ›ãƒ»ç‰©ç†æ¼”ç®—ãªã©ã®å‡¦ç†ã‚’è¡Œã†ãƒ•ãƒ©ãƒƒã‚°ã®æ›´æ–°
 	/// @param dt Delta Time
 	virtual void PreUpdate(float dt);
 
-	/// @brief “ü—Í‚È‚Ç‚É‰‚¶‚ÄAƒQ[ƒ€ƒƒWƒbƒN‚ÌÀŒ»
+	/// @brief å…¥åŠ›ãªã©ã«å¿œã˜ã¦ã€ã‚²ãƒ¼ãƒ ãƒ­ã‚¸ãƒƒã‚¯ã®å®Ÿç¾
 	/// @param dt Delta Time
 	virtual void GameUpdate(float dt);
 
-	/// @brief Render‚ÌŒãˆ—
+	/// @brief Renderã®å¾Œå‡¦ç†
 	/// @param dt Delta Time
 	virtual void LateUpdate(float dt);
 
-	/// @brief Dragó‘Ôˆ—
+	/// @brief DragçŠ¶æ…‹å‡¦ç†
 	/// @param dt Delta Time
 	virtual void OnStateDrag(float dt);
 
-	/// @brief Selectedó‘Ôˆ—
+	/// @brief SelectedçŠ¶æ…‹å‡¦ç†
 	/// @param dt Delta Time
 	virtual void OnStateSelected(float dt);
 
-	/// @brief Default Stateó‘Ôˆ—
+	/// @brief Default StateçŠ¶æ…‹å‡¦ç†
 	/// @param dt Delta Time
 	virtual void OnStateNone(float dt);
 

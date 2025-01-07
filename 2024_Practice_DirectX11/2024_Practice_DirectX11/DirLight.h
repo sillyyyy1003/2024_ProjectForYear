@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "LightBase.h"
 #include "SceneBase.h"
 
-/// @brief •ûŒüŒõ
+/// @brief æ–¹å‘å…‰
 class DirLight :public LightBase
 {
 
