@@ -27,8 +27,25 @@ private:
     float mRotateSpeed = 0.5f;       // 回転速度
  
     bool isMoveToTarget = false;    // 回転運動するかどうか
+    bool isShaking = false;
+
+    float mShakingTime = 1.f;        //カメラ揺れの制限時間
+    DirectX::XMFLOAT2 mShakingAmplitude;    //揺れの幅
+    DirectX::XMFLOAT3 mDefaultPos = {};
 
 public:
+
+    enum CameraKind
+    {
+        /// No Interaction
+        CAM_NONE,
+        /// MOVE FREE
+        CAM_FREE,
+        /// 補間でカメラ移動
+        CAM_MOVE,
+        /// Camera Shaking
+        CAM_SHAKE,
+    };
 
     FirstPersonCamera() = default;
     ~FirstPersonCamera() override = default;
@@ -103,6 +120,8 @@ public:
     /// @param dt 
     void ZoomIn(float dt);
 
+    void SetCameraState(FirstPersonCamera::CameraKind state);
+
 
 private:
     void UpdateState();
@@ -110,6 +129,8 @@ private:
 
 	/// @brief 指定位置・角度に移動する
     void UpdateMove(float dt);//todo:need to fix the logic problems
+
+    void UpdateShake(float dt);
 
 
 };

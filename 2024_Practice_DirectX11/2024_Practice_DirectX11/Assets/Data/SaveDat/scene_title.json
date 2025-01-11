@@ -177,8 +177,17 @@
         "TextAlignment": 1
     },
     "ScenePotionWater": {
+        "DefaultHeight": [
+            0.0
+        ],
+        "DiluteParam": [
+            0.0
+        ],
         "Duration": [
             4.741000175476074
+        ],
+        "LimitHeight": [
+            0.0
         ],
         "Material": {
             "Ambient": [
@@ -188,9 +197,9 @@
                 1.0
             ],
             "Diffuse": [
-                0.5287394523620605,
                 0.0,
                 1.0,
+                0.8949980735778809,
                 0.4000000059604645
             ],
             "Emission": [
@@ -206,6 +215,9 @@
                 32.0
             ]
         },
+        "MaxHeight": [
+            0.0
+        ],
         "Position": [
             0.0,
             0.0,
@@ -220,6 +232,12 @@
             28.0,
             1.0,
             28.0
+        ],
+        "TransformSpeed": [
+            75.0
+        ],
+        "ValueParam": [
+            0.0
         ],
         "WaterParam": {
             "Boiling": {

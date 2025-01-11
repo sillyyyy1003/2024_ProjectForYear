@@ -327,9 +327,10 @@ namespace Vertex
 
 struct HSV
 {
-	float hue = 0.f;
-	float saturation = 1.f;
-	float value = 1.f;
+	float hue = 0.f;	//色相
+	float saturation = 1.f;	//彩度
+	float value = 1.f;	//明度
+	float alpha;	//透明度
 };
 
 inline DirectX::XMFLOAT4 HSVtoRGB(const HSV& color)
@@ -381,7 +382,7 @@ inline DirectX::XMFLOAT4 HSVtoRGB(const HSV& color)
 	outputColor.R(r + m);
 	outputColor.G(g + m);
 	outputColor.B(b + m);
-	outputColor.A(1.0f);
+	outputColor.A(color.alpha);
 	return outputColor;
 }
 
@@ -415,15 +416,15 @@ inline HSV RGBtoHSV(const DirectX::XMFLOAT4& color)
 	}
 	if (h < 0.f)h += 360.f;
 
-	return { h,s,v };
+	return { h,s,v,color.w };
 }
 
 //todo
 struct Material
 {
-	DirectX::XMFLOAT4 ambient = { 0.5f, 0.5f, 0.5f, 0.5f };	// 環境光 ka
+	DirectX::XMFLOAT4 ambient = { 0.2f, 0.2f, 0.2f, 1.0f };	// 環境光 ka
 	DirectX::XMFLOAT4 diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };	// 拡散反射 kd
-	DirectX::XMFLOAT4 specular = { 1.0f, 0.5f, 0.5f, 0.2f }; // 鏡面反射 ks 
+	DirectX::XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 1.0f }; // 鏡面反射 ks 
 	DirectX::XMFLOAT4 emission = { 0.0f, 0.0f, 0.0f, 0.0f }; // 反射 ke 自発光なし
 	float isTexEnable = true;
 	float pad1, pad2, pad3 = 0.f;

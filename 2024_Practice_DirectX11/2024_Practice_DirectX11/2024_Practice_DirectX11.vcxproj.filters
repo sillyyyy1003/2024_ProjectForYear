@@ -357,9 +357,6 @@
     <ClCompile Include="SceneScore.cpp">
       <Filter>ソース ファイル\Scene\SubScene</Filter>
     </ClCompile>
-    <ClCompile Include="MissionFalse.cpp">
-      <Filter>ソース ファイル\GameFunction</Filter>
-    </ClCompile>
     <ClCompile Include="MissionManager.cpp">
       <Filter>ソース ファイル\GameFunction</Filter>
     </ClCompile>
@@ -409,6 +406,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RandomGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="NonDiegeticUI_PotTop.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -611,9 +611,6 @@
     <ClInclude Include="WaterJug.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="MissionFalse.h">
-      <Filter>ヘッダー ファイル\GameFunction</Filter>
-    </ClInclude>
     <ClInclude Include="MissionManager.h">
       <Filter>ヘッダー ファイル\GameFunction</Filter>
     </ClInclude>
@@ -666,6 +663,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="RandomGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="NonDiegeticUI_PotTop.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,6 +24,7 @@ class SceneLab :public SceneBase
 	std::unordered_map<std::string, StaticObject*> rightStaticObjList;
 
 	std::unique_ptr<InteractiveStaticObject> mPot;
+	std::unique_ptr<StaticObject> mPotTop;
 	std::unique_ptr<Ingredient> mRedPotion;
 	std::unique_ptr<Ingredient> mBluePotion;
 	std::unique_ptr<Ingredient> mYellowPotion;

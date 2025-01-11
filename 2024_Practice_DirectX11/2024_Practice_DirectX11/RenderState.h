@@ -10,7 +10,7 @@ public:
     static ComPtr<ID3D11RasterizerState> RSWireframe;		            // wireFrame
     static ComPtr<ID3D11RasterizerState> RSNoCull;			            // 表裏両面レンダリング
     static ComPtr<ID3D11RasterizerState> RSCullClockWise;	            // 表面だけ
-    static ComPtr<ID3D11RasterizerState> RSCullFront;                    // 裏面だけ
+    static ComPtr<ID3D11RasterizerState> RSCullFront;                   // 裏面だけ
     static ComPtr<ID3D11RasterizerState> RSShadow;						// 影用
 
 

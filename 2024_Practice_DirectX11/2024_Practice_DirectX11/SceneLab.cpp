@@ -2,6 +2,7 @@
 #include "DirLight.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
+#include "IngredientManager.h"
 #include "KInput.h"
 #include "MissionManager.h"
 #include "RenderState.h"
@@ -58,6 +59,12 @@ void SceneLab::Init()
 	mPot->LoadDefShader(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
 	mPot->LoadTex(pbrTexList);
 	mPot->LoadSaveData(sceneData,"Pot");
+
+	mPotTop = std::make_unique<StaticObject>();
+	mPotTop->InitPBR("Assets/Model/LabAssets/PotTop.obj", "PotTop");
+	mPotTop->LoadDefShader(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
+	mPotTop->LoadTex(pbrTexList);
+	mPotTop->LoadSaveData(sceneData);
 
 	StaticObject* Candle1 = CreateObj<StaticObject>("Candle1").get();
 	Candle1->InitPBR("Assets/Model/LabAssets/Candle.obj", "Candle1");
@@ -145,11 +152,17 @@ void SceneLab::Init()
 	mYellowPotion->SetPigmentColor(HSVtoRGB({ 60,1,0.5f }));
 	mYellowPotion->SetMovable(false);
 
+	//Potionのキャパシティを設定する
+	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
+	mRedPotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::RED));
+	mBluePotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::BLUE));
+	mYellowPotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::YELLOW));
+
 	mTable = std::make_unique<Square>();
 	mTable->Init(GetObj<Texture>("table"), 0);
 	mTable->LoadDefShader();
 	mTable->SetScale(Vector2(30.f, 15.f));
-	mTable->SetPosition(0.f, -0.1f, 0.0f);
+	mTable->SetPosition(0.f, -0.01f, 0.0f);
 
 	mWall = std::make_unique<StaticObject>();
 	mWall->InitModel("Assets/Texture/brown-cement-concrete_base_1k.jpg", "Wall", PrimitiveConfig::SQUARE);
@@ -214,6 +227,7 @@ void SceneLab::UnInit()
 	//Save Camera Param
 	sceneData["DefaultCamera"] = GetObj<FirstPersonCamera>("DefaultCamera")->SaveData();
 
+	//Save Other Data
 	sceneData["water"] = mWater->SaveData();
 	sceneData["CandleLight1"] = mCandleLight1->SaveData();
 	sceneData["CandleLight2"] = mCandleLight2->SaveData();
@@ -228,7 +242,8 @@ void SceneLab::UnInit()
 	sceneData["YellowPotion"] = mYellowPotion->SaveData();
 
 	sceneData["GoldBar"] = mGoldBar->SaveData();
-	
+
+	sceneData["PotTop"] = mPotTop->SaveData();
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json",sceneData);
 #endif
@@ -241,7 +256,9 @@ void SceneLab::Update(float dt)
 	//シーン静止の場合
 	if (TutorialManager::Get()->GetSceneFreeze())return;
 
+	//GameObject Update
 	GameObjectUpdate(dt);
+
 	//フェード中にシーン操作を禁止
 	if(!ScreenFadeEffect::Get()->GetFade())
 	{
@@ -294,6 +311,7 @@ void SceneLab::GameObjectUpdate(float dt)
 
 	//Interactive object
 	mPot->Update(dt);
+	mPotTop->Update(dt);
 
 	//StaticObject
 	mWall->Update(dt);
@@ -308,6 +326,7 @@ void SceneLab::GameObjectUpdate(float dt)
 		staticObj.second->Update(dt);
 	}
 
+	//Potion
 	mRedPotion->Update(dt);
 	mYellowPotion->Update(dt);
 	mBluePotion->Update(dt);
@@ -324,6 +343,8 @@ void SceneLab::GameObjectUpdate(float dt)
 	mText->Update(dt);
 	mSplash->SetDiffuseColor(MissionManager::Get()->GetCurrentMission().MissionColor);
 	mSplash->Update(dt);
+
+	
 	
 }
 
@@ -487,6 +508,7 @@ void SceneLab::DrawLeftObjectWithShadow()
 	Sprite::SetVertexShader(GetObj<VertexShader>("VS_SpriteShadow").get());
 	Sprite::SetPixelShader(GetObj<PixelShader>("PS_Shadow").get());
 	Sprite::SetTexture(pDeptWriteRTV);
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	Sprite::Draw();
 }
 
@@ -602,6 +624,7 @@ void SceneLab::DrawRightObjectWithShadow()
 	Sprite::SetVertexShader(GetObj<VertexShader>("VS_SpriteShadow").get());
 	Sprite::SetPixelShader(GetObj<PixelShader>("PS_Shadow").get());
 	Sprite::SetTexture(pRTV);
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	Sprite::Draw();
 }
 
@@ -646,6 +669,17 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	mPot->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
 	mPot->Draw();
 
+	shadowPos = { mPotTop->GetPosition().x,0.1f,mPotTop->GetPosition().z };
+	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
+		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
+	scaleBaseMatrix = XMMatrixScaling(mPotTop->GetScale().x * 0.4f, mPotTop->GetScale().y * 0.8f, mPotTop->GetScale().z * 0.8f);
+	mat[0] = mat[0] * scaleBaseMatrix;
+	LMatrix[0] = mat[0];
+	GetObj<VertexShader>("VS_Primitives")->WriteShader(0, LMatrix);
+	mPotTop->SetVertexShader(GetObj<VertexShader>("VS_Primitives").get());
+	mPotTop->SetPixelShader(GetObj<PixelShader>("PS_WriteDepth").get());
+	mPotTop->Draw();
+
 
 	GameApp::SetDefaultRenderTarget();
 
@@ -663,6 +697,8 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	GameApp::SetBlendState(RenderState::BSTransparent);
 	mPot->SwitchToDefShader();
 	mPot->Draw();
+	mPotTop->SwitchToDefShader();
+	mPotTop->Draw();
 	mWater->Draw();
 
 
@@ -682,6 +718,7 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	Sprite::SetVertexShader(GetObj<VertexShader>("VS_SpriteShadow").get());
 	Sprite::SetPixelShader(GetObj<PixelShader>("PS_Shadow").get());
 	Sprite::SetTexture(pRTV);
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	Sprite::Draw();
 }
 

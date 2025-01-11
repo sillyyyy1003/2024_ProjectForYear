@@ -5,11 +5,24 @@ class Potion :public Water
 {
 private:
 
-	float mDiluteParam = 0.2f;//水的稀释程度
+	float mDiluteParam = 0.0f;	//水的稀释程度
 	float mAccumulateTime = 0.0f;
 
-	bool isAutoColor = false; //自動色変換
-	float mColorTransformSpeed = 75.f;
+	bool isAutoColor = false;	//自動色変換
+	float mColorTransformSpeed;	//自動色変換速度
+
+	float mPreviousHue = -1;		//前回入れた色
+	float mValue = 0.0f;			//ミックスによる色深くなるパラメータ
+	float accumulateValue;
+
+	float mAccumulateHeight = 0.0f;	//
+	float mDefaultHeight = 0.0f;	//初期高さ
+
+	float mMaxHeight = 0.f;
+	float mLimitHeight = 0.0f;
+
+	bool isMaxHeight = false;		//最大水位になったか？	
+	bool isOverLimitHeight = false;	//制限水位に超えたか？
 public:
 
 	Potion() = default;
@@ -18,18 +31,44 @@ public:
 
 	void Update(float dt) override;
 
-	//Dilute by Water
-	void Dilute();
+
+	/// @brief Dilute by Water
+	/// @param diluteAlpha 入れた水の量
 	void Dilute(float diluteAlpha);
 
+	/// @brief 色混ぜ
+	/// @param color 
+	/// @param alpha 
 	void MixColor(DirectX::XMFLOAT4 color,float alpha);
-	HSV BlendColor(const HSV& color1, const HSV& color2,float alpha);
+
+	/// @brief 色混ぜ具体の手取
+	/// @param baseColor Potionの色
+	/// @param mixColor 入れた顔料の色
+	/// @param alpha 入れた量
+	/// @return 混ぜたあとの色
+	HSV BlendColor(const HSV& baseColor, const HSV& mixColor, float alpha);
 
 	void AutoColor(float dt);
 
 	void SetAutoColor(bool isAutoColour) { this->isAutoColor = isAutoColour; };
 	void SetWaterColor(DirectX::XMFLOAT4 color);
 
+	void LoadSaveData(json data, const char* objName) override;
+	json SaveData() override;
 
+	void SetPreviousHue(float hue);
+
+	/// @brief 水位が上昇する
+	/// @param param 上昇スピード
+	void RiseUpWaterLevel(float param);
+
+	/// @brief 水位に関するパラメータの初期化
+	void InitWaterLevelParam();
+
+	/// @brief カメラに渡す
+	float CalculateCurrentShakingParam();
+
+	/// @brief 水位をリセットする
+	void ResetWaterLevel();
 };
 

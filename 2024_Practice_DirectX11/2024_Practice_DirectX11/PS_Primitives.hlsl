@@ -76,11 +76,10 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 
 
     float3 N = normalize(pin.normal);
-
 	float3 toEye = normalize(-cameraPos.xyz);
 
 	//ŠÂ‹«ŒõŒvŽZ
-	float4 ambient = material.ambient * lightAmbient * 0.5f;
+	float4 ambient = material.ambient * lightAmbient;
     float3 lightVec = normalize(lightPos.xyz);
 
     //Lambert DiffuseŒvŽZ
@@ -89,8 +88,10 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 
     // specular ŒvŽZ
 	float3 V = normalize(cameraPos.xyz - pin.worldPos.xyz);
+	//float3 R = reflect(lightVec, N); // ”½ŽË•ûŒü
+	//float specFactor = pow(max(dot(V, R), 0.0f), material.specular.w);
     float specFactor = pow(max(dot(V, toEye), 0.0f), material.specular.w);
-    float4 spec = specFactor * material.specular;
+	float4 spec = specFactor * material.specular * 0.1f;
 
     //Point Light Calculation
 	for (int i = 0; i < MAX_NUM_POINT_LIGHT; i++)

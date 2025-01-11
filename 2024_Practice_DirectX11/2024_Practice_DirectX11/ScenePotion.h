@@ -3,6 +3,7 @@
 #include "Ingredient.h"
 #include "InteractiveStaticObject.h"
 #include "MissionSamplePaper.h"
+#include "NonDiegeticUI_PotTop.h"
 #include "Potion.h"
 #include "SceneBase.h"
 #include "StaticObject.h"
@@ -12,7 +13,9 @@
 
 class ScenePotion :public SceneBase
 {
-	bool isSubScene = false;
+	//シーン切り替え用
+	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;
+
 	//Texture List
 	PBRConfig::PBRTexList pbrTexList;
 
@@ -25,10 +28,13 @@ class ScenePotion :public SceneBase
 	std::shared_ptr<Ingredient> mYellowPotion;
 	//Pot
 	std::shared_ptr<InteractiveStaticObject> mPot;
+	std::unique_ptr<NonDiegeticUI_PotTop> mPotTop;
 	//WaterJug
 	std::shared_ptr<WaterJug> mJug;
-	std::unique_ptr<MissionSamplePaper> mMissionPaper;
 
+	//MissionPaper
+	std::unique_ptr<StaticObject> mPaper;
+	std::unique_ptr<StaticObject> mSplash;
 
 	//Table
 	std::unique_ptr<StaticObject> mTable;
@@ -36,8 +42,8 @@ class ScenePotion :public SceneBase
 
 
 	//PointLight;
-	std::unique_ptr<CandleLight> mCandleLight;
-
+	std::unique_ptr<CandleLight> mCandleLight1;
+	std::unique_ptr<CandleLight> mCandleLight2;
 	//UI
 	std::unique_ptr<UI_Button> mResetButton;
 	std::unique_ptr<UI_Button> mChargeButton;

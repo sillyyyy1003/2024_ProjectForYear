@@ -165,10 +165,10 @@
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientManager.cpp" />
     <ClCompile Include="InteractiveMovableObject.cpp" />
-    <ClCompile Include="MissionFalse.cpp" />
     <ClCompile Include="MissionManager.cpp" />
     <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="MissionSamplePaper.cpp" />
+    <ClCompile Include="NonDiegeticUI_PotTop.cpp" />
     <ClCompile Include="Paper.cpp" />
     <ClCompile Include="ParticleEffect.cpp" />
     <ClCompile Include="ParticleMesh.cpp" />
@@ -251,10 +251,10 @@
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientManager.h" />
     <ClInclude Include="InteractiveMovableObject.h" />
-    <ClInclude Include="MissionFalse.h" />
     <ClInclude Include="MissionManager.h" />
     <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="MissionSamplePaper.h" />
+    <ClInclude Include="NonDiegeticUI_PotTop.h" />
     <ClInclude Include="Paper.h" />
     <ClInclude Include="ParticleEffect.h" />
     <ClInclude Include="ParticleMesh.h" />

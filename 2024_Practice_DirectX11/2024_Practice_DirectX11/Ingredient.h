@@ -13,7 +13,7 @@ private:
 
 	float mAccumulateTime = 0.0f;//Counting pouring time
 	float mCapacity = 90.f;
-	float mAlpha = 0.3f;
+	float mAlpha = 0.025f;		//顔料の影響係数
 
 
 	//Default状態の時の位置

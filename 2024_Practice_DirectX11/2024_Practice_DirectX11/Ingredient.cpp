@@ -4,6 +4,7 @@
 #include "IngredientManager.h"
 #include "InteractiveStaticObject.h"
 #include "Potion.h"
+#include "RenderState.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -50,18 +51,23 @@ void Ingredient::OnStateDrag(float dt)
 
 void Ingredient::OnStateReleased(float dt)
 {
+	if (!isMovable)return;
 	ResetPos();
 	SetModelRotation({0, 0, 0});
 
 	IngredientManager::Get()->ClearCurrentIngredient();
 	isDragged = false;
 	mAccumulateTime = 0.0f;//Reset Time;
+	//入れた色を設定する
+	SceneManager::Get()->GetObj<Potion>("PotionSceneWater")->SetPreviousHue(RGBtoHSV(mPigmentColor).hue);
 }
 
 void Ingredient::Draw()
 {
 	mModel->GetDefPS()->WriteShader(3, &mContainerData);
+	GameApp::SetCullingMode(RenderState::RSNoCull);
 	InteractiveMovableObject::Draw();
+	GameApp::SetCullingMode(nullptr);
 }
 
 void Ingredient::ResetPos()
@@ -95,7 +101,7 @@ void Ingredient::AddColor(float dt)
 {
 	mAccumulateTime += dt;
 	mCapacity -= (dt * 100.0f / 5.f);
-	SceneManager::Get()->GetObj<Potion>("PotionSceneWater")->MixColor(this->GetColor(), mAlpha * mAccumulateTime * 0.05f);
+	SceneManager::Get()->GetObj<Potion>("PotionSceneWater")->MixColor(this->GetColor(), mAlpha * mAccumulateTime);
 }
 
 void Ingredient::UpdateContainerColor()

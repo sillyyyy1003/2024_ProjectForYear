@@ -86,7 +86,7 @@ public:
 	void SetModelScale(const float* scale);
 
 
-	json SaveData();
+	virtual json SaveData();
 	virtual void LoadSaveData(json data, const char* objName);
 	virtual void LoadSaveData(json data);
 
@@ -120,11 +120,11 @@ protected:
 
 	void TriggerListener();
 
-	void PreUpdate(float dt);
+	virtual void PreUpdate(float dt);
 
-	void GameUpdate(float dt);
+	virtual void GameUpdate(float dt);
 
-	void LateUpdate(float dt);
+	virtual void LateUpdate(float dt);
 
 	void UpdateCollider();
 
@@ -135,10 +135,10 @@ protected:
 	bool GetModelStateChange() { return isModelStateChange; };
 
 
-	void OnStateNone();
+	virtual void OnStateNone();
 
-	void OnStateHover();
+	virtual void OnStateHover();
 
-	void OnStateClicked();
+	virtual void OnStateClicked();
 };
 

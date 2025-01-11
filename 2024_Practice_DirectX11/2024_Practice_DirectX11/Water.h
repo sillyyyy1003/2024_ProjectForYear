@@ -82,13 +82,13 @@ public:
 	/// @brief Load Save Data & Init Object Data
 	/// @param data json fileData
 	/// @param objName dataName
-	void LoadSaveData(json data, const char* objName);
+	virtual void LoadSaveData(json data, const char* objName);
 
 	void UpdateColor(DirectX::XMFLOAT4 color);
 
 	/// @brief オブジェクトのデータをjsonファイルに書き込み
 	/// @return 
-	json SaveData();
+	virtual json SaveData();
 
 	void SetTexture(std::shared_ptr<Texture> tex);
 

@@ -1,5 +1,8 @@
 ﻿#include "MissionManager.h"
 
+#include "GameApp.h"
+#include "RenderState.h"
+
 void MissionManager::Init()
 {
 	InitLabMissionPaper();
@@ -112,6 +115,7 @@ void MissionManager::MissionGenerator()
 
 void MissionManager::DrawCurrentMissionSet()
 {
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	for (int i = 0; i < mCurrentMissionSet.size(); i++)
 	{
 		if (mCurrentMissionSet[i].MissionState != Mission::STATE_COMPLETE)
@@ -119,7 +123,7 @@ void MissionManager::DrawCurrentMissionSet()
 			mCurrentLevelMissionPaper[i]->Draw();
 		}
 	}
-
+	GameApp::SetBlendState(nullptr);
 }
 
 void MissionManager::UpdateCurrentMissionSet(float dt)

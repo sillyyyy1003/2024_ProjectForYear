@@ -5,12 +5,11 @@
 #include "IngredientManager.h"
 #include "InteractiveStaticObject.h"
 #include "KInput.h"
-#include "MissionManager.h"
-#include "MissionSamplePaper.h"
 #include "Potion.h"
 #include "RenderState.h"
 #include "SceneManager.h"
 #include "SceneScore.h"
+#include "ScreenFadeEffect.h"
 #include "Sprite.h"
 
 using namespace DirectX;
@@ -21,7 +20,7 @@ void ScenePotion::Init()
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_potion.json");
 	json uiData = LoadSceneData("Assets/Data/SaveDat/ui_config.json");
 	//Init Potion Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0, 10.57f, -4.51f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0, 11.12f, -4.7f);
 	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInDegree(66.6f, 0.f, 0.f);
 #ifdef NDEBUG
 	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
@@ -33,8 +32,7 @@ void ScenePotion::Init()
 	mWater = CreateObj<Potion>("PotionSceneWater");
 	mWater->LoadSaveData(sceneData, "ScenePotionWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-	//mWater->SetTexture(GetObj<Texture>("water"));
-	//mWater->ResetMaterial();
+	mWater->SetTexture(GetObj<Texture>("water"));
 	mWater->SetWaterColor({ 0.4f,0.4f,0.4f,0.3f });
 	mWater->SetTexture(nullptr);
 
@@ -51,6 +49,13 @@ void ScenePotion::Init()
 	mPot->LoadSaveData(sceneData, "Pot");
 	mPot->DisableRimLightEffect();
 
+	mPotTop = std::make_unique<NonDiegeticUI_PotTop>();
+	mPotTop->InitPBRModel("Assets/Model/LabAssets/PotTop.obj", "PotTop");
+	mPotTop->LoadDefShader(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_InterActiveObjectPBRModel"));
+	mPotTop->LoadTex(pbrTexList);
+	mPotTop->LoadSaveData(sceneData);
+	
+
 	mTable = std::make_unique<StaticObject>();
 	mTable->InitModel(GetObj<Texture>("table"), "Table", PrimitiveConfig::SQUARE);
 	mTable->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
@@ -62,11 +67,6 @@ void ScenePotion::Init()
 	mJug->LoadTex(pbrTexList);
 	mJug->LoadSaveData(sceneData);
 
-	mMissionPaper = std::make_unique<MissionSamplePaper>();
-	mMissionPaper->Init(PrimitiveConfig::SQUARE, GetObj<Texture>("paper2"), "MissionPaper");
-	mMissionPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
-	mMissionPaper->LoadSaveData(sceneData);
-	mMissionPaper->SetSampleColor(MissionManager::Get()->GetCurrentMission().MissionColor);
 
 	//Set Water
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
@@ -106,10 +106,15 @@ void ScenePotion::Init()
 	mYellowPotion->LoadSaveData(sceneData);
 	mYellowPotion->SetPigmentColor(HSVtoRGB({ 60,1,0.5f }));
 
-	mCandleLight = std::make_unique<CandleLight>();
-	mCandleLight->Init();
-	mCandleLight->LoadSaveData(sceneData, "CandleLight");
+	mCandleLight1 = std::make_unique<CandleLight>();
+	mCandleLight1->Init();
+	mCandleLight1->LoadSaveData(sceneData, "CandleLight1");
+	mCandleLight1->InitName("CandleLight1");
 
+	mCandleLight2 = std::make_unique<CandleLight>();
+	mCandleLight2->Init();
+	mCandleLight2->LoadSaveData(sceneData, "CandleLight2");
+	mCandleLight2->InitName("CandleLight2");
 	//Shadowに関するRenderTargetを作成
 	InitShadowRenderTarget();
 
@@ -130,8 +135,8 @@ void ScenePotion::UnInit()
 	sceneData["EnvironmentLight"] = GetObj<DirLight>("EnvironmentLight")->SaveData();
 	sceneData["ScenePotionWater"] = mWater->SaveData();
 	sceneData["Pot"] = mPot->SaveData();
+	sceneData["PotTop"] = mPotTop->SaveData();
 	sceneData["Table"] = mTable->SaveData();
-	sceneData["MissionPaper"] = mMissionPaper->SaveData();
 	sceneData["Jug"] = mJug->SaveData();
 
 	sceneData["Reset"] = mResetButton->SaveData ();
@@ -140,7 +145,9 @@ void ScenePotion::UnInit()
 	sceneData["RedPotion"] = mRedPotion->SaveData();
 	sceneData["BluePotion"] = mBluePotion->SaveData();
 	sceneData["YellowPotion"] = mYellowPotion->SaveData();
-	sceneData["CandleLight"] = mCandleLight->SaveData();
+	sceneData["CandleLight1"] = mCandleLight1->SaveData();
+	sceneData["CandleLight2"] = mCandleLight2->SaveData();
+
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_potion.json", sceneData);
 
@@ -155,6 +162,12 @@ void ScenePotion::Update(float dt)
 
 	//Save capacity to player file
 	IngredientManager::Get()->UpdateCapacityData();
+
+	if (ScreenFadeEffect::Get()->GetFadeIn())
+	{
+		if(mNextScene== SceneConfig::SceneIndex::SCENE_TITLE)
+			SceneManager::Get()->SetMainScene("Lab");
+	}
 
 }
 
@@ -183,7 +196,7 @@ void ScenePotion::DrawWithShadow()
 	//Create Shadow 
 	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 	// Create Light View Matrix
-	XMFLOAT3 LPos = mCandleLight->GetCastShadowLightPos();
+	XMFLOAT3 LPos = mCandleLight1->GetCastShadowLightPos();
 	XMFLOAT3 LDir = { 0,0,0 };
 	XMStoreFloat4x4(&LMatrix[1],
 		XMMatrixTranspose(
@@ -196,13 +209,6 @@ void ScenePotion::DrawWithShadow()
 	XMStoreFloat4x4(&LMatrix[2], XMMatrixTranspose(XMMatrixOrthographicLH(
 		20.f, 20.f, 0.1f, 100.f
 	)));
-
-	//Set WVP Matrix
-	/*	DirectX::XMVECTOR scaleVec = XMLoadFloat3(&mScale);
-	DirectX::XMVECTOR quaternion = XMLoadFloat4(&mRotation);
-	DirectX::XMVECTOR positionVec = XMLoadFloat3(&mPos);
-	DirectX::XMMATRIX World = XMMatrixAffineTransformation(scaleVec, g_XMZero, quaternion, positionVec);
-	return World;*/
 
 	shadowPos = { mPot->GetPosition().x,0.0f,mPot->GetPosition().z };
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
@@ -264,8 +270,8 @@ void ScenePotion::DrawWithShadow()
 
 	//Insert PointLight;
 	Light::PointLight pl[2] = {
-		mCandleLight->GetPointLight(),
-		{}
+		mCandleLight1->GetPointLight(),
+		mCandleLight2->GetPointLight()
 	};
 
 	//Set PointLight to pbr shader
@@ -273,8 +279,6 @@ void ScenePotion::DrawWithShadow()
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_InterActiveObjectPBRModel")->WriteShader(1, pl);
 	GetObj<PixelShader>("PS_Ingredient")->WriteShader(1, pl);
-	mTable->SwitchToDefShader();
-	mTable->Draw();
 	mRedPotion->SwitchToDefShader();
 	mRedPotion->Draw();
 	mBluePotion->SwitchToDefShader();
@@ -283,13 +287,14 @@ void ScenePotion::DrawWithShadow()
 	mYellowPotion->Draw();
 	mJug->SwitchToDefShader();
 	mJug->Draw();
-	mMissionPaper->Draw();
+	
 
 	GameApp::SetBlendState(RenderState::BSTransparent);
 	mPot->SwitchToDefShader();
 	mPot->Draw();
+	mPotTop->Draw();
 	mWater->Draw();
-
+	mTable->Draw();
 
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixRotationX(XM_PIDIV2) * XMMatrixScaling(20.f, 20.f, 20.f) * XMMatrixTranslation(0, 0.0, 0)));
@@ -326,39 +331,44 @@ void ScenePotion::InitShadowRenderTarget()
 
 void ScenePotion::GameObjectUpdate(float dt)
 {
+	//Light
+	mCandleLight1->Update(dt);
+	mCandleLight2->Update(dt);
+
+	//水
 	mWater->Update(dt);
+
+	//Table
 	mPot->Update(dt);
+	mPotTop->Update(dt);
+
+	//Table
 	mTable->Update(dt);
+
+	//Potion
 	mRedPotion->Update(dt);
 	mBluePotion->Update(dt);
 	mYellowPotion->Update(dt);
-	mJug->Update(dt);
-	mMissionPaper->Update(dt);
 
+	//Dilute
+	mJug->Update(dt);
+
+	//Button
 	mResetButton->Update();
 	mChargeButton->Update();
 
+	//UI
 	mGoldBar->SetText(GetObj<Player>("player")->GetPlayerGold().c_str());
 	mGoldBar->Update();
 
-	mCandleLight->Update(dt);
 }
 
 void ScenePotion::TriggerListener()
 {
 	if (KInput::IsKeyTrigger(VK_ESCAPE))
 	{
-		if (isSubScene)
-		{
-			RemoveSubScene();//Remove SubScene
-			isSubScene = false;
-		}
-
-		else
-		{
-			SceneManager::Get()->SetSwitchScene(true);
-			SceneManager::Get()->SetMainScene("Lab");
-		}
+		SceneManager::Get()->SetSwitchSceneWithFade(true);
+		mNextScene = SceneConfig::SceneIndex::SCENE_TITLE;
 		return;
 	}
 
@@ -372,10 +382,5 @@ void ScenePotion::TriggerListener()
 		IngredientManager::Get()->ChargeAllIngredient();
 	}
 
-	if(mMissionPaper->GetClicked())
-	{
-		isSubScene = true;
-		//AddSubScene<SceneScore>();
-	}
-
+	
 }

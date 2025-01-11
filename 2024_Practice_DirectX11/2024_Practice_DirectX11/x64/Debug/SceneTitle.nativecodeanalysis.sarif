@@ -7,6 +7,35 @@
         {
           "ruleId": "C26495",
           "message": {
+            "text": "未初始化变量 D2DFont::FontMatrix。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/D2DFont.h"
+                },
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "D2DFont::{ctor}",
+                  "decoratedName": "??0D2DFont@@AEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "D2DFont::FontMatrix"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
             "text": "未初始化变量 SceneManager::mSceneIndex。始终初始化成员变量(type.6)。"
           },
           "locations": [
@@ -16,7 +45,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/SceneManager.h"
                 },
                 "region": {
-                  "startLine": 76,
+                  "startLine": 91,
                   "startColumn": 2
                 }
               },
@@ -31,6 +60,93 @@
           ],
           "properties": {
             "targetSymbol": "SceneManager::mSceneIndex"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 GameApp::mCurrentRenderIndex。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/GameApp.h"
+                },
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "GameApp::{ctor}",
+                  "decoratedName": "??0GameApp@@AEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "GameApp::mCurrentRenderIndex"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 Potion::accumulateValue。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Potion.h"
+                },
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Potion::{ctor}",
+                  "decoratedName": "??0Potion@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Potion::accumulateValue"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 Potion::mColorTransformSpeed。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Potion.h"
+                },
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Potion::{ctor}",
+                  "decoratedName": "??0Potion@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Potion::mColorTransformSpeed"
           }
         },
         {
@@ -104,13 +220,46 @@
       "artifacts": [
         {
           "location": {
+            "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/D2DFont.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "29c8b51ad3f2dd85b2d2bbaae1c9832d9d0af804a52a4bf77972d6bf57e0ee54"
+          }
+        },
+        {
+          "location": {
             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/SceneManager.h"
           },
           "roles": [
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "0badd1f195c7225d856612bad0592c4781b5f9282ce1b6eb6a860d64da05d705"
+            "sha-256": "9ec38c0f83b6ec66722714857d2dad0361bdcb595fa7456ce7fea5b285d769bc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/GameApp.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "d62e052bf681f7a69a2e403519775f1927a7ba53ccee856c308cfefd8fe2ab4f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Potion.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "35385485dab862ea6d359a9bb4c5e875fe57e47883bfdeafddaad014f7ce1e86"
           }
         },
         {
@@ -132,7 +281,7 @@
             "analysisTarget"
           ],
           "hashes": {
-            "sha-256": "a56e31a4973f200c8430762c6378f64039d50f718e7567c5c72e9556c56b687b"
+            "sha-256": "385279405d1ea671bb4d91ea7f8104aa7e41701cd0c4d593aff983a6521d5eef"
           }
         },
         {
@@ -492,7 +641,31 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/scenetitle.h"
           },
           "hashes": {
-            "sha-256": "a48e1d1317fc163e6c0c7547607178b8996c31637333059bdf44b7270fda2915"
+            "sha-256": "ece490d4862817cd2aa07a7e31c6c7ca55a4f25e5aa1fa3cd72375cd9ca6ce22"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/candlelight.h"
+          },
+          "hashes": {
+            "sha-256": "6c4d4d62f1a9f5fa6744958c8ec50d98c7e0b515dcc41ea187b8eb341cae5d92"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/pointlight.h"
+          },
+          "hashes": {
+            "sha-256": "50c6d0fd37f108e50f3decb1ecca80098972d0df77aa0e78ae370c3905e9b9e9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/camerabase.h"
+          },
+          "hashes": {
+            "sha-256": "df887c541c11e8249739ab5f9c85dc74efe9eab2d349796c60687cc85986c2f6"
           }
         },
         {
@@ -500,7 +673,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/scenebase.h"
           },
           "hashes": {
-            "sha-256": "1d24f40fb037cfb177dc0bec5cb76d6c33781a4111f19791eedd42a6887d1e18"
+            "sha-256": "0495d635baa1e1ab0c40700343c57e89418ea126c134669aeb9d5232dcfc28fb"
           }
         },
         {
@@ -508,7 +681,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dutil.h"
           },
           "hashes": {
-            "sha-256": "51a85839a5d0e375e174b0660f4c4a7823b238213ec0a4ff1728221c7acd1ac6"
+            "sha-256": "5e2c32abbec34a3ad6c28be77e7d80e2fb312aac39ea90ad31cd6a28326fccc3"
           }
         },
         {
@@ -561,6 +734,14 @@
         },
         {
           "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/debuglog.h"
+          },
+          "hashes": {
+            "sha-256": "83baf185a67c64e6da246fb06b64ced0ed23caf25727cb881baba6f7bb9defd0"
+          }
+        },
+        {
+          "location": {
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/dxtrace.h"
           },
           "hashes": {
@@ -572,7 +753,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/mesh.h"
           },
           "hashes": {
-            "sha-256": "055b0565bd7706880bcd500504314b527bb18549a90734b4b3574855b876eea1"
+            "sha-256": "2677882916b19d27c7d74701be28c58563a499363c0460add070ed1606e2fd6e"
           }
         },
         {
@@ -580,7 +761,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dapp.h"
           },
           "hashes": {
-            "sha-256": "e1ece4097ea540b90327d7f5758670a47fb8e11db8038834a298c7f4d9ee17db"
+            "sha-256": "6ac9cff953d792c3c2c298afb35034d08662a82e33bf71ec324792052ca06fc1"
           }
         },
         {
@@ -596,7 +777,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/texture.h"
           },
           "hashes": {
-            "sha-256": "1ce1d7b257ff420a154f6b116b1f48d485e6c65acbfbc6b2f3cd6d931a5bb132"
+            "sha-256": "c3db3589969ff37dc5afd6aed86d30cc07b328273c85b2661cdb814e42c2acb6"
           }
         },
         {
@@ -617,26 +798,26 @@
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/debuglog.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
           },
           "hashes": {
-            "sha-256": "17eb90f846497fd389d755660e53325aa0d48b74683f3d0652f5810325ca4de8"
+            "sha-256": "8493da1cccb5c88fbbfb1d7b3ce54508d715519279ddc6c12b5a776191837b33"
           }
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/uibutton.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/lightbase.h"
           },
           "hashes": {
-            "sha-256": "45f7013f02950c5d8d4c8d172d66a1da0eacda52f70288792e389c3cd5766f1d"
+            "sha-256": "7c11842f6349c82aad965695f8b8b666f85a83187bd5de0f9d90c0e2b420aac8"
           }
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_primitive.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/sphere.h"
           },
           "hashes": {
-            "sha-256": "c821369374d8a92d7dcec8d1e7022cfc8dd579955eebe64554fd4f2b4cf87883"
+            "sha-256": "41b0512933ca741d2c915f69b71bb85f8ed147f06ac423b8229a832d1d776deb"
           }
         },
         {
@@ -644,15 +825,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/primitive.h"
           },
           "hashes": {
-            "sha-256": "fd5afa7cc6a481b3aae54cc23516327482578a183d8b99dfa66a769903d145f8"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
-          },
-          "hashes": {
-            "sha-256": "296ca8c3c905debba895dfbd4d1025089088e814b6b4a8fa245f492eb5923a3c"
+            "sha-256": "543bad8a8e652735ffc96e5ccfb2c23766f4d6c35fd50fdb2c5457f0410b5d53"
           }
         },
         {
@@ -660,7 +833,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/shader.h"
           },
           "hashes": {
-            "sha-256": "1fea4cfbdfec99a183ec834ea62feb2709a1c3212742e4a551771996ddeb97a4"
+            "sha-256": "714f5629f41e4e7e412edae5cb4b119e0015615624e5b106bec350b8f7b99a6a"
           }
         },
         {
@@ -668,31 +841,39 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/uvanimation.h"
           },
           "hashes": {
-            "sha-256": "20ae8a22433a0e4c0a231b797fc4c3381f37c193717234f351826aa816fec413"
+            "sha-256": "8eebcfd4a0795509ad2c6c1e14e62539620b9286ee6d804d65a87aa4055b7412"
           }
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_square.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2d_uistackcontainer.h"
           },
           "hashes": {
-            "sha-256": "f067803b17922bef5372611329b47213ea1a40c6ec1457357e70b366a5eef18a"
+            "sha-256": "6aacff9ba23d4bdf88f55e6668061f7c86d0d1a14c9593f3f9467c0e5ab2b0ec"
           }
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/uifont.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2d_uibase.h"
           },
           "hashes": {
-            "sha-256": "b58e2078d910f849066ce410e032eb4023836ce3256614404805b2adef76fd60"
+            "sha-256": "6d38fdc94f16a2f1ee477deb1de452c8bcc391314beb56a543edb44a91b084dc"
           }
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/camerabase.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2dbrush.h"
           },
           "hashes": {
-            "sha-256": "57bdb7d7fde602140a415956807dc50a968acff55cf2827f74b638f948947131"
+            "sha-256": "bd5dd4fb841c5e272cad6adcb086cd822270cb27ff718c5e3ddcb8c426a5bb68"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_font.h"
+          },
+          "hashes": {
+            "sha-256": "6a4d840001ed8274735d9ad2be0fce5db95a3e8c96018a2ef0b67307be4e72df"
           }
         },
         {
@@ -700,7 +881,87 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/square.h"
           },
           "hashes": {
-            "sha-256": "4ea8ef5f6626614f0b88ff9d1262ffdf77bb6db0303527e27e6fc80b7d4f2ec8"
+            "sha-256": "75bf0f19eb63f0a2f8786ac407a4dcc388384c5e108fa7280817b031cfe65fa9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_square.h"
+          },
+          "hashes": {
+            "sha-256": "538e59de55c20f2f5a134bf5057b37b3d04e6ac39050821d70b6f01936f70017"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_primitive.h"
+          },
+          "hashes": {
+            "sha-256": "2fd62dde5f2de79a77e5d81c8c2f95b8087d04a18e6aa5c4a4e3dda8db158d1a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/water.h"
+          },
+          "hashes": {
+            "sha-256": "57e5cb44f5efdf8a5c1a0816aba6df3ee365a65ca801ecf68f4b0a99adb2c709"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/circle.h"
+          },
+          "hashes": {
+            "sha-256": "5431e0ce8501e11c19cd31cdc894fd474253a8627983f050b9a06fda9d8134e8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/waterstate.h"
+          },
+          "hashes": {
+            "sha-256": "bf42ca2cbc3738c30442f34799f2dc5c1b61b8a3cecff6ffbb0a1529a0a140e3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/fastnoise/fastnoiselite.h"
+          },
+          "hashes": {
+            "sha-256": "47a29750dfe13d15651febd235f3c26b1cc57af7c6e26583b838fd7ab5215dc2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/player.h"
+          },
+          "hashes": {
+            "sha-256": "e45bc17140b8b2966a4853d22bfacc74ee9f1a3504edfd3b7bc86538f931c90a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/uibutton.h"
+          },
+          "hashes": {
+            "sha-256": "9f017f489b78d245e0c3979cbb75fd979f2cf60f98647df75658b7b4959c943b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui_button.h"
+          },
+          "hashes": {
+            "sha-256": "b126440803b438697170483ca9ac222319e5fb0fea7be7f2bff7fc7f55381223"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/uistackcontainer.h"
+          },
+          "hashes": {
+            "sha-256": "16ef4925e658a83c40f900cd7e16a9ca5e24b5729dcead668478f14f04b570b9"
           }
         },
         {
@@ -708,7 +969,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/firstpersoncamera.h"
           },
           "hashes": {
-            "sha-256": "4e47f38eb258b346c45edf714bed461d9c0f41e899295830c47a13b95f875fa5"
+            "sha-256": "92e4e91c54396e28068aec576683a93517e916a0463b2d008ef2620fa24e7226"
           }
         },
         {
@@ -716,7 +977,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/model.h"
           },
           "hashes": {
-            "sha-256": "74cf8d22b36acb3796c7622a8e96d2568727724c79aef65b907e06f8edcec356"
+            "sha-256": "2f59a16a01775b1283ae7c3ec35f474fc88d2a03f483bb88102580caaee49e9f"
           }
         },
         {
@@ -969,98 +1230,10 @@
         },
         {
           "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/pbrmodel.h"
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/screenfadeeffect.h"
           },
           "hashes": {
-            "sha-256": "ba5d81f412d21baeb81ec4b54867f7977fbb603269f469437ae06a94a50f3d01"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/cube.h"
-          },
-          "hashes": {
-            "sha-256": "7cc3d5537d6210c249396467c394e40d4e814294c377d80cd035dc2f60038d30"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/scenegame.h"
-          },
-          "hashes": {
-            "sha-256": "c9458c24609e7cbf469acc6571260a6bcfeb48b72751c1c3ed5cc38551302a45"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ingredient.h"
-          },
-          "hashes": {
-            "sha-256": "65e2354f404315e5463f7575c7caa7a9f3bfc56ba2fae43607be2f52c5f240d5"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/object.h"
-          },
-          "hashes": {
-            "sha-256": "a30a84b24bb52d03313b3dcd17ec403b17dec37119e5a9c6db8af8e63ffe8e36"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/collider.h"
-          },
-          "hashes": {
-            "sha-256": "755d1acfa76b06ac2a1fef879159bb266a762ef2ce0f729ad66002feecc556b6"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/ui2d.h"
-          },
-          "hashes": {
-            "sha-256": "af89d3ebbb5c3e02bf593c57d5b4e4ea255981ab1a6c2c3dac09dbda837646a9"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2dbrush.h"
-          },
-          "hashes": {
-            "sha-256": "f55e6705a1356e2a61e996331db76b25f5ef593dc10d818f87c3a414f1ad8ba6"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/water.h"
-          },
-          "hashes": {
-            "sha-256": "1e54a1937cf630066128d1739d83f95be52aaf7c83bf581374d58e564a8700f0"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/circle.h"
-          },
-          "hashes": {
-            "sha-256": "49128a467f141ac3ad4c1bb9112df90e44ee686276ed7983681b22da6936d101"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/waterstate.h"
-          },
-          "hashes": {
-            "sha-256": "db2a86b60dc88690afe19b442cabf85507bfecaec7ac4893e28b213854a0c99a"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/fastnoise/fastnoiselite.h"
-          },
-          "hashes": {
-            "sha-256": "47a29750dfe13d15651febd235f3c26b1cc57af7c6e26583b838fd7ab5215dc2"
+            "sha-256": "45f6870efc28ab46b5c64ece91be5a9779ad24fb94bdf8ab01834948355bb125"
           }
         }
       ]

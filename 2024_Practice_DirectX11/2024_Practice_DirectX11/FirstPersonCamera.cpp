@@ -2,19 +2,9 @@
 
 #include "GUI.h"
 #include "KInput.h"
+#include "RandomGenerator.h"
 using namespace DirectX;
 
-enum CameraKind
-{
-    /// No Interaction
-    CAM_NONE,
-    /// MOVE FREE
-    CAM_FREE,
-    /// カメラをロックする
-    CAM_LOCK,
-    /// 補間でカメラ移動
-    CAM_MOVE,
-};
 
 void FirstPersonCamera::Update(float dt)
 {
@@ -60,17 +50,21 @@ void FirstPersonCamera::Update(float dt)
 void FirstPersonCamera::SetPosition(float x, float y, float z)
 {
     CameraBase::SetPos(XMFLOAT3(x, y, z));
+    mDefaultPos = { x,y,z };
 }
 
 void FirstPersonCamera::SetPosition(const XMFLOAT3& pos)
 {
     CameraBase::SetPos(pos);
+    mDefaultPos = pos;
 }
 
 void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up)
 {
     mTransform.SetPosition(pos);
     mTransform.LookAt(target, up);
+
+	mDefaultPos = pos;
 }
 
 void FirstPersonCamera::LookAt(const DirectX::XMFLOAT3& target)
@@ -84,7 +78,8 @@ void FirstPersonCamera::LookTo(const XMFLOAT3& pos, const XMFLOAT3& to, const XM
 {
     mTransform.SetPosition(pos);
     mTransform.LookTo(to, up);
-
+    //揺らす位置を設定する
+    mDefaultPos = pos;
 }
 
 void FirstPersonCamera::Strafe(float d)
@@ -212,14 +207,26 @@ void FirstPersonCamera::ZoomIn(float dt)
     }
 }
 
+void FirstPersonCamera::SetCameraState(FirstPersonCamera::CameraKind state)
+{
+    mState = state;
+}
+
 
 void FirstPersonCamera::UpdateState()
 {
-    //移動状態の場合
+    //Zoom in の場合
     if (isMoveToTarget)
     {
         mState = CAM_MOVE;
-    	return;
+        return;
+    }
+
+    //カメラ揺れの場合
+    if(isShaking)
+    {
+        mState = CAM_SHAKE;
+        return;
     }
 
     // 操作の場合
@@ -283,26 +290,30 @@ void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
         gD3D->SetMoveUnit(0);
     }
 
-
-
 }
 
 void FirstPersonCamera::UpdateMove(float dt)
 {
-    /*
+    ZoomIn(dt);
+}
+
+void FirstPersonCamera::UpdateShake(float dt)
+{
     if (mAccumulateTime <= mDuration)
     {
+        //累積時間
         mAccumulateTime += dt;
-        Pitch(dt * mRotateSpeed);
-        mTransform.Translate(mDirection, mMoveSpeed * dt);
-      
-    }else
+
+        //乱数取得
+        float xRandom = RandomGenerator::Get()->RandomFloat();
+        
+        
+    }
+    else
     {
         //運動停止
         isMoveToTarget = false;
         //時間リセット
         mAccumulateTime = 0.0f;
-    }*/
-    ZoomIn(dt);
-  
+    }
 }

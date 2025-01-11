@@ -73,7 +73,7 @@ float3 PointLightCal(PointLight pointLight, float3 pos, float3 normal, float3 to
 
 float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 {
-	float4 color = float4(0, 0, 0, 0);
+	float4 color = float4(0, 0, 0, 1.f);
 
 	if (material.isTexEnable)
 	{
@@ -86,8 +86,13 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 
 	}
 
-
+	
 	float3 N = normalize(pin.normal);
+	if (!frontFace)
+	{
+		N = -N;
+	}
+
 
 	float3 toEye = normalize(-cameraPos.xyz);
 
@@ -120,6 +125,9 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	float4 litColor = color;
 
 	litColor.a = (pin.worldPos.y <= height) ? 1.0f: 0.8f;
-
+	if (!frontFace)
+	{
+		litColor.rgb *= float3(0.9f, 0.9f, 0.9f);
+	}
 	return litColor;
 }

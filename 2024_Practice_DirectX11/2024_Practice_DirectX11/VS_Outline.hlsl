@@ -27,7 +27,7 @@ VS_OUT main(VS_IN vin)
 
 	vout.pos = float4(vin.pos, 1.f);
 
-	vout.pos.xy += normalize(vin.normal) * 0.5f;
+	vout.pos.xy += normalize(vin.normal.xy) * 0.5f;
 	vout.pos = mul(vout.pos, world);
 	vout.pos = mul(vout.pos, view);
 	vout.pos = mul(vout.pos, proj);

@@ -17,7 +17,7 @@ enum ObjectState
 	STATE_NONE = 0,
 	STATE_HOVER = 1,
 	STATE_CLICK = 2,
-	STATE_MAX = 99
+	STATE_MAX
 };
 
 using namespace DirectX;
