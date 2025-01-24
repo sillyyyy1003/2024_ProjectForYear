@@ -190,35 +190,22 @@ void SceneManager::InitModelTexture()
 	Texture* fadeOverlay = CreateObj<Texture>("Fade").get();
 	HR(fadeOverlay->Create("Assets/Texture/ScreenOverlay/Fade.png"));
 
+	Texture* whiteTex = CreateObj<Texture>("whiteTex").get();
+	HR(whiteTex->Create("Assets/Texture/whiteTex.png"));
 
-	//Close Book
-	/*closeBookRedAlbedoTexture = CreateObj<Texture>("closeBookRedAlbedo");
-	HR(closeBookRedAlbedoTexture->Create("Assets/Model/Book/book_close_book_close_BaseColor.1001_00.png"));
+	Texture* whiteGradation = CreateObj<Texture>("WhiteGradation").get();
+	HR(whiteGradation->Create("Assets/Texture/ScreenOverlay/Gradation.png"));
 
-	closeBookBlueAlbedoTexture = CreateObj<Texture>("closeBookBlueAlbedo");
-	HR(closeBookBlueAlbedoTexture->Create("Assets/Model/Book/book_close_book_close_BaseColor.1001.png"));
+	Texture* potionTex = CreateObj<Texture>("PotionParticle").get();
+	HR(potionTex->Create("Assets/Texture/Particle/particle.dds"));
 
-	closeBookNormalTexture = CreateObj<Texture>("closeBookNormal");
-	HR(closeBookNormalTexture->Create("Assets/Model/Book/book_close_book_close_Normal.1001.png"));
-
-	closeBookMetallicTexture = CreateObj<Texture>("closeBookMetallic");
-	HR(closeBookMetallicTexture->Create("Assets/Model/Book/book_close_book_close_Roughness.1001.png"));*/
-
-	//Open Book
-	//openBookRedAlbedoTexture = CreateObj<Texture>("openBookRedAlbedo");
-	//HR(openBookRedAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_BaseColor.1001_00.png"));
-
-	//openBookBlueAlbedoTexture = CreateObj<Texture>("openBookBlueAlbedo");
-	//HR(openBookBlueAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_BaseColor.1001_01.png"));
-
-	//openBookNormalTexture = CreateObj<Texture>("openBookNormal");
-	//HR(openBookBlueAlbedoTexture->Create("Assets/Model/Book/book_open_book_open_Normal.1001.png"));
-
-	//openBookMetallicTexture = CreateObj<Texture>("openBookMetallic");
-	//HR(openBookMetallicTexture->Create("Assets/Model/Book/book_open_book_open_Roughness.1001.png"));
+	Texture* fireTex = CreateObj<Texture>("FireParticle").get();
+	HR(fireTex->Create("Assets/Texture/Particle/flare0.dds"));
 
 	tableTexture = CreateObj<Texture>("table");
 	HR(tableTexture->Create("Assets/Texture/Lab/worn_planks_diff_1k.jpg"));
+
+
 
 }
 
@@ -249,8 +236,6 @@ void SceneManager::LoadPixelShaderFile()
 	PS_WriteDepth = CreateObj<PixelShader>("PS_WriteDepth");
 	PS_WriteDepth->LoadShaderFile("Assets/Shader/PS_WriteDepth.cso");
 
-	PS_pbrBaseColor = CreateObj<PixelShader>("PS_OpenGLBaseColorModel");
-	PS_pbrBaseColor->LoadShaderFile("Assets/Shader/PS_OpenGLBaseColorModel.cso");
 
 	PixelShader* PS_water = CreateObj<PixelShader>("PS_Water").get();
 	PS_water->LoadShaderFile("Assets/Shader/PS_Water.cso");
@@ -261,7 +246,11 @@ void SceneManager::LoadPixelShaderFile()
 	PixelShader* PS_Ingredient = CreateObj<PixelShader>("PS_Ingredient").get();
 	PS_Ingredient->LoadShaderFile("Assets/Shader/PS_Ingredient.cso");
 
+	PixelShader* PS_ParticleInstance = CreateObj<PixelShader>("PS_ParticleInstance").get();
+	PS_ParticleInstance->LoadShaderFile("Assets/Shader/PS_ParticleInstance.cso");
 
+	PixelShader* PS_WhiteOut = CreateObj<PixelShader>("PS_WhiteOut").get();
+	HR(PS_WhiteOut->LoadShaderFile("Assets/Shader/PS_WhiteOut.cso"));
 }
 
 void SceneManager::LoadVertexShaderFile()

@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <memory>
 #include <FastNoise/FastNoiseLite.h>
 #include "d3dApp.h"
 #include "SceneManager.h"

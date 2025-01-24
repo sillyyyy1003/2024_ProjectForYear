@@ -10,14 +10,14 @@ void MissionManager::Init()
 
 void MissionManager::InitLabMissionPaper()
 {
-	/*mCurrentLevelMissionPaper.resize(3);*/
+	
 	missionPaper1 = std::make_unique<InteractiveStaticObject>();
 	missionPaper2 = std::make_unique<InteractiveStaticObject>();
 	missionPaper3 = std::make_unique<InteractiveStaticObject>();
 
-	missionPaper1->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper1");
-	missionPaper2->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper2");
-	missionPaper3->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper3");
+	missionPaper1->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper1",2);
+	missionPaper2->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper2", 2);
+	missionPaper3->Init(PrimitiveConfig::SQUARE, SceneManager::Get()->GetObj<Texture>("paper2"), "Paper3", 2);
 
 	missionPaper1->LoadDefShader(SceneManager::Get()->GetObj<VertexShader>("VS_Primitives"),SceneManager::Get()->GetObj<PixelShader>("PS_InteractiveObjectNormal"));
 	missionPaper2->LoadDefShader(SceneManager::Get()->GetObj<VertexShader>("VS_Primitives"), SceneManager::Get()->GetObj<PixelShader>("PS_InteractiveObjectNormal"));
@@ -128,6 +128,14 @@ void MissionManager::DrawCurrentMissionSet()
 
 void MissionManager::UpdateCurrentMissionSet(float dt)
 {
+	////もし現在のミッションが完成されたら
+	//if (mCurrentMissionIndex != -1)
+	//{
+	//	if (mCurrentMissionSet[mCurrentMissionIndex].MissionState == Mission::STATE_COMPLETE)
+	//		mCurrentMissionIndex = -1;
+	//}
+
+	//描画の部分
 	for (int i = 0; i < mCurrentMissionSet.size(); i++)
 	{
 		if (mCurrentMissionSet[i].MissionState != Mission::STATE_COMPLETE)
@@ -148,10 +156,42 @@ bool MissionManager::MissionPaperGetClicked()
 	{
 		if(mCurrentLevelMissionPaper[i]->GetClicked())
 		{
+			mPreviousMissionIndex = mCurrentMissionIndex;
 			mCurrentMissionIndex = i;
 			return true;
 		}
 	}
 
 	return false;
+}
+
+bool MissionManager::HasNewCurrentMission()
+{
+	if (mPreviousMissionIndex != mCurrentMissionIndex)
+	{
+		mPreviousMissionIndex = mCurrentMissionIndex;
+		return true;
+		
+	}else
+	{
+		return false;
+	}
+}
+
+bool MissionManager::HasCurrentMission()
+{
+	if (mCurrentMissionIndex == -1)
+		return false;
+	else
+		return true;
+}
+
+void MissionManager::CompleteCurrentMission()
+{
+	//進行中のミッションがある場合
+	if(HasCurrentMission())
+	{
+		//ミッション状態を変更
+		mCurrentMissionSet[mCurrentMissionIndex].MissionState = Mission::STATE_COMPLETE;
+	}
 }

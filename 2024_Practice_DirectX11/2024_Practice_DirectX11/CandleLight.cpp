@@ -24,7 +24,9 @@ void CandleLight::Init()
 
 void CandleLight::InitName(const char* name)
 {
+#ifdef _DEBUG
 	this->name = name;
+#endif
 }
 
 void CandleLight::Update(float dt)
@@ -75,17 +77,18 @@ void CandleLight::CandleLightShaking(float dt)
     static float time = 0;
     time += dt;
 
+	//パーリンノイズを位置に導入
 	Vector3 basePos = GetPosition();
-    float flickerX = GameApp::GetNoise().GetNoise(time, 0.0f) * 0.15f; // X 方向偏移
-    float flickerY = GameApp::GetNoise().GetNoise(time, 1.0f) * 0.05f; // Y 方向偏移
-    float flickerZ = GameApp::GetNoise().GetNoise(time, 2.0f) * 0.15f; // Z 方向偏移
+    float flickerX = GameApp::GetNoise().GetNoise(time, 0.0f) * 0.15f; // X 方向
+    float flickerY = GameApp::GetNoise().GetNoise(time, 1.0f) * 0.05f; // Y 方向
+    float flickerZ = GameApp::GetNoise().GetNoise(time, 2.0f) * 0.15f; // Z 方向
 
-	// 动态调整范围
+	// 光の範囲を取得
     float baseRange = GetRange();
 
-    // 动态调整亮度
+    // ライトの強度にノイズ入れ
     float baseIntensity = GetAttenuation().x;
-    float intensityFlicker = GameApp::GetNoise().GetNoise(time, 4.0f) * 0.15f; // 添加轻微变化
+    float intensityFlicker = GameApp::GetNoise().GetNoise(time, 4.0f) * 0.15f;
   
     mCandleLight.ambient = GetAmbient();
     mCandleLight.diffuse = GetDiffuse();

@@ -80,12 +80,11 @@ float D3DApp::AspectRatio()const
 
 int D3DApp::Run()
 {
-
     MSG msg = {};
     mTimer.Reset();
     timeBeginPeriod(1);
     mTimer.mOldTime = timeGetTime();
- 
+  
     while (msg.message != WM_QUIT)
     {
         if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))

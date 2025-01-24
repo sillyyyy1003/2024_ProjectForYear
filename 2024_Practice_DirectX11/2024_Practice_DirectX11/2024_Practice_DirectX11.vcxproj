@@ -161,6 +161,7 @@
     <ClCompile Include="D2D_UIStackContainer.cpp" />
     <ClCompile Include="D2D_UIRect.cpp" />
     <ClCompile Include="D2D_UIRoundedRect.cpp" />
+    <ClCompile Include="FireEffect.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientManager.cpp" />
@@ -168,12 +169,14 @@
     <ClCompile Include="MissionManager.cpp" />
     <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="MissionSamplePaper.cpp" />
+    <ClCompile Include="MovableStaticObject.cpp" />
     <ClCompile Include="NonDiegeticUI_PotTop.cpp" />
-    <ClCompile Include="Paper.cpp" />
     <ClCompile Include="ParticleEffect.cpp" />
     <ClCompile Include="ParticleMesh.cpp" />
     <ClCompile Include="Potion.cpp" />
+    <ClCompile Include="PotionEffect.cpp" />
     <ClCompile Include="RandomGenerator.cpp" />
+    <ClCompile Include="ResultManager.cpp" />
     <ClCompile Include="SceneScore.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
@@ -247,6 +250,7 @@
     <ClInclude Include="D2D_UIStackContainer.h" />
     <ClInclude Include="D2D_UIRect.h" />
     <ClInclude Include="D2D_UIRoundedRect.h" />
+    <ClInclude Include="FireEffect.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientManager.h" />
@@ -254,12 +258,14 @@
     <ClInclude Include="MissionManager.h" />
     <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="MissionSamplePaper.h" />
+    <ClInclude Include="MovableStaticObject.h" />
     <ClInclude Include="NonDiegeticUI_PotTop.h" />
-    <ClInclude Include="Paper.h" />
     <ClInclude Include="ParticleEffect.h" />
     <ClInclude Include="ParticleMesh.h" />
     <ClInclude Include="Potion.h" />
+    <ClInclude Include="PotionEffect.h" />
     <ClInclude Include="RandomGenerator.h" />
+    <ClInclude Include="ResultManager.h" />
     <ClInclude Include="SceneScore.h" />
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
@@ -403,6 +409,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="PS_WhiteOut.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="PS_WriteDepth.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

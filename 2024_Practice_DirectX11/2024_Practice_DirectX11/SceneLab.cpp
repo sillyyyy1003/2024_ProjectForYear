@@ -5,6 +5,7 @@
 #include "IngredientManager.h"
 #include "KInput.h"
 #include "MissionManager.h"
+#include "MovableStaticObject.h"
 #include "RenderState.h"
 #include "ScenePotion.h"
 #include "SceneMission.h"
@@ -131,6 +132,13 @@ void SceneLab::Init()
 	leftStaticObjList[Candle5->GetObjectName()] = Candle5;
 	leftStaticObjList[Candle6->GetObjectName()] = Candle6;
 
+	//Load Window Model
+	mWindow = std::make_unique<StaticObject>();
+	mWindow->InitModel("Assets/Model/Window/Window.obj", "Window",PrimitiveConfig::MULTI);
+	mWindow->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mWindow->LoadSaveData(sceneData);
+
+
 	mRedPotion = std::make_unique<Ingredient>();
 	mRedPotion->InitModel("Assets/Model/Potion4.obj", "RedPotion", PrimitiveConfig::MULTI, { 1,1 });
 	mRedPotion->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
@@ -154,9 +162,9 @@ void SceneLab::Init()
 
 	//Potionのキャパシティを設定する
 	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
-	mRedPotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::RED));
-	mBluePotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::BLUE));
-	mYellowPotion->SetCapacity(GetObj<Player>("player")->GetCapacities(PlayerConfig::YELLOW));
+	mRedPotion->SetCapacity(player->GetCapacities(PlayerConfig::RED));
+	mBluePotion->SetCapacity(player->GetCapacities(PlayerConfig::BLUE));
+	mYellowPotion->SetCapacity(player->GetCapacities(PlayerConfig::YELLOW));
 
 	mTable = std::make_unique<Square>();
 	mTable->Init(GetObj<Texture>("table"), 0);
@@ -165,7 +173,7 @@ void SceneLab::Init()
 	mTable->SetPosition(0.f, -0.01f, 0.0f);
 
 	mWall = std::make_unique<StaticObject>();
-	mWall->InitModel("Assets/Texture/brown-cement-concrete_base_1k.jpg", "Wall", PrimitiveConfig::SQUARE);
+	mWall->InitModel("Assets/Texture/brown-cement-concrete_base_1k.jpg", "Wall", PrimitiveConfig::SQUARE,2);
 	mWall->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mWall->LoadSaveData(sceneData);
 
@@ -176,21 +184,28 @@ void SceneLab::Init()
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_BOILING);
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
 	
-	mPaperOnTable = std::make_unique<InteractiveStaticObject>();
-	mPaperOnTable->Init(PrimitiveConfig::SQUARE, GetObj<Texture>("paper4"), "PaperOnTable");
-	mPaperOnTable->LoadSaveData(sceneData);
-	mPaperOnTable->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
-	mPaperOnTable->SetRimLightColor({ 0.2f,0.2f,0.2f,0.2f });
 
-	mSplash = std::make_unique<StaticObject>();
+	mMissionPaper = std::make_unique<MovableStaticObject>();
+	mMissionPaper->InitModel(GetObj<Texture>("paper4"), "MissionPaper", PrimitiveConfig::SQUARE, 4);
+	mMissionPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mMissionPaper->LoadSaveData(sceneData);
+
+
+	mSplash = std::make_unique<MovableStaticObject>();
 	mSplash->InitModel(GetObj<Texture>("splash"), "SplashOnTable", PrimitiveConfig::SQUARE);
 	mSplash->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
 	mSplash->LoadSaveData(sceneData);
 
+	mEnvelope = std::make_unique<MovableStaticObject>();
+	mEnvelope->InitModel("Assets/Texture/Envelope.png", "Envelope",PrimitiveConfig::SQUARE, 4);
+	mEnvelope->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mEnvelope->LoadSaveData(sceneData);
+	
 
 	mText = std::make_unique<D2D_UIStackContainer>();
 	mText->Init(D2DUIConfig::UIShape::RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "TextOnPaper");
 	mText->SetUIState(D2DUIConfig::STATE_USE_FONT);
+	mText->LoadSaveData(sceneData["TextOnPaper"]);
 
 	//UI
 	mGoldBar = std::make_unique<D2D_UIStackContainer>();
@@ -232,9 +247,13 @@ void SceneLab::UnInit()
 	sceneData["CandleLight1"] = mCandleLight1->SaveData();
 	sceneData["CandleLight2"] = mCandleLight2->SaveData();
 	sceneData["Wall"] = mWall->SaveData();
-	sceneData["PaperOnTable"] = mPaperOnTable->SaveData();
+	sceneData["Window"] = mWindow->SaveData();
+	sceneData["MissionPaper"] = mMissionPaper->SaveData();
 
-	sceneData["TextOnTable"] = mText->SaveData();
+
+	sceneData["Envelope"] = mEnvelope->SaveData();
+
+	sceneData["TextOnPaper"] = mText->SaveData();
 	sceneData["SplashOnTable"] = mSplash->SaveData();
 
 	sceneData["RedPotion"] = mRedPotion->SaveData();
@@ -244,6 +263,7 @@ void SceneLab::UnInit()
 	sceneData["GoldBar"] = mGoldBar->SaveData();
 
 	sceneData["PotTop"] = mPotTop->SaveData();
+	
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json",sceneData);
 #endif
@@ -294,8 +314,10 @@ void SceneLab::Draw()
 
 	mGoldBar->Draw();
 	
-	if(isCheckMission)mText->Draw();
-
+	if (isCheckMission)
+	{
+		mText->Draw();
+	}
 	TutorialManager::Get()->Draw();
 
 }
@@ -315,6 +337,7 @@ void SceneLab::GameObjectUpdate(float dt)
 
 	//StaticObject
 	mWall->Update(dt);
+	mWindow->Update(dt);
 
 	for(const auto& staticObj:leftStaticObjList)
 	{
@@ -339,11 +362,21 @@ void SceneLab::GameObjectUpdate(float dt)
 	mGoldBar->Update(dt);
 
 	//紙の部分
-	mPaperOnTable->Update(dt);
+	mMissionPaper->Update(dt);
 	mText->Update(dt);
-	mSplash->SetDiffuseColor(MissionManager::Get()->GetCurrentMission().MissionColor);
-	mSplash->Update(dt);
+	mEnvelope->Update(dt);
 
+	//今のミッションの情報
+	if(MissionManager::Get()->HasCurrentMission())
+	{
+		//色を示す
+		mSplash->SetDiffuseColor(MissionManager::Get()->GetCurrentMission().MissionColor);
+		mSplash->Update(dt);
+
+		//文字情報をUIにわたす
+		mText->SetText(MissionManager::Get()->GetCurrentMission().MissionContent.c_str());
+
+	}
 	
 	
 }
@@ -376,12 +409,113 @@ void SceneLab::TriggerListener()
 	//Move to Mission Scene
 	if(MissionManager::Get()->MissionPaperGetClicked())
 	{
-		GetObj<FirstPersonCamera>("DefaultCamera")->StartMoveToTarget(mPaperOnTable->GetPosition() + DirectX::XMFLOAT3(0, 4., -1.6f), { 1.2f,0.f,0.f }, 1.f);
+		//紙の真上にする
+		GetObj<FirstPersonCamera>("DefaultCamera")->StartMoveToTarget({-5.f,4.3f,1.f}, { XM_PIDIV2-0.01f,0.f,0.f }, 1.f);
 		isCheckMission = true;
-		
+
+		//オブジェクトの位置を移動させる
+		if (MissionManager::Get()->HasNewCurrentMission())
+		{
+			//動作に関するパラメータを設定
+			mEnvelope->SetWalk({ 5.f,0.0f,-4.f }, 0.5f, { -10.f,0.1f,5.f }, EaseOut::MODE_CIRC, ObjectMovement::AxisZ);
+			//オブジェクトを隠す
+			mEnvelope->SetPosition({ 0.0, -1.f, 0.0f });
+
+			//動作に関するパラメータを設定
+			mMissionPaper->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.99f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			//オブジェクトを隠す
+			mMissionPaper->SetPosition({ 0.0, -1.f, 0.0f });
+
+			//ミッション色を示す
+			mSplash->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.98f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			mSplash->SetPosition({ 0.0, -1.f, 0.0f });
+
+			isTextActiveDelay=true;
+
+		}
 	}
 
+	/*
+	//カメラが移動開始？
+	if (GetObj<FirstPersonCamera>("DefaultCamera")->IsStartMove())
+	{
+		if (MissionManager::Get()->HasNewCurrentMission())
+		{
+			//動作に関するパラメータを設定
+			mEnvelope->SetWalk({ 5.f,0.0f,-4.f }, 0.5f, { -10.f,0.1f,5.f }, EaseOut::MODE_CIRC, ObjectMovement::AxisZ);
+			//オブジェクトを隠す
+			mEnvelope->SetPosition({0.0, -1.f, 0.0f});
 
+			//動作に関するパラメータを設定
+			mMissionPaper->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.99f }, { 0.f,0,0 }, { -90.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			//オブジェクトを隠す
+			mMissionPaper->SetPosition({ 0.0, -1.f, 0.0f });
+
+			//ミッション色を示す
+			mSplash->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.98f }, { 0.f,0,0 }, { -90.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			mSplash->SetPosition({ 0.0, -1.f, 0.0f });
+
+		}		
+	}
+	
+	//紙や封筒の状態遷移
+	if (GetObj<FirstPersonCamera>("DefaultCamera")->IsEndMove())
+	{
+		if (isCheckMission)
+		{	//移動を有効する
+			mEnvelope->SetMoveState(mEnvelope->GetNextState());
+			mMissionPaper->SetMoveState(mMissionPaper->GetNextState());
+			mSplash->SetMoveState(mMissionPaper->GetNextState());
+
+			//新しいミッションの場合
+			mText->InitEmergingFunc(1.0f);
+		}
+	}
+	*/
+
+	//ミッションをチェックする時
+	if (isCheckMission)
+	{
+		//カメラ移動終了後
+		if (GetObj<FirstPersonCamera>("DefaultCamera")->IsEndMove())
+		{
+			//移動を有効する
+			mEnvelope->SetMoveState(mEnvelope->GetNextState());
+			mMissionPaper->SetMoveState(mMissionPaper->GetNextState());
+			mSplash->SetMoveState(mMissionPaper->GetNextState());
+
+			//if there is no delay
+			if (!isTextActiveDelay)
+			{
+				mText->InitEmergingFunc(1.0f);
+				mText->SetActive(true);
+				
+			}
+
+		}
+
+		//もし新しいミッションの場合
+		if (isTextActiveDelay)
+		{
+			//紙の演出が終わるのをトリガーにする
+			if (mMissionPaper->GetMovementFinished())
+			{
+				mText->InitEmergingFunc(1.0f);
+				mText->SetActive(true);
+				isTextActiveDelay = false;//Reset the Switch
+			}
+		}
+		
+	}
+	else
+	{
+		//文字表示をなしにする
+		mText->SetActive(false);
+	}
+	
+	
+	
+	
 }
 
 
@@ -434,7 +568,6 @@ void SceneLab::DrawLeftObjectWithShadow()
 	pDepthWriteDSV->Clear();
 	GameApp::SetRenderTarget(1, &pDeptWriteRTV, pDepthWriteDSV);
 
-	XMFLOAT3 shadowPos = { 0,0,0 };
 	XMFLOAT4X4 mat[3];
 	XMFLOAT4X4 LMatrix[3];
 	// Create Light View Matrix
@@ -474,15 +607,19 @@ void SceneLab::DrawLeftObjectWithShadow()
 	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	mTable->Draw();
 	mWall->Draw();
+	mWindow->Draw();
 
-
+	
 	//Set PointLight to pbr shader
-	GetObj<PixelShader>("PS_InterActiveObjectPBRModel")->WriteShader(1, pl);
-	GetObj<PixelShader>("PS_InteractiveObjectNormal")->WriteShader(1, pl);
-	MissionManager::Get()->DrawCurrentMissionSet();
-	mPaperOnTable->SwitchToDefShader();
-	mPaperOnTable->Draw();
-	mSplash->Draw();
+	if(MissionManager::Get()->HasCurrentMission())
+	{
+		GameApp::SetBlendState(RenderState::BSTransparent);
+		mMissionPaper->Draw();
+		mSplash->Draw();
+		mEnvelope->Draw();
+		
+	}
+	
 
 	//Set PointLight to pbr shader
 	for (const auto& obj : leftStaticObjList)
@@ -521,11 +658,12 @@ void SceneLab::DrawRightObjectWithShadow()
 	pDepthWriteDSV->Clear();
 	GameApp::SetRenderTarget(1, &pRTV, pDepthWriteDSV);
 
-	XMFLOAT3 shadowPos = { 0,0,0 };
+	XMFLOAT3 shadowPos;
 	XMFLOAT4X4 mat[3];
 	XMFLOAT4X4 LMatrix[3];
 	//Create Shadow 
-	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	Matrix scaleBaseMatrix;
+	scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 	// Create Light View Matrix
 	XMFLOAT3 LPos = mCandleLight1->GetCastShadowLightPos();
 	XMFLOAT3 LDir = { 0,0,0 };
@@ -601,13 +739,15 @@ void SceneLab::DrawRightObjectWithShadow()
 
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_Ingredient")->WriteShader(1, pl);
+	//SetBlendState
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	mRedPotion->SwitchToDefShader();
 	mRedPotion->Draw();
 	mBluePotion->SwitchToDefShader();
 	mBluePotion->Draw();
 	mYellowPotion->SwitchToDefShader();
 	mYellowPotion->Draw();
-	
+	GameApp::SetBlendState(nullptr);
 
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixRotationX(XM_PIDIV2) * XMMatrixScaling(40.f, 40.f, 40.f) * XMMatrixTranslation(0, 0.0f, 0)));
@@ -637,11 +777,10 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	pDepthWriteDSV->Clear();
 	GameApp::SetRenderTarget(1, &pRTV, pDepthWriteDSV);
 
-	XMFLOAT3 shadowPos = { 0,0,0 };
 	XMFLOAT4X4 mat[3];
 	XMFLOAT4X4 LMatrix[3];
 	//Create Shadow 
-	Matrix scaleBaseMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	Matrix scaleBaseMatrix;
 	// Create Light View Matrix
 	XMFLOAT3 LPos = {0.1f,10.f,0.f};
 	XMFLOAT3 LDir = { 0,0,0 };
@@ -658,7 +797,7 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	)));
 
 	//Set WVP Matrix
-	shadowPos = { mPot->GetPosition().x,0.0f,mPot->GetPosition().z };
+	XMFLOAT3 shadowPos = {mPot->GetPosition().x, 0.0f, mPot->GetPosition().z};
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
 		XMMatrixIdentity() * XMMatrixIdentity() * XMMatrixTranslation(shadowPos.x, shadowPos.y, shadowPos.z)));
 	scaleBaseMatrix = XMMatrixScaling(mPot->GetScale().x * 0.8f, mPot->GetScale().y * 0.8f, mPot->GetScale().z * 0.8f);
@@ -721,4 +860,5 @@ void SceneLab::DrawMiddleObjectWithShadow()
 	GameApp::SetBlendState(RenderState::BSTransparent);
 	Sprite::Draw();
 }
+
 

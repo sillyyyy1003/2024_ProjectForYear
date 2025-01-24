@@ -279,6 +279,17 @@ void Transform::RotateAround(const DirectX::XMFLOAT3& point, const DirectX::XMFL
 	XMStoreFloat3(&mPos, RT.r[3]);
 }
 
+void Transform::MoveAround(const DirectX::XMFLOAT3& point, const DirectX::XMFLOAT3& axis, float degree)
+{
+	XMVECTOR positionVec = XMLoadFloat3(&mPos);
+	XMVECTOR centerVec = XMLoadFloat3(&point);
+
+	XMMATRIX RT =  XMMatrixTranslationFromVector(positionVec - centerVec);
+	RT *= XMMatrixRotationAxis(XMLoadFloat3(&axis), XMConvertToRadians(degree));
+	RT *= XMMatrixTranslationFromVector(centerVec);
+	XMStoreFloat3(&mPos, RT.r[3]);
+}
+
 void Transform::Translate(const DirectX::XMFLOAT3& direction, float magnitude)
 {
 	XMVECTOR directionVec = XMVector3Normalize(XMLoadFloat3(&direction));

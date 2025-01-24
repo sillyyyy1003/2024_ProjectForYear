@@ -7,34 +7,34 @@
                 0.0,
                 1.0
             ],
-            "MissionContent": "Make Life Potion!",
-            "MissionName": "FirstMission",
-            "MissionOwner": "WitchA",
+            "MissionContent": "緑の解毒剤を作りましょう!",
+            "MissionName": "ミッション　①",
+            "MissionOwner": "森の魔女",
             "MissionReward": 400.0
         },
         {
             "MissionColor": [
-                0.0,
                 0.5,
                 0.0,
+                0.5,
                 1.0
             ],
-            "MissionContent": "Make Life Potion!",
-            "MissionName": "FirstMission",
-            "MissionOwner": "WitchA",
-            "MissionReward": 400.0
+            "MissionContent": "紫の毒を作ってくれ!",
+            "MissionName": "Mission ②",
+            "MissionOwner": "沼の魔女",
+            "MissionReward": 900.0
         },
         {
             "MissionColor": [
-                0.0,
-                0.5,
-                0.0,
+                1.0,
+                0.6745,
+                0.7843,
                 1.0
             ],
-            "MissionContent": "Make Life Potion!",
-            "MissionName": "FirstMission",
-            "MissionOwner": "WitchA",
-            "MissionReward": 400.0
+            "MissionContent": "蒼の命のポーションが欲しい",
+            "MissionName": "Mission ③",
+            "MissionOwner": "海の魔女",
+            "MissionReward": 600.0
         }
     ],
     "PaperData": {

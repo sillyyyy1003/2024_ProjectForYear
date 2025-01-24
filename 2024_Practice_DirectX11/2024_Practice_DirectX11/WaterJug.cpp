@@ -56,6 +56,9 @@ void WaterJug::OnStateReleased(float dt)
 	//Free all the ingredient
 	IngredientManager::Get()->ClearCurrentIngredient();
 
+	//時間をリセット
+	mAccumulateTime = 0.0f;
+
 }
 
 void WaterJug::ResetPos()
@@ -94,7 +97,9 @@ void WaterJug::LoadSaveData(json data)
 void WaterJug::AddWater(float dt)
 {
 	mAccumulateTime += dt;
+	//Jugを斜めにする
 	SetModelRotation({ 0,0,60 });
+	//ポーションの色を変える
 	Potion* potion = SceneManager::Get()->GetObj<Potion>("PotionSceneWater").get();
 	potion->Dilute(mAccumulateTime);
 }

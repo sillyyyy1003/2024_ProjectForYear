@@ -79,14 +79,13 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 	{
 		color = myTex.Sample(mySampler, pin.tex);
 		clip(color.a - 0.1f);
+	
 	}
 	else
 	{
 		color.rgb = (pin.worldPos.y <= height) ? pigmentColor : float3(1.0f, 1.0f, 1.0f);
-
 	}
 
-	
 	float3 N = normalize(pin.normal);
 	if (!frontFace)
 	{
@@ -122,12 +121,9 @@ float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 		float3 effectColor = rimColor * rimFactor;
 		color.rgb += effectColor;
 	}
+
 	float4 litColor = color;
 
-	litColor.a = (pin.worldPos.y <= height) ? 1.0f: 0.8f;
-	if (!frontFace)
-	{
-		litColor.rgb *= float3(0.9f, 0.9f, 0.9f);
-	}
+	litColor.a = (pin.worldPos.y <= height) ? 1.0f: 0.6f;
 	return litColor;
 }

@@ -1,5 +1,6 @@
 ﻿#include "ScreenFadeEffect.h"
 #include "GameApp.h"
+#include "MovableStaticObject.h"
 #include "RenderState.h"
 #include "UI_Square.h"
 
@@ -23,6 +24,13 @@ void ScreenFadeEffect::Init()
 	mFade->SetScale(2000.f, 2000.f);
 	mFade->SetPosZ(0.1f);
 	mFade->SetTransparency(0.0f);
+
+	mWhite = std::make_unique<UI_Square>();
+	mWhite->Init(SceneManager::Get()->GetObj<Texture>("WhiteGradation"), 10, XMINT2(1, 1));
+	mWhite->LoadDefShader();
+	mWhite->SetScale(100.f, 100.f);
+	mWhite->SetPosZ(0.1f);
+	
 }
 
 void ScreenFadeEffect::Update(float dt)
@@ -30,7 +38,6 @@ void ScreenFadeEffect::Update(float dt)
 	switch (mState)
 	{
 	default:
-
 	case ScreenOverlayConfig::STATE_NONE:
 		break;
 	case ScreenOverlayConfig::STATE_FADE_OUT:
@@ -38,6 +45,12 @@ void ScreenFadeEffect::Update(float dt)
 		break;
 	case ScreenOverlayConfig::STATE_FADE_IN:
 		FadeIn(dt);
+		break;
+	case ScreenOverlayConfig::STATE_WHITE_OUT:
+		WhiteOut(dt);
+		break;
+	case ScreenOverlayConfig::STATE_WHITE_IN:
+		WhiteIn(dt);
 		break;
 	}
 
@@ -55,7 +68,11 @@ void ScreenFadeEffect::SetState(ScreenOverlayConfig::OverlayState state)
 	mState = state;
 }
 
-
+void ScreenFadeEffect::SetWhiteDuration(float outDuration, float inDuration)
+{
+	mOutDuration = outDuration;
+	mInDuration = inDuration;
+}
 
 void ScreenFadeEffect::Draw()
 {
@@ -65,11 +82,19 @@ void ScreenFadeEffect::Draw()
 	case ScreenOverlayConfig::STATE_NONE:
 		break;
 	case ScreenOverlayConfig::STATE_FADE_OUT:
+		GameApp::SetBlendState(RenderState::BSTransparent);
 		mFade->Draw();
+		GameApp::SetBlendState(nullptr);
 		break;
 	case ScreenOverlayConfig::STATE_FADE_IN:
 		GameApp::SetBlendState(RenderState::BSTransparent);
 		mFade->Draw();
+		GameApp::SetBlendState(nullptr);
+		break;
+	case ScreenOverlayConfig::STATE_WHITE_OUT:
+		GameApp::SetBlendState(RenderState::BSTransparent);
+		mWhite->Draw();
+		GameApp::SetBlendState(nullptr);
 		break;
 	}
 
@@ -93,6 +118,28 @@ void ScreenFadeEffect::FadeIn(float dt)
 		mState = ScreenOverlayConfig::STATE_NONE;
 
 	mFade->SetTransparency(mFadeParam);
+}
+
+void ScreenFadeEffect::WhiteOut(float dt)
+{
+	if (mAccumulateTime <= mOutDuration)
+	{
+		float whiteRatio = mAccumulateTime / mOutDuration;
+		whiteRatio = EaseOut::EaseInCubic(whiteRatio);
+		mWhite->SetScale(Vector2(3500, 3500) * whiteRatio);
+		mAccumulateTime += dt;
+		mWhite->SetTransparency(whiteRatio);
+	}
+	else
+	{
+		mAccumulateTime = 0.f;
+		mCBuffer.radius = 0.0f;
+		mState = ScreenOverlayConfig::STATE_NONE;
+	}
+}
+
+void ScreenFadeEffect::WhiteIn(float dt)
+{
 }
 
 

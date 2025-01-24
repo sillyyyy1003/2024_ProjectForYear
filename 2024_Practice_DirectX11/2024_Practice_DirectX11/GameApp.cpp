@@ -26,7 +26,6 @@ bool GameApp::Init()
 
     if (!InitResource())
         return false;
-
 	// 標準出力の割り当て
 	freopen_s(&fp, "CON", "w", stdout);
 	DebugLog::Log("Game Init Completed");

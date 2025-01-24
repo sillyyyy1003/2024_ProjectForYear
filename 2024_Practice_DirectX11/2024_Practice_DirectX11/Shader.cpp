@@ -96,10 +96,14 @@ void Shader::SetTexture(UINT slot, Texture* _texture)
 	case ShaderKind::Pixel:
 		gD3D->GetContext()->PSSetShaderResources(slot, 1, &pTex);
 		break;
-	default:
-		return;
-		//case Hull:		GetContext()->HSSetShaderResources(slot, 1, &pTex); break;
-		//case Domain:	GetContext()->DSSetShaderResources(slot, 1, &pTex); break;
+	case ShaderKind::Hull:
+		gD3D->GetContext()->HSSetShaderResources(slot, 1, &pTex);
+		break;
+	case ShaderKind::Domain:
+		gD3D->GetContext()->DSSetShaderResources(slot, 1, &pTex);
+		break;
+		default:
+			return;
 	}
 }
 

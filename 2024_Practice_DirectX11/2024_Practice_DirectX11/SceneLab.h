@@ -5,6 +5,7 @@
 #include "Ingredient.h"
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
+#include "MovableStaticObject.h"
 #include "PointLight.h"
 #include "SceneBase.h"
 #include "Sphere.h"
@@ -30,14 +31,17 @@ class SceneLab :public SceneBase
 	std::unique_ptr<Ingredient> mYellowPotion;
 
 	std::unique_ptr<StaticObject> mWall;
+	std::unique_ptr<StaticObject> mWindow;
 	std::unique_ptr<Square> mTable;
 	std::unique_ptr<Water> mWater;
 
-	std::unique_ptr<InteractiveStaticObject> mPaperOnTable;
-	std::unique_ptr<StaticObject> mSplash;
+
+	std::unique_ptr<MovableStaticObject>  mSplash;
+	std::unique_ptr<MovableStaticObject> mMissionPaper;
+	std::unique_ptr<MovableStaticObject> mEnvelope;
 	std::unique_ptr<D2D_UIStackContainer> mText;//詳しい文字
 
-	//std::unique_ptr<MissionPaper> mPaper;
+	
 	std::unique_ptr<CandleLight> mCandleLight1;
 	std::unique_ptr<CandleLight> mCandleLight2;
 
@@ -48,6 +52,8 @@ class SceneLab :public SceneBase
 
 	//カメラ切り替えトリガー
 	bool isCheckMission = false;
+	//文字UIが後回しするかどうか
+	bool isTextActiveDelay = false;
 
 public:
 	/// @brief データのロードと初期化
@@ -71,5 +77,7 @@ protected:
 	void DrawLeftObjectWithShadow();
 	void DrawRightObjectWithShadow();
 	void DrawMiddleObjectWithShadow();
+
+
 };
 

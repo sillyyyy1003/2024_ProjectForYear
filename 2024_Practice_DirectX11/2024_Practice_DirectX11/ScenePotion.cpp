@@ -30,11 +30,13 @@ void ScenePotion::Init()
 	GetObj<DirLight>("EnvironmentLight")->LoadSaveData(sceneData, "EnvironmentLight");
 	//Init object
 	mWater = CreateObj<Potion>("PotionSceneWater");
+	mWater->SetParticleNum(100);
 	mWater->LoadSaveData(sceneData, "ScenePotionWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
-	mWater->SetTexture(GetObj<Texture>("water"));
-	mWater->SetWaterColor({ 0.4f,0.4f,0.4f,0.3f });
-	mWater->SetTexture(nullptr);
+	mWater->SetTexture(GetObj<Texture>("whiteTex"));
+	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
+	mWater->InitPotionParticleEffect({ 0,0.9f,0 }, { 0,-0.3f,0 }, 3.f, 70, 0.025f);
 
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
@@ -67,10 +69,7 @@ void ScenePotion::Init()
 	mJug->LoadTex(pbrTexList);
 	mJug->LoadSaveData(sceneData);
 
-
-	//Set Water
-	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
-	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
+	
 
 	//Set UI
 	mResetButton = std::make_unique<UI_Button>();
@@ -287,9 +286,7 @@ void ScenePotion::DrawWithShadow()
 	mYellowPotion->Draw();
 	mJug->SwitchToDefShader();
 	mJug->Draw();
-	
 
-	GameApp::SetBlendState(RenderState::BSTransparent);
 	mPot->SwitchToDefShader();
 	mPot->Draw();
 	mPotTop->Draw();
@@ -375,6 +372,7 @@ void ScenePotion::TriggerListener()
 	if(mResetButton->isTrigger())
 	{
 		mWater->ResetMaterial();
+		mWater->ResetWaterLevel();
 	}
 
 	if(mChargeButton->isTrigger())

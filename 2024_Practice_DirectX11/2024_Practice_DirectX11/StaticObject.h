@@ -29,12 +29,16 @@ public:
 	///	@param _UVSplit 
 	virtual void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
 
+	virtual void InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, int slices,DirectX::XMINT2 _UVSplit = { 1,1 });
+
 	/// @brief Primitiveの初期化
 	/// @param tex テクスチャのファイルパス
 	/// @param _objName 
 	/// @param _kind モデルの種類
 	///	@param _UVSplit 
 	virtual void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, DirectX::XMINT2 _UVSplit = { 1,1 });
+
+	virtual void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, int slices, DirectX::XMINT2 _UVSplit = { 1,1 });
 
 
 	void LoadTex(PBRConfig::PBRTexList list);
@@ -80,6 +84,8 @@ public:
 	virtual void SetDiffuseColor(const DirectX::XMFLOAT4& diffuseColor);
 
 	virtual void SetTransparency(float _transparency);
+	virtual void LoadTexture(const std::shared_ptr<Texture>& tex);
+
 
 };
 

@@ -2,6 +2,7 @@
 #include "CandleLight.h"
 #include "D2D_UIStackContainer.h"
 #include "Potion.h"
+#include "PotionEffect.h"
 #include "SceneBase.h"
 #include "SceneManager.h"
 #include "UIButton.h"
@@ -33,8 +34,9 @@ private:
 	std::unique_ptr<Potion> mWater;
 	std::unique_ptr<CandleLight> mCandleLight;
 
+	std::unique_ptr<PotionEffect> mPotionEffect;
+
 	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;
-	
 
 public:
 	/// @brief データのロードと初期化

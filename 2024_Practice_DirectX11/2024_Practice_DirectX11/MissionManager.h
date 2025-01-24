@@ -35,9 +35,10 @@ private:
 	~MissionManager() = default;
 	Mission::MissionList mMissionList;
 
-	Mission::MissionSet mCurrentMissionSet;		//現在表示されたMissionの
+	Mission::MissionSet mCurrentMissionSet;							//現在表示されたMissionSet
 	std::vector<InteractiveStaticObject*> mCurrentLevelMissionPaper;//Missionを描画する為の
-	int mCurrentMissionIndex = 0;
+	int mCurrentMissionIndex = -1;
+	int mPreviousMissionIndex = -1;
 
 	std::unique_ptr<InteractiveStaticObject> missionPaper1;
 	std::unique_ptr<InteractiveStaticObject> missionPaper2;
@@ -79,6 +80,15 @@ public:
 
 	Mission::MissionData GetCurrentMission();
 	bool MissionPaperGetClicked();
+
+	/// @brief 新しいミッションをチェックしているかどうか？
+	/// @return 
+	bool HasNewCurrentMission();
+
+	/// @brief 進行中のミッションあるかどうか
+	/// @return 
+	bool HasCurrentMission();
+	
 	
 };
 

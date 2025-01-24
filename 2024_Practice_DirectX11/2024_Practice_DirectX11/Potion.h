@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "PotionEffect.h"
 #include "Water.h"
 
 class Potion :public Water
@@ -23,6 +24,16 @@ private:
 
 	bool isMaxHeight = false;		//最大水位になったか？	
 	bool isOverLimitHeight = false;	//制限水位に超えたか？
+
+	//Effectに関わる変数
+	int mParticleNum = 500;
+
+
+
+protected:
+
+	std::unique_ptr<PotionEffect> mParticleEffect;
+
 public:
 
 	Potion() = default;
@@ -30,7 +41,7 @@ public:
 
 
 	void Update(float dt) override;
-
+	void Draw() override;
 
 	/// @brief Dilute by Water
 	/// @param diluteAlpha 入れた水の量
@@ -39,7 +50,7 @@ public:
 	/// @brief 色混ぜ
 	/// @param color 
 	/// @param alpha 
-	void MixColor(DirectX::XMFLOAT4 color,float alpha);
+	void MixColor(DirectX::XMFLOAT4 color, float alpha);
 
 	/// @brief 色混ぜ具体の手取
 	/// @param baseColor Potionの色
@@ -65,10 +76,22 @@ public:
 	/// @brief 水位に関するパラメータの初期化
 	void InitWaterLevelParam();
 
+	/// @brief ポーションのエフェクトの初期化を行う
+	void InitPotionParticleEffect();
+
+	void InitPotionParticleEffect(DirectX::XMFLOAT3 Velocity, DirectX::XMFLOAT3 accel, float lifeTime, int particleNum, float size);
+
 	/// @brief カメラに渡す
 	float CalculateCurrentShakingParam();
 
 	/// @brief 水位をリセットする
 	void ResetWaterLevel();
-};
 
+	DirectX::XMFLOAT4 GetPotionColor() { return mModel->GetMaterial().diffuse; };
+
+	/// @brief パーティクルの数を設定する
+	/// @param num 
+	void SetParticleNum(int num) { mParticleNum = num; };
+
+
+};

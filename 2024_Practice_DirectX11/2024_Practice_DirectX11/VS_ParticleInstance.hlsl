@@ -16,12 +16,14 @@ struct VS_OUT
 {
 	float4 pos : SV_POSITION;
 	float4 color : COLOR0;
+	float2 tex : TEXCOORD;
 };
  
 cbuffer ParticleConstantBuffer : register(b0)
 {
 	float4x4 view;
 	float4x4 proj;
+
 };
 
 VS_OUT main(VS_IN vin)
@@ -33,13 +35,14 @@ VS_OUT main(VS_IN vin)
 
 	float4 vertexPos = mul(float4(0.f,0.f,0.f,1.0f), vin.WorldMatrix);	//QuadíÜêS
 	float3 worldPosition = vertexPos.xyz + right * vin.pos.x + up * vin.pos.y; //Quadà íu
-
+	
 
 	vOut.pos = float4(worldPosition, 1.0f);
 	vOut.pos = mul(vOut.pos, view);
 	vOut.pos = mul(vOut.pos, proj);
 
 	vOut.color = vin.color;
+	vOut.tex = vin.tex;
 
 	return vOut;
 }

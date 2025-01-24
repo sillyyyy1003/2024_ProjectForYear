@@ -14,6 +14,8 @@ protected:
 		Vertex = 0,
 		Pixel = 1,
 		Geometry = 2,
+		Hull = 3,
+		Domain = 4
 	};
 public:
 	Shader(ShaderKind kind);

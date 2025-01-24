@@ -28,6 +28,12 @@ protected:
 
 	//すべての状態を司る
 	UINT mUiState = 0;
+
+	float mAccumulateTime = 0.0f;
+	float mDuration = 0.0f;
+
+	bool isEmerging = false;
+	bool isActive = true;
 	
 
 public:
@@ -46,6 +52,16 @@ public:
 	virtual json SaveData();
 	virtual void LoadSaveData(json data);
 	virtual void SetBackGroundColor(D2D1::ColorF color);
+
+	/// @brief 文字が浮かぶ機能
+	/// @param dt deltaTime
+	virtual void EmergingFunction(float dt);
+	virtual void InitEmergingFunc(float duration);
+
+	/// @brief 描画のスイッチ
+	/// @param isActive 
+	/// @return 
+	void SetActive(bool isActive) { this->isActive = isActive; };
 
 #ifdef _DEBUG
 	void DebugFunction();

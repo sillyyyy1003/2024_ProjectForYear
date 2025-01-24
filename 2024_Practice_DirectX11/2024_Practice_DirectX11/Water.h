@@ -70,7 +70,7 @@ public:
 	/// @brief アップデートの最後で行う 描画の頂点の更新とシェーダにデータ書き込む
 	void RenderUpdate();
 
-	void Draw();
+	virtual void Draw();
 
 	/// @brief WaterParamの内容をシェーダに書き込む
 	void WriteShader();

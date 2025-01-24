@@ -110,11 +110,17 @@ public:
 	/// @param degree 角度
 	void RotateAxis(const DirectX::XMFLOAT3& axis, float degree);
 
-	/// @brief あるポイントを中心に回転
+	/// @brief あるポイントを中心に回転(自身も回転する)
 	/// @param point ポイント位置
 	/// @param axis 軸(X/Y/Z)
 	/// @param degree 角度
 	void RotateAround(const DirectX::XMFLOAT3& point, const DirectX::XMFLOAT3& axis, float degree);
+
+	/// @brief あるポイントを中心に回転(自身回転しない)
+	/// @param point ポイント位置
+	/// @param axis 軸
+	/// @param degree 回転角度
+	void MoveAround(const DirectX::XMFLOAT3& point, const DirectX::XMFLOAT3& axis, float degree);
 
 	/// @brief Parallel Move
 	/// @param direction 方向

@@ -6,6 +6,8 @@ using namespace DirectX::SimpleMath;
 
 class ParticleEffect:public Component
 {
+protected:
+
 	struct ConstantBuffer
 	{
 		DirectX::XMFLOAT4X4 view;
@@ -18,24 +20,37 @@ class ParticleEffect:public Component
 		Vector3 intiVel;			//初期速度方向付き
 		Vector3 acceleration;		//加速度
 		Vector3 pos;
-		
-		//DirectX::XMFLOAT3 velocity;	//現在の速度
-		//float accumulateTime;		//経過時間
+
+		Color	color;				//粒子色
+		float accumulateTime = 0.0f;		//経過時間
+		float lifeTime = 0.0f;		//粒子の寿命
 	};
 
-
-protected:
-
 	int mParticleNum;	//粒子の数
-	std::unique_ptr<ParticleMesh> mParticleMesh;	//量子を描画する
+	std::unique_ptr<ParticleMesh> mParticleMesh;	//粒子を描画する
 
-	std::vector<ParticleData> mParticleData;	//量子の位置座標などを司る
-	DirectX::XMFLOAT3 mEmitPos;
+	std::vector<ParticleData> mParticleData;	//粒子の情報などを司る
+
+	float rotation = 0.0f;						//Z軸の回転
+
+	DirectX::XMFLOAT3 mEmitPos;					//発生位置
 	DirectX::XMFLOAT3 mEmitVel;					//速度方向付き
 	DirectX::XMFLOAT3 mEmitAccel;				//加速度
 	DirectX::XMFLOAT3 mEmitDirection;			//発射方向
-	float time;
-	float AliveTime = 2.f;
+
+	DirectX::XMFLOAT3 mScale = { 1.f,1.f,1.f };
+	//DirectX::XMFLOAT4 mRotation = {0,0,0,1};
+
+	//円形生成の時に使われる
+	float mRadius = 0.0f;
+	DirectX::XMFLOAT3 mCenter = {};
+
+	float mTime = 0.0f;
+	float mParticleLifeTime = 0.0f;
+	float mEffectAliveTime = 0.0f;			//エフェクトの寿命
+
+	bool isLoop = true;	//このパーティクルはLoopするか？
+	bool isAlive = true;	//作動しているか？
 
 	//Shader
 	ComPtr<ID3D11VertexShader> mVertexShader;
@@ -51,16 +66,67 @@ public:
 	/// @brief パーティクル描画の初期化
 	/// @param filePath VertexShader File
 	///	@param particleNum 粒子数
-	void InitParticleRenderer(const char* filePath, uint32_t particleNum);
+	///	@param size 粒子の大きさ
+	virtual void InitParticleRenderer(const char* filePath, uint32_t particleNum, float size = 0.01f);
 
-	void InitParticleData(DirectX::XMFLOAT3 emitPos,DirectX::XMFLOAT3 emitAccel,DirectX::XMFLOAT3 direction,float velocity);
+	/// @brief 位置情報の初期化
+	/// @param emitPos 発生位置
+	/// @param emitAccel 発生加速度
+	/// @param velocity 速度(Vector)
+	virtual void InitParticleData(DirectX::XMFLOAT3 emitPos,DirectX::XMFLOAT3 emitAccel,DirectX::XMFLOAT3 velocity);
 
-	void Update(float dt);
-	void Draw();
-	void CreateVertexShader(const std::string& filename, const std::string& entrypath);
-	void CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* layout, UINT elem_num, const std::string& filename, const std::string& entrypath);
-	void CreateConstantBuffer(unsigned int bytesize, ID3D11Buffer** CBuffer);
+	virtual void InitPointOnCircleParticle(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT3& emitAccel, const DirectX::XMFLOAT3& velocity);
 
-	std::vector<ParticleMesh::ParticleInstanceData> UpdateInstanceMatrix();
+
+	/// @brief 色情報の初期化
+	/// @param color 色
+	virtual void InitParticleColor(Color color={1,1,1,1});
+
+	virtual void InitRandomParticleColor();
+	virtual void InitRandomParticleColor(const DirectX::XMFLOAT2& colorRange, const DirectX::XMFLOAT2& valueRange = {0.7f,1.0f}, const DirectX::XMFLOAT2& saturationRange= { 0.7f,1.0f });
+
+	virtual void InitRandomParticleColor(float color,float range, const DirectX::XMFLOAT2& valueRange = { 0.7f,1.0f }, const DirectX::XMFLOAT2& saturationRange = { 0.7f,1.0f });
+
+
+	virtual void Update(float dt);
+	virtual void Draw();
+	void CreateVertexShader(const std::string& filename, const std::string& entryPath);
+	void CreateInputLayout(D3D11_INPUT_ELEMENT_DESC* layout, UINT elem_num, const std::string& filename, const std::string& entryPath);
+	void CreateConstantBuffer(unsigned int byteSize, ID3D11Buffer** CBuffer);
+
+	/// @brief Virtual Function 色情報やスピード情報の更新 
+	virtual void UpdateParticle(){};
+
+	/// @brief Instance更新
+	/// @param dt deltaTime
+	/// @return 更新されたInstanceVector
+	virtual std::vector<ParticleMesh::ParticleInstanceData> UpdateInstanceData(float dt);
+
+	/// @brief 粒子の位置情報を書き込み
+	/// @param data 一つの粒子の情報
+	/// @param dt deltaTime
+	virtual void UpdateParticleState(ParticleData& data, float dt);
+
+	/// @brief 粒子の色情報を書き込み
+	/// @param instanceData 
+	/// @param data 
+	virtual void UpdateParticleColor(ParticleMesh::ParticleInstanceData& instanceData, ParticleData& data);
+
+	/// @brief すべての粒子を初期状態に戻す
+	virtual void ResetParticle();
+
+	/// @brief 粒子の存続時間を設定する 粒子寿命はランダムにする
+	void SetParticleAliveTime(float time);
+
+	/// @brief イフェクトの存続時間を設定する
+	void SetEffectAliveTime(float time) { mEffectAliveTime = time; };
+
+	void SetEffectAlive(bool isAlive) { this->isAlive = isAlive; };
+
+	void SetLoop(bool isLoop) { this->isLoop = isLoop; };
+
+	/// @brief 粒子サイズを設定する
+	/// @param scale 
+	void SetScale(const DirectX::XMFLOAT3& scale) { this->mScale = scale; };
 };
 

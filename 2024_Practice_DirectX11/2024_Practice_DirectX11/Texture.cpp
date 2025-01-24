@@ -1,5 +1,4 @@
 ﻿#include "Texture.h"
-
 #include "GameApp.h"
 
 Texture::Texture()
@@ -25,6 +24,8 @@ HRESULT Texture::Create(const char* fileName)
 	DirectX::ScratchImage image;
 	if (strstr(fileName, ".tga"))
 		hr = DirectX::LoadFromTGAFile(wPath, &mdata, image);
+	else if (strstr(fileName, ".dds"))
+		hr = hr = DirectX::LoadFromDDSFile(wPath, DirectX::DDS_FLAGS_NONE, &mdata, image);
 	else
 		hr = DirectX::LoadFromWICFile(wPath, DirectX::WIC_FLAGS::WIC_FLAGS_NONE, &mdata, image);
 	if (FAILED(hr)) {
@@ -48,16 +49,6 @@ HRESULT Texture::Create(DXGI_FORMAT format, UINT width, UINT height, const void*
 
 D3D11_TEXTURE2D_DESC Texture::MakeTexDesc(DXGI_FORMAT format, UINT width, UINT height, UINT sampleCount, UINT sampleQuality)
 {
-	/*D3D11_TEXTURE2D_DESC desc = {};
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.Format = format;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	desc.Width = width;
-	desc.Height = height;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.SampleDesc.Count = 1;
-	return desc;*/
 	D3D11_TEXTURE2D_DESC desc = {};
 	desc.Width = width;
 	desc.Height = height;

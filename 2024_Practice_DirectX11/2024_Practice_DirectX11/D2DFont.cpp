@@ -181,20 +181,6 @@ void D2DFont::DrawSolidText(D2DUIConfig::FontSize size, D2D1::ColorF color, cons
 	rect.right = centerX + scale.x / 2.f;
 	rect.bottom = centerY + scale.y / 2.f;
 
-//	
-//#ifdef _DEBUG
-//	D2D1::ColorF debugColor = D2D1::ColorF::Red;
-//	mSolidBrush->SetColor(debugColor);
-//	renderTarget->DrawRectangle(rect, mSolidBrush.Get());
-//#endif
-//	mSolidBrush->SetColor(color);
-//	//Scaleを変更する
-//	D2D1_MATRIX_3X2_F scaleMatrix = D2D1::Matrix3x2F::Scale(D2D1::SizeF(mFontScale.x,mFontScale.y), D2D1::Point2F(0,0));
-//	D2D1_MATRIX_3X2_F translationMatrix = D2D1::Matrix3x2F::Translation(centerX- scale.x / 4.f, rect.top);
-//	renderTarget->SetTransform(scaleMatrix* translationMatrix );
-//	renderTarget->DrawTextW(wStr.c_str(), (UINT32)wStr.size(), mJpnSmallSizeFormat.Get(), {0,0,scale.x,scale.y}, mSolidBrush.Get());
-//	//Tranformを元に
-//	renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 	
 	switch (size)
 	{

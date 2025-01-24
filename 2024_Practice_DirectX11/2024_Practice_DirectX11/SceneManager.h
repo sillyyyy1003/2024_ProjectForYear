@@ -56,16 +56,6 @@ protected:
 	std::shared_ptr<Texture> waterTexture;
 	std::shared_ptr<Texture> paperTexture;
 
-	//std::shared_ptr<Texture> closeBookRedAlbedoTexture;
-	//std::shared_ptr<Texture> closeBookBlueAlbedoTexture;
-	//std::shared_ptr<Texture> closeBookNormalTexture;
-	//std::shared_ptr<Texture> closeBookMetallicTexture;
-
-	//std::shared_ptr<Texture> openBookRedAlbedoTexture;
-	//std::shared_ptr<Texture> openBookBlueAlbedoTexture;
-	//std::shared_ptr<Texture> openBookNormalTexture;
-	//std::shared_ptr<Texture> openBookMetallicTexture;
-
 	std::shared_ptr<Texture> tableTexture;
 	std::shared_ptr<Texture> blackOverlay;
 
@@ -77,7 +67,6 @@ protected:
 	std::shared_ptr<PixelShader> PS_interactiveStaticNormal;
 	std::shared_ptr<PixelShader> PS_Shadow;
 	std::shared_ptr<PixelShader> PS_WriteDepth;
-	std::shared_ptr<PixelShader> PS_pbrBaseColor;
 
 	std::shared_ptr<VertexShader> VS_defaultUI;
 	std::shared_ptr<VertexShader> VS_pbrModel;

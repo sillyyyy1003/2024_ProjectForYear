@@ -14,7 +14,7 @@ public:
 
 	struct ParticleInstanceData
 	{
-		DirectX::XMFLOAT4 Color={1.f,1.f,1.f,1.f};
+		DirectX::XMFLOAT4 Color = { 1.f,1.f,1.f,1.f };
 		DirectX::XMFLOAT4X4 WorldMatrix;
 	};
 

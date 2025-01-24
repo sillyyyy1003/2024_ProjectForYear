@@ -11,7 +11,6 @@ using namespace DirectX;
 
 XMFLOAT3 CalculateSphericalNormal(float r, float theta, float phi, float dTheta, float dPhi)
 {
-	// 球面坐标的偏导数
 	float nx = r * cos(phi) * cos(theta + dTheta) - r * cos(phi) * cos(theta - dTheta);
 	float ny = r * sin(phi + dPhi) - r * sin(phi - dPhi);
 	float nz = r * cos(phi + dPhi) * sin(theta) - r * cos(phi - dPhi) * sin(theta);
@@ -53,7 +52,6 @@ void Water::Update(float dt)
 
 #ifdef _DEBUG
 	//水の波の設定と色の設定を可視化にする
-
 	mWaterStates->DebugFunction();
 
 	if (ImGui::Begin("Water Option"))
@@ -209,7 +207,6 @@ void Water::RenderUpdate()
 			{
 				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
 				vertex.pos.y = waveHeight;
-
 			}
 		}
 		/*

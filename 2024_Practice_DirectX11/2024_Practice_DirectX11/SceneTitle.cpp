@@ -39,6 +39,7 @@ void SceneTitle::Init()
 	mWater->SetAutoColor(true);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+	mWater->InitPotionParticleEffect();
 
 	mTitle = std::make_unique<D2D_UIStackContainer>();
 	mStart = std::make_unique<UIButton>();
@@ -60,6 +61,7 @@ void SceneTitle::Init()
 	mExit->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Exit");
 	mExit->LoadSaveData(sceneData["Exit"]);
 	mExit->EnableAllState();
+
 
 }
 
@@ -156,10 +158,10 @@ void SceneTitle::Draw()
 	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	mWater->Draw();
 
+
 	mTitle->Draw();
 	mStart->Draw();
 	mOption->Draw();
 	mExit->Draw();
-
 }
 

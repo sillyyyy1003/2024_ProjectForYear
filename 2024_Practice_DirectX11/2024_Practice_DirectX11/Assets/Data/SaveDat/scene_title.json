@@ -176,7 +176,7 @@
         "Text": "OPTION",
         "TextAlignment": 1
     },
-    "ScenePotionWater": {
+    "SceneTitleWater": {
         "DefaultHeight": [
             0.0
         ],
@@ -198,8 +198,8 @@
             ],
             "Diffuse": [
                 0.0,
+                0.6200039386749268,
                 1.0,
-                0.8949980735778809,
                 0.4000000059604645
             ],
             "Emission": [
@@ -256,7 +256,7 @@
                     0.0
                 ],
                 "Sigma": [
-                    2.0
+                    20.0
                 ],
                 "Speed": [
                     0.07000000029802322
@@ -272,7 +272,7 @@
                     1.0
                 ],
                 "MaxAmplitude": [
-                    0.23999999463558197
+                    0.25
                 ],
                 "MinAmplitude": [
                     0.0

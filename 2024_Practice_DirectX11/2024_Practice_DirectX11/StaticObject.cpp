@@ -64,8 +64,49 @@ void StaticObject::InitModel(const char* filePath, const char* _objName, Primiti
 	isUsePBR = false;
 }
 
-void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind,
-	DirectX::XMINT2 _UVSplit)
+void StaticObject::InitModel(const char* filePath, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, int slices, DirectX::XMINT2 _UVSplit)
+{
+	switch (_kind)
+	{
+	default:
+	case PrimitiveConfig::CAPSULE:
+		mModel = std::make_unique<Capsule>();
+		mModel->Init(filePath,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CUBE:
+		mModel = std::make_unique<Cube>();
+		mModel->Init(filePath, _UVSplit);
+		break;
+	case PrimitiveConfig::SPHERE:
+		mModel = std::make_unique<Sphere>();
+		mModel->Init(filePath,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER:
+		mModel = std::make_unique<Cylinder>();
+		mModel->Init(filePath,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER_ONECAP:
+		mModel = std::make_unique<CylinderOneCap>();
+		mModel->Init(filePath,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::SQUARE:
+		mModel = std::make_unique<Square>();
+		mModel->Init(filePath,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CIRCLE:
+		mModel = std::make_unique<Circle>();
+		mModel->Init(filePath,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::MULTI:
+		mModel = std::make_unique<Model>();
+		mModel->Init(filePath);
+		break;
+	}
+	mObjectName = _objName;
+	isUsePBR = false;
+}
+
+void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind,  DirectX::XMINT2 _UVSplit)
 {
 	switch (_kind)
 	{
@@ -97,6 +138,44 @@ void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _o
 	case PrimitiveConfig::CIRCLE:
 		mModel = std::make_unique<Circle>();
 		mModel->Init(tex, PrimitiveConfig::DEFAULT_MESH_SLICES, PrimitiveConfig::DEFAULT_MESH_SLICES, _UVSplit);
+		break;
+	}
+	mObjectName = _objName;
+	isUsePBR = false;
+}
+
+void StaticObject::InitModel(const std::shared_ptr<Texture>& tex, const char* _objName,	PrimitiveConfig::PrimitiveKind _kind, int slices, DirectX::XMINT2 _UVSplit)
+{
+	switch (_kind)
+	{
+	default:
+	case PrimitiveConfig::CAPSULE:
+		mModel = std::make_unique<Capsule>();
+		mModel->Init(tex, slices, slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CUBE:
+		mModel = std::make_unique<Cube>();
+		mModel->Init(tex, _UVSplit);
+		break;
+	case PrimitiveConfig::SPHERE:
+		mModel = std::make_unique<Sphere>();
+		mModel->Init(tex, slices, slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER:
+		mModel = std::make_unique<Cylinder>();
+		mModel->Init(tex, slices, slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER_ONECAP:
+		mModel = std::make_unique<CylinderOneCap>();
+		mModel->Init(tex, slices, slices, _UVSplit);
+		break;
+	case PrimitiveConfig::SQUARE:
+		mModel = std::make_unique<Square>();
+		mModel->Init(tex, slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CIRCLE:
+		mModel = std::make_unique<Circle>();
+		mModel->Init(tex, slices, slices, _UVSplit);
 		break;
 	}
 	mObjectName = _objName;
@@ -188,4 +267,9 @@ void StaticObject::SetDiffuseColor(const DirectX::XMFLOAT4& diffuseColor)
 void StaticObject::SetTransparency(float _transparency)
 {
 	mModel->GetMaterial().diffuse.w = _transparency;
+}
+
+void StaticObject::LoadTexture(const std::shared_ptr<Texture>& tex)
+{
+	mModel->LoadTexture(tex);
 }

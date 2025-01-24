@@ -50,13 +50,13 @@ void FirstPersonCamera::Update(float dt)
 void FirstPersonCamera::SetPosition(float x, float y, float z)
 {
     CameraBase::SetPos(XMFLOAT3(x, y, z));
-    mDefaultPos = { x,y,z };
+    mDefaultPosition = { x,y,z };
 }
 
 void FirstPersonCamera::SetPosition(const XMFLOAT3& pos)
 {
     CameraBase::SetPos(pos);
-    mDefaultPos = pos;
+    mDefaultPosition = pos;
 }
 
 void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up)
@@ -64,7 +64,7 @@ void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, cons
     mTransform.SetPosition(pos);
     mTransform.LookAt(target, up);
 
-	mDefaultPos = pos;
+    mDefaultPosition = pos;
 }
 
 void FirstPersonCamera::LookAt(const DirectX::XMFLOAT3& target)
@@ -79,7 +79,7 @@ void FirstPersonCamera::LookTo(const XMFLOAT3& pos, const XMFLOAT3& to, const XM
     mTransform.SetPosition(pos);
     mTransform.LookTo(to, up);
     //揺らす位置を設定する
-    mDefaultPos = pos;
+    mDefaultPosition = pos;
 }
 
 void FirstPersonCamera::Strafe(float d)
@@ -176,8 +176,6 @@ void FirstPersonCamera::StartMoveToTarget(DirectX::XMFLOAT3 targetPos, DirectX::
     mDirection = direction;
     //時間を設定
     mDuration = duration;
-
-	
 }
 
 void FirstPersonCamera::BackToDefaultPos()
@@ -187,6 +185,25 @@ void FirstPersonCamera::BackToDefaultPos()
     mTargetPosition = mDefaultPosition;
     mDirection = mDirection * -1;
 }
+
+bool FirstPersonCamera::IsEndMove()
+{
+    if (mState == CAM_MOVE && isMoveToTarget == false)
+        return true;
+    else
+        return false;
+
+}
+
+bool FirstPersonCamera::IsStartMove()
+{
+    if (isMoveToTarget && mState == CAM_MOVE)
+        return true;
+    else
+        return false;
+}
+
+
 
 void FirstPersonCamera::ZoomIn(float dt)
 {
@@ -198,12 +215,14 @@ void FirstPersonCamera::ZoomIn(float dt)
         mTransform.Translate(mDirection, step * mDistance);
 
         Pitch(mTargetRotation.x * step);
+       
     }else
     {
         //運動停止
         isMoveToTarget = false;
         //時間リセット
         mAccumulateTime = 0.0f;
+       
     }
 }
 

@@ -15,23 +15,23 @@ private:
     bool isLockPos = false;     // 位置移動可能？
     bool isLockAngle = false;   // 角度固定？
 
+    //初期位置
+    DirectX::XMFLOAT3 mDefaultPosition = {};
+
     //UpdateMoveで使われる変数
     DirectX::XMFLOAT3 mTargetPosition={};
     DirectX::XMFLOAT3 mTargetRotation={};
     DirectX::XMFLOAT3 mDirection = {};
-    DirectX::XMFLOAT3 mDefaultPosition = {};
     float mDistance = 0.0f;         //ターゲットとの距離
-  
     float mAccumulateTime = 0.f;    // 動きの累積時間
     float mDuration = 1.f;
-    float mRotateSpeed = 0.5f;       // 回転速度
- 
     bool isMoveToTarget = false;    // 回転運動するかどうか
-    bool isShaking = false;
 
+    //カメラ揺れで使われる変数
+    bool isShaking = false;
     float mShakingTime = 1.f;        //カメラ揺れの制限時間
     DirectX::XMFLOAT2 mShakingAmplitude;    //揺れの幅
-    DirectX::XMFLOAT3 mDefaultPos = {};
+   
 
 public:
 
@@ -113,14 +113,18 @@ public:
     /// @param targetRot 指定角度
     /// @param duration 移動時間
     void StartMoveToTarget(DirectX::XMFLOAT3 targetPos, DirectX::XMFLOAT3 targetRot, float duration);
-
     void BackToDefaultPos();
+
+    bool IsEndMove();
+
+    bool IsStartMove();
 
     /// @brief 特定位置をアップする
     /// @param dt 
     void ZoomIn(float dt);
 
     void SetCameraState(FirstPersonCamera::CameraKind state);
+
 
 
 private:

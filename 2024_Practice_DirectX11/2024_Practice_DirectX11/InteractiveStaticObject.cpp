@@ -102,6 +102,49 @@ void InteractiveStaticObject::Init(PrimitiveConfig::PrimitiveKind _kind, const s
 	
 }
 
+void InteractiveStaticObject::Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& texture,
+	const char* _objName, int slices, DirectX::XMINT2 _UVSplit)
+{
+	switch (_kind)
+	{
+	default:
+	case PrimitiveConfig::CAPSULE:
+		mModel = std::make_unique<Capsule>();
+		mModel->Init(texture,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CUBE:
+		mModel = std::make_unique<Cube>();
+		mModel->Init(texture, _UVSplit);
+		break;
+	case PrimitiveConfig::SPHERE:
+		mModel = std::make_unique<Sphere>();
+		mModel->Init(texture,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER:
+		mModel = std::make_unique<Cylinder>();
+		mModel->Init(texture,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CYLINDER_ONECAP:
+		mModel = std::make_unique<CylinderOneCap>();
+		mModel->Init(texture,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::SQUARE:
+		mModel = std::make_unique<Square>();
+		mModel->Init(texture,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::CIRCLE:
+		mModel = std::make_unique<Circle>();
+		mModel->Init(texture,slices,slices, _UVSplit);
+		break;
+	case PrimitiveConfig::MULTI:
+		assert("The Model can't be created by texture!");
+		break;
+	}
+	mObjectName = _objName;
+	isUsePBRModel = false;
+	InitCollider();
+}
+
 void InteractiveStaticObject::LoadTex(PBRConfig::PBRTexList list)
 {
 	mModel->LoadTex(list);

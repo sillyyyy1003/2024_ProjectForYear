@@ -2,6 +2,7 @@
 
 #include "D2D_UIRect.h"
 #include "D2D_UIRoundedRect.h"
+#include "MovableStaticObject.h"
 
 D2D_UIStackContainer::D2D_UIStackContainer()
 {
@@ -53,11 +54,16 @@ void D2D_UIStackContainer::Update(float dt)
 	DebugFunction();
 #endif
 
+	if(isEmerging)
+		EmergingFunction(dt);
+
+
 }
 
 void D2D_UIStackContainer::Draw()
 {
-	
+	if (!isActive)return;
+
 	if (mUiState & D2DUIConfig::STATE_USE_BACKGROUND)
 	{
 		//Draw the Background
@@ -142,6 +148,37 @@ void D2D_UIStackContainer::SetBackGroundColor(D2D1::ColorF color)
 {
 	mBackGround->SetBaseColor(color);
 }
+
+void D2D_UIStackContainer::EmergingFunction(float dt)
+{
+	if (mAccumulateTime < mDuration)
+	{
+		float easeStart = EaseOut::EaseOutSine(mAccumulateTime / mDuration);
+		mAccumulateTime += dt;
+		float easeEnd = EaseOut::EaseOutSine(mAccumulateTime / mDuration);
+		float easeStep = easeEnd - easeStart;
+
+		float alpha = 1.0f * easeStep;
+		mFontColor.a += alpha;
+		
+	}else
+	{
+		mAccumulateTime = 0.0f;
+		isEmerging = false;
+	}
+
+
+}
+
+void D2D_UIStackContainer::InitEmergingFunc(float duration)
+{
+	mDuration = duration;
+	mFontColor.a = 0.0f;
+	isEmerging = true;
+}
+
+
+
 #ifdef _DEBUG
 void D2D_UIStackContainer::DebugFunction()
 {

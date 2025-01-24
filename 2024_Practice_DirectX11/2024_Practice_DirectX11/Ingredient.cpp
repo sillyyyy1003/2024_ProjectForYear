@@ -106,16 +106,11 @@ void Ingredient::AddColor(float dt)
 
 void Ingredient::UpdateContainerColor()
 {
-	
-	//求百分比
 	float ratio = mCapacity / 100.f;
 	float height = mCollider->GetExtents().y * 2 * ratio * cos(GetRotation().z);
 
-	//求底部原点
 	float bottomPos = mModel->GetPosition().y;
 	mContainerData.capacityHeight = bottomPos + height;
-
-
 }
 
 void Ingredient::Update(float dt)

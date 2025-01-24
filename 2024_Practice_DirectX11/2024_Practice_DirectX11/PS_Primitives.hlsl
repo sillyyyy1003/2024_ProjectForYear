@@ -62,18 +62,10 @@ float3 PointLightCal(PointLight pointLight, float3 pos, float3 normal, float3 to
 float4 main(PS_IN pin, bool frontFace : SV_IsFrontFace) : SV_TARGET
 {
     float4 color = float4(0, 0, 0, 0);
-
-    if (material.isTexEnable)
-    {
-        color = myTex.Sample(mySampler, pin.tex);
-		clip(color.a - 0.1f);
-	}
-    else
-    {
-        color = material.diffuse;
-    }
-
-
+	color = (material.isTexEnable == 0.0f) ? material.diffuse : myTex.Sample(mySampler, pin.tex);
+	//複数メッシュかつテクスチャなしの場合
+	color = (color == float4(1.f, 1.f, 1.f, 1.f)) ? material.diffuse : myTex.Sample(mySampler, pin.tex);
+	clip(color.a-0.1f);
 
     float3 N = normalize(pin.normal);
 	float3 toEye = normalize(-cameraPos.xyz);

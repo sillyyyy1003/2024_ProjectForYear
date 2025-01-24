@@ -7,7 +7,7 @@ class CandleLight :public PointLight
 private:
 #ifdef _DEBUG
 	std::unique_ptr<Sphere> mDebugMesh;
-	std::string name="default";
+	std::string name = "default";
 #endif
 	
 	bool isShaking = true;

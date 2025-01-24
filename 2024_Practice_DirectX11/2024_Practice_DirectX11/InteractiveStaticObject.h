@@ -60,6 +60,7 @@ public:
 	virtual void InitModel(const std::shared_ptr<Texture>& _file, const char* _objName);
 
 	virtual void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& texture, const char* _objName, DirectX::XMINT2 _UVSplit={1,1});
+	virtual void Init(PrimitiveConfig::PrimitiveKind _kind, const std::shared_ptr<Texture>& texture, const char* _objName,int slices, DirectX::XMINT2 _UVSplit = { 1,1 });
 
 	virtual void LoadTex(PBRConfig::PBRTexList list);
 	virtual void LoadDefShader(const std::shared_ptr<VertexShader>& vs,const std::shared_ptr<PixelShader>& ps);
