@@ -13,10 +13,6 @@ class SceneMission : public SceneBase
 	std::unique_ptr<StaticObject> mWall;
 	std::unique_ptr<StaticObject> mPaper;
 
-
-
-
-
 	std::unique_ptr<UISquare> mBackground;
 	std::unique_ptr<UISquare> mPaperBackground;
 	std::unique_ptr<UISquare> mMissionOwner;

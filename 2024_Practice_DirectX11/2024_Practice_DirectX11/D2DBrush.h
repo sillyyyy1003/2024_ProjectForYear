@@ -25,9 +25,7 @@ private:
 	ComPtr<ID2D1SolidColorBrush> mSolidBrush;		//Mono tone
 	ComPtr<ID2D1RadialGradientBrush> mRGBrush;		//Radian
 	ComPtr<ID2D1LinearGradientBrush> mLGBrush;		//Linear
-
-
-
+	
 	D2D1::ColorF mFrontColorF = D2D1::ColorF::White;		//前景色
 	D2D1::ColorF mBackColorF = D2D1::ColorF::Black;			//后景色
 

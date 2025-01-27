@@ -1,0 +1,62 @@
+{
+    "ResultUI": {
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            0.9995065331459045
+        ],
+        "FontScale": [
+            1.0,
+            1.0
+        ],
+        "FontSize": 0,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                0.0,
+                200.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                200.0,
+                300.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            200.0
+        ],
+        "Scale": [
+            200.0,
+            300.0
+        ],
+        "Text": "",
+        "TextAlignment": 1
+    }
+}

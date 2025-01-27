@@ -32,13 +32,13 @@ void SceneTitle::Init()
 
 	//Object
 	mWater = std::make_unique<Potion>();
-	mWater->LoadSaveData(sceneData, "ScenePotionWater");
+	mWater->LoadSaveData(sceneData, "SceneTitleWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mWater->SetTexture(GetObj<Texture>("water"));
 	mWater->SetWaterColor({ 1,0,0,0.4f });
 	mWater->SetAutoColor(true);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
-	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING);
 	mWater->InitPotionParticleEffect();
 
 	mTitle = std::make_unique<D2D_UIStackContainer>();
@@ -74,7 +74,7 @@ void SceneTitle::UnInit()
 	sceneData["Start"] = mStart->SaveData();
 	sceneData["Option"] = mOption->SaveData();
 	sceneData["Exit"] = mExit->SaveData();
-	sceneData["ScenePotionWater"] = mWater->SaveData();
+	sceneData["SceneTitleWater"] = mWater->SaveData();
 	sceneData["CandleLight"] = mCandleLight->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_title.json", sceneData);
 

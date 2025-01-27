@@ -9,16 +9,6 @@
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-XMFLOAT3 CalculateSphericalNormal(float r, float theta, float phi, float dTheta, float dPhi)
-{
-	float nx = r * cos(phi) * cos(theta + dTheta) - r * cos(phi) * cos(theta - dTheta);
-	float ny = r * sin(phi + dPhi) - r * sin(phi - dPhi);
-	float nz = r * cos(phi + dPhi) * sin(theta) - r * cos(phi - dPhi) * sin(theta);
-
-	return XMFLOAT3(nx, ny, nz);
-}
-
-
 Water::Water()
 {
 
@@ -149,7 +139,7 @@ void Water::Update(float dt)
 			}
 			else
 			{
-				// 恢复为平静状态
+				// 静かな状態に戻る
 				isTrigger = false;
 				mNowAmplitude = mParam.minAmplitude;
 				mWaterTime = 0;
@@ -157,7 +147,7 @@ void Water::Update(float dt)
 			isResetVertices = false;
 		}
 		break;
-	case WaterStateConfig::WaterBoilingState::STATE_BOILING:
+	case WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING:
 		mParam = mWaterStates->GetCurrentWaterParam();
 		mWaterTime += dt;
 		mNowAmplitude = mParam.maxAmplitude;
@@ -192,99 +182,15 @@ void Water::RenderUpdate()
 		}
 
 		// 一般の場合
-		for (auto& vertex : mModel->mVertices)
-		{
-			//Transform World to Local
-			Vector2 ripplePos = { mParam.center.x,mParam.center.y };
-			ripplePos -= Vector2(mModel->GetPosition().x, mModel->GetPosition().z);
-			ripplePos = Vector2(ripplePos.x / mModel->GetScale().x, ripplePos.y / mModel->GetScale().z);
-
-			Vector2 lenVec = { vertex.pos.x - ripplePos.x,vertex.pos.z - ripplePos.y };
-			float sigma = mParam.sigma / mModel->GetScale().x;
-			float speed = mParam.speed / mModel->GetScale().x;
-			float distanceToCenter = lenVec.Length();
-			if (distanceToCenter < mParam.sigma / mModel->GetScale().x)
-			{
-				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
-				vertex.pos.y = waveHeight;
-			}
-		}
-		/*
-		for (size_t i = 1; i < WaterDefault::DEFAULT_SLICES - 1; ++i)
-		{
-			for (size_t j = 1; j < WaterDefault::DEFAULT_SLICES - 1; ++j)
-			{
-				// 获取相邻点的球面坐标，假设这些点存储在经纬度网格中
-				float r = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.x;
-				float theta = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.y;
-				float phi = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos.z;
-
-				// 计算相邻点的经纬度差异
-				float dTheta = mModel->mVertices[(i + 1) * WaterDefault::DEFAULT_SLICES + j].pos.y - mModel->mVertices[(i - 1) * WaterDefault::DEFAULT_SLICES + j].pos.y;
-				float dPhi = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j + 1)].pos.z - mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j - 1)].pos.z;
-
-				// 基于球面坐标的法向量计算
-				XMFLOAT3 normal = CalculateSphericalNormal(r, theta, phi, dTheta, dPhi);
-
-				// 归一化法向量
-				XMVECTOR nVec = XMVector3Normalize(XMLoadFloat3(&normal));
-				XMStoreFloat3(&mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].normal, nVec);
-			}
-		}
-		*/
+		CalculateVertexPosNormal();
+		
 		//頂点データに再書き込み
 		RewriteVertices();
 		break;
 
-	case WaterStateConfig::WaterBoilingState::STATE_BOILING:
+	case WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING:
 
-		//ここで波による粒子の計算を行う
-		for (auto& vertex : mModel->mVertices)
-		{
-			//Transform World to Local
-			Vector2 ripplePos = { mParam.center.x,mParam.center.y };
-			ripplePos -= Vector2(mModel->GetPosition().x, mModel->GetPosition().z);
-			ripplePos = Vector2(ripplePos.x / mModel->GetScale().x, ripplePos.y / mModel->GetScale().z);
-
-			Vector2 lenVec = { vertex.pos.x - ripplePos.x,vertex.pos.z - ripplePos.y };
-			float sigma = mParam.sigma / mModel->GetScale().x;
-			float speed = mParam.speed / mModel->GetScale().x;
-			float distanceToCenter = lenVec.Length();
-			if (distanceToCenter < mParam.sigma / mModel->GetScale().x)
-			{
-				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) * sin(2.f * 3.14159f * (mParam.frequency * mWaterTime - distanceToCenter / speed));
-				vertex.pos.y = waveHeight;
-			
-
-			}
-		}
-		for (size_t i = 1; i < WaterDefault::DEFAULT_SLICES - 1; ++i)
-		{
-			for (size_t j = 1; j < WaterDefault::DEFAULT_SLICES - 1; ++j)
-			{
-				// 当前点位置
-				XMFLOAT3 current = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].pos;
-
-				// 获取相邻点的顶点位置
-				XMFLOAT3 left = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j - 1)].pos;
-				XMFLOAT3 right = mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + (j + 1)].pos;
-				XMFLOAT3 top = mModel->mVertices[(i - 1) * WaterDefault::DEFAULT_SLICES + j].pos;
-				XMFLOAT3 bottom = mModel->mVertices[(i + 1) * WaterDefault::DEFAULT_SLICES + j].pos;
-
-				// 计算相邻点的方向向量
-				XMVECTOR vec1 = XMVectorSubtract(XMLoadFloat3(&right), XMLoadFloat3(&left));
-				XMVECTOR vec2 = XMVectorSubtract(XMLoadFloat3(&bottom), XMLoadFloat3(&top));
-
-				// 计算叉积以获得法向量
-				XMVECTOR normal = XMVector3Cross(vec1, vec2);
-
-				// 归一化法向量
-				normal = XMVector3Normalize(normal);
-
-				// 存储法向量
-				XMStoreFloat3(&mModel->mVertices[i * WaterDefault::DEFAULT_SLICES + j].normal, normal);
-			}
-		}
+		CalculateVertexPosNormal();
 
 		//頂点データに再書き込み
 		RewriteVertices();
@@ -470,6 +376,59 @@ void Water::ResetMaterial()
 
 void Water::LateUpdate(float dt)
 {
+
+}
+
+void Water::CalculateVertexPosNormal()
+{
+	for (auto& vertex : mModel->mVertices)
+	{
+		// Transform World to Local
+		Vector2 ripplePos = { mParam.center.x, mParam.center.y };
+		ripplePos -= Vector2(mModel->GetPosition().x, mModel->GetPosition().z);
+		ripplePos = Vector2(ripplePos.x / mModel->GetScale().x, ripplePos.y / mModel->GetScale().z);
+
+		Vector2 lenVec = { vertex.pos.x - ripplePos.x, vertex.pos.z - ripplePos.y };
+		float sigma = mParam.sigma / mModel->GetScale().x;
+		float speed = mParam.speed / mModel->GetScale().x;
+		float distanceToCenter = lenVec.Length();
+
+		// 波の高さを計算する
+		if (distanceToCenter < sigma)
+		{
+			if (distanceToCenter < 1e-6f) // 避免距离接近 0
+			{
+				vertex.pos.y = mNowAmplitude * sin(2.f * 3.14159f * mParam.frequency * mWaterTime);
+				vertex.normal = Vector3(0.0f, 1.0f, 0.0f); // 中心点法向量默认垂直向上
+			}
+			else
+			{
+				float waveHeight = mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) *
+					sin(XM_2PI * (mParam.frequency * mWaterTime - distanceToCenter / speed));
+				vertex.pos.y = waveHeight;
+
+				//法線計算
+				float dx = -lenVec.x / (sigma * sigma) * waveHeight +
+					mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) *
+					cos(XM_2PI * (mParam.frequency * mWaterTime - distanceToCenter / speed)) *
+					(-XM_2PI * mParam.frequency + XM_2PI / speed * lenVec.x / distanceToCenter);
+
+				float dz = -lenVec.y / (sigma * sigma) * waveHeight +
+					mNowAmplitude * exp(-distanceToCenter * distanceToCenter / (2.f * sigma * sigma)) *
+					cos(XM_2PI * (mParam.frequency * mWaterTime - distanceToCenter / speed)) *
+					(-XM_2PI * mParam.frequency + XM_2PI / speed * lenVec.y / distanceToCenter);
+
+				Vector3 gradient(-dx, 1.0f, -dz);
+				gradient.Normalize();
+				vertex.normal = gradient;
+			}
+		}
+		else
+		{
+			// Default flat surface normal for areas outside the wave's influence
+			vertex.normal = Vector3(0.0f, 1.0f, 0.0f);
+		}
+	}
 
 }
 

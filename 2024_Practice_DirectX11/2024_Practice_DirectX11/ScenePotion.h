@@ -8,6 +8,8 @@
 #include "SceneBase.h"
 #include "StaticObject.h"
 #include "UI_Button.h"
+#include "UI_IconButtonReset.h"
+#include "UI_IngredientIconButton.h"
 #include "WaterJug.h"
 
 
@@ -44,9 +46,12 @@ class ScenePotion :public SceneBase
 	//PointLight;
 	std::unique_ptr<CandleLight> mCandleLight1;
 	std::unique_ptr<CandleLight> mCandleLight2;
-	//UI
-	std::unique_ptr<UI_Button> mResetButton;
-	std::unique_ptr<UI_Button> mChargeButton;
+
+	std::unique_ptr<UI_IngredientIconButton> mRedIngredientButton;
+	std::unique_ptr<UI_IngredientIconButton> mBlueIngredientButton;
+	std::unique_ptr<UI_IngredientIconButton> mYellowIngredientButton;
+
+	std::unique_ptr<UI_IconButtonReset> mResetButton;
 
 	std::unique_ptr<UIStackContainer> mGoldBar;
 

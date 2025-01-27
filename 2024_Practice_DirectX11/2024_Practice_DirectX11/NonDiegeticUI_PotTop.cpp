@@ -1,5 +1,6 @@
 #include "NonDiegeticUI_PotTop.h"
 #include "KInput.h"
+#include "ResultManager.h"
 #include "ScreenFadeEffect.h"
 
 enum ObjectState
@@ -258,11 +259,16 @@ void NonDiegeticUI_PotTop::OnStateShaking(float dt)
 		mAccumulateTime += dt;
 		mModel->mTransform.Rotate({ 0, 0,   sin(mAccumulateTime * 50.f) });
 
-		if (mAccumulateTime > 0.2f)
+		if(!isWhiteOut)
 		{
-			ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_WHITE_OUT);
-			ScreenFadeEffect::Get()->SetWhiteDuration(2.f, 5.f);
+			if (mAccumulateTime > 0.2f)
+			{
+				ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_WHITE_OUT);
+				ScreenFadeEffect::Get()->SetWhiteDuration(2.f, 5.f);
+				isWhiteOut = true;
+			}
 		}
+		
 
 	}else
 	{
@@ -277,6 +283,10 @@ void NonDiegeticUI_PotTop::OnStateShaking(float dt)
 
 		//reset position&rotation
 		ResetPosition();
+
+		isWhiteOut = false;
+
+		ResultManager::Get()->SetActive(true);
 	}
 }
 

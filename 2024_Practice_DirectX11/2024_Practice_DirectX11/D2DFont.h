@@ -21,6 +21,7 @@ namespace D2DUIConfig
 		NORMAL_SIZE,
 		SMALL_SIZE,
 		SEMI_SIZE,
+		DEFAULT_SIZE
 	};
 
 	constexpr float FONT_TITLE_SIZE = 280.f;

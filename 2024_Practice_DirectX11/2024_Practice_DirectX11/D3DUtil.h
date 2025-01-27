@@ -196,42 +196,6 @@ inline void Error(const char* format, ...)
 	MessageBoxA(NULL, buf, "Error", MB_OK);
 }
 
-/// @brief 逆行列を求める
-///	@param ansmtx 求める逆行列
-///	@param mtx 元の行列
-inline void MtxInverse(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& mtx)
-{
-	ALIGN16 DirectX::XMMATRIX mat, matans;
-	mat = XMLoadFloat4x4(&mtx);
-	matans = DirectX::XMMatrixInverse(nullptr, mat);
-	XMStoreFloat4x4(&ansmtx, matans);
-}
-
-/// @brief 単位行列を求める
-/// @param mat 変換したい行列
-inline void MtxIdentity(DirectX::XMFLOAT4X4& mat)
-{
-	ALIGN16 DirectX::XMMATRIX mtx;
-	mtx = DirectX::XMMatrixIdentity();
-	XMStoreFloat4x4(&mat, mtx);
-}
-
-/// @brief 行列の掛け算をする
-/// @param ansmtx 結果
-/// @param p1mtx 掛け算用行列1
-/// @param p2mtx 掛け算用行列2
-inline void MtxMultiply(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& p1mtx, const DirectX::XMFLOAT4X4& p2mtx)
-{
-	ALIGN16 DirectX::XMMATRIX mat1, mat2, matans;
-
-	mat1 = XMLoadFloat4x4(&p1mtx);
-	mat2 = XMLoadFloat4x4(&p2mtx);
-
-	matans = XMMatrixMultiply(mat1, mat2);
-
-	XMStoreFloat4x4(&ansmtx, matans);
-}
-
 
 /// @brief テクスチャを読み込み
 /// @param pDevice d3d->device
@@ -240,11 +204,6 @@ inline void MtxMultiply(DirectX::XMFLOAT4X4& ansmtx, const DirectX::XMFLOAT4X4& 
 /// @return 
 HRESULT LoadTextureFromFile(ID3D11Device* pDevice,const char* pszFileName, ID3D11ShaderResourceView** ppTexture);
 
-inline float Sign(const float& num)
-{
-	if (num >= 0)return 1.f;
-	else return -1.f;
-}
 
 inline DirectX::XMFLOAT2 LocalClientToWorld(const POINT& cursorPos, DirectX::XMFLOAT2 winSize)
 {
@@ -256,8 +215,6 @@ inline DirectX::XMFLOAT2 LocalClientToWorld(const POINT& cursorPos, DirectX::XMF
 	result.y = winHeight / 2.f - cursorPos.y;
 	return result;
 }
-
-
 
 
 namespace Vertex
@@ -330,7 +287,7 @@ struct HSV
 	float hue = 0.f;	//色相
 	float saturation = 1.f;	//彩度
 	float value = 1.f;	//明度
-	float alpha;	//透明度
+	float alpha = 1.f;	//透明度
 };
 
 inline DirectX::XMFLOAT4 HSVtoRGB(const HSV& color)
@@ -419,13 +376,23 @@ inline HSV RGBtoHSV(const DirectX::XMFLOAT4& color)
 	return { h,s,v,color.w };
 }
 
+namespace ColorConfig
+{
+	constexpr DirectX::XMFLOAT4 DEFAULT_AMBIENT = { 0.2f, 0.2f, 0.2f, 1.0f };
+	constexpr DirectX::XMFLOAT4 DEFAULT_DIFFUSE = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	constexpr DirectX::XMFLOAT4 DEFAULT_SHADOW_COLOR = { 0.2f,0.2f,0.2f,0.6f };
+	constexpr DirectX::XMFLOAT4 WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
+	constexpr DirectX::XMFLOAT4 BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+}
 //todo
 struct Material
 {
-	DirectX::XMFLOAT4 ambient = { 0.2f, 0.2f, 0.2f, 1.0f };	// 環境光 ka
-	DirectX::XMFLOAT4 diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };	// 拡散反射 kd
+	DirectX::XMFLOAT4 ambient = ColorConfig::DEFAULT_AMBIENT;	// 環境光 ka
+	DirectX::XMFLOAT4 diffuse = ColorConfig::DEFAULT_DIFFUSE;	// 拡散反射 kd
 	DirectX::XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 1.0f }; // 鏡面反射 ks 
-	DirectX::XMFLOAT4 emission = { 0.0f, 0.0f, 0.0f, 0.0f }; // 反射 ke 自発光なし
+	DirectX::XMFLOAT4 emission = {}; // 反射 ke 自発光なし
 	float isTexEnable = true;
 	float pad1, pad2, pad3 = 0.f;
 };
@@ -500,11 +467,4 @@ struct WVPConstantBuffer
 	DirectX::XMFLOAT4X4 world;
 	DirectX::XMFLOAT4X4 view;
 	DirectX::XMFLOAT4X4 proj;
-};
-
-struct CircleParam
-{
-	
-
-
 };

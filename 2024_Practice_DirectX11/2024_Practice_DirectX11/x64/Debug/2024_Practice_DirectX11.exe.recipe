@@ -10,6 +10,9 @@
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_DefaultSprite.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_IconButtonIngredientCapacity.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Ingredient.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -34,13 +37,16 @@
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_DefaultUI.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_RectGradation.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Shadow.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_Water.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_WhiteOut.cso</FullPath>
+      <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_RoundGradation.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\58472\Desktop\2024_Project\2024_Practice_DirectX11\2024_Practice_DirectX11\Assets\Shader\PS_WriteDepth.cso</FullPath>

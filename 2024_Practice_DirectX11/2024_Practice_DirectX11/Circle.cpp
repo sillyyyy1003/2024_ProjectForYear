@@ -101,7 +101,7 @@ void Circle::CreateMesh(UINT slices)
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 	std::vector<DWORD> idx;
 
-	float radius = 0.5f;
+	constexpr float radius = 0.5f;
 	float theta = 0.0f;
 	float per_theta = XM_2PI / static_cast<float>(slices);
 
@@ -155,6 +155,7 @@ void Circle::CreateMesh(UINT slices)
 
 void Circle::CreateMesh(UINT levels, UINT slices)
 {
+
 	std::vector<Vertex::VtxPosNormalTex> vtx;
 
 	float theta = 0.0f;
@@ -178,14 +179,14 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 			x = r * cosf(theta); // x 
 			z = r * sinf(theta); // z 
 
-			float u = (x / (radius*mUvAnimation->GetSplit().x) + 1.0f) * 0.5f;
-			float v = (z / (radius* mUvAnimation->GetSplit().y) + 1.0f) * 0.5f;
+			float u = (x / (radius * mUvAnimation->GetSplit().x) + 1.0f) * 0.5f;
+			float v = (z / (radius * mUvAnimation->GetSplit().y) + 1.0f) * 0.5f;
 
 			vtx.push_back({
 				Vector3(x, 0.0f, z),
 				Vector3(0.0f, 1.0f, 0.0f),
 				Vector2(u, v)
-			});
+				});
 		}
 	}
 	std::vector<DWORD> idx;
@@ -214,7 +215,7 @@ void Circle::CreateMesh(UINT levels, UINT slices)
 		}
 	}
 
-
+	
 	//Mesh 
 	Mesh::MeshData desc = {};
 	desc.pVertex = vtx.data();

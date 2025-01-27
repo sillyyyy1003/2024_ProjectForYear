@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <FastNoise/FastNoiseLite.h>
+
 #include "PointLight.h"
 #include "Sphere.h"
 
@@ -14,6 +16,9 @@ private:
 	Light::PointLight mCandleLight;		//オブジェクトを照らす用
 	DirectX::XMFLOAT3 mCastShadowLightPos = { 0,1,0 };	//Cast Shadow用の
 	float mCastShadowHeight = 0.0f;
+	float mTime = 0.0;
+
+	FastNoiseLite mCandleNoise;	//ランダムウンド用
 public:
 
 	CandleLight();

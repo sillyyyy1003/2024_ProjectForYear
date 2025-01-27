@@ -5,6 +5,7 @@
 #include "IngredientManager.h"
 #include "MissionManager.h"
 #include "PBRModel.h"
+#include "ResultManager.h"
 #include "SceneLab.h"
 #include "SceneMission.h"
 #include "SceneOption.h"
@@ -28,6 +29,7 @@ void SceneManager::Init()
 	json playerData = LoadSceneData("Assets/Data/SaveDat/player_data.json");
 	json tutorialData = LoadSceneData("Assets/Data/SaveDat/tutorial_data.json");
 	json missionData = LoadSceneData("Assets/Data/SaveDat/mission_data.json");
+	json resultData = LoadSceneData("Assets/Data/SaveDat/result_data.json");
 
 	//Set Scene Map
 	InitSceneMap();
@@ -67,14 +69,15 @@ void SceneManager::Init()
 	//Init Ingredient Manager
 	IngredientManager::Get()->Init();
 
-	//Load MissionFalse
+	//Load Mission
 	MissionManager::Get()->Init();
 	MissionManager::Get()->LoadMissionList(missionData);
 
+	ResultManager::Get()->Init();
+	ResultManager::Get()->LoadSaveData(resultData);
+
 	//Set Scene
 	SetMainScene("Title");
-
-	
 
 }
 
@@ -96,6 +99,10 @@ void SceneManager::UnInit()
 	json missionData;
 	missionData = MissionManager::Get()->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/mission_data.json", missionData);
+
+	json resultData;
+	resultData = ResultManager::Get()->SaveData();
+	SaveSceneFile("Assets/Data/SaveDat/result_data.json", resultData);
 }
 
 void SceneManager::Update(float dt)
@@ -105,12 +112,16 @@ void SceneManager::Update(float dt)
 
 	ScreenFadeEffect::Get()->Update(dt);
 	IngredientManager::Get()->Update(dt);
+	ResultManager::Get()->Update(dt);
+
 	MainSceneChangeListener();
 }
 
 void SceneManager::Draw()
 {
+	ResultManager::Get()->Draw();
 	ScreenFadeEffect::Get()->Draw();
+	
 }
 
 void SceneManager::SetSwitchScene(bool isSwitchScene)
@@ -249,8 +260,14 @@ void SceneManager::LoadPixelShaderFile()
 	PixelShader* PS_ParticleInstance = CreateObj<PixelShader>("PS_ParticleInstance").get();
 	PS_ParticleInstance->LoadShaderFile("Assets/Shader/PS_ParticleInstance.cso");
 
-	PixelShader* PS_WhiteOut = CreateObj<PixelShader>("PS_WhiteOut").get();
-	HR(PS_WhiteOut->LoadShaderFile("Assets/Shader/PS_WhiteOut.cso"));
+	PixelShader* PS_RoundGradation = CreateObj<PixelShader>("PS_RoundGradation").get();
+	HR(PS_RoundGradation->LoadShaderFile("Assets/Shader/PS_RoundGradation.cso"));
+
+	PixelShader* PS_RectGradation = CreateObj<PixelShader>("PS_RectGradation").get();
+	HR(PS_RectGradation->LoadShaderFile("Assets/Shader/PS_RectGradation.cso"));
+
+	PixelShader* PS_IconButtonIngredientCapacity = CreateObj<PixelShader>("PS_IconButtonIngredientCapacity").get();
+	HR(PS_IconButtonIngredientCapacity->LoadShaderFile("Assets/Shader/PS_IconButtonIngredientCapacity.cso"));
 }
 
 void SceneManager::LoadVertexShaderFile()

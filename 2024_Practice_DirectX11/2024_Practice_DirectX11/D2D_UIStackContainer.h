@@ -32,7 +32,7 @@ protected:
 	float mAccumulateTime = 0.0f;
 	float mDuration = 0.0f;
 
-	bool isEmerging = false;
+	bool isEmerging = false;	//浮かび上がるスイッチ
 	bool isActive = true;
 	
 
@@ -53,7 +53,7 @@ public:
 	virtual void LoadSaveData(json data);
 	virtual void SetBackGroundColor(D2D1::ColorF color);
 
-	/// @brief 文字が浮かぶ機能
+	/// @brief 文字が浮かび上がる機能
 	/// @param dt deltaTime
 	virtual void EmergingFunction(float dt);
 	virtual void InitEmergingFunc(float duration);

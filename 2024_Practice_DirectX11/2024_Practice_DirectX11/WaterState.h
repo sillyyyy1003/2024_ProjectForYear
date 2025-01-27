@@ -38,7 +38,7 @@ namespace WaterStateConfig
 	enum class WaterBoilingState :int
 	{
 		STATE_STILL = 0,	// Only move when trigger is true;
-		STATE_BOILING = 1,	// Consistently boiling
+		STATE_CONSTANT_BOILING = 1,	// Consistently boiling
 #ifdef _DEBUG
 		STATE_EXPERIMENT = 2, 
 #endif

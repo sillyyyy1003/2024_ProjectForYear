@@ -19,8 +19,7 @@ protected:
 	// Used for clicked or Hover
 	RimLightEffect mEffect;
 	DirectX::XMFLOAT3 mColliderExtents = { 0,0,0 };
-
-protected:
+	bool isUseRimLight = true;
 
 	std::unique_ptr<BoxCollider> mCollider = nullptr;
 
@@ -99,5 +98,7 @@ public:
 	virtual void OnStateClicked(float dt);
 	virtual void OnStateDrag(float dt);
 	virtual void OnStateReleased(float dt);
+
+	void SetUseRimLight(bool isUseRimLight);
 };
 

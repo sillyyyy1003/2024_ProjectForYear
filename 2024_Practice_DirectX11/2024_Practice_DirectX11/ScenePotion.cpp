@@ -7,6 +7,7 @@
 #include "KInput.h"
 #include "Potion.h"
 #include "RenderState.h"
+#include "ResultManager.h"
 #include "SceneManager.h"
 #include "SceneScore.h"
 #include "ScreenFadeEffect.h"
@@ -28,13 +29,16 @@ void ScenePotion::Init()
 
 	//Init Light
 	GetObj<DirLight>("EnvironmentLight")->LoadSaveData(sceneData, "EnvironmentLight");
-	//Init object
+
+	//==================================================//
+	//===================Init object====================//
+	//==================================================//
 	mWater = CreateObj<Potion>("PotionSceneWater");
 	mWater->SetParticleNum(100);
 	mWater->LoadSaveData(sceneData, "ScenePotionWater");
 	mWater->LoadShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mWater->SetTexture(GetObj<Texture>("whiteTex"));
-	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
 	mWater->InitPotionParticleEffect({ 0,0.9f,0 }, { 0,-0.3f,0 }, 3.f, 70, 0.025f);
 
@@ -69,16 +73,6 @@ void ScenePotion::Init()
 	mJug->LoadTex(pbrTexList);
 	mJug->LoadSaveData(sceneData);
 
-	
-
-	//Set UI
-	mResetButton = std::make_unique<UI_Button>();
-	mResetButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	mResetButton->LoadSaveData(sceneData, "Reset");
-
-	mChargeButton = std::make_unique<UI_Button>();
-	mChargeButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	mChargeButton->LoadSaveData(sceneData, "Charge");
 
 	mGoldBar = std::make_unique<UIStackContainer>();
 	mGoldBar->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
@@ -114,6 +108,34 @@ void ScenePotion::Init()
 	mCandleLight2->Init();
 	mCandleLight2->LoadSaveData(sceneData, "CandleLight2");
 	mCandleLight2->InitName("CandleLight2");
+
+	//Set UI
+	//mResetButton = std::make_unique<UI_Button>();
+	//mResetButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
+	//mResetButton->LoadSaveData(sceneData, "Reset");
+
+	//mChargeButton = std::make_unique<UI_Button>();
+	//mChargeButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
+	//mChargeButton->LoadSaveData(sceneData, "Charge");
+	mResetButton = std::make_unique<UI_IconButtonReset>();
+	mResetButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/CleanButtonTex.dds", "ResetButton");
+	mResetButton->LoadSaveData(sceneData["ResetButton"]);
+
+	mRedIngredientButton = std::make_unique<UI_IngredientIconButton>();
+	mRedIngredientButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "RedIngredientButton");
+	mRedIngredientButton->SetIngredient(mRedPotion.get());
+	mRedIngredientButton->LoadSaveData(sceneData["RedIngredientButton"]);
+
+	mBlueIngredientButton = std::make_unique<UI_IngredientIconButton>();
+	mBlueIngredientButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "BlueIngredientButton");
+	mBlueIngredientButton->SetIngredient(mBluePotion.get());
+	mBlueIngredientButton->LoadSaveData(sceneData["BlueIngredientButton"]);
+
+	mYellowIngredientButton = std::make_unique<UI_IngredientIconButton>();
+	mYellowIngredientButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "YellowIngredientButton");
+	mYellowIngredientButton->SetIngredient(mYellowPotion.get());
+	mYellowIngredientButton->LoadSaveData(sceneData["YellowIngredientButton"]);
+
 	//Shadowに関するRenderTargetを作成
 	InitShadowRenderTarget();
 
@@ -138,25 +160,36 @@ void ScenePotion::UnInit()
 	sceneData["Table"] = mTable->SaveData();
 	sceneData["Jug"] = mJug->SaveData();
 
-	sceneData["Reset"] = mResetButton->SaveData ();
-	sceneData["Charge"] =mChargeButton->SaveData();
-
 	sceneData["RedPotion"] = mRedPotion->SaveData();
 	sceneData["BluePotion"] = mBluePotion->SaveData();
 	sceneData["YellowPotion"] = mYellowPotion->SaveData();
 	sceneData["CandleLight1"] = mCandleLight1->SaveData();
 	sceneData["CandleLight2"] = mCandleLight2->SaveData();
 
+	sceneData["RedIngredientButton"] = mRedIngredientButton->SaveData();
+	sceneData["BlueIngredientButton"] = mBlueIngredientButton->SaveData();
+	sceneData["YellowIngredientButton"] = mYellowIngredientButton->SaveData();
+
+	sceneData["ResetButton"] = mResetButton->SaveData();
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_potion.json", sceneData);
 
 #endif
+
+	//もしここでゲーム終了の場合 ポーションキャパシティを取得
+	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
+	player->SaveCapacitiesData(PlayerConfig::RED, mRedPotion->GetCapacity());
+	player->SaveCapacitiesData(PlayerConfig::BLUE, mBluePotion->GetCapacity());
+	player->SaveCapacitiesData(PlayerConfig::YELLOW, mYellowPotion->GetCapacity());
+
+
 
 }
 
 void ScenePotion::Update(float dt)
 {
 	TriggerListener();
+	
 	GameObjectUpdate(dt);
 
 	//Save capacity to player file
@@ -174,9 +207,14 @@ void ScenePotion::Draw()
 {
 	DrawWithShadow();
 
+	
+	mRedIngredientButton->Draw();
+	mYellowIngredientButton->Draw();
+	mBlueIngredientButton->Draw();
+
 	mResetButton->Draw();
-	mChargeButton->Draw();
 	mGoldBar->Draw();
+	
 
 }
 
@@ -351,34 +389,40 @@ void ScenePotion::GameObjectUpdate(float dt)
 	mJug->Update(dt);
 
 	//Button
-	mResetButton->Update();
-	mChargeButton->Update();
+	//mResetButton->Update();
+	//mChargeButton->Update();
 
 	//UI
 	mGoldBar->SetText(GetObj<Player>("player")->GetPlayerGold().c_str());
 	mGoldBar->Update();
+	mRedIngredientButton->Update(dt);
+	mBlueIngredientButton->Update(dt);
+	mYellowIngredientButton->Update(dt);
+	mResetButton->Update(dt);
 
 }
 
 void ScenePotion::TriggerListener()
 {
+	//Escapeでシーン切り替え
 	if (KInput::IsKeyTrigger(VK_ESCAPE))
 	{
+		if (ResultManager::Get()->GetActive())
+		{
+			ResultManager::Get()->SetActive(false);
+			return;
+		}
+
 		SceneManager::Get()->SetSwitchSceneWithFade(true);
 		mNextScene = SceneConfig::SceneIndex::SCENE_TITLE;
 		return;
 	}
 
-	if(mResetButton->isTrigger())
-	{
-		mWater->ResetMaterial();
-		mWater->ResetWaterLevel();
-	}
 
-	if(mChargeButton->isTrigger())
+	//リザルトが表示する場合　クリックで消す
+	if(KInput::IsKeyTrigger(VK_LBUTTON))
 	{
-		IngredientManager::Get()->ChargeAllIngredient();
+		if (ResultManager::Get()->GetActive())ResultManager::Get()->SetActive(false);
 	}
-
 	
 }

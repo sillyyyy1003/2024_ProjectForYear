@@ -25,8 +25,7 @@ void D2D_UIRoundedRect::Draw()
 	renderTarget->BeginDraw();
 	//Draw Outline first
 	D2DBrush::Get()->GetSolidBrush()->SetColor(mOutlineColor);
-	renderTarget->FillRoundedRectangle({ outlineRect,mRadiusX
-	,mRadiusY}, D2DBrush::Get()->GetSolidBrush());
+	renderTarget->FillRoundedRectangle({ outlineRect,mRadiusX	,mRadiusY}, D2DBrush::Get()->GetSolidBrush());
 	//Draw Content
 	D2DBrush::Get()->GetSolidBrush()->SetColor(mBaseColor);
 	renderTarget->FillRoundedRectangle({ rect,mRadiusX,mRadiusY }, D2DBrush::Get()->GetSolidBrush());

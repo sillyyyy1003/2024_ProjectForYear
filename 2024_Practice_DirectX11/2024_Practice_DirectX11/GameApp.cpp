@@ -1,5 +1,4 @@
 ﻿#include "GameApp.h"
-
 #include "D2DBrush.h"
 #include "D2DFont.h"
 #include "Model.h"
@@ -8,9 +7,8 @@
 #include "KInput.h"
 #include "Sprite.h"
 #include "UIFontManager.h"
-#include "Water.h"
 
-FastNoiseLite GameApp::GameNoise;
+
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
@@ -26,6 +24,7 @@ bool GameApp::Init()
 
     if (!InitResource())
         return false;
+
 	// 標準出力の割り当て
 	freopen_s(&fp, "CON", "w", stdout);
 	DebugLog::Log("Game Init Completed");

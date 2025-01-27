@@ -145,6 +145,7 @@ void SceneLab::Init()
 	mRedPotion->LoadSaveData(sceneData);
 	mRedPotion->SetPigmentColor(HSVtoRGB({ 0,1,0.5f }));
 	mRedPotion->SetMovable(false);
+	mRedPotion->SetUseRimLight(false);
 
 	mBluePotion = std::make_unique<Ingredient>();
 	mBluePotion->InitModel("Assets/Model/Potion2.obj", "BluePotion", PrimitiveConfig::MULTI, { 1,1 });
@@ -152,6 +153,8 @@ void SceneLab::Init()
 	mBluePotion->LoadSaveData(sceneData);
 	mBluePotion->SetPigmentColor(HSVtoRGB({ 240,1,0.5f }));
 	mBluePotion->SetMovable(false);
+	mBluePotion->SetUseRimLight(false);
+
 
 	mYellowPotion = std::make_unique<Ingredient>();
 	mYellowPotion->InitModel("Assets/Model/Potion3.obj", "YellowPotion", PrimitiveConfig::MULTI, { 1,1 });
@@ -159,6 +162,8 @@ void SceneLab::Init()
 	mYellowPotion->LoadSaveData(sceneData);
 	mYellowPotion->SetPigmentColor(HSVtoRGB({ 60,1,0.5f }));
 	mYellowPotion->SetMovable(false);
+	mYellowPotion->SetUseRimLight(false);
+
 
 	//Potionのキャパシティを設定する
 	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
@@ -182,7 +187,7 @@ void SceneLab::Init()
 	mWater->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Water"));
 	mWater->SetTexture(GetObj<Texture>("water"));
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_BOILING);
-	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_BOILING);
+	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING);
 	
 
 	mMissionPaper = std::make_unique<MovableStaticObject>();
@@ -267,6 +272,12 @@ void SceneLab::UnInit()
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_lab.json",sceneData);
 #endif
+
+	//もしここでゲーム終了の場合 ポーションキャパシティを取得
+	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
+	player->SaveCapacitiesData(PlayerConfig::RED, mRedPotion->GetCapacity());
+	player->SaveCapacitiesData(PlayerConfig::BLUE, mBluePotion->GetCapacity());
+	player->SaveCapacitiesData(PlayerConfig::YELLOW, mYellowPotion->GetCapacity());
 }
 
 void SceneLab::Update(float dt)

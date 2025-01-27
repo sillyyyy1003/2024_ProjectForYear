@@ -5,6 +5,7 @@
 class UIButton :public D2D_UIStackContainer
 {
 private:
+
 	RECT mRect = {};
 	int mState = 0;
 

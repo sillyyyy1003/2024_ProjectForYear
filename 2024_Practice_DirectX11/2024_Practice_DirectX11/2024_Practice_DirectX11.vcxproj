@@ -181,6 +181,9 @@
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UISquare.cpp" />
+    <ClCompile Include="UI_IconButton.cpp" />
+    <ClCompile Include="UI_IconButtonReset.cpp" />
+    <ClCompile Include="UI_IngredientIconButton.cpp" />
     <ClCompile Include="UI_MoveObject.cpp" />
     <ClCompile Include="ScreenFadeEffect.cpp" />
     <ClCompile Include="InteractiveStaticObject.cpp" />
@@ -228,7 +231,6 @@
     <ClCompile Include="UIStackContainerManager.cpp" />
     <ClCompile Include="UI_Button.cpp" />
     <ClCompile Include="UI_Capsule.cpp" />
-    <ClCompile Include="UI_IngameFont.cpp" />
     <ClCompile Include="UI_Primitive.cpp" />
     <ClCompile Include="UI_RoundSquare.cpp" />
     <ClCompile Include="UI_Square.cpp" />
@@ -270,6 +272,9 @@
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UISquare.h" />
+    <ClInclude Include="UI_IconButton.h" />
+    <ClInclude Include="UI_IconButtonReset.h" />
+    <ClInclude Include="UI_IngredientIconButton.h" />
     <ClInclude Include="UI_MoveObject.h" />
     <ClInclude Include="ScreenFadeEffect.h" />
     <ClInclude Include="InteractiveStaticObject.h" />
@@ -318,7 +323,6 @@
     <ClInclude Include="UIStackContainerManager.h" />
     <ClInclude Include="UI_Button.h" />
     <ClInclude Include="UI_Capsule.h" />
-    <ClInclude Include="UI_IngameFont.h" />
     <ClInclude Include="UI_Primitive.h" />
     <ClInclude Include="UI_RoundSquare.h" />
     <ClInclude Include="UI_Square.h" />
@@ -329,6 +333,13 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PS_DefaultSprite.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="PS_IconButtonIngredientCapacity.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -396,6 +407,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="PS_RectGradation.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PS_Shadow.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -410,7 +427,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="PS_WhiteOut.hlsl">
+    <FxCompile Include="PS_RoundGradation.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

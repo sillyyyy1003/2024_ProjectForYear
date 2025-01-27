@@ -30,6 +30,8 @@ private:
 	int mResultState = 0;
 	int mNextResultState = 0;
 
+	bool isWhiteOut = false;
+
 public:
 	NonDiegeticUI_PotTop();
 	~NonDiegeticUI_PotTop() override = default;

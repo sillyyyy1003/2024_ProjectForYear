@@ -27,6 +27,7 @@ private:
 	float mPrice = 100.f;
 	bool isMovable = true;
 
+
 public:
 	Ingredient();
 	~Ingredient() override = default;
@@ -62,6 +63,10 @@ public:
 	void ChargeCapacity();
 	void SetCapacity(float _capacity);
 	float GetCapacity()const { return mCapacity; };
+
+	/// @brief キャパシティの比率を取得
+	/// @return //(フルキャパは90)
+	float GetCapacityPercentage() const { return mCapacity / 90.f; };
 
 	void MixColorFunction(float dt);
 };

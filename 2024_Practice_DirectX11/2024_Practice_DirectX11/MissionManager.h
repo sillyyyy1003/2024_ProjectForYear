@@ -88,6 +88,9 @@ public:
 	/// @brief 進行中のミッションあるかどうか
 	/// @return 
 	bool HasCurrentMission();
+
+	/// @brief 進行中のミッションを完成する
+	void CompleteCurrentMission();
 	
 	
 };

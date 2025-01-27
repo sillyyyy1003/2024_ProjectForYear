@@ -10,6 +10,7 @@ namespace UIButtonConfig
 		STATE_NONE,
 		STATE_HOVER,
 		STATE_PRESS,
+		STATE_TRIGGER,
 		STATE_MAX,
 	};
 
@@ -40,8 +41,18 @@ public:
 
 	void LoadDefShader(const std::shared_ptr<VertexShader>& vs, const std::shared_ptr<PixelShader>& ps);
 
+	/// @brief 文字あるボタンの初期化
+	/// @param primitiveKind ボタンの形
+	/// @param bgTex ボタンの背景
+	/// @param containerSize ボタンの大きさ
+	/// @param fontTex 文字lib
+	/// @param charSize キャラサイズ
 	void Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex, DirectX::XMFLOAT2 containerSize, const std::shared_ptr<Texture>& fontTex, DirectX::XMFLOAT2 charSize);
 
+	/// @brief 文字あるボタンの初期化
+	/// @param primitiveKind ボタンの形
+	/// @param bgTex ボタンの背景
+	/// @param fontTex 文字lib
 	void Init(UIPrimitiveConfig::UI_PrimitiveKind primitiveKind, const std::shared_ptr<Texture>& bgTex, const std::shared_ptr<Texture>& fontTex);
 
 	void SetStateColor(DirectX::XMFLOAT4 color, UIButtonConfig::ButtonState state);

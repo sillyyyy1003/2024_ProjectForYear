@@ -46,8 +46,6 @@ public:
 	virtual void Draw(){};
 	virtual void DrawWithRadianBrush(){};
 
-	virtual void InitUI(D2DUIConfig::UIShape shape){};
-
 	virtual void SetPosition(DirectX::XMFLOAT2 pos) { mPos = pos; };
 	virtual void SetScale(DirectX::XMFLOAT2 scale) { mScale = scale; };
 
@@ -64,7 +62,7 @@ public:
 
 	DirectX::XMFLOAT4 GetBackGroundColor();
 	DirectX::XMFLOAT4 GetOutlineColor();
-	float GetOutlineWeight() { return  mOutlineWeight; };
+	float GetOutlineWeight() { return mOutlineWeight; };
 
 	float GetRadiusX() { return mRadiusX; };
 	float GetRadiusY() { return mRadiusY; };

@@ -412,7 +412,9 @@ void InteractiveMovableObject::OnStateNone(float dt)
 
 void InteractiveMovableObject::OnStateHover(float dt)
 {
-	mEffect.rimIntensity = 1.0f;
+	// Set Rim Intensity
+	if (isUseRimLight)mEffect.rimIntensity = 1.0f;
+
 }
 
 void InteractiveMovableObject::OnStateClicked(float dt)
@@ -421,18 +423,21 @@ void InteractiveMovableObject::OnStateClicked(float dt)
 	isClicked = true;
 
 	// Set Rim Intensity
-	mEffect.rimIntensity = 1.0f;
+	if (isUseRimLight)mEffect.rimIntensity = 1.0f;
+
 }
 
 void InteractiveMovableObject::OnStateDrag(float dt)
 {
 	isDragged = true;
 
-	// Set Rim Intensity
-	mEffect.rimIntensity = 1.0f;
-
 }
 
 void InteractiveMovableObject::OnStateReleased(float dt)
 {
+}
+
+void InteractiveMovableObject::SetUseRimLight(bool isUseRimLight)
+{
+	this->isUseRimLight = isUseRimLight;
 }

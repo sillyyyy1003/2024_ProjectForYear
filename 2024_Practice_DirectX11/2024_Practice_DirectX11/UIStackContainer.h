@@ -65,6 +65,9 @@ public:
 
 	void InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind kind);
 
+	/// @brief 背景の初期化
+	/// @param filePath テクスチャファイルパス
+	/// @param size アウトラインの大きさ
 	void LoadBackgroundTex(const char* filePath, DirectX::XMFLOAT2 size);
 	void LoadBackgroundTex(const std::shared_ptr<Texture>& bgTex, DirectX::XMFLOAT2 texSize);
 

@@ -24,6 +24,7 @@ void D2D_UIStackContainer::Init(D2DUIConfig::UIShape shape, D2DUIConfig::FontSiz
 		mBackGround = std::make_unique<D2D_UIRoundedRect>();
 		break;
 	}
+
 	//SetFontSize
 	mFontSize = size;
 

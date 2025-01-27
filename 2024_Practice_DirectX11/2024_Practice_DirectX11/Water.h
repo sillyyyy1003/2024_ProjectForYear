@@ -126,5 +126,7 @@ public:
 	/// @brief 後処理(Shaderに書き込み)
 	/// @param dt delta Time
 	void LateUpdate(float dt);
+
+	void CalculateVertexPosNormal();
 };
 

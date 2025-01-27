@@ -1,19 +1,12 @@
 ﻿#pragma once
-#include "D2D_UIRect.h"
-#include "D2D_UIStackContainer.h"
-#include "FireEffect.h"
-#include "ParticleEffect.h"
 #include "PBRModel.h"
 #include "SceneBase.h"
-#include "UIButton.h"
+#include "UI_IconButton.h"
 
 
 class SceneOption : public SceneBase
 {
-
-	//std::unique_ptr <ParticleEffect> testParticle;
-	//std::unique_ptr<FireEffect> testParticle;
-	std::unique_ptr<D2D_UIStackContainer> test;
+	std::unique_ptr<UI_IconButton> test;
 public:
 	/// @brief データのロードと初期化
 	void Init();

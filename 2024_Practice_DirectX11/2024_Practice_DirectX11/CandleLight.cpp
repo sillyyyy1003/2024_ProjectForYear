@@ -19,7 +19,7 @@ void CandleLight::Init()
     mDebugMesh->LoadDefShader();
 #endif
 
-	GameApp::GetNoise().SetFrequency(0.5f);
+	mCandleNoise.SetFrequency(0.5f);
 }
 
 void CandleLight::InitName(const char* name)
@@ -74,26 +74,26 @@ void CandleLight::Update(float dt)
 void CandleLight::CandleLightShaking(float dt)
 {
     if (!isShaking)return;
-    static float time = 0;
-    time += dt;
+
+	mTime += dt;
 
 	//パーリンノイズを位置に導入
 	Vector3 basePos = GetPosition();
-    float flickerX = GameApp::GetNoise().GetNoise(time, 0.0f) * 0.15f; // X 方向
-    float flickerY = GameApp::GetNoise().GetNoise(time, 1.0f) * 0.05f; // Y 方向
-    float flickerZ = GameApp::GetNoise().GetNoise(time, 2.0f) * 0.15f; // Z 方向
+    float flickerX = mCandleNoise.GetNoise(mTime, 0.0f) * 0.15f; // X 方向
+    //float flickerY = mCandleNoise.GetNoise(mTime, 1.0f) * 0.05f; // Y 方向
+    float flickerZ = mCandleNoise.GetNoise(mTime, 2.0f) * 0.15f; // Z 方向
 
 	// 光の範囲を取得
     float baseRange = GetRange();
 
     // ライトの強度にノイズ入れ
     float baseIntensity = GetAttenuation().x;
-    float intensityFlicker = GameApp::GetNoise().GetNoise(time, 4.0f) * 0.15f;
+    float intensityFlicker = mCandleNoise.GetNoise(mTime, 4.0f) * 0.15f;
   
     mCandleLight.ambient = GetAmbient();
     mCandleLight.diffuse = GetDiffuse();
     mCandleLight.position= basePos + Vector3(flickerX, 0, flickerZ);
-    mCandleLight.range = baseRange + GameApp::GetNoise().GetNoise(time, 3.0f) * 1.f;
+    mCandleLight.range = baseRange + mCandleNoise.GetNoise(mTime, 3.0f) * 1.f;
     mCandleLight.attenuation = { baseIntensity + intensityFlicker, 0, 0 };
     mCandleLight.isEnable = true;
     mCastShadowLightPos = mCandleLight.position;

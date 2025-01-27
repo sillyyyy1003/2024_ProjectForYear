@@ -9,7 +9,6 @@ class GameApp : public D3DApp
 private:
 
     //========= ゲーム用変数 ============
-    static FastNoiseLite GameNoise;//One Instance is enough
     int mCurrentRenderIndex;//Using Double Buffer
     //========= ゲーム用変数 ============
 private:
@@ -24,8 +23,6 @@ public:
     static std::shared_ptr<T> GetComponent(const char* objName) { return SceneManager::Get()->GetObj<T>(objName); };
 
     static CameraBase* GetCurrentCamera() { return SceneManager::Get()->GetCurrentCamera(); };
-    static FastNoiseLite& GetNoise() { return GameNoise; };
-
     static int GetCurrentRenderIndex() { return Get()->mCurrentRenderIndex; };
 
     /// @brief Timerを取得する
