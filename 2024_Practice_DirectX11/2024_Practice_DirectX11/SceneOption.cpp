@@ -12,9 +12,11 @@
 
 void SceneOption::Init()
 {
-	test = std::make_unique<UI_IconButton>();
-	//test->Init(D2DUIConfig::UIShape::ROUNDED_RECT, "Assets/Texture/ButtonUI/chargeTex.png", "Test");
-	test->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "Test");
+	mTest = std::make_unique<FireEffect>();
+	mTest->InitParticleRenderer(1000,0.01f);
+	mTest->InitFireParticleData({}, Vector3(0.15f, 0.5f, 0.15f), Vector3(0, -0.1f, 0),2.f);
+	mTest->SetParticleColorRange(Color(1, 0.2f, 0, 1), Color(1, 0, 0, 0.0f));
+	
 
 }
 
@@ -31,19 +33,15 @@ void SceneOption::Update(float dt)
 		SceneManager::Get()->SetMainScene("Title");//Back to TitleScene
 	}
 
-	if(KInput::IsKeyTrigger(VK_SPACE))
-	{
-		ResultManager::Get()->SetActive(true);
-	}
-
 
 	MissionManager::Get()->MissionGenerator();
 	
-	test->Update(dt);
+	mTest->Update(dt);
 }
 
 void SceneOption::Draw()
 {
-	test->Draw();
-
+	GameApp::SetBlendState(RenderState::BSAlphaWeightedAdditive);
+	mTest->Draw();
+	GameApp::SetBlendState(nullptr);
 }

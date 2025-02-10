@@ -96,6 +96,11 @@ void ScreenFadeEffect::Draw()
 		mWhite->Draw();
 		GameApp::SetBlendState(nullptr);
 		break;
+	case ScreenOverlayConfig::STATE_WHITE_IN:
+		GameApp::SetBlendState(RenderState::BSTransparent);
+		mWhite->Draw();
+		GameApp::SetBlendState(nullptr);
+		break;
 	}
 
 }
@@ -125,7 +130,7 @@ void ScreenFadeEffect::WhiteOut(float dt)
 	if (mAccumulateTime <= mOutDuration)
 	{
 		float whiteRatio = mAccumulateTime / mOutDuration;
-		whiteRatio = EaseOut::EaseInCubic(whiteRatio);
+		whiteRatio = Ease::EaseInCubic(whiteRatio);
 		mWhite->SetScale(Vector2(3500, 3500) * whiteRatio);
 		mAccumulateTime += dt;
 		mWhite->SetTransparency(whiteRatio);
@@ -134,13 +139,29 @@ void ScreenFadeEffect::WhiteOut(float dt)
 	{
 		mAccumulateTime = 0.f;
 		mCBuffer.radius = 0.0f;
-		mState = ScreenOverlayConfig::STATE_NONE;
+		isWhiteOutEnd = true;
+		mState = ScreenOverlayConfig::STATE_WHITE_IN;
 	}
 }
 
 void ScreenFadeEffect::WhiteIn(float dt)
 {
+	if (mAccumulateTime <= mInDuration)
+	{
+		float whiteRatio = mAccumulateTime / mInDuration;
+		whiteRatio = Ease::EaseInCubic(whiteRatio);
+		mWhite->SetTransparency((1 - whiteRatio));
+		mAccumulateTime += dt;
+	}
+	else
+	{
+		mAccumulateTime = 0.f;
+		mCBuffer.radius = 0.0f;
+		isWhiteInEnd = true;
+		mState = ScreenOverlayConfig::STATE_NONE;
+	}
 }
+
 
 
 bool ScreenFadeEffect::GetFadeOut()
@@ -163,6 +184,30 @@ bool ScreenFadeEffect::GetFade()
 		return true;
 
 	return false;
+}
+
+bool ScreenFadeEffect::GetWhiteInEnd()
+{
+	if(isWhiteInEnd)
+	{
+		isWhiteInEnd = false;
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+
+bool ScreenFadeEffect::GetWhiteOutEnd()
+{
+	if(isWhiteOutEnd)
+	{
+		isWhiteOutEnd = false;
+		return true;
+	}else
+	{
+		return false;
+	}
 }
 
 

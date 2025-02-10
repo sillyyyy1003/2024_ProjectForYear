@@ -15,7 +15,7 @@ cbuffer Material : register(b0)
 
 cbuffer IngredientIconCBuffer : register(b1)
 {
-	float4 pigmentColor;
+	float4 blankColor;
 	float capacity;		//Œ»Ý‚ÌƒLƒƒƒpƒVƒeƒB
 }
 
@@ -24,10 +24,9 @@ SamplerState mySampler : register(s0);
 
 float4 main(PS_IN pin) : SV_TARGET
 {
-	
-	//tex‚Íã‚©‚çi‚O`‚Pj‚Ì‚½‚ßA”»’è‚Í‹t‚É‚·‚é
 	float4 color = myTex.Sample(mySampler, pin.tex);
-	color.rgb = pin.tex.y >= capacity ? pigmentColor.rgb :	material.diffuse.rgb;
+	
+	color.rgb = pin.tex.y >= capacity ? blankColor.rgb :material.diffuse.rgb;
 	clip(color.a - 0.1f);
 	return color;
 

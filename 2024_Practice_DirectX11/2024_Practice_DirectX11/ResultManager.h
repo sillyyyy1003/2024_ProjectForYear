@@ -4,6 +4,7 @@
 
 #include "D2D_UIStackContainer.h"
 #include "MissionManager.h"
+#include "UIGoldDisplay.h"
 
 namespace ResultConfig
 {
@@ -21,8 +22,9 @@ private:
 	std::unique_ptr<UI_Square> mResultBackGround;
 	//結果表示するか？
 	bool isActive = false;
+	bool isFinishIsGenerateResult = false;
+	bool isReadyToSetIncreaseMoney = false;
 
-	bool isGenerateResult = false;
 	//結果の文字
 	std::string mResultContents;	
 
@@ -32,6 +34,10 @@ private:
 	float mShadowRadius = 0.0f;
 	float mAccumulateTime = 0.0f;
 	float mChangeRange = 0.0f;	//変化範囲（基準値0.0001)
+
+	UIGoldDisplay* mGoldDisplay = nullptr;
+	float increaseGoldNum = 0;
+
 
 public:
 	static ResultManager* Get() { static ResultManager instance; return &instance; };
@@ -50,9 +56,12 @@ public:
 	/// @brief リザルト表示
 	void SetActive(bool isActive) { this->isActive = isActive; };
 	bool GetActive() { return isActive; };
+	void SetGenerateResult() { isFinishIsGenerateResult = false; };
 
 	json SaveData();
 	void LoadSaveData(json data);
+
+	void SetUIGoldDisplay(UIGoldDisplay* display);
 
 };
 

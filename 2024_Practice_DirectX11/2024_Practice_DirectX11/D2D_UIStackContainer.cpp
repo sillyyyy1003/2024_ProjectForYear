@@ -154,16 +154,18 @@ void D2D_UIStackContainer::EmergingFunction(float dt)
 {
 	if (mAccumulateTime < mDuration)
 	{
-		float easeStart = EaseOut::EaseOutSine(mAccumulateTime / mDuration);
+		float easeStart = Ease::EaseOutSine(mAccumulateTime / mDuration);
 		mAccumulateTime += dt;
-		float easeEnd = EaseOut::EaseOutSine(mAccumulateTime / mDuration);
+		float easeEnd = Ease::EaseOutSine(mAccumulateTime / mDuration);
 		float easeStep = easeEnd - easeStart;
 
 		float alpha = 1.0f * easeStep;
 		mFontColor.a += alpha;
 		
+		
 	}else
 	{
+		//todo:make this to QT...
 		mAccumulateTime = 0.0f;
 		isEmerging = false;
 	}

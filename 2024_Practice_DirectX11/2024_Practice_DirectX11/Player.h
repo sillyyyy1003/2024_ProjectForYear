@@ -35,7 +35,7 @@ public:
 	void LoadPlayerData(json data);
 	json SaveData();
 
-	const float& GetPlayerGold() const { return mGold; };
+	int GetPlayerGoldNum() const { return (int)mGold; };
 	std::string GetPlayerGold();
 
 	std::string GetDayNum();
@@ -48,5 +48,6 @@ public:
 	void EndToday();
 
 	void ChargeForIngredients();
+	void SetGold(int gold) { mGold = (float)gold; };
 };
 

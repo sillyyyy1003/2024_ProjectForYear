@@ -21,7 +21,7 @@ namespace ObjectMovement
 	
 }
 
-namespace EaseOut
+namespace Ease
 {
 	enum EasingMode
 	{
@@ -92,6 +92,12 @@ namespace EaseOut
 	{
 		return (float)(1.f - std::pow(1.f - ratio, 3));
 	}
+
+	inline float EaseInExpo(float ratio)
+	{
+		return (ratio == 0.0f) ? 0.0f : std::pow(2.0f, 10.0f * ratio - 10.0f);
+	}
+	
 }
 
 class MovableStaticObject :public StaticObject
@@ -133,16 +139,16 @@ public:
 	/// @param duration 運動時間
 	/// @param axis 回転軸
 	///	@param mode イージングモード
-	virtual void SetSpinIn(float spinDegree, const DirectX::XMFLOAT3& spinCenter, const DirectX::XMFLOAT3& startPos, const DirectX::XMFLOAT3& rotation, const DirectX::XMFLOAT3& startRotation, float duration, ObjectMovement::Axis axis, EaseOut::EasingMode mode);
+	virtual void SetSpinIn(float spinDegree, const DirectX::XMFLOAT3& spinCenter, const DirectX::XMFLOAT3& startPos, const DirectX::XMFLOAT3& rotation, const DirectX::XMFLOAT3& startRotation, float duration, ObjectMovement::Axis axis, Ease::EasingMode mode);
 
-	virtual void SetWalk(const DirectX::XMFLOAT3& distance, float duration, const DirectX::XMFLOAT3& startPos, EaseOut::EasingMode mode, ObjectMovement::Axis axis);
+	virtual void SetWalk(const DirectX::XMFLOAT3& distance, float duration, const DirectX::XMFLOAT3& startPos, Ease::EasingMode mode, ObjectMovement::Axis axis);
 
 	/// 状態変更
 	virtual void SetMoveState(ObjectMovement::Movement state);
 
 	/// @brief Easing Modeを設定する
 	/// @param mode Easing種類
-	virtual void SetEasingMode(EaseOut::EasingMode mode);
+	virtual void SetEasingMode(Ease::EasingMode mode);
 
 	/// @brief イージング効果
 	/// @param data  Normalized data

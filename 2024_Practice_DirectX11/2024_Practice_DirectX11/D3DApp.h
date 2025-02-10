@@ -79,9 +79,6 @@ public:
     ID2D1Factory* GetD2DFactory()const { return mpD2DFactory.Get(); };
     IDWriteFactory* GetWriteFactory()const { return mpDWriteFactory.Get(); };
 
-
-
-
     HINSTANCE AppInst()const { return mhAppInst; };   // 初期化
     HWND      MainWnd()const { return mhMainWnd; };   // Get Main Wnd 
     float     AspectRatio()const;                     // Calculate Aspect Ratio

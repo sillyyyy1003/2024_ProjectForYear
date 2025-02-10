@@ -23,8 +23,8 @@ json Player::SaveData()
 	data["WitchLevel"] = { mWitchLevel };
 	data["Day"] = { mDay };
 	data["Capacities"]["Red"] = {mCapacities[PlayerConfig::PigmentColor::RED]};
-	data["Capacities"]["Yellow"] = { mCapacities[PlayerConfig::PigmentColor::RED] };
-	data["Capacities"]["Blue"] = { mCapacities[PlayerConfig::PigmentColor::RED] };
+	data["Capacities"]["Yellow"] = { mCapacities[PlayerConfig::PigmentColor::BLUE] };
+	data["Capacities"]["Blue"] = { mCapacities[PlayerConfig::PigmentColor::YELLOW] };
 	return data;
 }
 
@@ -73,3 +73,6 @@ void Player::ChargeForIngredients()
 	if (mGold <= 0)mGold = 0;
 	
 }
+
+
+

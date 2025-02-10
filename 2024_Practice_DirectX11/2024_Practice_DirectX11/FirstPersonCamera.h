@@ -1,12 +1,15 @@
 ﻿#pragma once
+#include <FastNoise/FastNoiseLite.h>
+
 #include "CameraBase.h"
+#include "RandomGenerator.h"
 #include "Transform.h"
 
 /// @brief 一人称カメラ
 class FirstPersonCamera : public CameraBase
 {
 private:
- 
+    
     float mMoveSpeed = 5.0f;    //移動速度
 
     int mState = 0;
@@ -29,9 +32,8 @@ private:
 
     //カメラ揺れで使われる変数
     bool isShaking = false;
-    float mShakingTime = 1.f;        //カメラ揺れの制限時間
     DirectX::XMFLOAT2 mShakingAmplitude;    //揺れの幅
-   
+    FastNoiseLite mNoise;
 
 public:
 
@@ -49,6 +51,8 @@ public:
 
     FirstPersonCamera() = default;
     ~FirstPersonCamera() override = default;
+
+    void Init();
 
     void Update(float dt) override;
 
@@ -116,16 +120,21 @@ public:
     void BackToDefaultPos();
 
     bool IsEndMove();
-
     bool IsStartMove();
 
-    /// @brief 特定位置をアップする
-    /// @param dt 
-    void ZoomIn(float dt);
-
+    /// @brief カメラ状態を設定する
     void SetCameraState(FirstPersonCamera::CameraKind state);
 
+    /// @brief カメラの揺れを設定する
+    /// @param amplitude 揺れ幅
+    /// @param duration 揺れ時間(-1の場合は永遠)
+    /// @param frequency 周波数
+    void SetShake(float amplitude, float frequency, float duration = -1);
 
+    void StopShake();
+    bool GetShake() const { return isShaking; };
+
+   
 
 private:
     void UpdateState();
@@ -136,6 +145,10 @@ private:
 
     void UpdateShake(float dt);
 
+	/// @brief 特定位置をアップする
+    /// @param dt 
+    void ZoomIn(float dt);
 
+    void Shake(float dt);
 };
 

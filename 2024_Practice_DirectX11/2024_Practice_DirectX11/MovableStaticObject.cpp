@@ -27,7 +27,7 @@ void MovableStaticObject::GameUpdate(float dt)
 	}
 }
 
-void MovableStaticObject::SetSpinIn(float spinDegree, const DirectX::XMFLOAT3& spinCenter, const DirectX::XMFLOAT3& startPos, const DirectX::XMFLOAT3&  rotation, const DirectX::XMFLOAT3& startRotation, float duration, ObjectMovement::Axis axis, EaseOut::EasingMode mode)
+void MovableStaticObject::SetSpinIn(float spinDegree, const DirectX::XMFLOAT3& spinCenter, const DirectX::XMFLOAT3& startPos, const DirectX::XMFLOAT3&  rotation, const DirectX::XMFLOAT3& startRotation, float duration, ObjectMovement::Axis axis, Ease::EasingMode mode)
 {
 	//移動時間
 	mDuration = duration;
@@ -53,7 +53,7 @@ void MovableStaticObject::SetSpinIn(float spinDegree, const DirectX::XMFLOAT3& s
 }
 
 void MovableStaticObject::SetWalk(const DirectX::XMFLOAT3& distance, float duration, const DirectX::XMFLOAT3& startPos,
-	EaseOut::EasingMode mode, ObjectMovement::Axis axis)
+	Ease::EasingMode mode, ObjectMovement::Axis axis)
 {
 	//移動量
 	mDistance = distance;
@@ -92,7 +92,7 @@ void MovableStaticObject::SetMoveState(ObjectMovement::Movement state)
 
 }
 
-void MovableStaticObject::SetEasingMode(EaseOut::EasingMode mode)
+void MovableStaticObject::SetEasingMode(Ease::EasingMode mode)
 {
 	mEaseMode = mode;
 }
@@ -101,20 +101,20 @@ float MovableStaticObject::Ease(float data)
 {
 	switch (mEaseMode)
 	{
-	case EaseOut::MODE_NONE:
+	case Ease::MODE_NONE:
 		return data;
 		break;
-	case EaseOut::MODE_SINE:
-		return EaseOut::EaseOutSine(data);
+	case Ease::MODE_SINE:
+		return Ease::EaseOutSine(data);
 		break;
-	case EaseOut::MODE_BACK:
-		return EaseOut::EaseOutBack(data);
+	case Ease::MODE_BACK:
+		return Ease::EaseOutBack(data);
 		break;
-	case EaseOut::MODE_BOUNCE:
-		return EaseOut::EaseOutBounce(data);
+	case Ease::MODE_BOUNCE:
+		return Ease::EaseOutBounce(data);
 		break;
-	case EaseOut::MODE_CIRC:
-		return EaseOut::EaseOutCirc(data);
+	case Ease::MODE_CIRC:
+		return Ease::EaseOutCirc(data);
 		break;
 		default:
 			return data;

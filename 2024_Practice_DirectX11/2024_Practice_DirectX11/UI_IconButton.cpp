@@ -41,7 +41,6 @@ void UI_IconButton::Init(const char* bgTex, const char* iconTex, const char* obj
 void UI_IconButton::SetPosition(const DirectX::XMFLOAT2& pos)
 {
 	//mButtonBackground->SetPosition(pos);
-	mDefaultPosition = pos;
 	mBg->SetPosition(pos);
 	mButtonIcon->SetPosition(pos);
 	UpdateCollider();
@@ -79,6 +78,7 @@ void UI_IconButton::Update(float dt)
 		ImGui::InputFloat2("ButtonPos", pos);
 		mPosition = Vector2(pos);
 		SetPosition(mPosition);
+		mDefaultPosition = mPosition;
 
 		float scale[2] = { mScale.x,mScale.y };
 		ImGui::InputFloat2("ButtonScale", scale);
@@ -98,7 +98,7 @@ void UI_IconButton::Update(float dt)
 		mShadowOffset = { shadowOffset[0],shadowOffset[1] };
 	}
 
-	ImGui::End();
+	ImGui::End(); 
 
 #endif
 
@@ -142,6 +142,9 @@ void UI_IconButton::LoadSaveData(json data)
 	mScale = { data["Scale"][0],data["Scale"][1] };
 	mShadowOffset = { data["ShadowOffset"][0],data["ShadowOffset"][1] };
 
+	SetPosition(mPosition);
+	SetScale(mScale);
+	mDefaultPosition = mPosition;
 }
 
 void UI_IconButton::PreUpdate(float dt)

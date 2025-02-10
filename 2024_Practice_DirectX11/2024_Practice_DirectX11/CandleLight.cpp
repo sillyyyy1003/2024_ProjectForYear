@@ -1,5 +1,7 @@
 ﻿#include "CandleLight.h"
 #include "GameApp.h"
+#include "RandomGenerator.h"
+#include "RenderState.h"
 
 CandleLight::CandleLight()
 {
@@ -11,15 +13,9 @@ CandleLight::~CandleLight()
 
 void CandleLight::Init()
 {
-#ifdef _DEBUG
-    mDebugMesh = std::make_unique<Sphere>();
-    mDebugMesh->Init(nullptr);
-    mDebugMesh->SetDiffuse({ 1,0,0,1 });
-    mDebugMesh->SetScale(0.5, 0.5, 0.5);
-    mDebugMesh->LoadDefShader();
-#endif
-
-	mCandleNoise.SetFrequency(0.5f);
+	mCandleNoise.SetSeed(RandomGenerator::Get()->RandomInt(0, 100));
+	mCandleNoise.SetFrequency(0.3f);
+	mCandleNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 }
 
 void CandleLight::InitName(const char* name)
@@ -27,6 +23,40 @@ void CandleLight::InitName(const char* name)
 #ifdef _DEBUG
 	this->name = name;
 #endif
+}
+
+
+
+void CandleLight::InitEffect(DirectX::XMFLOAT3 emitVelocity, DirectX::XMFLOAT3 emitAccel, float time,
+	DirectX::XMFLOAT4 startColor, DirectX::XMFLOAT4 endColor)
+{
+
+	//Effect初期化
+	mEffect = std::make_unique<FireEffect>();
+
+	//todo:これを数値として保存する
+	mEffect->InitParticleRenderer(1500,0.015f);
+	mEffect->InitFireParticleData(mCandleLight.position + mFireOffset, emitAccel, emitVelocity, time);
+	mEffect->SetParticleColorRange(startColor, endColor);
+	
+
+}
+
+void CandleLight::InitEffect(json data)
+{
+	mEffect = std::make_unique<FireEffect>();
+	float particleLife = { data["ParticleLife"] };
+	Vector3 particleEmitVelocity(data["ParticleEmitVel"][0], data["ParticleEmitVel"][1], data["ParticleEmitVel"][2]);
+	Vector3 particleEmitAccel(data["ParticleEmitAccel"][0], data["ParticleEmitAccel"][1], data["ParticleEmitAccel"][2]);
+	int particleNum = { data["ParticleNum"] };
+	float particleSize = { data["ParticleSize"] };
+	Color startColor(data["StartColor"][0], data["StartColor"][1], data["StartColor"][2], data["StartColor"][3]);
+	Color endColor(data["EndColor"][0], data["EndColor"][1], data["EndColor"][2], data["EndColor"][3]);
+
+
+	mEffect->InitParticleRenderer(particleNum,particleSize);
+	mEffect->InitFireParticleData(mCandleLight.position + mFireOffset, particleEmitAccel, particleEmitVelocity, particleLife);
+	mEffect->SetParticleColorRange(startColor, endColor);
 }
 
 void CandleLight::Update(float dt)
@@ -68,7 +98,14 @@ void CandleLight::Update(float dt)
 
 	ImGui::End();
 #endif
+
     CandleLightShaking(dt);
+
+	if(mEffect)
+	{
+		mEffect->UpdateEmitPos(mCandleLight.position + mFireOffset);
+		mEffect->Update(dt);
+	}
 }
 
 void CandleLight::CandleLightShaking(float dt)
@@ -79,9 +116,8 @@ void CandleLight::CandleLightShaking(float dt)
 
 	//パーリンノイズを位置に導入
 	Vector3 basePos = GetPosition();
-    float flickerX = mCandleNoise.GetNoise(mTime, 0.0f) * 0.15f; // X 方向
-    //float flickerY = mCandleNoise.GetNoise(mTime, 1.0f) * 0.05f; // Y 方向
-    float flickerZ = mCandleNoise.GetNoise(mTime, 2.0f) * 0.15f; // Z 方向
+    float flickerX = mCandleNoise.GetNoise(mTime, 0.0f) * 0.1f; // X 方向
+    float flickerZ = mCandleNoise.GetNoise(mTime, 2.0f) * 0.1f; // Z 方向
 
 	// 光の範囲を取得
     float baseRange = GetRange();
@@ -89,7 +125,7 @@ void CandleLight::CandleLightShaking(float dt)
     // ライトの強度にノイズ入れ
     float baseIntensity = GetAttenuation().x;
     float intensityFlicker = mCandleNoise.GetNoise(mTime, 4.0f) * 0.15f;
-  
+
     mCandleLight.ambient = GetAmbient();
     mCandleLight.diffuse = GetDiffuse();
     mCandleLight.position= basePos + Vector3(flickerX, 0, flickerZ);
@@ -99,18 +135,15 @@ void CandleLight::CandleLightShaking(float dt)
     mCastShadowLightPos = mCandleLight.position;
     mCastShadowLightPos.y = mCandleLight.position.y + mCastShadowHeight;
 
-#ifdef _DEBUG
-    mDebugMesh->SetPosition(mCandleLight.position);
-#endif
 
 }
 
 void CandleLight::Draw()
 {
-	#ifdef _DEBUG
-    mDebugMesh->Draw();
-#endif
-
+	GameApp::SetBlendState(RenderState::BSAlphaWeightedAdditive);
+	if (mEffect)
+		mEffect->Draw();
+	GameApp::SetBlendState(nullptr);
 }
 
 const Light::PointLight& CandleLight::GetPointLight()
@@ -130,6 +163,18 @@ json CandleLight::SaveData()
 	data["Attenuation"] = { GetAttenuation().x,GetAttenuation().y,GetAttenuation().z };
 	data["Range"] = { GetRange() };
 	data["CastHeight"] = { mCastShadowHeight };
+
+	if (!mEffect)return data;
+
+	//FireEffectに関するデータ
+	data["ParticleNum"] = mEffect->GetParticleNum();
+	data["ParticleSize"] = mEffect->GetParticleSize();
+	data["StartColor"] = { mEffect->GetStartColor().x,mEffect->GetStartColor().y,mEffect->GetStartColor().z,mEffect->GetStartColor().w };
+	data["EndColor"] = { mEffect->GetEndColor().x,mEffect->GetEndColor().y,mEffect->GetEndColor().z,mEffect->GetEndColor().w };
+	data["ParticleEmitVel"]={mEffect->GetEmitVelocity().x,mEffect->GetEmitVelocity().y,mEffect->GetEmitVelocity().z};
+	data["ParticleEmitAccel"]={mEffect->GetEmitAcceleration().x,mEffect->GetEmitAcceleration().y,mEffect->GetEmitAcceleration().z};
+	data["ParticleLife"] = mEffect->GetParticleLife() ;
+	
 	return data;
 }
 
@@ -154,4 +199,6 @@ void CandleLight::LoadSaveData(json data, const char* objName)
 	SetRange(range);
 
 	mCastShadowHeight = data[objName]["CastHeight"][0];
+
+	
 }

@@ -36,6 +36,7 @@ void SceneManager::Init()
 
 	//カメラ作成
 	std::shared_ptr<FirstPersonCamera> camera = CreateObj<FirstPersonCamera>("DefaultCamera");
+	camera->Init();
 	camera->SetPosition(0.0, 10.0, -10.0);
 	camera->LookAt(camera->GetPos(), { 0,0,0 }, camera->GetDefaultUpAxis());
 	//現在のカメラをセットする

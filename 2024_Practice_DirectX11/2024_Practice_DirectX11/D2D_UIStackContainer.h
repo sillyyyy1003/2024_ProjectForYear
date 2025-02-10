@@ -57,6 +57,7 @@ public:
 	/// @param dt deltaTime
 	virtual void EmergingFunction(float dt);
 	virtual void InitEmergingFunc(float duration);
+	virtual bool GetIsEmerging() const  { return isEmerging; };
 
 	/// @brief 描画のスイッチ
 	/// @param isActive 

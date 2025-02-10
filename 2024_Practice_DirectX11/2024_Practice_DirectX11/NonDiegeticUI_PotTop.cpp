@@ -114,6 +114,10 @@ void NonDiegeticUI_PotTop::OnStateNone()
 
 void NonDiegeticUI_PotTop::OnStateResult(float dt)
 {
+	
+	DisableRimLightEffect();
+	SetRimLightIntensity(0.f);
+
 	switch(mResultState)
 	{
 	case STATE_RISE:
@@ -157,9 +161,9 @@ void NonDiegeticUI_PotTop::OnStateRise(float dt)
 {
 	if (mAccumulateTime <= mDuration)
 	{
-		float easeStart = EaseOut::EaseOutCubic(mAccumulateTime / mDuration);
+		float easeStart = Ease::EaseOutCubic(mAccumulateTime / mDuration);
 		mAccumulateTime += dt;
-		float easeEnd = EaseOut::EaseOutCubic(mAccumulateTime / mDuration);
+		float easeEnd = Ease::EaseOutCubic(mAccumulateTime / mDuration);
 		float easeStep = easeEnd - easeStart;
 
 		Vector3 pos = mDistance * easeStep;
@@ -186,9 +190,9 @@ void NonDiegeticUI_PotTop::OnStateSpin(float dt)
 	if (mAccumulateTime <= mDuration)
 	{
 		//Use Ease Circ
-		float easeStart = EaseOut::EaseOutCirc(mAccumulateTime / mDuration);
+		float easeStart = Ease::EaseOutCirc(mAccumulateTime / mDuration);
 		mAccumulateTime += dt;
-		float easeEnd = EaseOut::EaseOutCirc(mAccumulateTime / mDuration);
+		float easeEnd = Ease::EaseOutCirc(mAccumulateTime / mDuration);
 		float easeStep = easeEnd - easeStart;
 
 		//回転運動
@@ -232,9 +236,9 @@ void NonDiegeticUI_PotTop::OnStateFall(float dt)
 	if (mAccumulateTime <= mDuration)
 	{
 		//Use Ease Circ
-		float easeStart = EaseOut::EaseOutBounce(mAccumulateTime / mDuration);
+		float easeStart = Ease::EaseOutBounce(mAccumulateTime / mDuration);
 		mAccumulateTime += dt;
-		float easeEnd = EaseOut::EaseOutBounce(mAccumulateTime / mDuration);
+		float easeEnd = Ease::EaseOutBounce(mAccumulateTime / mDuration);
 		float easeStep = easeEnd - easeStart;
 
 		Vector3 pos = mDistance * easeStep;
@@ -264,10 +268,11 @@ void NonDiegeticUI_PotTop::OnStateShaking(float dt)
 			if (mAccumulateTime > 0.2f)
 			{
 				ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_WHITE_OUT);
-				ScreenFadeEffect::Get()->SetWhiteDuration(2.f, 5.f);
+				ScreenFadeEffect::Get()->SetWhiteDuration(2.f, 1.f);
 				isWhiteOut = true;
 			}
 		}
+
 		
 
 	}else
@@ -287,6 +292,10 @@ void NonDiegeticUI_PotTop::OnStateShaking(float dt)
 		isWhiteOut = false;
 
 		ResultManager::Get()->SetActive(true);
+		ResultManager::Get()->SetGenerateResult();
+		
+		UseRimLightEffect();//リムライトの機能を起動
+		SetRimLightIntensity(1.f);
 	}
 }
 

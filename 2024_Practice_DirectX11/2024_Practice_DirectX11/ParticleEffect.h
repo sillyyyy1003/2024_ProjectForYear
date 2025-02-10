@@ -4,7 +4,7 @@
 #include "Shader.h"
 using namespace DirectX::SimpleMath;
 
-class ParticleEffect:public Component
+class ParticleEffect :public Component
 {
 protected:
 
@@ -21,12 +21,13 @@ protected:
 		Vector3 acceleration;		//加速度
 		Vector3 pos;
 
-		Color	color;				//粒子色
+		Color color;				//粒子色
 		float accumulateTime = 0.0f;		//経過時間
 		float lifeTime = 0.0f;		//粒子の寿命
 	};
 
-	int mParticleNum;	//粒子の数
+	int mParticleNum = 0;	//粒子の数
+	float mParticleSize = 0.f;
 	std::unique_ptr<ParticleMesh> mParticleMesh;	//粒子を描画する
 
 	std::vector<ParticleData> mParticleData;	//粒子の情報などを司る
@@ -39,14 +40,14 @@ protected:
 	DirectX::XMFLOAT3 mEmitDirection;			//発射方向
 
 	DirectX::XMFLOAT3 mScale = { 1.f,1.f,1.f };
-	//DirectX::XMFLOAT4 mRotation = {0,0,0,1};
+	
 
 	//円形生成の時に使われる
-	float mRadius = 0.0f;
+	float mRadius = 0.0f;					
 	DirectX::XMFLOAT3 mCenter = {};
 
-	float mTime = 0.0f;
-	float mParticleLifeTime = 0.0f;
+	float mTime = 0.0f;						//Timer
+	float mParticleLifeTime = 0.0f;			//粒子の寿命
 	float mEffectAliveTime = 0.0f;			//エフェクトの寿命
 
 	bool isLoop = true;	//このパーティクルはLoopするか？
@@ -73,19 +74,19 @@ public:
 	/// @param emitPos 発生位置
 	/// @param emitAccel 発生加速度
 	/// @param velocity 速度(Vector)
-	virtual void InitParticleData(DirectX::XMFLOAT3 emitPos,DirectX::XMFLOAT3 emitAccel,DirectX::XMFLOAT3 velocity);
+	virtual void InitParticleData(DirectX::XMFLOAT3 emitPos, DirectX::XMFLOAT3 emitAccel, DirectX::XMFLOAT3 velocity);
 
 	virtual void InitPointOnCircleParticle(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT3& emitAccel, const DirectX::XMFLOAT3& velocity);
 
 
 	/// @brief 色情報の初期化
 	/// @param color 色
-	virtual void InitParticleColor(Color color={1,1,1,1});
+	virtual void InitParticleColor(Color color = { 1,1,1,1 });
 
 	virtual void InitRandomParticleColor();
-	virtual void InitRandomParticleColor(const DirectX::XMFLOAT2& colorRange, const DirectX::XMFLOAT2& valueRange = {0.7f,1.0f}, const DirectX::XMFLOAT2& saturationRange= { 0.7f,1.0f });
+	virtual void InitRandomParticleColor(const DirectX::XMFLOAT2& colorRange, const DirectX::XMFLOAT2& valueRange = { 0.7f,1.0f }, const DirectX::XMFLOAT2& saturationRange = { 0.7f,1.0f });
 
-	virtual void InitRandomParticleColor(float color,float range, const DirectX::XMFLOAT2& valueRange = { 0.7f,1.0f }, const DirectX::XMFLOAT2& saturationRange = { 0.7f,1.0f });
+	virtual void InitRandomParticleColor(float color, float range, const DirectX::XMFLOAT2& valueRange = { 0.7f,1.0f }, const DirectX::XMFLOAT2& saturationRange = { 0.7f,1.0f });
 
 
 	virtual void Update(float dt);
@@ -95,7 +96,7 @@ public:
 	void CreateConstantBuffer(unsigned int byteSize, ID3D11Buffer** CBuffer);
 
 	/// @brief Virtual Function 色情報やスピード情報の更新 
-	virtual void UpdateParticle(){};
+	virtual void UpdateParticle() {};
 
 	/// @brief Instance更新
 	/// @param dt deltaTime
@@ -128,5 +129,14 @@ public:
 	/// @brief 粒子サイズを設定する
 	/// @param scale 
 	void SetScale(const DirectX::XMFLOAT3& scale) { this->mScale = scale; };
+
+	void SetParticleLifeTime(float lifeTime);
+
+	int GetParticleNum() const { return mParticleNum; };
+	float GetParticleSize() const { return mParticleSize; };
+	float GetParticleLife()const { return mParticleLifeTime; };
+
+	DirectX::XMFLOAT3& GetEmitAcceleration() { return mEmitAccel; }
+	DirectX::XMFLOAT3& GetEmitVelocity() { return mEmitVel; };
 };
 

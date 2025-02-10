@@ -293,6 +293,7 @@ void Water::SetWaveDuration(float duration)
 void Water::LoadSaveData(json data, const char* objName)
 {
 	Init(nullptr, objName);
+
 	//Init Pos
 	Vector3 pos = Vector3(data[objName]["Position"][0], data[objName]["Position"][1], data[objName]["Position"][2]);
 	mModel->SetPosition(pos);

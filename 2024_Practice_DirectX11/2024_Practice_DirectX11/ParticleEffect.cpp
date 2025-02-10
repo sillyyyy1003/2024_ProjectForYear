@@ -12,13 +12,14 @@ using namespace DirectX;
 void ParticleEffect::InitParticleRenderer(const char* filePath, uint32_t particleNum, float size)
 {
 	mParticleNum = particleNum;
-	float d = size;
+	mParticleSize = size;
+
 	DirectX::XMFLOAT3 pos[] = {
 
-		XMFLOAT3(-d, -d,0 ),
-		XMFLOAT3(-d, d,0),
-		XMFLOAT3(d, d, 0),
-		XMFLOAT3(d, -d,0),
+		XMFLOAT3(-mParticleSize/2.f, -mParticleSize / 2.f,0 ),
+		XMFLOAT3(-mParticleSize / 2.f, mParticleSize / 2.f,0),
+		XMFLOAT3(mParticleSize / 2.f, mParticleSize / 2.f, 0),
+		XMFLOAT3(mParticleSize / 2.f, -mParticleSize / 2.f,0),
 
 	};
 
@@ -322,5 +323,10 @@ void ParticleEffect::SetParticleAliveTime(float time)
 	{
 		i.lifeTime = mParticleLifeTime * RandomGenerator::Get()->RandomFloat(0.1f, 1.0f);
 	}
+}
+
+void ParticleEffect::SetParticleLifeTime(float lifeTime)
+{
+	mParticleLifeTime = lifeTime;
 }
 

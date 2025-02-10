@@ -41,6 +41,7 @@ void ScenePotion::Init()
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
 	mWater->InitPotionParticleEffect({ 0,0.9f,0 }, { 0,-0.3f,0 }, 3.f, 70, 0.025f);
+	mWater->SetCamera(GetObj<FirstPersonCamera>("DefaultCamera").get());
 
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
@@ -74,13 +75,6 @@ void ScenePotion::Init()
 	mJug->LoadSaveData(sceneData);
 
 
-	mGoldBar = std::make_unique<UIStackContainer>();
-	mGoldBar->InitUIStackContainer(UIPrimitiveConfig::UI_PrimitiveKind::SQUARE);
-	mGoldBar->LoadBackgroundTex(nullptr, { 200,200 });
-	mGoldBar->LoadFontTexture(GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	mGoldBar->LoadSaveData(uiData, "GoldBar");
-
-
 	mRedPotion = std::make_shared<Ingredient>();
 	mRedPotion->InitModel("Assets/Model/Potion4.obj", "RedPotion", PrimitiveConfig::MULTI, { 1,1 });
 	mRedPotion->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Ingredient"));
@@ -110,17 +104,13 @@ void ScenePotion::Init()
 	mCandleLight2->InitName("CandleLight2");
 
 	//Set UI
-	//mResetButton = std::make_unique<UI_Button>();
-	//mResetButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	//mResetButton->LoadSaveData(sceneData, "Reset");
-
-	//mChargeButton = std::make_unique<UI_Button>();
-	//mChargeButton->Init(UIPrimitiveConfig::UI_PrimitiveKind::CAPSULE, nullptr, { 1,1 }, GetObj<Texture>("UIFont_OCRA_Extend"), UITextOption::FONT_DEFAULT_SIZE);
-	//mChargeButton->LoadSaveData(sceneData, "Charge");
+	//reset button
 	mResetButton = std::make_unique<UI_IconButtonReset>();
 	mResetButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/CleanButtonTex.dds", "ResetButton");
 	mResetButton->LoadSaveData(sceneData["ResetButton"]);
+	mResetButton->SetPotion(mWater.get());
 
+	//Charge button
 	mRedIngredientButton = std::make_unique<UI_IngredientIconButton>();
 	mRedIngredientButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "RedIngredientButton");
 	mRedIngredientButton->SetIngredient(mRedPotion.get());
@@ -135,6 +125,12 @@ void ScenePotion::Init()
 	mYellowIngredientButton->Init("Assets/Texture/ButtonUI/IconBg.dds", "Assets/Texture/ButtonUI/chargeTex.dds", "YellowIngredientButton");
 	mYellowIngredientButton->SetIngredient(mYellowPotion.get());
 	mYellowIngredientButton->LoadSaveData(sceneData["YellowIngredientButton"]);
+
+	mGoldDisplay = CreateObj<UIGoldDisplay>("GoldDisplay");
+	mGoldDisplay->Init(GetObj<Player>("player").get(), D2DUIConfig::FontSize::SEMI_SIZE);
+	mGoldDisplay->LoadSceneData(sceneData["GoldDisplay"]);
+
+	ResultManager::Get()->SetUIGoldDisplay(mGoldDisplay.get());
 
 	//Shadowに関するRenderTargetを作成
 	InitShadowRenderTarget();
@@ -171,6 +167,7 @@ void ScenePotion::UnInit()
 	sceneData["YellowIngredientButton"] = mYellowIngredientButton->SaveData();
 
 	sceneData["ResetButton"] = mResetButton->SaveData();
+	sceneData["GoldDisplay"] = mGoldDisplay->SaveData();
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_potion.json", sceneData);
 
@@ -192,9 +189,6 @@ void ScenePotion::Update(float dt)
 	
 	GameObjectUpdate(dt);
 
-	//Save capacity to player file
-	IngredientManager::Get()->UpdateCapacityData();
-
 	if (ScreenFadeEffect::Get()->GetFadeIn())
 	{
 		if(mNextScene== SceneConfig::SceneIndex::SCENE_TITLE)
@@ -213,7 +207,7 @@ void ScenePotion::Draw()
 	mBlueIngredientButton->Draw();
 
 	mResetButton->Draw();
-	mGoldBar->Draw();
+	mGoldDisplay->Draw();
 	
 
 }
@@ -311,17 +305,20 @@ void ScenePotion::DrawWithShadow()
 		mCandleLight2->GetPointLight()
 	};
 
+	
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_InterActiveObjectPBRModel")->WriteShader(1, pl);
 	GetObj<PixelShader>("PS_Ingredient")->WriteShader(1, pl);
+	GameApp::SetBlendState(RenderState::BSTransparent);
 	mRedPotion->SwitchToDefShader();
 	mRedPotion->Draw();
 	mBluePotion->SwitchToDefShader();
 	mBluePotion->Draw();
 	mYellowPotion->SwitchToDefShader();
 	mYellowPotion->Draw();
+	GameApp::SetBlendState(nullptr);
 	mJug->SwitchToDefShader();
 	mJug->Draw();
 
@@ -329,6 +326,7 @@ void ScenePotion::DrawWithShadow()
 	mPot->Draw();
 	mPotTop->Draw();
 	mWater->Draw();
+	
 	mTable->Draw();
 
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
@@ -389,16 +387,14 @@ void ScenePotion::GameObjectUpdate(float dt)
 	mJug->Update(dt);
 
 	//Button
-	//mResetButton->Update();
-	//mChargeButton->Update();
+
 
 	//UI
-	mGoldBar->SetText(GetObj<Player>("player")->GetPlayerGold().c_str());
-	mGoldBar->Update();
 	mRedIngredientButton->Update(dt);
 	mBlueIngredientButton->Update(dt);
 	mYellowIngredientButton->Update(dt);
 	mResetButton->Update(dt);
+	mGoldDisplay->Update(dt);
 
 }
 
@@ -422,7 +418,12 @@ void ScenePotion::TriggerListener()
 	//リザルトが表示する場合　クリックで消す
 	if(KInput::IsKeyTrigger(VK_LBUTTON))
 	{
-		if (ResultManager::Get()->GetActive())ResultManager::Get()->SetActive(false);
+		//if (ResultManager::Get()->GetActive())ResultManager::Get()->SetActive(false);
 	}
+
+	
+	
+
+
 	
 }

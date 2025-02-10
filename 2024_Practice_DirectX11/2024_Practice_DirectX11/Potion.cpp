@@ -1,7 +1,18 @@
 ﻿#include "Potion.h"
-
 #include "GameApp.h"
+#include "MissionManager.h"
 #include "RenderState.h"
+#include "ScreenFadeEffect.h"
+
+enum WaterLevelState
+{
+	STATE_NONE=0,
+	STATE_LIMIT_HEIGHT=1,
+	STATE_MAX_HEIGHT=2,
+	STATE_RESET_LEVEL=3,
+	
+};
+
 
 void Potion::Update(float dt)
 {
@@ -28,6 +39,32 @@ void Potion::Update(float dt)
 	if (mParticleEffect)	//粒子が初期化された後に実行
 		mParticleEffect->Update(dt);
 
+
+	switch(mWaterLevelState)
+	{
+	case STATE_NONE:
+		break;
+	case STATE_LIMIT_HEIGHT:
+		mCamera->SetShake(0.1f * CalculateCurrentShakingParam(), 50);
+		break;
+	case STATE_MAX_HEIGHT:
+		ScreenFadeEffect::Get()->SetState(ScreenOverlayConfig::STATE_WHITE_OUT);
+		ScreenFadeEffect::Get()->SetWhiteDuration(1.f, 0.75f);
+		mWaterLevelState = STATE_RESET_LEVEL;
+		break;
+	case  STATE_RESET_LEVEL:
+		if (ScreenFadeEffect::Get()->GetWhiteInEnd())
+		{
+			ResetPotion();
+			mWaterLevelState=STATE_NONE;
+		}
+		break;
+
+	default:return;
+	}
+
+
+
 }
 
 void Potion::Draw()
@@ -44,6 +81,7 @@ void Potion::Dilute(float diluteAlpha)
 {
 	float param = diluteAlpha * mDiluteParam;
 	HSV baseColor = RGBtoHSV(this->mModel->GetMaterial().diffuse);
+
 	if (baseColor.saturation >= 0.25f && baseColor.alpha >= 0.3f)
 	{
 		baseColor.saturation -= param;
@@ -83,7 +121,8 @@ void Potion::MixColor(DirectX::XMFLOAT4 color, float alpha)
 
 HSV Potion::BlendColor(const HSV& baseColor, const HSV& mixColor, float alpha)
 {
-	float h, s, v, a = 0.f;
+	float h, s, v, a;
+	h = s = v = a = 1.f;
 
 	if (baseColor.hue < 15)//Red～OrangeArea
 	{
@@ -223,6 +262,7 @@ void Potion::AutoColor(float dt)
 void Potion::SetWaterColor(DirectX::XMFLOAT4 color)
 {
 	mModel->SetDiffuse(color);
+	
 }
 
 void Potion::LoadSaveData(json data, const char* objName)
@@ -237,9 +277,6 @@ void Potion::LoadSaveData(json data, const char* objName)
 	
 	//水位に関するパラメタの初期化
 	InitWaterLevelParam();
-
-	//パーティクルの初期化を行う
-	//InitPotionParticleEffect();
 	
 }
 
@@ -273,10 +310,10 @@ void Potion::RiseUpWaterLevel(float param)
 
 		//指定水位に超えたら、カメラ揺れが始まる
 		if (mModel->GetPosition().y > mLimitHeight)
-			isOverLimitHeight = true;
+			mWaterLevelState = STATE_LIMIT_HEIGHT;
 	}else
 	{
-		isMaxHeight = true;
+		mWaterLevelState = STATE_MAX_HEIGHT;
 	}
 
 }
@@ -292,7 +329,7 @@ void Potion::InitWaterLevelParam()
 void Potion::InitPotionParticleEffect()
 {
 	mParticleEffect = std::make_unique<PotionEffect>();
-	mParticleEffect->InitParticleRenderer("VS_ParticleInstance.hlsl", mParticleNum);
+	mParticleEffect->InitParticleRenderer("VS_ParticleInstance.hlsl", mParticleNum,0.03f);
 	mParticleEffect->InitPointOnCircleParticle(this->GetPosition(), this->GetRadius(), { 0,0.02f,0 }, { 0,1.0f,0 });
 	mParticleEffect->SetParticleAliveTime(5.0f);
 	mParticleEffect->SetPotion(this);
@@ -325,4 +362,19 @@ void Potion::ResetWaterLevel()
 	DirectX::XMFLOAT3 pos = mModel->GetPosition();
 	pos.y = mDefaultHeight;
 	mModel->SetPosition(pos);
+	mCamera->StopShake();
+}
+
+void Potion::SetCamera(FirstPersonCamera* camera)
+{
+	this->mCamera = camera;
+}
+
+void Potion::ResetPotion()
+{
+	//色をリセットする
+	mModel->SetMaterial(WaterDefault::defaultMat);
+
+	//高さをリセットする
+	ResetWaterLevel();
 }

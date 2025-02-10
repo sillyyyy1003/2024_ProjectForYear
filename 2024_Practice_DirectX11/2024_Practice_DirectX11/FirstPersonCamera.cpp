@@ -6,6 +6,14 @@
 using namespace DirectX;
 
 
+void FirstPersonCamera::Init()
+{
+    //Random
+    mNoise.SetSeed(1);
+    mNoise.SetFrequency(10.f);
+    mNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+}
+
 void FirstPersonCamera::Update(float dt)
 {
     UpdateState();
@@ -22,7 +30,6 @@ void FirstPersonCamera::Update(float dt)
         GUI::ShowFloat3(mTransform.GetRotationInRadian());
 
         ImGui::InputFloat("MoveSpeed", &mMoveSpeed);
-
         
     }
     ImGui::End();
@@ -43,6 +50,9 @@ void FirstPersonCamera::Update(float dt)
     case CAM_MOVE:  
         UpdateMove(dt);
         break;
+    case CAM_SHAKE:
+        UpdateShake(dt);
+        break;
     default:;
     }
 }
@@ -50,13 +60,12 @@ void FirstPersonCamera::Update(float dt)
 void FirstPersonCamera::SetPosition(float x, float y, float z)
 {
     CameraBase::SetPos(XMFLOAT3(x, y, z));
-    mDefaultPosition = { x,y,z };
+   
 }
 
 void FirstPersonCamera::SetPosition(const XMFLOAT3& pos)
 {
     CameraBase::SetPos(pos);
-    mDefaultPosition = pos;
 }
 
 void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up)
@@ -64,7 +73,6 @@ void FirstPersonCamera::LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, cons
     mTransform.SetPosition(pos);
     mTransform.LookAt(target, up);
 
-    mDefaultPosition = pos;
 }
 
 void FirstPersonCamera::LookAt(const DirectX::XMFLOAT3& target)
@@ -78,8 +86,7 @@ void FirstPersonCamera::LookTo(const XMFLOAT3& pos, const XMFLOAT3& to, const XM
 {
     mTransform.SetPosition(pos);
     mTransform.LookTo(to, up);
-    //揺らす位置を設定する
-    mDefaultPosition = pos;
+  
 }
 
 void FirstPersonCamera::Strafe(float d)
@@ -226,9 +233,45 @@ void FirstPersonCamera::ZoomIn(float dt)
     }
 }
 
+void FirstPersonCamera::Shake(float dt)
+{
+    mAccumulateTime += dt;
+
+    float shakeX = mShakingAmplitude.x * mNoise.GetNoise(mAccumulateTime, 1.0f);
+    float shakeY = mShakingAmplitude.y * mNoise.GetNoise(mAccumulateTime, 2.0f);
+
+    SetPosition(mDefaultPosition.x + shakeX, mDefaultPosition.y + shakeY, mDefaultPosition.z);
+
+}
+
 void FirstPersonCamera::SetCameraState(FirstPersonCamera::CameraKind state)
 {
     mState = state;
+}
+
+void FirstPersonCamera::SetShake(float amplitude, float frequency, float duration)
+{
+    isShaking = true;
+    //揺れ時間を設定
+    mDuration = duration;
+
+    //周波数設定
+    mNoise.SetFrequency(frequency);
+   
+    //揺れは幅を設定
+    mShakingAmplitude = { amplitude,amplitude };
+    //元の位置を確定
+    mDefaultPosition = this->GetPos();
+}
+
+void FirstPersonCamera::StopShake()
+{
+    isShaking = false;
+
+    mAccumulateTime = 0.f;
+
+    mDuration = 0.f;
+    
 }
 
 
@@ -275,17 +318,17 @@ void FirstPersonCamera::UpdateState()
 
 void FirstPersonCamera::UpdateFlight(DirectX::XMFLOAT2 mouseMove, float dt)
 {
-    if (!isLockAngle)
-    {
+   // if (!isLockAngle)
+   // {
         //横回転
         float angleX = 360.0f * mouseMove.x / WIN_WIDTH;
         RotateY(angleX * dt * mMoveSpeed);
         //縦回転
         float angleY = 180.0f * mouseMove.y / WIN_HEIGHT;
         Pitch(angleY * dt * mMoveSpeed);
-    }
+   // }
 
-    if (isLockPos)return;
+   // if (isLockPos)return;
 
 
 	// キー入力で移動
@@ -318,21 +361,27 @@ void FirstPersonCamera::UpdateMove(float dt)
 
 void FirstPersonCamera::UpdateShake(float dt)
 {
-    if (mAccumulateTime <= mDuration)
+    //延々と揺らす
+    if (mDuration < 0)
     {
-        //累積時間
-        mAccumulateTime += dt;
+        Shake(dt);
+	    
+    }else
+    {
+        if(mAccumulateTime<=mDuration)
+        {
+            Shake(dt);
 
-        //乱数取得
-        float xRandom = RandomGenerator::Get()->RandomFloat();
-        
-        
+        }else
+        {
+            //時間リセット
+            mAccumulateTime = 0.0f;
+            //揺れを停止
+            isShaking = false;
+            //元の位置に戻す
+            SetPosition(mDefaultPosition);
+        }
+	    
     }
-    else
-    {
-        //運動停止
-        isMoveToTarget = false;
-        //時間リセット
-        mAccumulateTime = 0.0f;
-    }
+
 }

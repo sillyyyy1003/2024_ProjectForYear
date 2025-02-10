@@ -4,6 +4,7 @@
 #include "D2D_UIStackContainer.h"
 #include "FirstPersonCamera.h"
 #include "GameApp.h"
+#include "KInput.h"
 #include "Model.h"
 #include "SceneManager.h"
 #include "ScreenFadeEffect.h"

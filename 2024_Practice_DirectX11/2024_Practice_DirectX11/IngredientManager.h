@@ -42,7 +42,8 @@ public:
 	/// @brief Charge all ingredient capacity to full
 	void ChargeAllIngredient();
 
-	void UpdateCapacityData();
+
+	//void UpdateCapacityData();
 
 	/// @brief Set Ingredient alpha according to player level
 	void SetIngredientsAlpha();

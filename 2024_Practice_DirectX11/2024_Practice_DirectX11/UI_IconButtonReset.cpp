@@ -1,7 +1,6 @@
 #include "UI_IconButtonReset.h"
-
 #include "Potion.h"
-#include "SceneManager.h"
+
 
 void UI_IconButtonReset::OnStateNone(float dt)
 {
@@ -10,9 +9,6 @@ void UI_IconButtonReset::OnStateNone(float dt)
 	//色変更
 	mBg->SetDiffuseColor(ColorConfig::WHITE);
 	mButtonIcon->SetDiffuseColor(ColorConfig::BLACK);
-
-
-	//水がもうすぐ溢れる場合
 
 }
 
@@ -25,10 +21,7 @@ void UI_IconButtonReset::OnStateTrigger(float dt)
 	mButtonIcon->SetDiffuseColor(ColorConfig::WHITE);
 
 	//Button Function
-	SceneManager::Get()->GetObj<Potion>("PotionSceneWater")->ResetWaterLevel();
-	SceneManager::Get()->GetObj<Potion>("PotionSceneWater")->ResetMaterial();
-
-
+	mPotion->ResetPotion();
 }
 
 void UI_IconButtonReset::OnStateHover(float dt)
@@ -47,4 +40,9 @@ void UI_IconButtonReset::OnStatePress(float dt)
 	//色変更
 	mBg->SetDiffuseColor(ColorConfig::BLACK);
 	mButtonIcon->SetDiffuseColor(ColorConfig::WHITE);
+}
+
+void UI_IconButtonReset::SetPotion(Potion* potion)
+{
+	mPotion = potion;
 }

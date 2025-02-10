@@ -40,6 +40,9 @@ private:
 	float mInDuration = 0.0f;
 	float mOutDuration = 0.0f;
 
+	bool isWhiteInEnd = false;
+	bool isWhiteOutEnd = false;
+
 	float mAccumulateTime = 0.0f;
 	WhiteFadeCBuffer mCBuffer = {};
 
@@ -61,10 +64,6 @@ public:
 	/// @param inDuration 
 	void SetWhiteDuration(float outDuration,float inDuration);
 
-	/// @brief LayerDepthを設定する
-	/// @param posZ 
-	void SetPosZ(float posZ);
-
 	void Draw();
 
 
@@ -77,6 +76,9 @@ public:
 	bool GetFadeIn();
 
 	bool GetFade();
+
+	bool GetWhiteInEnd();
+	bool GetWhiteOutEnd();
 
 	
 

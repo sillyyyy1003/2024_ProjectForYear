@@ -30,13 +30,15 @@ void UI_IngredientIconButton::OnStateNone(float dt)
 	HSV color = {};
 	color.hue = RGBtoHSV(mIngredient->GetColor()).hue;
 	mBg->SetDiffuseColor(ColorConfig::WHITE);
+
 	mCapacity->SetDiffuseColor(HSVtoRGB(color));
+
 	mButtonIcon->SetDiffuseColor(ColorConfig::BLACK);
 }
 
 void UI_IngredientIconButton::OnStateHover(float dt)
 {
-	UI_IconButton::OnStateHover(dt);
+	SetPosition({ mDefaultPosition.x,mDefaultPosition.y + mPositionOffset });
 
 	HSV color = {};
 	color.hue = RGBtoHSV(mIngredient->GetColor()).hue;
@@ -81,9 +83,6 @@ void UI_IngredientIconButton::Draw()
 			float capacity;
 		};
 
-		HSV color = {};
-		color.hue = RGBtoHSV(mIngredient->GetColor()).hue;
-
 		CBuffer cb = {
 				{1,1,1,1},
 				mIngredient->GetCapacityPercentage()
@@ -105,8 +104,3 @@ void UI_IngredientIconButton::Draw()
 	GameApp::SetBlendState(nullptr);
 }
 
-//void UI_IngredientIconButton::LoadSaveData(json data)
-//{
-//	UI_IconButton::LoadSaveData(data);
-//
-//}

@@ -7,6 +7,7 @@
 #include "Potion.h"
 #include "SceneBase.h"
 #include "StaticObject.h"
+#include "UIGoldDisplay.h"
 #include "UI_Button.h"
 #include "UI_IconButtonReset.h"
 #include "UI_IngredientIconButton.h"
@@ -53,7 +54,7 @@ class ScenePotion :public SceneBase
 
 	std::unique_ptr<UI_IconButtonReset> mResetButton;
 
-	std::unique_ptr<UIStackContainer> mGoldBar;
+	std::shared_ptr<UIGoldDisplay> mGoldDisplay;
 
 	
 

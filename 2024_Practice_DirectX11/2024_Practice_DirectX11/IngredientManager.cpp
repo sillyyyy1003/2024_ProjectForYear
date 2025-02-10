@@ -82,17 +82,17 @@ void IngredientManager::ChargeAllIngredient()
 
 }
 
-void IngredientManager::UpdateCapacityData()
-{
-	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
-
-	for (int i = 0; i < PlayerConfig::COLOR_MAX; i++)
-	{
-		PlayerConfig::PigmentColor color = static_cast<PlayerConfig::PigmentColor>(i);
-		float capacity = mCurrentIngredients[color]->GetCapacity();
-		player->SaveCapacitiesData(color,capacity);
-	}
-}
+//void IngredientManager::UpdateCapacityData()
+//{
+//	Player* player = SceneManager::Get()->GetObj<Player>("player").get();
+//
+//	for (int i = 0; i < PlayerConfig::COLOR_MAX; i++)
+//	{
+//		PlayerConfig::PigmentColor color = static_cast<PlayerConfig::PigmentColor>(i);
+//		float capacity = mCurrentIngredients[color]->GetCapacity();
+//		player->SaveCapacitiesData(color,capacity);
+//	}
+//}
 
 void IngredientManager::SetIngredientsAlpha()
 {

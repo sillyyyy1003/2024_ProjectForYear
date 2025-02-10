@@ -10,6 +10,7 @@
 #include "SceneBase.h"
 #include "Sphere.h"
 #include "StaticObject.h"
+#include "UIGoldDisplay.h"
 #include "UIStackContainer.h"
 
 #include "Water.h"
@@ -39,13 +40,14 @@ class SceneLab :public SceneBase
 	std::unique_ptr<MovableStaticObject>  mSplash;
 	std::unique_ptr<MovableStaticObject> mMissionPaper;
 	std::unique_ptr<MovableStaticObject> mEnvelope;
-	std::unique_ptr<D2D_UIStackContainer> mText;//詳しい文字
+	std::unique_ptr<D2D_UIStackContainer> mText;	//詳しい文字
 
 	
 	std::unique_ptr<CandleLight> mCandleLight1;
 	std::unique_ptr<CandleLight> mCandleLight2;
 
-	std::unique_ptr<D2D_UIStackContainer> mGoldBar;
+	//std::unique_ptr<D2D_UIStackContainer> mGoldBar;
+	std::unique_ptr<UIGoldDisplay> mGoldDisplay;
 
 	//シーン切り替え用
 	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;

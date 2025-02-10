@@ -128,12 +128,6 @@ void MissionManager::DrawCurrentMissionSet()
 
 void MissionManager::UpdateCurrentMissionSet(float dt)
 {
-	////もし現在のミッションが完成されたら
-	//if (mCurrentMissionIndex != -1)
-	//{
-	//	if (mCurrentMissionSet[mCurrentMissionIndex].MissionState == Mission::STATE_COMPLETE)
-	//		mCurrentMissionIndex = -1;
-	//}
 
 	//描画の部分
 	for (int i = 0; i < mCurrentMissionSet.size(); i++)
@@ -193,5 +187,7 @@ void MissionManager::CompleteCurrentMission()
 	{
 		//ミッション状態を変更
 		mCurrentMissionSet[mCurrentMissionIndex].MissionState = Mission::STATE_COMPLETE;
+		mCurrentMissionIndex = -1;
+
 	}
 }

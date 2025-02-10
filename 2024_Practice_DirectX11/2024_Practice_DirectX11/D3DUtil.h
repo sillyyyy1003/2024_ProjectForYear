@@ -376,6 +376,21 @@ inline HSV RGBtoHSV(const DirectX::XMFLOAT4& color)
 	return { h,s,v,color.w };
 }
 
+/// @brief 色
+/// @param start 初期色
+/// @param end	結果色
+/// @param t 変化比率
+/// @return 
+inline DirectX::XMFLOAT4 LerpColor(const DirectX::XMFLOAT4& start, const DirectX::XMFLOAT4& end, float t)
+{
+	return DirectX::XMFLOAT4(
+		start.x + (end.x - start.x) * t,
+		start.y + (end.y - start.y) * t,
+		start.z + (end.z - start.z) * t,
+		start.w + (end.w - start.w) * t
+	);
+}
+
 namespace ColorConfig
 {
 	constexpr DirectX::XMFLOAT4 DEFAULT_AMBIENT = { 0.2f, 0.2f, 0.2f, 1.0f };

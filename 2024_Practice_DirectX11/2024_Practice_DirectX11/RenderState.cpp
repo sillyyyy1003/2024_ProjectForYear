@@ -26,6 +26,7 @@ ComPtr<ID3D11BlendState> RenderState::BSAlphaWeightedAdditive = nullptr;
 ComPtr<ID3D11BlendState> RenderState::BSColorDodge = nullptr;
 ComPtr<ID3D11BlendState> RenderState::BSMulti = nullptr;
 
+
 ComPtr<ID3D11DepthStencilState> RenderState::DSSEqual = nullptr;
 ComPtr<ID3D11DepthStencilState> RenderState::DSSLessEqual = nullptr;
 ComPtr<ID3D11DepthStencilState> RenderState::DSSGreaterEqual = nullptr;
@@ -212,6 +213,7 @@ void RenderState::InitAll(ID3D11Device* device)
     rtDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
     HR(device->CreateBlendState(&blendDesc, BSMulti.GetAddressOf()));
 
+ 
     //=========================
     //Init DepthStencilState
 	//=========================

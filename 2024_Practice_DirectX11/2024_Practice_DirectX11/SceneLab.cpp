@@ -33,7 +33,7 @@ void SceneLab::Init()
 	GetObj<FirstPersonCamera>("DefaultCamera")->SetPosition(0.f,8.5f,-10.f);
 	GetObj<FirstPersonCamera>("DefaultCamera")->LookAt({ 0.f,0.f,7.5f });
 #ifdef NDEBUG
-	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
+	//GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
 #endif
 
 	//Init Light
@@ -42,12 +42,15 @@ void SceneLab::Init()
 	mCandleLight1->Init();
 	mCandleLight1->LoadSaveData(sceneData, "CandleLight1");
 	mCandleLight1->InitName("CandleLight1");
+	/*mCandleLight1->InitEffect(Vector3(0.20f,0.75f,0.20f),Vector3(0,-0.1f,0),2.f,Color(1,1.f,0,1),Color(1, 0.f,0,0.4f));*/\
+	mCandleLight1->InitEffect(sceneData["CandleLight1"]);
 
 	mCandleLight2 = std::make_unique<CandleLight>();
 	mCandleLight2->Init();
 	mCandleLight2->InitName("CandleLight2");
 	mCandleLight2->LoadSaveData(sceneData, "CandleLight2");
-
+	//mCandleLight2->InitEffect(Vector3(0.20f, 0.75f, 0.20f), Vector3(0, -0.1f, 0), 2.f, Color(1, 1.f, 0, 1.f), Color(1, 0.f, 0, 0.40f));
+	mCandleLight2->InitEffect(sceneData["CandleLight2"]);
 
 	//Load Tex
 	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
@@ -198,7 +201,7 @@ void SceneLab::Init()
 
 	mSplash = std::make_unique<MovableStaticObject>();
 	mSplash->InitModel(GetObj<Texture>("splash"), "SplashOnTable", PrimitiveConfig::SQUARE);
-	mSplash->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_InteractiveObjectNormal"));
+	mSplash->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
 	mSplash->LoadSaveData(sceneData);
 
 	mEnvelope = std::make_unique<MovableStaticObject>();
@@ -213,12 +216,10 @@ void SceneLab::Init()
 	mText->LoadSaveData(sceneData["TextOnPaper"]);
 
 	//UI
-	mGoldBar = std::make_unique<D2D_UIStackContainer>();
-	mGoldBar->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "GoldBar");
-	mGoldBar->LoadSaveData(sceneData["GoldBar"]);
-	mGoldBar->SetUIState(D2DUIConfig::STATE_USE_FONT);
-
-
+	mGoldDisplay = std::make_unique<UIGoldDisplay>();
+	mGoldDisplay->Init(GetObj<Player>("player").get(), D2DUIConfig::FontSize::SEMI_SIZE);
+	mGoldDisplay->LoadSceneData(sceneData["GoldDisplay"]);
+	
 	//Init Shadow RenderTarget
 	InitShadowRenderTarget();
 }
@@ -265,7 +266,7 @@ void SceneLab::UnInit()
 	sceneData["BluePotion"] = mBluePotion->SaveData();
 	sceneData["YellowPotion"] = mYellowPotion->SaveData();
 
-	sceneData["GoldBar"] = mGoldBar->SaveData();
+	sceneData["GoldDisplay"] = mGoldDisplay->SaveData();
 
 	sceneData["PotTop"] = mPotTop->SaveData();
 	
@@ -319,11 +320,11 @@ void SceneLab::Update(float dt)
 
 void SceneLab::Draw()
 {
+	
+	DrawObjectsWithShadow();
 	mCandleLight1->Draw();
 	mCandleLight2->Draw();
-	DrawObjectsWithShadow();
-
-	mGoldBar->Draw();
+	mGoldDisplay->Draw();
 	
 	if (isCheckMission)
 	{
@@ -369,8 +370,7 @@ void SceneLab::GameObjectUpdate(float dt)
 	MissionManager::Get()->UpdateCurrentMissionSet(dt);
 
 	//Ui
-	mGoldBar->SetText(GetObj<Player>("player")->GetPlayerGold().c_str());
-	mGoldBar->Update(dt);
+	mGoldDisplay->Update(dt);
 
 	//紙の部分
 	mMissionPaper->Update(dt);
@@ -422,67 +422,33 @@ void SceneLab::TriggerListener()
 	{
 		//紙の真上にする
 		GetObj<FirstPersonCamera>("DefaultCamera")->StartMoveToTarget({-5.f,4.3f,1.f}, { XM_PIDIV2-0.01f,0.f,0.f }, 1.f);
+		//チェックの流れを始まる
 		isCheckMission = true;
+		// テキストを隠す
+		mText->SetActive(false);
 
 		//オブジェクトの位置を移動させる
 		if (MissionManager::Get()->HasNewCurrentMission())
 		{
 			//動作に関するパラメータを設定
-			mEnvelope->SetWalk({ 5.f,0.0f,-4.f }, 0.5f, { -10.f,0.1f,5.f }, EaseOut::MODE_CIRC, ObjectMovement::AxisZ);
+			mEnvelope->SetWalk({ 5.f,0.0f,-4.f }, 0.5f, { -10.f,0.1f,5.f }, Ease::MODE_CIRC, ObjectMovement::AxisZ);
 			//オブジェクトを隠す
 			mEnvelope->SetPosition({ 0.0, -1.f, 0.0f });
 
 			//動作に関するパラメータを設定
-			mMissionPaper->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.99f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			mMissionPaper->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.99f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, Ease::MODE_BACK);
 			//オブジェクトを隠す
 			mMissionPaper->SetPosition({ 0.0, -1.f, 0.0f });
 
 			//ミッション色を示す
-			mSplash->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.98f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
+			mSplash->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.98f }, { 0.f,0,0 }, { 0.f,0,0 }, 2.5, ObjectMovement::AxisX, Ease::MODE_BACK);
 			mSplash->SetPosition({ 0.0, -1.f, 0.0f });
-
-			isTextActiveDelay=true;
+			isTextActiveDelay = true;
 
 		}
 	}
 
-	/*
-	//カメラが移動開始？
-	if (GetObj<FirstPersonCamera>("DefaultCamera")->IsStartMove())
-	{
-		if (MissionManager::Get()->HasNewCurrentMission())
-		{
-			//動作に関するパラメータを設定
-			mEnvelope->SetWalk({ 5.f,0.0f,-4.f }, 0.5f, { -10.f,0.1f,5.f }, EaseOut::MODE_CIRC, ObjectMovement::AxisZ);
-			//オブジェクトを隠す
-			mEnvelope->SetPosition({0.0, -1.f, 0.0f});
 
-			//動作に関するパラメータを設定
-			mMissionPaper->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.99f }, { 0.f,0,0 }, { -90.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
-			//オブジェクトを隠す
-			mMissionPaper->SetPosition({ 0.0, -1.f, 0.0f });
-
-			//ミッション色を示す
-			mSplash->SetSpinIn(90.f, { -5.f,4.1f,1.f }, { -5.f,4.1f,4.98f }, { 0.f,0,0 }, { -90.f,0,0 }, 2.5, ObjectMovement::AxisX, EaseOut::MODE_BACK);
-			mSplash->SetPosition({ 0.0, -1.f, 0.0f });
-
-		}		
-	}
-	
-	//紙や封筒の状態遷移
-	if (GetObj<FirstPersonCamera>("DefaultCamera")->IsEndMove())
-	{
-		if (isCheckMission)
-		{	//移動を有効する
-			mEnvelope->SetMoveState(mEnvelope->GetNextState());
-			mMissionPaper->SetMoveState(mMissionPaper->GetNextState());
-			mSplash->SetMoveState(mMissionPaper->GetNextState());
-
-			//新しいミッションの場合
-			mText->InitEmergingFunc(1.0f);
-		}
-	}
-	*/
 
 	//ミッションをチェックする時
 	if (isCheckMission)
@@ -502,7 +468,6 @@ void SceneLab::TriggerListener()
 				mText->SetActive(true);
 				
 			}
-
 		}
 
 		//もし新しいミッションの場合
@@ -525,7 +490,10 @@ void SceneLab::TriggerListener()
 	}
 	
 	
-	
+	if(KInput::IsKeyTrigger(VK_SPACE))
+	{
+		mGoldDisplay->SetIncreaseFunction(1.f, 200);
+	}
 	
 }
 

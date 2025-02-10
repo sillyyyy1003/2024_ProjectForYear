@@ -13,5 +13,6 @@ float4 main(PS_IN pin) : SV_TARGET
 {
 	float4 color = myTex.Sample(mySampler, pin.tex);
 	clip(color.a - 0.1f);
-	return saturate(color * pin.color * 1.5f);
+
+	return saturate(color * pin.color);
 }

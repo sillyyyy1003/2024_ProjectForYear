@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "FirstPersonCamera.h"
 #include "PotionEffect.h"
 #include "Water.h"
 
@@ -22,12 +23,12 @@ private:
 	float mMaxHeight = 0.f;
 	float mLimitHeight = 0.0f;
 
-	bool isMaxHeight = false;		//最大水位になったか？	
-	bool isOverLimitHeight = false;	//制限水位に超えたか？
+	int mWaterLevelState = 0;
 
 	//Effectに関わる変数
 	int mParticleNum = 500;
 
+	FirstPersonCamera* mCamera = nullptr;
 
 
 protected:
@@ -93,5 +94,11 @@ public:
 	/// @param num 
 	void SetParticleNum(int num) { mParticleNum = num; };
 
+	/// @brief 揺らすカメラを設定
+	/// @param camera 
+	void SetCamera(FirstPersonCamera* camera);
+
+	/// @brief ポーションすべての状態をリセットする
+	void ResetPotion();
 
 };

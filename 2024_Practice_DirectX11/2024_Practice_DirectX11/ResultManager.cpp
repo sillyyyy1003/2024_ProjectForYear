@@ -27,27 +27,39 @@ void ResultManager::Update(float dt)
 	if (!isActive)return;
 
 	//指令を受けて、結果を計算する
-	if(!isGenerateResult)
+	if(!isFinishIsGenerateResult)
 	{
 		GenerateCurrentResult();
 	}
-
+	//結果を渡す
 	mResult->SetText(mResultContents.c_str());
 	mResult->Update(dt);
-	mResultBackGround->Update();
 
-	//mAccumulateTime += dt;
-	//mShadowRadius += mChangeRange * (std::sin(mAccumulateTime));
+	//結果が浮かび上がったかつリザルトが出てきた
+	if (!mResult->GetIsEmerging() && isReadyToSetIncreaseMoney)
+	{
+		//賞金を上げる
+		mGoldDisplay->SetIncreaseFunction(1.0f, (int)increaseGoldNum);
+		isReadyToSetIncreaseMoney = false;
+	}
+
+	mResultBackGround->Update();
 }
 
 void ResultManager::Draw()
 {
 	if (!isActive)return;
-	GameApp::SetBlendState(RenderState::BSAlphaWeightedAdditive);
-	mResultBackGround->GetDefPS()->WriteShader(1, &mShadowRadius);
-	mResultBackGround->Draw();
-	GameApp::SetBlendState(nullptr);
-	mResult->Draw();
+
+	//結果がある時のみ表示する
+	if(isFinishIsGenerateResult)
+	{
+		GameApp::SetBlendState(RenderState::BSAlphaWeightedAdditive);
+		mResultBackGround->GetDefPS()->WriteShader(1, &mShadowRadius);
+		mResultBackGround->Draw();
+		GameApp::SetBlendState(nullptr);
+		mResult->Draw();
+	}
+	
 }
 
 void ResultManager::ResultGenerator()
@@ -84,8 +96,13 @@ void ResultManager::GenerateCurrentResult()
 		mResultContents = "C";
 
 	//リザルトが浮かぶ
-	mResult->InitEmergingFunc(0.7f);
-	isGenerateResult = true;
+	mResult->InitEmergingFunc(1.0f);
+	increaseGoldNum = MissionManager::Get()->GetCurrentMission().MissionReward;
+	isReadyToSetIncreaseMoney = true;
+
+	//任務完成
+	MissionManager::Get()->CompleteCurrentMission();
+	isFinishIsGenerateResult = true;
 }
 
 json ResultManager::SaveData()
@@ -98,8 +115,14 @@ json ResultManager::SaveData()
 void ResultManager::LoadSaveData(json data)
 {
 	mResult->LoadSaveData(data["ResultUI"]);
-	mResultBackGround->SetPosition(mResult->GetPosition().x, mResult->GetPosition().y - 50.f);
+	mResultBackGround->SetPosition(mResult->GetPosition().x, mResult->GetPosition().y - mResult->GetScale().y / 2.f);
 
 
+}
+
+void ResultManager::SetUIGoldDisplay(UIGoldDisplay* display)
+{
+	mGoldDisplay = nullptr;
+	mGoldDisplay = display;
 }
 

@@ -180,6 +180,7 @@
     <ClCompile Include="SceneScore.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UIGoldDisplay.cpp" />
     <ClCompile Include="UISquare.cpp" />
     <ClCompile Include="UI_IconButton.cpp" />
     <ClCompile Include="UI_IconButtonReset.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="SceneScore.h" />
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIGoldDisplay.h" />
     <ClInclude Include="UISquare.h" />
     <ClInclude Include="UI_IconButton.h" />
     <ClInclude Include="UI_IconButtonReset.h" />
