@@ -16,7 +16,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/SceneManager.h"
                 },
                 "region": {
-                  "startLine": 91,
+                  "startLine": 80,
                   "startColumn": 2
                 }
               },
@@ -45,7 +45,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/GameApp.h"
                 },
                 "region": {
-                  "startLine": 17,
+                  "startLine": 15,
                   "startColumn": 5
                 }
               },
@@ -74,9 +74,9 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                 },
                 "region": {
-                  "startLine": 225,
+                  "startLine": 229,
                   "startColumn": 4,
-                  "endLine": 225,
+                  "endLine": 229,
                   "endColumn": 54
                 }
               },
@@ -101,7 +101,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 167,
+                            "startLine": 171,
                             "startColumn": 10
                           }
                         }
@@ -115,7 +115,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 168,
+                            "startLine": 172,
                             "startColumn": 16
                           }
                         }
@@ -129,7 +129,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 171,
+                            "startLine": 175,
                             "startColumn": 5
                           }
                         }
@@ -143,7 +143,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 172,
+                            "startLine": 176,
                             "startColumn": 6
                           }
                         }
@@ -157,7 +157,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 181,
+                            "startLine": 185,
                             "startColumn": 26
                           }
                         }
@@ -171,7 +171,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 182,
+                            "startLine": 186,
                             "startColumn": 20
                           }
                         }
@@ -185,7 +185,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 183,
+                            "startLine": 187,
                             "startColumn": 28
                           }
                         }
@@ -199,7 +199,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 184,
+                            "startLine": 188,
                             "startColumn": 33
                           }
                         }
@@ -213,7 +213,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 186,
+                            "startLine": 190,
                             "startColumn": 14
                           }
                         },
@@ -233,7 +233,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 206,
+                            "startLine": 210,
                             "startColumn": 5
                           }
                         }
@@ -247,7 +247,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 207,
+                            "startLine": 211,
                             "startColumn": 6
                           }
                         },
@@ -266,7 +266,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 209,
+                            "startLine": 213,
                             "startColumn": 22
                           }
                         }
@@ -280,7 +280,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 210,
+                            "startLine": 214,
                             "startColumn": 13
                           }
                         }
@@ -294,7 +294,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 12
                           }
                         }
@@ -308,7 +308,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 21
                           }
                         },
@@ -327,7 +327,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 213,
+                            "startLine": 217,
                             "startColumn": 37
                           }
                         }
@@ -341,7 +341,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 214,
+                            "startLine": 218,
                             "startColumn": 30
                           }
                         }
@@ -355,7 +355,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 215,
+                            "startLine": 219,
                             "startColumn": 31
                           }
                         }
@@ -369,7 +369,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 218,
+                            "startLine": 222,
                             "startColumn": 8
                           }
                         }
@@ -383,7 +383,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 219,
+                            "startLine": 223,
                             "startColumn": 16
                           }
                         }
@@ -397,7 +397,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 220,
+                            "startLine": 224,
                             "startColumn": 16
                           }
                         }
@@ -411,7 +411,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 222,
+                            "startLine": 226,
                             "startColumn": 18
                           }
                         },
@@ -430,7 +430,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 224,
+                            "startLine": 228,
                             "startColumn": 3
                           }
                         }
@@ -444,7 +444,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 225,
+                            "startLine": 229,
                             "startColumn": 25
                           }
                         },
@@ -475,9 +475,9 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                 },
                 "region": {
-                  "startLine": 228,
+                  "startLine": 232,
                   "startColumn": 4,
-                  "endLine": 228,
+                  "endLine": 232,
                   "endColumn": 54
                 }
               },
@@ -502,7 +502,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 167,
+                            "startLine": 171,
                             "startColumn": 10
                           }
                         }
@@ -516,7 +516,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 168,
+                            "startLine": 172,
                             "startColumn": 16
                           }
                         }
@@ -530,7 +530,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 171,
+                            "startLine": 175,
                             "startColumn": 5
                           }
                         }
@@ -544,7 +544,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 172,
+                            "startLine": 176,
                             "startColumn": 6
                           }
                         }
@@ -558,7 +558,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 181,
+                            "startLine": 185,
                             "startColumn": 26
                           }
                         }
@@ -572,7 +572,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 182,
+                            "startLine": 186,
                             "startColumn": 20
                           }
                         }
@@ -586,7 +586,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 183,
+                            "startLine": 187,
                             "startColumn": 28
                           }
                         }
@@ -600,7 +600,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 184,
+                            "startLine": 188,
                             "startColumn": 33
                           }
                         }
@@ -614,7 +614,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 186,
+                            "startLine": 190,
                             "startColumn": 14
                           }
                         },
@@ -634,7 +634,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 206,
+                            "startLine": 210,
                             "startColumn": 5
                           }
                         }
@@ -648,7 +648,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 207,
+                            "startLine": 211,
                             "startColumn": 6
                           }
                         },
@@ -667,7 +667,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 209,
+                            "startLine": 213,
                             "startColumn": 22
                           }
                         }
@@ -681,7 +681,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 210,
+                            "startLine": 214,
                             "startColumn": 13
                           }
                         }
@@ -695,7 +695,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 12
                           }
                         }
@@ -709,7 +709,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 21
                           }
                         },
@@ -728,7 +728,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 213,
+                            "startLine": 217,
                             "startColumn": 37
                           }
                         }
@@ -742,7 +742,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 214,
+                            "startLine": 218,
                             "startColumn": 30
                           }
                         }
@@ -756,7 +756,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 215,
+                            "startLine": 219,
                             "startColumn": 31
                           }
                         }
@@ -770,7 +770,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 218,
+                            "startLine": 222,
                             "startColumn": 8
                           }
                         }
@@ -784,7 +784,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 219,
+                            "startLine": 223,
                             "startColumn": 16
                           }
                         }
@@ -798,7 +798,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 220,
+                            "startLine": 224,
                             "startColumn": 16
                           }
                         }
@@ -812,7 +812,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 222,
+                            "startLine": 226,
                             "startColumn": 18
                           }
                         },
@@ -831,7 +831,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 227,
+                            "startLine": 231,
                             "startColumn": 3
                           }
                         }
@@ -845,7 +845,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 228,
+                            "startLine": 232,
                             "startColumn": 25
                           }
                         },
@@ -876,9 +876,9 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                 },
                 "region": {
-                  "startLine": 231,
+                  "startLine": 235,
                   "startColumn": 4,
-                  "endLine": 231,
+                  "endLine": 235,
                   "endColumn": 54
                 }
               },
@@ -903,7 +903,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 167,
+                            "startLine": 171,
                             "startColumn": 10
                           }
                         }
@@ -917,7 +917,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 168,
+                            "startLine": 172,
                             "startColumn": 16
                           }
                         }
@@ -931,7 +931,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 171,
+                            "startLine": 175,
                             "startColumn": 5
                           }
                         }
@@ -945,7 +945,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 172,
+                            "startLine": 176,
                             "startColumn": 6
                           }
                         }
@@ -959,7 +959,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 181,
+                            "startLine": 185,
                             "startColumn": 26
                           }
                         }
@@ -973,7 +973,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 182,
+                            "startLine": 186,
                             "startColumn": 20
                           }
                         }
@@ -987,7 +987,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 183,
+                            "startLine": 187,
                             "startColumn": 28
                           }
                         }
@@ -1001,7 +1001,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 184,
+                            "startLine": 188,
                             "startColumn": 33
                           }
                         }
@@ -1015,7 +1015,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 186,
+                            "startLine": 190,
                             "startColumn": 14
                           }
                         },
@@ -1035,7 +1035,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 206,
+                            "startLine": 210,
                             "startColumn": 5
                           }
                         }
@@ -1049,7 +1049,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 207,
+                            "startLine": 211,
                             "startColumn": 6
                           }
                         },
@@ -1068,7 +1068,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 209,
+                            "startLine": 213,
                             "startColumn": 22
                           }
                         }
@@ -1082,7 +1082,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 210,
+                            "startLine": 214,
                             "startColumn": 13
                           }
                         }
@@ -1096,7 +1096,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 12
                           }
                         }
@@ -1110,7 +1110,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 211,
+                            "startLine": 215,
                             "startColumn": 21
                           }
                         },
@@ -1129,7 +1129,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 213,
+                            "startLine": 217,
                             "startColumn": 37
                           }
                         }
@@ -1143,7 +1143,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 214,
+                            "startLine": 218,
                             "startColumn": 30
                           }
                         }
@@ -1157,7 +1157,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 215,
+                            "startLine": 219,
                             "startColumn": 31
                           }
                         }
@@ -1171,7 +1171,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 218,
+                            "startLine": 222,
                             "startColumn": 8
                           }
                         }
@@ -1185,7 +1185,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 219,
+                            "startLine": 223,
                             "startColumn": 16
                           }
                         }
@@ -1199,7 +1199,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 220,
+                            "startLine": 224,
                             "startColumn": 16
                           }
                         }
@@ -1213,7 +1213,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 222,
+                            "startLine": 226,
                             "startColumn": 18
                           }
                         },
@@ -1232,7 +1232,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 230,
+                            "startLine": 234,
                             "startColumn": 3
                           }
                         }
@@ -1246,7 +1246,7 @@
                             "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/Shader.cpp"
                           },
                           "region": {
-                            "startLine": 231,
+                            "startLine": 235,
                             "startColumn": 25
                           }
                         },
@@ -1342,7 +1342,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "9ec38c0f83b6ec66722714857d2dad0361bdcb595fa7456ce7fea5b285d769bc"
+            "sha-256": "78a318eaad1d63b341db8e35fa8379aad4c4eec0e74fda9a65b14e5dee0032fa"
           }
         },
         {
@@ -1353,7 +1353,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "d62e052bf681f7a69a2e403519775f1927a7ba53ccee856c308cfefd8fe2ab4f"
+            "sha-256": "135648dbfac2c5178c8ee755469ccd5543c29c4ea0ba07fe5540a8e66a7030ea"
           }
         },
         {
@@ -1365,7 +1365,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "8fde03f7437639a4433f74da201a2ddf426990e13d74c60b02967b48872fafb4"
+            "sha-256": "fbc964920c6570a9fdb5332d67de84f12caa1b573830e354e8e7db24966cda10"
           }
         },
         {
@@ -1384,7 +1384,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/shader.h"
           },
           "hashes": {
-            "sha-256": "714f5629f41e4e7e412edae5cb4b119e0015615624e5b106bec350b8f7b99a6a"
+            "sha-256": "3512f21836e1df121ab426c25d9d5fb4062f51990d232c1b18fb3a8fb7b4a764"
           }
         },
         {
@@ -1400,7 +1400,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dutil.h"
           },
           "hashes": {
-            "sha-256": "5e2c32abbec34a3ad6c28be77e7d80e2fb312aac39ea90ad31cd6a28326fccc3"
+            "sha-256": "beac6d71af8041bbf96ec1f48aac904915a84e0a8cf6b2b6f7bcc2026d7add63"
           }
         },
         {
@@ -1496,7 +1496,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dapp.h"
           },
           "hashes": {
-            "sha-256": "6ac9cff953d792c3c2c298afb35034d08662a82e33bf71ec324792052ca06fc1"
+            "sha-256": "76580a93d214ddc07259680b2bddd81afcfc5458e9e761c30ece48ec4e591e70"
           }
         },
         {
@@ -1888,7 +1888,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
           },
           "hashes": {
-            "sha-256": "8493da1cccb5c88fbbfb1d7b3ce54508d715519279ddc6c12b5a776191837b33"
+            "sha-256": "0c61ffabee155d9d5370fcb8c45109dcdc72c68e8033c8432ad678fa62938ef6"
           }
         },
         {
@@ -1896,7 +1896,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/player.h"
           },
           "hashes": {
-            "sha-256": "e45bc17140b8b2966a4853d22bfacc74ee9f1a3504edfd3b7bc86538f931c90a"
+            "sha-256": "2519e0fee66657610df53c95680f534566ba1cbb351968642e29804ce6c86b3c"
           }
         }
       ]

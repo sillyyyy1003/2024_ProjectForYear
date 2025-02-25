@@ -78,7 +78,7 @@ public:
 	void InitWaterLevelParam();
 
 	/// @brief ポーションのエフェクトの初期化を行う
-	void InitPotionParticleEffect();
+	void InitPotionParticleEffect(float particleSize = 0.03f);
 
 	void InitPotionParticleEffect(DirectX::XMFLOAT3 Velocity, DirectX::XMFLOAT3 accel, float lifeTime, int particleNum, float size);
 

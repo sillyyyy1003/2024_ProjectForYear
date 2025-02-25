@@ -16,7 +16,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/SceneManager.h"
                 },
                 "region": {
-                  "startLine": 91,
+                  "startLine": 80,
                   "startColumn": 2
                 }
               },
@@ -45,7 +45,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/GameApp.h"
                 },
                 "region": {
-                  "startLine": 17,
+                  "startLine": 15,
                   "startColumn": 5
                 }
               },
@@ -168,7 +168,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "9ec38c0f83b6ec66722714857d2dad0361bdcb595fa7456ce7fea5b285d769bc"
+            "sha-256": "78a318eaad1d63b341db8e35fa8379aad4c4eec0e74fda9a65b14e5dee0032fa"
           }
         },
         {
@@ -179,7 +179,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "d62e052bf681f7a69a2e403519775f1927a7ba53ccee856c308cfefd8fe2ab4f"
+            "sha-256": "135648dbfac2c5178c8ee755469ccd5543c29c4ea0ba07fe5540a8e66a7030ea"
           }
         },
         {
@@ -236,7 +236,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dutil.h"
           },
           "hashes": {
-            "sha-256": "5e2c32abbec34a3ad6c28be77e7d80e2fb312aac39ea90ad31cd6a28326fccc3"
+            "sha-256": "beac6d71af8041bbf96ec1f48aac904915a84e0a8cf6b2b6f7bcc2026d7add63"
           }
         },
         {
@@ -332,7 +332,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dapp.h"
           },
           "hashes": {
-            "sha-256": "6ac9cff953d792c3c2c298afb35034d08662a82e33bf71ec324792052ca06fc1"
+            "sha-256": "76580a93d214ddc07259680b2bddd81afcfc5458e9e761c30ece48ec4e591e70"
           }
         },
         {
@@ -716,7 +716,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
           },
           "hashes": {
-            "sha-256": "8493da1cccb5c88fbbfb1d7b3ce54508d715519279ddc6c12b5a776191837b33"
+            "sha-256": "0c61ffabee155d9d5370fcb8c45109dcdc72c68e8033c8432ad678fa62938ef6"
           }
         },
         {
@@ -724,7 +724,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/shader.h"
           },
           "hashes": {
-            "sha-256": "714f5629f41e4e7e412edae5cb4b119e0015615624e5b106bec350b8f7b99a6a"
+            "sha-256": "3512f21836e1df121ab426c25d9d5fb4062f51990d232c1b18fb3a8fb7b4a764"
           }
         },
         {
@@ -772,15 +772,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/firstpersoncamera.h"
           },
           "hashes": {
-            "sha-256": "92e4e91c54396e28068aec576683a93517e916a0463b2d008ef2620fa24e7226"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/camerabase.h"
-          },
-          "hashes": {
-            "sha-256": "df887c541c11e8249739ab5f9c85dc74efe9eab2d349796c60687cc85986c2f6"
+            "sha-256": "20a715c4259143dac4969826d1dc4ad89d24c2ed283d95545d5a16ea63a56e5f"
           }
         },
         {
@@ -793,10 +785,26 @@
         },
         {
           "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/camerabase.h"
+          },
+          "hashes": {
+            "sha-256": "df887c541c11e8249739ab5f9c85dc74efe9eab2d349796c60687cc85986c2f6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/randomgenerator.h"
+          },
+          "hashes": {
+            "sha-256": "ac78aa4f31e6aae6f509cf410f121ed4bb841d782025a5565b1f643bd507ff74"
+          }
+        },
+        {
+          "location": {
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/player.h"
           },
           "hashes": {
-            "sha-256": "e45bc17140b8b2966a4853d22bfacc74ee9f1a3504edfd3b7bc86538f931c90a"
+            "sha-256": "2519e0fee66657610df53c95680f534566ba1cbb351968642e29804ce6c86b3c"
           }
         },
         {

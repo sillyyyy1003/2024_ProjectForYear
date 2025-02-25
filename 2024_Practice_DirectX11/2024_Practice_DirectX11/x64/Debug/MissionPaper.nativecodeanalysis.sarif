@@ -16,7 +16,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/D2DFont.h"
                 },
                 "region": {
-                  "startLine": 74,
+                  "startLine": 75,
                   "startColumn": 2
                 }
               },
@@ -45,7 +45,7 @@
                   "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/SceneManager.h"
                 },
                 "region": {
-                  "startLine": 91,
+                  "startLine": 80,
                   "startColumn": 2
                 }
               },
@@ -60,64 +60,6 @@
           ],
           "properties": {
             "targetSymbol": "SceneManager::mSceneIndex"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "未初始化变量 HSV::alpha。始终初始化成员变量(type.6)。"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/D3DUtil.h"
-                },
-                "region": {
-                  "startLine": 334,
-                  "startColumn": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "HSV::{ctor}",
-                  "decoratedName": "??0HSV@@QEAA@XZ",
-                  "kind": "function"
-                }
-              ]
-            }
-          ],
-          "properties": {
-            "targetSymbol": "HSV::alpha"
-          }
-        },
-        {
-          "ruleId": "C26495",
-          "message": {
-            "text": "未初始化变量 MissionManager::mMissionName。始终初始化成员变量(type.6)。"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/MissionManager.h"
-                },
-                "region": {
-                  "startLine": 34,
-                  "startColumn": 2
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "MissionManager::{ctor}",
-                  "decoratedName": "??0MissionManager@@AEAA@XZ",
-                  "kind": "function"
-                }
-              ]
-            }
-          ],
-          "properties": {
-            "targetSymbol": "MissionManager::mMissionName"
           }
         },
         {
@@ -176,6 +118,35 @@
           ],
           "properties": {
             "targetSymbol": "MissionManager::mMissionOwnerName"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 MissionManager::mMissionName。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/MissionManager.h"
+                },
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "MissionManager::{ctor}",
+                  "decoratedName": "??0MissionManager@@AEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "MissionManager::mMissionName"
           }
         },
         {
@@ -255,7 +226,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "29c8b51ad3f2dd85b2d2bbaae1c9832d9d0af804a52a4bf77972d6bf57e0ee54"
+            "sha-256": "df1dda8bfaacff8bf0162727edb4ed60cd204ace9f2e7491fec202f8467ebeb0"
           }
         },
         {
@@ -266,18 +237,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "9ec38c0f83b6ec66722714857d2dad0361bdcb595fa7456ce7fea5b285d769bc"
-          }
-        },
-        {
-          "location": {
-            "uri": "file:///C:/Users/58472/Desktop/2024_Project/2024_Practice_DirectX11/2024_Practice_DirectX11/D3DUtil.h"
-          },
-          "roles": [
-            "resultFile"
-          ],
-          "hashes": {
-            "sha-256": "5e2c32abbec34a3ad6c28be77e7d80e2fb312aac39ea90ad31cd6a28326fccc3"
+            "sha-256": "78a318eaad1d63b341db8e35fa8379aad4c4eec0e74fda9a65b14e5dee0032fa"
           }
         },
         {
@@ -288,7 +248,7 @@
             "resultFile"
           ],
           "hashes": {
-            "sha-256": "75d3aef2de242b92025934c0e17e32b9ae7838cd67fba71985db0e9aca6e582f"
+            "sha-256": "af4ebc1d3554f2a96a4f1fb5c10b8b668fffd67f0a15514678e4a74c6f7622c5"
           }
         },
         {
@@ -326,7 +286,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2d_uistackcontainer.h"
           },
           "hashes": {
-            "sha-256": "6aacff9ba23d4bdf88f55e6668061f7c86d0d1a14c9593f3f9467c0e5ab2b0ec"
+            "sha-256": "4859f3e814286685a579bde29e01246f33664d7f26ad6fd4aa74944b1ad8a5a2"
           }
         },
         {
@@ -334,7 +294,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2d_uibase.h"
           },
           "hashes": {
-            "sha-256": "6d38fdc94f16a2f1ee477deb1de452c8bcc391314beb56a543edb44a91b084dc"
+            "sha-256": "e3576910f341c7e7f546eea5b518b5811f328e53995e2394207f9388b9b2747e"
           }
         },
         {
@@ -343,6 +303,14 @@
           },
           "hashes": {
             "sha-256": "0495d635baa1e1ab0c40700343c57e89418ea126c134669aeb9d5232dcfc28fb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dutil.h"
+          },
+          "hashes": {
+            "sha-256": "beac6d71af8041bbf96ec1f48aac904915a84e0a8cf6b2b6f7bcc2026d7add63"
           }
         },
         {
@@ -438,7 +406,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dapp.h"
           },
           "hashes": {
-            "sha-256": "6ac9cff953d792c3c2c298afb35034d08662a82e33bf71ec324792052ca06fc1"
+            "sha-256": "76580a93d214ddc07259680b2bddd81afcfc5458e9e761c30ece48ec4e591e70"
           }
         },
         {
@@ -814,7 +782,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d2dbrush.h"
           },
           "hashes": {
-            "sha-256": "bd5dd4fb841c5e272cad6adcb086cd822270cb27ff718c5e3ddcb8c426a5bb68"
+            "sha-256": "037815077f2f3f422ac87f770ce82b8c6ae23d54f8c52fe53e6b36d4cd28e806"
           }
         },
         {
@@ -838,7 +806,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
           },
           "hashes": {
-            "sha-256": "8493da1cccb5c88fbbfb1d7b3ce54508d715519279ddc6c12b5a776191837b33"
+            "sha-256": "0c61ffabee155d9d5370fcb8c45109dcdc72c68e8033c8432ad678fa62938ef6"
           }
         },
         {
@@ -862,7 +830,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/shader.h"
           },
           "hashes": {
-            "sha-256": "714f5629f41e4e7e412edae5cb4b119e0015615624e5b106bec350b8f7b99a6a"
+            "sha-256": "3512f21836e1df121ab426c25d9d5fb4062f51990d232c1b18fb3a8fb7b4a764"
           }
         },
         {
@@ -894,7 +862,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/staticobject.h"
           },
           "hashes": {
-            "sha-256": "0bab627bc669ae0ff4a62e39f810f8204fea43f396d2fe60691d498b2ffc1628"
+            "sha-256": "1a3cd2692f75474bc9942932a980d07001ed28ba12867e6d42281f1b9183debc"
           }
         },
         {
@@ -918,7 +886,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/player.h"
           },
           "hashes": {
-            "sha-256": "e45bc17140b8b2966a4853d22bfacc74ee9f1a3504edfd3b7bc86538f931c90a"
+            "sha-256": "2519e0fee66657610df53c95680f534566ba1cbb351968642e29804ce6c86b3c"
           }
         },
         {
@@ -1182,7 +1150,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/interactivestaticobject.h"
           },
           "hashes": {
-            "sha-256": "b71cbe1680dc0fa7aeea5da60642432efcf74d6863e4b4bb6a2309d1e3a73a58"
+            "sha-256": "9be4d01e9dfdb82b9634d980d617823348ae93b2b67b544ea52df0729c3b1235"
           }
         },
         {

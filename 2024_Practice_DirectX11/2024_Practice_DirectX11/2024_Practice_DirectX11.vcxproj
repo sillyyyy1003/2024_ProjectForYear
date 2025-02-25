@@ -162,12 +162,10 @@
     <ClCompile Include="D2D_UIRect.cpp" />
     <ClCompile Include="D2D_UIRoundedRect.cpp" />
     <ClCompile Include="FireEffect.cpp" />
-    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Ingredient.cpp" />
     <ClCompile Include="IngredientManager.cpp" />
     <ClCompile Include="InteractiveMovableObject.cpp" />
     <ClCompile Include="MissionManager.cpp" />
-    <ClCompile Include="MissionPaper.cpp" />
     <ClCompile Include="MissionSamplePaper.cpp" />
     <ClCompile Include="MovableStaticObject.cpp" />
     <ClCompile Include="NonDiegeticUI_PotTop.cpp" />
@@ -178,6 +176,7 @@
     <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="ResultManager.cpp" />
     <ClCompile Include="SceneScore.cpp" />
+    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIGoldDisplay.cpp" />
@@ -254,12 +253,10 @@
     <ClInclude Include="D2D_UIRect.h" />
     <ClInclude Include="D2D_UIRoundedRect.h" />
     <ClInclude Include="FireEffect.h" />
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Ingredient.h" />
     <ClInclude Include="IngredientManager.h" />
     <ClInclude Include="InteractiveMovableObject.h" />
     <ClInclude Include="MissionManager.h" />
-    <ClInclude Include="MissionPaper.h" />
     <ClInclude Include="MissionSamplePaper.h" />
     <ClInclude Include="MovableStaticObject.h" />
     <ClInclude Include="NonDiegeticUI_PotTop.h" />
@@ -270,6 +267,7 @@
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="ResultManager.h" />
     <ClInclude Include="SceneScore.h" />
+    <ClInclude Include="Triangle.h" />
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIGoldDisplay.h" />

@@ -59,6 +59,7 @@ void UI_IngredientIconButton::OnStateTrigger(float dt)
 {
 	UI_IconButton::OnStateTrigger(dt);
 
+	//色変化
 	HSV color = {};
 	color.hue = RGBtoHSV(mIngredient->GetColor()).hue;
 	mButtonIcon->SetDiffuseColor(HSVtoRGB(color));
@@ -66,6 +67,9 @@ void UI_IngredientIconButton::OnStateTrigger(float dt)
 
 	//Charge Ingredient;
 	mIngredient->ChargeCapacity();
+
+	//お金計算
+	SceneManager::Get()->GetObj<Player>("player")->ChargeForIngredients();
 }
 
 void UI_IngredientIconButton::Draw()

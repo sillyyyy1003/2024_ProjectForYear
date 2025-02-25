@@ -37,16 +37,14 @@ class SceneLab :public SceneBase
 	std::unique_ptr<Water> mWater;
 
 
-	std::unique_ptr<MovableStaticObject>  mSplash;
-	std::unique_ptr<MovableStaticObject> mMissionPaper;
+	std::unique_ptr<MovableStaticObject>  mSplash;	//色表示UI
+	std::unique_ptr<MovableStaticObject> mMissionPaper;		//色表示背景UI
 	std::unique_ptr<MovableStaticObject> mEnvelope;
 	std::unique_ptr<D2D_UIStackContainer> mText;	//詳しい文字
 
-	
 	std::unique_ptr<CandleLight> mCandleLight1;
 	std::unique_ptr<CandleLight> mCandleLight2;
 
-	//std::unique_ptr<D2D_UIStackContainer> mGoldBar;
 	std::unique_ptr<UIGoldDisplay> mGoldDisplay;
 
 	//シーン切り替え用

@@ -11,7 +11,7 @@ namespace WaterStateConfig
 	struct WaterStateParam
 	{
 		DirectX::XMFLOAT3  center = {}; // 波の中心位置
-		float maxAmplitude = 0.f;			// 波の幅
+		float maxAmplitude = 0.f;		// 波の幅
 		float minAmplitude = 0.f;
 		float frequency = 0.f;			// 波の頻度
 		float speed = 0.f;				// 波のスビード

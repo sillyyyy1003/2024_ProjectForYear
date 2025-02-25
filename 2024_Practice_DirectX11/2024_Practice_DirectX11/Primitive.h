@@ -13,6 +13,7 @@ namespace PrimitiveConfig
 	enum PrimitiveKind
 	{
 		PRIMITIVE_DEFAULT,
+		TRIANGLE,
 		CUBE,
 		CAPSULE,
 		SPHERE,

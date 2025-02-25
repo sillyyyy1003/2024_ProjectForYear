@@ -11,7 +11,7 @@ namespace Paper
 
 		STATE_FALLING = 1 << 0,		//壁から降りる状態
 		STATE_DEFAULT = 1 << 1,		//待機状態
-		STATE_ZOOM = 1 << 2,			//詳しい文字を表示する
+		STATE_ZOOM = 1 << 2,		//詳しい文字を表示する
 		STATE_DISAPPEAR = 1 << 3,	//Missionが選択されてない状態
 
 	};

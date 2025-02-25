@@ -2,13 +2,11 @@
 #include "CandleLight.h"
 #include "Ingredient.h"
 #include "InteractiveStaticObject.h"
-#include "MissionSamplePaper.h"
 #include "NonDiegeticUI_PotTop.h"
 #include "Potion.h"
 #include "SceneBase.h"
 #include "StaticObject.h"
 #include "UIGoldDisplay.h"
-#include "UI_Button.h"
 #include "UI_IconButtonReset.h"
 #include "UI_IngredientIconButton.h"
 #include "WaterJug.h"
@@ -42,21 +40,19 @@ class ScenePotion :public SceneBase
 	//Table
 	std::unique_ptr<StaticObject> mTable;
 
-
-
 	//PointLight;
 	std::unique_ptr<CandleLight> mCandleLight1;
 	std::unique_ptr<CandleLight> mCandleLight2;
 
+	//顔料補充ボタン
 	std::unique_ptr<UI_IngredientIconButton> mRedIngredientButton;
 	std::unique_ptr<UI_IngredientIconButton> mBlueIngredientButton;
 	std::unique_ptr<UI_IngredientIconButton> mYellowIngredientButton;
 
+	//鍋のリセットボタン
 	std::unique_ptr<UI_IconButtonReset> mResetButton;
 
 	std::shared_ptr<UIGoldDisplay> mGoldDisplay;
-
-	
 
 
 public:

@@ -5,9 +5,9 @@
 #include "PotionEffect.h"
 #include "SceneBase.h"
 #include "SceneManager.h"
+#include "StaticObject.h"
 #include "UIButton.h"
-#include "UI_Font.h"
-#include "UI_Button.h"
+
 
 //タイトルシーン
 class SceneTitle:public SceneBase
@@ -19,11 +19,6 @@ private:
 	//	シーン中で使われているオブジェクトリスト
 	//======================================
 
-	//std::shared_ptr<UI_Button> uiStart;		//Start Button
-	//std::unique_ptr<UI_Button> uiOption;
-	//std::unique_ptr<UI_Button>  uiExit;
-	//std::unique_ptr<UIStackContainer> uiTitle;	//Title
-
 
 	std::unique_ptr<D2D_UIStackContainer> mTitle;
 	std::unique_ptr<UIButton> mStart;
@@ -33,10 +28,15 @@ private:
 
 	std::unique_ptr<Potion> mWater;
 	std::unique_ptr<CandleLight> mCandleLight;
+	std::unique_ptr<StaticObject> mPot;
+
 
 	std::unique_ptr<PotionEffect> mPotionEffect;
 
 	SceneConfig::SceneIndex mNextScene = SceneConfig::SceneIndex::SCENE_NONE;
+
+	//Texture List
+	PBRConfig::PBRTexList pbrTexList;
 
 public:
 	/// @brief データのロードと初期化

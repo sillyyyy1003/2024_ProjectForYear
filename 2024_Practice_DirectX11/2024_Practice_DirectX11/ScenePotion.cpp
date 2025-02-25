@@ -130,6 +130,17 @@ void ScenePotion::Init()
 	mGoldDisplay->Init(GetObj<Player>("player").get(), D2DUIConfig::FontSize::SEMI_SIZE);
 	mGoldDisplay->LoadSceneData(sceneData["GoldDisplay"]);
 
+	mSplash = std::make_unique<StaticObject>();
+	mSplash->InitModel(GetObj<Texture>("splash"),"Splash",PrimitiveConfig::SQUARE,0);
+	mSplash->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mSplash->LoadSaveData(sceneData);
+	
+
+	mPaper = std::make_unique<StaticObject>();
+	mPaper->InitModel(GetObj<Texture>("paper4"), "MissionPaper", PrimitiveConfig::SQUARE, 0);
+	mPaper->LoadDefShader(GetObj<VertexShader>("VS_Primitives"), GetObj<PixelShader>("PS_Primitives"));
+	mPaper->LoadSaveData(sceneData);
+
 	ResultManager::Get()->SetUIGoldDisplay(mGoldDisplay.get());
 
 	//Shadowに関するRenderTargetを作成
@@ -168,6 +179,9 @@ void ScenePotion::UnInit()
 
 	sceneData["ResetButton"] = mResetButton->SaveData();
 	sceneData["GoldDisplay"] = mGoldDisplay->SaveData();
+
+	sceneData["Splash"] = mSplash->SaveData();
+	sceneData["MissionPaper"] = mPaper->SaveData();
 
 	SaveSceneFile("Assets/Data/SaveDat/scene_potion.json", sceneData);
 
@@ -326,7 +340,16 @@ void ScenePotion::DrawWithShadow()
 	mPot->Draw();
 	mPotTop->Draw();
 	mWater->Draw();
-	
+
+
+	//Missionがある時だけ表示する
+	if (MissionManager::Get()->HasCurrentMission())
+	{
+		mSplash->Draw();
+		mPaper->Draw();
+	}
+
+
 	mTable->Draw();
 
 	XMStoreFloat4x4(&mat[0], XMMatrixTranspose(
@@ -346,6 +369,9 @@ void ScenePotion::DrawWithShadow()
 	Sprite::SetTexture(pDeptWriteRTV);
 	Sprite::Draw();
 
+
+
+	
 }
 
 void ScenePotion::InitShadowRenderTarget()
@@ -386,9 +412,6 @@ void ScenePotion::GameObjectUpdate(float dt)
 	//Dilute
 	mJug->Update(dt);
 
-	//Button
-
-
 	//UI
 	mRedIngredientButton->Update(dt);
 	mBlueIngredientButton->Update(dt);
@@ -396,6 +419,11 @@ void ScenePotion::GameObjectUpdate(float dt)
 	mResetButton->Update(dt);
 	mGoldDisplay->Update(dt);
 
+	//Paper + Splash
+	if (!MissionManager::Get()->HasCurrentMission())return;
+	mSplash->SetDiffuseColor(MissionManager::Get()->GetCurrentMission().MissionColor);
+	mSplash->Update(dt);
+	mPaper->Update(dt);
 }
 
 void ScenePotion::TriggerListener()

@@ -124,7 +124,7 @@ void CandleLight::CandleLightShaking(float dt)
 
     // ライトの強度にノイズ入れ
     float baseIntensity = GetAttenuation().x;
-    float intensityFlicker = mCandleNoise.GetNoise(mTime, 4.0f) * 0.15f;
+    float intensityFlicker = mCandleNoise.GetNoise(mTime, 4.0f) * 0.2f;
 
     mCandleLight.ambient = GetAmbient();
     mCandleLight.diffuse = GetDiffuse();

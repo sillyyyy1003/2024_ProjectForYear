@@ -326,10 +326,10 @@ void Potion::InitWaterLevelParam()
 	mModel->SetPosition(pos);
 }
 
-void Potion::InitPotionParticleEffect()
+void Potion::InitPotionParticleEffect(float particleSize)
 {
 	mParticleEffect = std::make_unique<PotionEffect>();
-	mParticleEffect->InitParticleRenderer("VS_ParticleInstance.hlsl", mParticleNum,0.03f);
+	mParticleEffect->InitParticleRenderer("VS_ParticleInstance.hlsl", mParticleNum, particleSize);
 	mParticleEffect->InitPointOnCircleParticle(this->GetPosition(), this->GetRadius(), { 0,0.02f,0 }, { 0,1.0f,0 });
 	mParticleEffect->SetParticleAliveTime(5.0f);
 	mParticleEffect->SetPotion(this);

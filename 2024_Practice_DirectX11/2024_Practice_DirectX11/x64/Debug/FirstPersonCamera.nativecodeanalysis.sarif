@@ -132,7 +132,7 @@
             "analysisTarget"
           ],
           "hashes": {
-            "sha-256": "3e78e6fc2a7396a67d54f0ee5b25e133a5a1b7a87e6e6a1c0a2c813a2c70dc3f"
+            "sha-256": "e9cf1834d0c89dc4f121ee20f81ded67f587dfd6cd76cd8a0429071d14535007"
           }
         },
         {
@@ -140,7 +140,15 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/firstpersoncamera.h"
           },
           "hashes": {
-            "sha-256": "92e4e91c54396e28068aec576683a93517e916a0463b2d008ef2620fa24e7226"
+            "sha-256": "20a715c4259143dac4969826d1dc4ad89d24c2ed283d95545d5a16ea63a56e5f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/fastnoise/fastnoiselite.h"
+          },
+          "hashes": {
+            "sha-256": "47a29750dfe13d15651febd235f3c26b1cc57af7c6e26583b838fd7ab5215dc2"
           }
         },
         {
@@ -164,7 +172,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dutil.h"
           },
           "hashes": {
-            "sha-256": "5e2c32abbec34a3ad6c28be77e7d80e2fb312aac39ea90ad31cd6a28326fccc3"
+            "sha-256": "beac6d71af8041bbf96ec1f48aac904915a84e0a8cf6b2b6f7bcc2026d7add63"
           }
         },
         {
@@ -260,7 +268,7 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/d3dapp.h"
           },
           "hashes": {
-            "sha-256": "6ac9cff953d792c3c2c298afb35034d08662a82e33bf71ec324792052ca06fc1"
+            "sha-256": "76580a93d214ddc07259680b2bddd81afcfc5458e9e761c30ece48ec4e591e70"
           }
         },
         {
@@ -628,7 +636,15 @@
             "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/transform.h"
           },
           "hashes": {
-            "sha-256": "8493da1cccb5c88fbbfb1d7b3ce54508d715519279ddc6c12b5a776191837b33"
+            "sha-256": "0c61ffabee155d9d5370fcb8c45109dcdc72c68e8033c8432ad678fa62938ef6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/58472/desktop/2024_project/2024_practice_directx11/2024_practice_directx11/randomgenerator.h"
+          },
+          "hashes": {
+            "sha-256": "ac78aa4f31e6aae6f509cf410f121ed4bb841d782025a5565b1f643bd507ff74"
           }
         },
         {

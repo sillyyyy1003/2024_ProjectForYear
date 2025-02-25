@@ -42,14 +42,13 @@ void SceneLab::Init()
 	mCandleLight1->Init();
 	mCandleLight1->LoadSaveData(sceneData, "CandleLight1");
 	mCandleLight1->InitName("CandleLight1");
-	/*mCandleLight1->InitEffect(Vector3(0.20f,0.75f,0.20f),Vector3(0,-0.1f,0),2.f,Color(1,1.f,0,1),Color(1, 0.f,0,0.4f));*/\
+	
 	mCandleLight1->InitEffect(sceneData["CandleLight1"]);
 
 	mCandleLight2 = std::make_unique<CandleLight>();
 	mCandleLight2->Init();
 	mCandleLight2->InitName("CandleLight2");
 	mCandleLight2->LoadSaveData(sceneData, "CandleLight2");
-	//mCandleLight2->InitEffect(Vector3(0.20f, 0.75f, 0.20f), Vector3(0, -0.1f, 0), 2.f, Color(1, 1.f, 0, 1.f), Color(1, 0.f, 0, 0.40f));
 	mCandleLight2->InitEffect(sceneData["CandleLight2"]);
 
 	//Load Tex

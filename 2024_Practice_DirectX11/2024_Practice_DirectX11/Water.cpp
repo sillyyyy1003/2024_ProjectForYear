@@ -394,13 +394,14 @@ void Water::CalculateVertexPosNormal()
 		float speed = mParam.speed / mModel->GetScale().x;
 		float distanceToCenter = lenVec.Length();
 
+		
 		// 波の高さを計算する
 		if (distanceToCenter < sigma)
 		{
-			if (distanceToCenter < 1e-6f) // 避免距离接近 0
+			if (distanceToCenter < 1e-6f) // 距離がゼロのなるのを排除
 			{
 				vertex.pos.y = mNowAmplitude * sin(2.f * 3.14159f * mParam.frequency * mWaterTime);
-				vertex.normal = Vector3(0.0f, 1.0f, 0.0f); // 中心点法向量默认垂直向上
+				vertex.normal = Vector3(0.0f, 1.0f, 0.0f); // 中心点の法線はいつも上
 			}
 			else
 			{
@@ -423,14 +424,18 @@ void Water::CalculateVertexPosNormal()
 				gradient.Normalize();
 				vertex.normal = gradient;
 			}
+			
 		}
 		else
 		{
 			// Default flat surface normal for areas outside the wave's influence
 			vertex.normal = Vector3(0.0f, 1.0f, 0.0f);
 		}
+		
+	
 	}
 
 }
+
 
 

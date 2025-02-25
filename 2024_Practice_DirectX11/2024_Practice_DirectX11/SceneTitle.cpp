@@ -18,8 +18,8 @@ void SceneTitle::Init()
 {
 	json sceneData = LoadSceneData("Assets/Data/SaveDat/scene_title.json");
 	//Camera
-	GetObj<FirstPersonCamera>("DefaultCamera")->SetPos({ 0, 1.2f, -14.f });
-	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInRadian(0.13f,0.f,0.f);
+	GetObj<FirstPersonCamera>("DefaultCamera")->SetPos({ 0, 5.5f, -14.f });
+	GetObj<FirstPersonCamera>("DefaultCamera")->mTransform.SetRotationInRadian(0.35f,0.f,0.f);
 
 #ifdef NDEBUG
 	GetObj<FirstPersonCamera>("DefaultCamera")->LockCamera();
@@ -40,7 +40,8 @@ void SceneTitle::Init()
 	mWater->SetAutoColor(true);
 	mWater->SetWaterState(WaterStateConfig::WaterState::STATE_RIPPLING);
 	mWater->SetWaterBoilingState(WaterStateConfig::WaterBoilingState::STATE_CONSTANT_BOILING);
-	mWater->InitPotionParticleEffect();
+	mWater->SetParticleNum(250);
+	mWater->InitPotionParticleEffect(0.08f);
 
 	mTitle = std::make_unique<D2D_UIStackContainer>();
 	mStart = std::make_unique<UIButton>();
@@ -64,6 +65,15 @@ void SceneTitle::Init()
 	mExit->EnableAllState();
 
 
+	pbrTexList[PBRConfig::PBRTex::ALBEDO] = GetObj<Texture>("pbrAlbedo");
+	pbrTexList[PBRConfig::PBRTex::METALLIC] = GetObj<Texture>("pbrMetallic");
+	pbrTexList[PBRConfig::PBRTex::NORMAL] = GetObj<Texture>("pbrNormal");
+	mPot = std::make_unique<StaticObject>();
+	mPot->InitPBR("Assets/Model/LabAssets/Pot.obj", "Pot");
+	mPot->LoadDefShader(GetObj<VertexShader>("VS_PBRModel"), GetObj<PixelShader>("PS_PBRModel"));
+	mPot->LoadTex(pbrTexList);
+	mPot->LoadSaveData(sceneData);
+
 }
 
 void SceneTitle::UnInit()
@@ -77,6 +87,7 @@ void SceneTitle::UnInit()
 	sceneData["Exit"] = mExit->SaveData();
 	sceneData["SceneTitleWater"] = mWater->SaveData();
 	sceneData["CandleLight"] = mCandleLight->SaveData();
+	sceneData["Pot"] = mPot->SaveData();
 	SaveSceneFile("Assets/Data/SaveDat/scene_title.json", sceneData);
 
 #endif
@@ -145,6 +156,8 @@ void SceneTitle::ObjectUpdate(float dt)
 	
 	mWater->Update(dt);
 	mCandleLight->Update(dt);
+
+	mPot->Update(dt);
 }
 
 void SceneTitle::Draw()
@@ -153,16 +166,19 @@ void SceneTitle::Draw()
 	Light::PointLight pl[2] = {
 		mCandleLight->GetPointLight(),
 		{}
-	};
+	}; 
+	GetObj<PixelShader>("PS_PBRModel")->WriteShader(1, pl);
+	mPot->Draw();
 
 	//Set PointLight to pbr shader
 	GetObj<PixelShader>("PS_Primitives")->WriteShader(1, pl);
 	mWater->Draw();
-
+	
 
 	mTitle->Draw();
 	mStart->Draw();
 	mOption->Draw();
 	mExit->Draw();
+
 }
 

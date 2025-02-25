@@ -8,7 +8,8 @@
 
 class SceneOption : public SceneBase
 {
-	std::unique_ptr<FireEffect> mTest;
+	
+
 public:
 	/// @brief データのロードと初期化
 	void Init();
