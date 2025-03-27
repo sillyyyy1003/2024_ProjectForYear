@@ -1,0 +1,481 @@
+{
+    "CandleLight": {
+        "Ambient": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Attenuation": [
+            0.6000000238418579,
+            0.0,
+            0.0
+        ],
+        "CastHeight": [
+            3.0
+        ],
+        "Diffuse": [
+            0.9117646813392639,
+            0.9117646813392639,
+            0.9117646813392639,
+            1.0
+        ],
+        "Direction": [
+            0.0,
+            1.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            6.0,
+            0.0
+        ],
+        "Range": [
+            40.0
+        ]
+    },
+    "Exit": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "DefaultFontColor": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+        ],
+        "FontColor": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+        ],
+        "FontScale": [
+            9.0,
+            9.0
+        ],
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.0,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -350.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -350.0
+        ],
+        "Scale": [
+            400.0,
+            100.0
+        ],
+        "Text": "EXIT",
+        "TextAlignment": 1
+    },
+    "Option": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "DefaultFontColor": [
+            0.8627451062202454,
+            0.8627451062202454,
+            0.0,
+            1.0
+        ],
+        "FontColor": [
+            0.8627451062202454,
+            0.8627451062202454,
+            0.0,
+            1.0
+        ],
+        "FontScale": [
+            9.0,
+            9.0
+        ],
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.8627451062202454,
+                0.8627451062202454,
+                0.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -200.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -200.0
+        ],
+        "Scale": [
+            400.0,
+            100.0
+        ],
+        "Text": "OPTION",
+        "TextAlignment": 1
+    },
+    "Pot": {
+        "Position": [
+            0.0,
+            -12.0,
+            2.0
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            80.0,
+            80.0,
+            80.0
+        ]
+    },
+    "SceneTitleWater": {
+        "DefaultHeight": [
+            0.0
+        ],
+        "DiluteParam": [
+            0.0
+        ],
+        "Duration": [
+            2.3299999237060547
+        ],
+        "LimitHeight": [
+            0.0
+        ],
+        "Material": {
+            "Ambient": [
+                0.7892156839370728,
+                0.7892156839370728,
+                0.7892156839370728,
+                1.0
+            ],
+            "Diffuse": [
+                0.0,
+                0.6600041389465332,
+                1.0,
+                0.4000000059604645
+            ],
+            "Emission": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Specular": [
+                0.800000011920929,
+                0.800000011920929,
+                0.800000011920929,
+                32.0
+            ]
+        },
+        "MaxHeight": [
+            0.0
+        ],
+        "Position": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Scale": [
+            28.0,
+            1.0,
+            28.0
+        ],
+        "TransformSpeed": [
+            75.0
+        ],
+        "ValueParam": [
+            0.0
+        ],
+        "WaterParam": {
+            "Boiling": {
+                "Center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Frequency": [
+                    9.0
+                ],
+                "MaxAmplitude": [
+                    0.10000000149011612
+                ],
+                "MinAmplitude": [
+                    0.0
+                ],
+                "Sigma": [
+                    20.0
+                ],
+                "Speed": [
+                    0.07000000029802322
+                ]
+            },
+            "Rippling": {
+                "Center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Frequency": [
+                    1.0
+                ],
+                "MaxAmplitude": [
+                    0.25
+                ],
+                "MinAmplitude": [
+                    0.0
+                ],
+                "Sigma": [
+                    25.0
+                ],
+                "Speed": [
+                    3.0
+                ]
+            },
+            "Still": {
+                "Center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Frequency": [
+                    0.0
+                ],
+                "MaxAmplitude": [
+                    0.009999999776482582
+                ],
+                "MinAmplitude": [
+                    0.0
+                ],
+                "Sigma": [
+                    0.0
+                ],
+                "Speed": [
+                    0.0
+                ]
+            },
+            "Violent": {
+                "Center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Frequency": [
+                    12.0
+                ],
+                "MaxAmplitude": [
+                    0.0
+                ],
+                "MinAmplitude": [
+                    0.0
+                ],
+                "Sigma": [
+                    1.0
+                ],
+                "Speed": [
+                    0.05000000074505806
+                ]
+            }
+        }
+    },
+    "Start": {
+        "DefaultColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "DefaultFontColor": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "FontScale": [
+            9.0,
+            9.0
+        ],
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "OutlineColor": [
+                0.970588207244873,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                4.0
+            ],
+            "Position": [
+                0.0,
+                -40.0
+            ],
+            "RadiusX": [
+                40.0
+            ],
+            "RadiusY": [
+                40.0
+            ],
+            "Scale": [
+                400.0,
+                100.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            -40.0
+        ],
+        "Scale": [
+            400.0,
+            100.0
+        ],
+        "Text": "START",
+        "TextAlignment": 1
+    },
+    "Title": {
+        "FontColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "FontScale": [
+            28.0,
+            28.0
+        ],
+        "FontSize": 0,
+        "Graphic": {
+            "BaseColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "OutlineWeight": [
+                1.0
+            ],
+            "Position": [
+                0.0,
+                240.0
+            ],
+            "RadiusX": [
+                1.0
+            ],
+            "RadiusY": [
+                1.0
+            ],
+            "Scale": [
+                1920.0,
+                300.0
+            ]
+        },
+        "Padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Position": [
+            0.0,
+            240.0
+        ],
+        "Scale": [
+            1920.0,
+            300.0
+        ],
+        "Text": "My Blender",
+        "TextAlignment": 1
+    }
+}

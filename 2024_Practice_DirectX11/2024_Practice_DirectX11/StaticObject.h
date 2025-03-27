@@ -40,7 +40,8 @@ public:
 
 	virtual void InitModel(const std::shared_ptr<Texture>& tex, const char* _objName, PrimitiveConfig::PrimitiveKind _kind, int slices, DirectX::XMINT2 _UVSplit = { 1,1 });
 
-
+	/// @brief すべてのテクスチャを読み込む
+	/// @param list テクスチャリスト
 	void LoadTex(PBRConfig::PBRTexList list);
 	void SetMaterial(const Material& mat) { mModel->SetMaterial(mat); };
 

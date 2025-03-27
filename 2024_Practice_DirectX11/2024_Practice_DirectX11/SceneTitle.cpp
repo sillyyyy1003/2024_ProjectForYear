@@ -56,9 +56,9 @@ void SceneTitle::Init()
 	mStart->LoadSaveData(sceneData["Start"]);
 	mStart->EnableAllState();
 
-	mOption->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Option");
-	mOption->LoadSaveData(sceneData["Option"]);
-	mOption->EnableAllState();
+	//mOption->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Option");
+	//mOption->LoadSaveData(sceneData["Option"]);
+	//mOption->EnableAllState();
 
 	mExit->Init(D2DUIConfig::UIShape::ROUNDED_RECT, D2DUIConfig::FontSize::NORMAL_SIZE, "Exit");
 	mExit->LoadSaveData(sceneData["Exit"]);
@@ -83,7 +83,7 @@ void SceneTitle::UnInit()
 	json sceneData;
 	sceneData["Title"] = mTitle->SaveData();
 	sceneData["Start"] = mStart->SaveData();
-	sceneData["Option"] = mOption->SaveData();
+	//sceneData["Option"] = mOption->SaveData();
 	sceneData["Exit"] = mExit->SaveData();
 	sceneData["SceneTitleWater"] = mWater->SaveData();
 	sceneData["CandleLight"] = mCandleLight->SaveData();
@@ -151,7 +151,7 @@ void SceneTitle::ObjectUpdate(float dt)
 	
 	mTitle->Update(dt);
 	mStart->Update(dt);
-	mOption->Update(dt);
+	//mOption->Update(dt);
 	mExit->Update(dt);
 	
 	mWater->Update(dt);
@@ -177,7 +177,7 @@ void SceneTitle::Draw()
 
 	mTitle->Draw();
 	mStart->Draw();
-	mOption->Draw();
+	//mOption->Draw();
 	mExit->Draw();
 
 }

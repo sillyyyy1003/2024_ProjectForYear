@@ -6,12 +6,10 @@
 #include "InteractiveStaticObject.h"
 #include "MissionPaper.h"
 #include "MovableStaticObject.h"
-#include "PointLight.h"
 #include "SceneBase.h"
-#include "Sphere.h"
+
 #include "StaticObject.h"
 #include "UIGoldDisplay.h"
-#include "UIStackContainer.h"
 
 #include "Water.h"
 
